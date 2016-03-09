@@ -4,7 +4,6 @@ using Leap;
 
 public class GrabObjects : MonoBehaviour {
 
-	private Controller controller;
 	private Frame frame;
 
 	private int NUM_FINGERS = 5;
@@ -25,20 +24,21 @@ public class GrabObjects : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		controller = new Controller ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
-		UpdatePinch ( controller.Frame() );
+		frame = this.gameObject.GetComponent<LeapVariables> ().getFrame();
+
+		UpdatePinch ( frame );
 
 		if (grabbed_object != null) {
 
 			float thumb_tip_multiplier = 20f; //Used to lift the things
 
 			//Get relative movement based on palm position
-			Hand hand = controller.Frame().Hands[0];
+			Hand hand = frame.Hands[0];
 			Vector3 palmPosition = hand.PalmPosition.ToUnityScaled();
 			Vector3 palmMovement = palmPosition - prev_palm_position;
 			//Debug.Log("palmMovement : " + palmMovement);
@@ -90,10 +90,10 @@ public class GrabObjects : MonoBehaviour {
 		//Debug.Log ("avg tip dist: " + avgTipDistance + " num fingers: " + NUM_FINGERS);
 
 		//if thumb and index finger joints are within distance
-		if (avgTipDistance < THUMB_TRIGGER_DISTANCE) {
+		if (avgTipDistance < THUMB_TRIGGER_DISTANCE && avgTipDistance > 0) {
 			ResetReleaseCounter ();
 			trigger_pinch = true;
-			//Debug.Log ("triggering pinch with dist: " + avgTipDistance);
+			Debug.Log ("triggering pinch with dist: " + avgTipDistance);
 		} else {
 			if (pinching_ == true) {
 

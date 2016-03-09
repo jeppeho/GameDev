@@ -4,21 +4,20 @@ using Leap;
 
 public class PowerUpHand : MonoBehaviour {
 
-	private Controller controller;
 	private Frame frame;
+
 	private int NUM_FINGERS = 5;
 	private int charge = 0;
 
 	// Use this for initialization
 	void Start () {
-		controller = new Controller ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
 		//Get current frame
-		frame = controller.Frame ();
+		frame = this.gameObject.GetComponent<LeapVariables> ().getFrame();
 		Hand hand = frame.Hands[0];
 
 

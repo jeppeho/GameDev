@@ -4,19 +4,16 @@ using Leap;
 
 public class LeapController : MonoBehaviour {
 
-	private Controller controller;
 	private Frame frame;
 
 	// Use this for initialization
 	void Start () {
-		controller = new Controller ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		frame = controller.Frame ();
-
+		frame = this.gameObject.GetComponent<LeapVariables> ().getFrame();
 		MoveHands ();
 	}
 

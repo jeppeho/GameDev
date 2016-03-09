@@ -9,7 +9,7 @@ public class LeapGestures : MonoBehaviour {
 
 
 	void Awake(){
-		controller = new Controller ();
+		controller = this.gameObject.GetComponent<LeapVariables> ().getController();
 
 		//Enable each gesture
 		controller.EnableGesture (Gesture.GestureType.TYPE_CIRCLE);
@@ -25,11 +25,9 @@ public class LeapGestures : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		//Debug.Log("Controller: " + controller);
 
 		//Get the current frame
-		frame = controller.Frame ();
-		//Debug.Log("Frame: " + frame);
+		frame = this.gameObject.GetComponent<LeapVariables> ().getFrame();
 
 		//MoveHands();
 		GetGestures ();

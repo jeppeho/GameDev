@@ -4,7 +4,6 @@ using Leap;
 
 public class ScalePalmPosition : MonoBehaviour {
 
-	private Controller controller;
 	private Frame frame;
 	public float scale = 2f;
 	private float offset = 5f;
@@ -16,15 +15,13 @@ public class ScalePalmPosition : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		controller = new Controller ();
 		prev_x_change = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
-		frame = controller.Frame ();
-
+		frame = this.gameObject.GetComponent<LeapVariables> ().getFrame();
 
 		MoveHandsRelative();
 		//MoveHandsIncrementally ();
