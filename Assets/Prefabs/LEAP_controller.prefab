@@ -47,7 +47,6 @@ GameObject:
   - 4: {fileID: 405850}
   - 114: {fileID: 11454870}
   - 114: {fileID: 11405252}
-  - 114: {fileID: 11426890}
   m_Layer: 8
   m_Name: HandController
   m_TagString: Untagged
@@ -232,7 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4918a019279e24f89919c7eac1d1100e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scale: 2
+  scale: 1.6
 --- !u!114 &11412688
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -255,18 +254,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e27c79d5ba46845a9b2f1823fb741dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11426890
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 147388}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4918a019279e24f89919c7eac1d1100e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scale: 2
 --- !u!114 &11430150
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -278,7 +265,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca8384bae31804f418e6c25382d22139, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdSlot: {fileID: 0}
 --- !u!114 &11454870
 MonoBehaviour:
   m_ObjectHideFlags: 1
