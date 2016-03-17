@@ -38,7 +38,7 @@ public class BoneBehavior : MonoBehaviour {
 		//Debug.Log("Vector towards target = " + getVectorTowardsDesiredPosition());
 
 		//Set mass based on distance
-		mass = getDistanceToDesiredPosition() / 300;
+		mass = 2 + getDistanceToDesiredPosition() / 10;
 
 		//Set speed 
 //		setSpeedBasedOnDistance ();
@@ -69,7 +69,7 @@ public class BoneBehavior : MonoBehaviour {
 	 *	closer the bone is to it's desired location.
 	 */
 	public Vector3 setVelocityLinear(){
-		speed = 200;
+		speed = 400;
 
 		//NEW WAY  doesn't work, it flickers
 		//Vector3 velocity = getVectorTowardsDesiredPosition() * getDistanceToDesiredPosition() * speed * Time.deltaTime;
