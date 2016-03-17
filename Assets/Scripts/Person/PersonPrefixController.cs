@@ -15,7 +15,7 @@ public class PersonPrefixController : MonoBehaviour {
 	private bool prevPressJump;
 	private bool isJumping = false;
 
-	private int maxJumpTime = 40;
+	private int maxJumpTime = 20;
 	private int jumpTime;
 	private float jumpVelocityX;
 	private float jumpVelocityZ;
@@ -24,9 +24,9 @@ public class PersonPrefixController : MonoBehaviour {
 	float velocityX, velocityY, velocityZ;
 
 	private float speed;
-	public float highSpeed = 8;
-	public float lowSpeed = 6;
-	public float jumpHeight = 30;
+	private float highSpeed = 8;
+	private float lowSpeed = 3;
+	private float jumpHeight = 20;
 	public float forwardJumpScale; //How should the jump be scaled on the X and Z-axis.
 	public float jumpWaitingTime = 0;
 	Vector3 position;

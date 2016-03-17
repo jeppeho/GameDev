@@ -55,7 +55,6 @@ public class SphereHandModel : MonoBehaviour {
 		//Get the first hand
 		Hand hand = frame.Hands[0];
 
-
 		//Get the fingers
 		FingerList fingers = hand.Fingers;
 

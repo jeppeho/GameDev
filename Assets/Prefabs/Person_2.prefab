@@ -45,9 +45,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 485724}
   - 54: {fileID: 5476992}
-  - 114: {fileID: 11448828}
-  - 114: {fileID: 11402824}
   - 114: {fileID: 11441350}
+  - 136: {fileID: 13627802}
   m_Layer: 0
   m_Name: Person_2
   m_TagString: Untagged
@@ -174,17 +173,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &11402824
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 152804}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50350a4efd1f649be9d03f87635ac145, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11441350
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -197,8 +185,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefix: P2
-  speed: 6
-  jumpPower: 2
+  forwardJumpScale: 0
+  jumpWaitingTime: 0
   anim:
     serializedVersion: 2
     m_Curve:
@@ -215,42 +203,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  regularPushPower: 0
-  extraPushPower: 0
---- !u!114 &11448828
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 152804}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db4f0620905884e1487d0bb8a4435077, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 6
-  jumpPower: 2
-  anim:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-    - time: 0.22557999
-      value: 0.6658288
-      inSlope: 1.4033914
-      outSlope: 1.4033914
-      tangentMode: 0
-    - time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
+  regularPushPower: 0.0004
+  extraPushPower: 0.001
 --- !u!135 &13560246
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -263,6 +217,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &13627802
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 152804}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: -15}
 --- !u!136 &13687356
 CapsuleCollider:
   m_ObjectHideFlags: 1
