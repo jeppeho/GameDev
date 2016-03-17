@@ -2,6 +2,7 @@
 using System.Collections;
 using Leap;
 
+
 public class GrabObjects : MonoBehaviour {
 
 	private Frame frame;

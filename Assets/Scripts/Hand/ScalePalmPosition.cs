@@ -2,6 +2,13 @@
 using System.Collections;
 using Leap;
 
+
+/**
+ * This class is used to translate the position of the hand 
+ * to be displayed in a certain area of the screen, ie. full
+ * screen from left to right and top to bottom.
+ */
+
 public class ScalePalmPosition : MonoBehaviour {
 
 	private Frame frame;
@@ -12,6 +19,7 @@ public class ScalePalmPosition : MonoBehaviour {
 
 	float prev_x_change;
 	float prev_z_change;
+	float prev_y_change;
 
 	// Use this for initialization
 	void Start () {
@@ -20,12 +28,13 @@ public class ScalePalmPosition : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-		frame = this.gameObject.GetComponent<LeapVariables> ().getFrame();
+
+		//Get frame from parent object
+		frame = this.gameObject.GetComponentInParent<LeapVariables> ().getFrame();
 
 		MoveHandsRelative();
 		//MoveHandsIncrementally ();
-
+		//MoveHands2();
 
 	}
 		
@@ -59,6 +68,34 @@ public class ScalePalmPosition : MonoBehaviour {
 
 	}
 
+	void MoveHands2(){
+
+		//Get hand position
+		Vector hand_position = GetSinglePalmPosition ();
+
+
+		//Get current gameObject position
+		Vector3 position = this.gameObject.transform.position;
+
+		//get camera position
+		Vector3 camera_position = this.gameObject.transform.parent.position;
+
+		Debug.Log ("Camera @" + camera_position + " | LEAP @" + position);
+		//Subtract the camera position on the x-axis
+		//So the center point will be zero
+
+
+
+		//Multiply the x coord from the hand with some scale
+
+
+
+
+
+
+	}
+
+
 	/**
 	 * Move hands relative to actual position of hands recognized by Leap
 	 */
@@ -74,43 +111,51 @@ public class ScalePalmPosition : MonoBehaviour {
 		Vector3 parent_position = this.gameObject.transform.parent.position;
 		//Debug.Log("This.z: " + position.z +  " Parent.z: " + parent_position.z);
 
-		position.x -= prev_x_change;
-
-		//Set change values from hand position
+		//Get transformation values
+		//float x_change = hands.x / 50f;
 		float x_change = hands.x / 50f;
 		float z_change = hands.z / 1000f;
+		float y_change = hands.y / 500f;
+		Debug.Log ("hands.x = " + hands.x);
+
+		//Subtract the change from last frame from the position
+		position.x -= prev_x_change;
+		//position.x += prev_z_change;
+		position.y -= prev_y_change;
+
+		Debug.Log ("before position.x = " + position.x);
+
+		//Add transformation
+		position.x += x_change;
+		position.z -= z_change;
+		position.y += y_change;
+
+		Debug.Log ("after position.x = " + position.x);
 
 		//Update prev values
 		prev_x_change = x_change;
 		prev_z_change = z_change;
+		prev_y_change = y_change;
 
-		//Add transformation
-		position.x += x_change;
-
-
-		position.z -= z_change;
 
 		//Set boundaries on X-axis
-		if (position.x < 0)
-			position.x = 0;
-		else if (position.x > 10)
-			position.x = 10;
+		float minX = 4f;
+		float maxX = 6f;
 
-		float z_near_bound = 6f - parent_position.z;
-		float z_far_bound = 4f - parent_position.z;
-		//Debug.Log ("Near: " + z_near_bound + " far " + z_far_bound);
+		if (position.x < minX)
+			position.x = minX;
+		else if (position.x > maxX)
+			position.x = maxX;
 
-		//Set boundaries on X-axis
-		if (position.z < -z_near_bound) {
-			position.z = -z_near_bound;
-			//Debug.Log ("z_near_bound reached");
-		} else if (position.z > -z_far_bound) {
-			//Debug.Log ("z_far_bound reached");
-			position.z = -z_far_bound;
+		//Set boundaries on Z-axis
+		float minZ = 6f - parent_position.z;
+		float maxZ = 4f - parent_position.z;
+
+		if (position.z < -minZ) {
+			position.z = -minZ;
+		} else if (position.z > -maxZ) {
+			position.z = -maxZ;
 		}
-//
-//		position.z -= parent_position.z;
-
 
 		//Set changes to position
 		this.gameObject.transform.position = position;
@@ -160,6 +205,13 @@ public class ScalePalmPosition : MonoBehaviour {
 
 	}
 
+
+
+	/**
+	 * Returns the palm position of the first hand
+	 * Of more than one hand, the first hand is the 
+	 * first had that have entered. 
+	 */
 	Vector GetSinglePalmPosition(){
 
 		//Get list of hands
@@ -175,7 +227,10 @@ public class ScalePalmPosition : MonoBehaviour {
 		return firstHand.PalmPosition;
 	}
 
-
+	/**
+	 * Returns the average palm position of both hands or
+	 * the palm position of a single hand (if only one present.
+	 */
 	Vector GetAveragePalmPosition(){
 
 		HandList hands = frame.Hands;
@@ -191,6 +246,6 @@ public class ScalePalmPosition : MonoBehaviour {
 		Debug.Log ("Palm position: " + avgPalmPosition);
 
 		return avgPalmPosition;
-		return firstHand.PalmPosition;
+		//return firstHand.PalmPosition;
 	}
 }
