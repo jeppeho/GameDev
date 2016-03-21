@@ -28,6 +28,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 462718}
   - 114: {fileID: 11423604}
+  - 114: {fileID: 11454746}
+  - 114: {fileID: 11487170}
   m_Layer: 0
   m_Name: HandController
   m_TagString: Untagged
@@ -43,8 +45,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 409946}
-  - 114: {fileID: 11482968}
-  - 114: {fileID: 11417400}
+  - 114: {fileID: 11483592}
   m_Layer: 0
   m_Name: LEAPBoneController
   m_TagString: Untagged
@@ -59,7 +60,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 179594}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 462718}
@@ -73,7 +74,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100658}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: -10}
+  m_LocalPosition: {x: 0, y: 2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 409946}
@@ -138,18 +139,6 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100658}
   m_Enabled: 1
---- !u!114 &11417400
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 179594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65952675b90d94319b3d02195d4f2434, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FingerBone: {fileID: 0}
 --- !u!114 &11423604
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -161,17 +150,41 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11482968
+--- !u!114 &11454746
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 179594}
+  m_GameObject: {fileID: 109146}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be6002c7e1f5041ac9b1b83ca1b2e04d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11483592
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 179594}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d79057561726f4f5a928b4343f94adc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraSpeed: 2
+--- !u!114 &11487170
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 109146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65952675b90d94319b3d02195d4f2434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FingerBone: {fileID: 144462, guid: a1daabd4db07c47179a065c01ae7e0bc, type: 2}
 --- !u!124 &12431802
 Behaviour:
   m_ObjectHideFlags: 1
