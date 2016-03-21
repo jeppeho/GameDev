@@ -6,7 +6,7 @@ public class PlayerManager : MonoBehaviour {
 	private Rigidbody rb;
 	private MeshCollider collider;
 	private float lastVelY;
-	private enum state {active, dead, invulnerable};
+	private enum state {active, inactive, dead, invulnerable};
 	private state playerState;
 	public float impactResistance = 3f;
 
@@ -51,7 +51,7 @@ public class PlayerManager : MonoBehaviour {
 	}
 
 	//Death
-	public void Death()
+	private void Death()
 	{
 		if (playerState == state.active)
 		{
@@ -108,5 +108,62 @@ public class PlayerManager : MonoBehaviour {
 
 		//And change state back
 		playerState = state.active;
+	}
+
+	///////////////////////////////////////////////////////////////////// 
+	/// --- Public functions ---
+	/////////////////////////////////////////////////////////////////////
+
+	//Returns the exact state of the player, as a string
+	//States are:
+	//	"active" | alive, movable and succeptible to damage
+	//  "inactive" | alive, but in a cinematic state or similarly frozen
+	//  "dead" | not so alive
+	//	"invulnerable" | alive, but invulnerable
+	public string GetState()
+	{
+		return playerState.ToString ();
+	}
+
+	//Marks the player as active (true) or inactive (false)
+	public void SetActive(bool b)
+	{
+		if (b)
+		{
+			if (playerState == state.inactive)
+			{	playerState = state.active;		}
+		}
+		else
+		{
+			if (playerState == state.active || playerState == state.invulnerable)
+			{	playerState = state.inactive;		}
+		}
+	}
+
+	//Whether the player is to be considered alive (i.e. whether it's in one of a certain active states)
+	public bool IsAlive()
+	{
+		if (playerState != state.dead)
+		{	return true;	}
+		else
+		{	return false;	}
+	}
+
+	//Whether the player is controllable (i.e. whether it's in one of a certain active states)
+	public bool IsControllable()
+	{
+		if (playerState == state.active || playerState == state.invulnerable)
+		{	return true;	}
+		else
+		{	return false;	}
+	}
+
+	//Whether the player is damageable (i.e. whether it's in one of a certain active states)
+	public bool IsDamageable()
+	{
+		if (playerState == state.active)
+		{	return true;	}
+		else
+		{	return false;	}
 	}
 }

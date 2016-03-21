@@ -51,7 +51,7 @@ public class SphereHandModel : MonoBehaviour {
 	void Update () {
 
 		//Get frame from parent object
-		frame = this.gameObject.GetComponent<LeapVariables> ().getFrame();
+		frame = this.gameObject.GetComponent<LeapVariables> ().GetFrame();
 
 		//Get the first hand
 		Hand hand = frame.Hands[0];
