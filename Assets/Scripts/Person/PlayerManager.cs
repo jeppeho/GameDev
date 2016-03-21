@@ -66,7 +66,7 @@ public class PlayerManager : MonoBehaviour {
 	//Respawning
 	private void Respawn()
 	{
-		transform.position = new Vector3 (5, 0.5f, GameObject.Find ("Main Camera").transform.TransformPoint(Vector3.zero).z + 10);
+		transform.position = new Vector3 (5, 0.5f, GameObject.Find ("Camera").transform.TransformPoint(Vector3.zero).z + 10);
 		transform.rotation = new Quaternion ();
 		GetComponent<Rigidbody> ().freezeRotation = true;
 	}
