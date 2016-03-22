@@ -15,12 +15,13 @@ public class NewController : MonoBehaviour {
 	GameObject player;
 	Rigidbody rb;
 
-
-
 	private bool isJumping = false;
 
-	float accelerationRate = 10f;
-	private float maxVelocity = 5;
+	private float accelerationRate = 10f;
+	public float maxVelocity = 5;
+	int numJumpFrames = 10;
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -32,41 +33,50 @@ public class NewController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
-		SetInputButtonValues ();
+		GetInputButtonValues ();
+
+		//Set power if push button is pushed
+		if (pressPush)
+			SetPower (16, 8);
+		else
+			SetPower (10, 5);
 
 		Move ();
-
-		TestJump ();
 
 		FallDown ();
 
 		Jumping ();
 
 		//Debug.Log ("VELOCITY @" + rb.velocity);
-		Debug.Log("isJumping = " + isJumping);
+		//Debug.Log("isJumping = " + isJumping);
 	}
 
+
+	/**
+	 * Add force on X and Z axis based on controller input
+	 */
 	private void Move(){
 
+		//Add force to rigidbody
 		rb.AddForce (moveHorizontal * accelerationRate, 0, moveVertical * accelerationRate);
 
+		//Check if max velocity exceeded
 		if(rb.velocity.magnitude > maxVelocity)
 			rb.velocity = Vector3.Normalize(rb.velocity) * maxVelocity;
 	}
 
 	private void FallDown(){
 		if (!IsGrounded ()) {
-			Debug.Log ("Falling doooooown");
-			rb.AddForce (new Vector3 (0, -1f, 0));
+			//Debug.Log ("Falling doooooown");
+			rb.AddForce (new Vector3 (0, -1.3f, 0));
 		} else {
-			Debug.Log ("Landed");
+			//Debug.Log ("Landed");
 			isJumping = false;
 		}
 	}
-
-
+		
 
 
 	/**
@@ -76,16 +86,7 @@ public class NewController : MonoBehaviour {
 		bool isGrounded = Physics.Raycast (player.transform.position, -Vector3.up, 0.4f);//distToGround);
 		return isGrounded;
 	}
-
-	private void TestJump(){
-
-		if (Input.GetKey ("u")) {
-			Vector3 pos = this.gameObject.transform.position;
-			pos.y += 1;
-			this.gameObject.transform.position = pos;
-		}
-
-	}
+		
 
 	private void Jumping(){
 
@@ -97,27 +98,30 @@ public class NewController : MonoBehaviour {
 	}
 
 	IEnumerator Jump(){
-		Debug.Log ("Couroutine");
 		int frame = 0;
-		int maxFrame = 10;
 
-		while (pressJump && frame < maxFrame) {
-			Debug.Log ("frame " + frame + " < maxFrame " + maxFrame);
-			Vector3 pos = new Vector3();
 
-			pos.y += 2f - 2f * (frame / 10);
-			rb.AddForce (pos);
+		while (pressJump && frame < numJumpFrames) {
+			//Debug.Log ("frame " + frame + " < maxFrame " + maxFrame);
+			Vector3 force = new Vector3();
+
+			force.y += 2f - 2f * (frame / numJumpFrames);
+			rb.AddForce ( force );
 			frame += 1;
 			yield return new WaitForSeconds (0f);
 		}
+	}
+		
 
+	private void SetPower(int numFrames, float maxVelocity){
+		numJumpFrames = numFrames;
+		maxVelocity = maxVelocity;
 	}
 
 
 
 	//Gets the input from the controller and maps it to variables
-	private void SetInputButtonValues(){
-		
+	private void GetInputButtonValues(){
 		moveHorizontal = Input.GetAxis( prefix + "_Horizontal" );
 		moveVertical = Input.GetAxis (prefix + "_Vertical");
 		pressJump = (Input.GetAxis (prefix + "_Jump") == 1) ? true : false;
