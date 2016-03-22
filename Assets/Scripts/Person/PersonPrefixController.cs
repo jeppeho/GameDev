@@ -74,9 +74,6 @@ public class PersonPrefixController : MonoBehaviour {
 		//Set mass to push object
 		Push ();
 
-
-		//Debug.Log("X = " + velocityX + ", Y = " + velocityY+ ", Z = " + velocityZ);
-
 		//Move player
 		position.x += velocityX;
 		position.y += velocityY;
@@ -260,7 +257,7 @@ public class PersonPrefixController : MonoBehaviour {
 
 			jumpTime--;
 		}
-			
+
 		prevPressJump = pressJump;	
 	}
 
