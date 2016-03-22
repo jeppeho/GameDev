@@ -32,7 +32,7 @@ public class ScalePalmPosition : MonoBehaviour {
 	void Update () {
 
 		//Get frame from parent object
-		frame = this.gameObject.GetComponentInParent<LeapVariables> ().getFrame();
+		frame = this.gameObject.GetComponentInParent<LeapVariables> ().GetFrame();
 
 		MoveHandsRelative();
 		//MoveHandsIncrementally ();

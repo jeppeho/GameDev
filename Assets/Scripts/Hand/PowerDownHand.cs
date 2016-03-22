@@ -17,7 +17,7 @@ public class PowerDownHand : MonoBehaviour {
 	void Update () {
 
 		//Get current frame
-		frame = this.gameObject.GetComponent<LeapVariables> ().getFrame();
+		frame = this.gameObject.GetComponent<LeapVariables> ().GetFrame();
 		Hand hand = frame.Hands[0];
 
 
