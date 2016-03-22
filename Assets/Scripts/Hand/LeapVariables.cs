@@ -8,6 +8,12 @@ public class LeapVariables : MonoBehaviour {
 	private Frame frame;
 	private Hand hand;
 
+	public Vector3 handPositionOffset;
+	public Vector3 handPositionScale;
+	//public Vector3 handSizeScale;
+	
+	private Vector3 handPositionScaleShift;
+	private Vector3 handPositionLastFrame;
 	// Use this for initialization
 	void Start () {
 		controller = new Controller ();
@@ -15,14 +21,38 @@ public class LeapVariables : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		SetFrame();
-		SetHand ();
+		UpdateFrame();
+		UpdateHand ();
+		UpdateScaleShift ();
 	}
 
+	//Updating the scale-shift: The Vector that should be added to all positions, shifting them exponentially away from origo.
+	private void UpdateScaleShift()
+	{
+		handPositionScaleShift = AddMovementScaleOffset (ToCustomScale (hand.PalmPosition)) - ToCustomScale (hand.PalmPosition);
+//		Debug.Log (handPositionScaleShift);
+	}
+
+	private Vector3 AddScaleShift(Vector3 v)
+	{
+		return v + handPositionScaleShift;
+	}
+	//For adding the custom (movement range-) scale and offset to whole hand
+	private Vector3 AddMovementScaleOffset(Vector3 v)
+	{
+		return new Vector3(v.x * handPositionScale.x, v.y * handPositionScale.y, v.z * handPositionScale.z) + handPositionOffset;
+	}
+/*
+	//For adding the custom (size-) scale to the hand as an object
+	private Vector3 AddSizeScale(Vector3 v)
+	{
+		return new Vector3(v.x * handSizeScale.x, v.y * handSizeScale.y, v.z * handSizeScale.z);
+	}
+*/	
 	//For converting points in world space to vectors adjusted to our scene
 	private Vector3 ToCustomScale(Vector v)
 	{
-		return v.ToUnityScaled() *12  + new Vector3(-0.2f, 0.5f, 0f);
+		return v.ToUnityScaled() *12  /*+ new Vector3(-0.2f, 0.5f, 0f)*/;
 	}
 
 	//Whether two vectors are closer than distance 'd'
@@ -44,7 +74,7 @@ public class LeapVariables : MonoBehaviour {
 		return frame;
 	}
 
-	public void SetFrame(){
+	public void UpdateFrame(){
 		frame = controller.Frame ();
 	}
 
@@ -53,7 +83,12 @@ public class LeapVariables : MonoBehaviour {
 		return hand;
 	}
 
-	public void SetHand(){
+	public bool HandIsValid()
+	{
+		return hand.IsValid;
+	}
+
+	public void UpdateHand(){
 		hand = frame.Hands [0];
 	}
 
@@ -69,25 +104,25 @@ public class LeapVariables : MonoBehaviour {
 
 	//Get palm's position
 	public Vector3 GetPalmPosition (){
-		return ToCustomScale(  hand.PalmPosition  );
+		return AddScaleShift(  ToCustomScale(hand.PalmPosition)  );
 	}
 
 	//Get palm's normal
 	public Vector3 GetPalmNormal (){
-		return hand.PalmNormal.ToUnity();
+		return GetHand().PalmNormal.ToUnity();
 	}
 
 	//Get finger 'f'
 	public Finger GetFinger (int f){
-		return hand.Fingers[f];
+		return GetHand().Fingers[f];
 	}
 
 	//Get position of fingertip 'f'
 	public Vector3 GetFingertipPosition (int f){
-		return ToCustomScale(  GetFinger(f).TipPosition  );
+		return AddScaleShift(  ToCustomScale(GetFinger(f).TipPosition)  );
 	}
 
-	//Get bone 'b' on finger 'n' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
+	//Get bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
 	public Bone GetBone (int f, int b)
 	{
 		switch (b)
@@ -106,13 +141,13 @@ public class LeapVariables : MonoBehaviour {
 	//Get base position of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
 	public Vector3 GetBoneBasePosition (int f, int b)
 	{
-		return ToCustomScale (GetBone (f, b).PrevJoint);
+		return AddScaleShift( ToCustomScale (GetBone (f, b).PrevJoint));
 	}
 
 	//Get center position of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
 	public Vector3 GetBoneCenterPosition (int f, int b)
 	{
-		return ToCustomScale (GetBone (f, b).Center);
+			return AddScaleShift( ToCustomScale (GetBone (f, b).Center));
 	}
 
 	///////////////////////////////////////////////////////////////////// 

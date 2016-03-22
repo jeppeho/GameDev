@@ -48,3 +48,5 @@ test-results/
 
 # OTHER FILES #
 .DS_Store
+ProjectSettings/UnityAnalyticsManager.asset
+ProjectSettings/ProjectVersion.txt
