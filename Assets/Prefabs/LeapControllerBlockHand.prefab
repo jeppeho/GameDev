@@ -28,7 +28,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 451810}
-  - 114: {fileID: 11423940}
+  - 114: {fileID: 11469044}
+  - 114: {fileID: 11440558}
   m_Layer: 0
   m_Name: LeapControllerBlockHand
   m_TagString: Untagged
@@ -60,8 +61,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 156732}
-  m_LocalRotation: {x: .247252703, y: 0, z: 0, w: .968951046}
-  m_LocalPosition: {x: 0, y: 4.34000015, z: -7.78999996}
+  m_LocalRotation: {x: 0.2472527, y: 0, z: 0, w: 0.96895105}
+  m_LocalPosition: {x: 0, y: 4.34, z: -7.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 451810}
@@ -73,7 +74,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 183102}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.09000015, y: 1, z: -150}
+  m_LocalPosition: {x: 5.09, y: 1, z: -150}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 458448}
@@ -101,14 +102,14 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: .192156866, g: .301960796, b: .474509805, a: .0196078438}
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
     y: 0
     width: 1
     height: 1
-  near clip plane: .300000012
+  near clip plane: 0.3
   far clip plane: 1000
   field of view: 75
   orthographic: 0
@@ -124,7 +125,7 @@ Camera:
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
-  m_StereoSeparation: .0219999999
+  m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
 --- !u!81 &8137938
 AudioListener:
@@ -151,20 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6002c7e1f5041ac9b1b83ca1b2e04d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handPositionOffset: {x: .5, y: -3, z: -2}
-  handPositionScale: {x: 2.20000005, y: 1.60000002, z: 2}
---- !u!114 &11423940
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 183102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d79057561726f4f5a928b4343f94adc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraSpeed: 1
+  handPositionOffset: {x: 0.5, y: -3, z: -2}
+  handPositionScale: {x: 5, y: 1.6, z: 2}
 --- !u!114 &11426190
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -192,11 +181,22 @@ MonoBehaviour:
   m_GlowType: 0
   m_GlowQuality: 1
   m_FullScreenGlowTint: {r: 1, g: 1, b: 1, a: 0}
-  m_BlurSpread: .349999994
+  m_BlurSpread: 0.35
   m_BlurIterations: 7
-  m_GlowIntensity: .300000012
+  m_GlowIntensity: 0.3
   m_BlurOffset: 0
   m_Samples: 2
+--- !u!114 &11440558
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 755f2ce51a4624c1a9a1df440c8d2922, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11450000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -209,7 +209,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FingerBone: {fileID: 196962, guid: 727d892d2dd0b4bcdac674f5b5988403, type: 2}
-  handColor: {r: .498039216, g: .498039216, b: .498039216, a: 0}
+  handColor: {r: 0.49803922, g: 0.49803922, b: 0.49803922, a: 0}
+--- !u!114 &11469044
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97677197f6cce42f58969ca403b1c985, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11474184
 MonoBehaviour:
   m_ObjectHideFlags: 1
