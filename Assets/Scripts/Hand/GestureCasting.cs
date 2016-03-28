@@ -23,7 +23,7 @@ public class GestureCasting : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		manager.DebugVariables ();
+		//manager.DebugVariables ();
 
 		//----------------------------------
 		// Listen for new gestures

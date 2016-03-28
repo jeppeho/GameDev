@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MoveCamera : MonoBehaviour {
+public class CameraController : MonoBehaviour {
 
 	private float camera_speed = 1;
 
@@ -21,5 +21,10 @@ public class MoveCamera : MonoBehaviour {
 		position.z += camera_speed * Time.deltaTime; 
 
 		this.gameObject.transform.position = position;
+	}
+
+	public float GetZPosition(){
+		Debug.Log ("Camera");
+		return this.transform.position.z;
 	}
 }

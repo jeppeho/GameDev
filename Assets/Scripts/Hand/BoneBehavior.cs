@@ -16,20 +16,18 @@ public class BoneBehavior : MonoBehaviour {
 	public float traction = 01;
 	private float snapBackFactor = 55;
 
-	Rigidbody rigidbody;
+	Rigidbody rb;
 
 	// Use this for initialization
 	void Start () {
 
-		rigidbody = gameObject.GetComponent<Rigidbody> ();
+		rb = gameObject.GetComponent<Rigidbody> ();
 
 		//Set mass
-		rigidbody.mass = mass;
+		rb.mass = mass;
 
 		//Set size
 		gameObject.transform.localScale = scale;
-
-		position.y = 150f;
 
 		mat = GetComponent<Renderer> ().material;
 	}
@@ -45,14 +43,14 @@ public class BoneBehavior : MonoBehaviour {
 		//Set object position to the current position of bone
 		setPosition ( gameObject.GetComponent<Rigidbody> ().transform.position );
 
-		rigidbody.mass = mass;
+		rb.mass = mass;
 
 		//Set speed 
 //		setSpeedBasedOnDistance ();
 		//setMagneticSpeed();
 
 		//Set velocity of object
-		rigidbody.velocity = findVelocity ();
+		rb.velocity = findVelocity ();
 		if (traction < 1)
 		{
 			traction = Mathf.Min(1, 0.001f + traction * snapBackFactor * Time.deltaTime);
@@ -69,7 +67,7 @@ public class BoneBehavior : MonoBehaviour {
 			float customImpact = Mathf.Clamp((col.relativeVelocity.sqrMagnitude- 100f) /250f, 0, 1);
 			traction = 1-customImpact;
 			//Kill some velocity
-			rigidbody.velocity.Scale(Vector3.zero);
+			rb.velocity.Scale(Vector3.zero);
 			//Debug.Log(col.relativeVelocity.sqrMagnitude);
 		}
 	}
@@ -98,7 +96,7 @@ public class BoneBehavior : MonoBehaviour {
 		else
 		{
 			//Debug.Log("Unhinged!");
-			Vector3 oldVelocity = rigidbody.velocity;
+			Vector3 oldVelocity = rb.velocity;
 		
 			Vector3 targetVelocity = direction * speed * Time.deltaTime;
 

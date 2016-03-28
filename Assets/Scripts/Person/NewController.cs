@@ -12,6 +12,7 @@ public class NewController : MonoBehaviour {
 	private bool pressPush;
 	private bool pressJump;
 	private bool pressThrow;
+	private bool pressExplode;
 
 	GameObject player;
 	Rigidbody rb;
@@ -20,12 +21,16 @@ public class NewController : MonoBehaviour {
 
 	private bool isJumping = false;
 
-	public float accelerationRate;
-	public float maxAcceleration;
-	public float maxVelocity;
-	public float jumpPower;
+	public float accelerationRate = 10;
+	public float maxAcceleration = 5;
+	public float maxVelocity = 1;
+	public float jumpPower = 10;
+
+	private int explosionCounter = 300;
 
 	int falldownCounter = 0;
+
+	string playerState;
 
 
 	// Use this for initialization
@@ -44,34 +49,91 @@ public class NewController : MonoBehaviour {
 		accelerationRate *= LevelManager.SPEED;
 		maxAcceleration *= LevelManager.SPEED;
 	}
+
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		GetInputButtonValues ();
+		//Get state of player, eg. dead, active etc.
+		playerState = this.gameObject.GetComponent<PlayerManager> ().GetState ();
 
-		UpdateDirection ();
-
-		//Check if player should throw relic
-		if (pressThrow)
-			ThrowRelic ();
-
-		//Move on X and Z axis
-		if(moveHorizontal != 0 || moveVertical != 0)
-			Move ();
-
-		//Check if player should fall or land
-		if (!IsGrounded ()) {
-			FallDown ();
-		}else{
-			Landing();
-		}
+		if (playerState == "active") {
 			
-		//Check if player is jumping
-		if (pressJump && !isJumping) {
-			isJumping = true;
-			Jump2 ();
-			//StartCoroutine (Jump ());
+			GetInputButtonValues ();
+
+			UpdateDirection ();
+
+			//Check if player should throw relic
+			if (pressThrow)
+				Throw ();
+
+			//If explosionCounter is above target, then make explosion
+//			if (pressExplode) {
+//				Debug.Log ("explision = " + explosionCounter);
+//				if (explosionCounter > 200) {
+//					
+//					//StartCoroutine (ExplodeLayers ());
+//					Explode();
+//					explosionCounter = 0;
+//				}
+//			}
+
+			//Charge explosionCounter 
+			explosionCounter++;
+
+			//Move on X and Z axis
+			if (moveHorizontal != 0 || moveVertical != 0)
+				Move ();
+
+			//Check if player should fall or land
+			if (!IsGrounded ()) {
+				FallDown ();
+			} else {
+				Landing ();
+			}
+			
+			//Check if player is jumping
+			if (pressJump && !isJumping) {
+				isJumping = true;
+				Jump ();
+			}
+		}
+	}
+
+
+	private void Explode(){
+
+		//Get the center of minion
+		Vector3 center = this.gameObject.transform.position;
+
+		//Radius to check for collision
+		float radius = 2;
+
+		//Get objects from collision
+		Collider[] hitColliders = Physics.OverlapSphere(center, radius);
+
+		//Set variables
+		int i = 0;
+	
+		while (i < hitColliders.Length) {
+
+			if (hitColliders [i].gameObject.tag == "Environment") {
+
+				Rigidbody rb = hitColliders [i].GetComponent<Rigidbody> ();
+
+				if (rb != null) {
+
+					Vector3 objectPosition = hitColliders [i].transform.position;
+					Vector3 vectorFromCenterToObject = objectPosition - center;
+
+					float distance = vectorFromCenterToObject.magnitude;
+
+					rb.AddForce (vectorFromCenterToObject * (2500 - distance * 250));
+					Debug.Log (i + "| " + hitColliders [i].name + " @" + objectPosition);
+
+				}
+			}
+			i++;
 		}
 	}
 
@@ -79,7 +141,7 @@ public class NewController : MonoBehaviour {
 	/**
 	 * Throws the relic and removes it as child
 	 */ 
-	private void ThrowRelic(){
+	private void Throw(){
 
 		//Get relic
 		GameObject relic = this.transform.Find("Relic").gameObject;
@@ -93,7 +155,7 @@ public class NewController : MonoBehaviour {
 
 
 	/**
-	 * 	Updates the direction showing the facing of the player
+	 * 	Updates the direction showing the facing of the player.
 	 */
 	private void UpdateDirection (){
 
@@ -108,7 +170,7 @@ public class NewController : MonoBehaviour {
 
 
 	/**
-	 * Add force on X and Z axis based on controller input
+	 * Add force on X and Z axis based on controller input.
 	 */
 	private void Move(){
 
@@ -120,15 +182,20 @@ public class NewController : MonoBehaviour {
 
 		if (force.magnitude > maxAcceleration)
 			force = Vector3.Normalize (force) * maxAcceleration;
+	
+		//Get CameraZ position
+		float cameraZ = GameObject.Find ("LeapControllerBlockHand").GetComponent<CameraController> ().GetZPosition ();
 
-		//Add force
-		rb.AddForce (force * Time.deltaTime);
+		//Only add force if player is behind invisisble wall
+		if (rb.position.z < cameraZ) {
 
+			rb.AddForce (force * Time.deltaTime);
+		}
 
-		//Make vector to check ground velocity
+		//Make 2D vector to check ground velocity
 		Vector2 ground_speed = new Vector2 (rb.velocity.x, rb.velocity.z);
 
-		//If magnitude of x and z velocity is exceeded, then stomp it
+		//If magnitude of x and z velocity is exceeded, then set it to max value.
 		if (ground_speed.magnitude > GetMaxVelocity()) {
 
 			//Set speed to the maxVelocity
@@ -139,26 +206,45 @@ public class NewController : MonoBehaviour {
 			rb.velocity = updatedVel;
 		}
 
-
+		if (rb.velocity.z < 0) {
+			float z = rb.velocity.z;
+			z = -z;
+			Vector3 vel = rb.velocity;
+			vel.z = z;
+			rb.velocity = vel;
+		}
+			
 	}
 
+
 	/**
-	 * Returns true if player is grounded
+	 * Returns true if player is grounded.
 	 */
 	private bool IsGrounded(){
 		bool isGrounded = Physics.Raycast (player.transform.position, -Vector3.up, 0.4f);//distToGround);
 		return isGrounded;
 	}
-
-	private void Jump2(){
+		
+	/**
+	 * Add upwards force
+	 */
+	private void Jump(){
 		rb.AddForce ( new Vector3(0, GetJumpPower(), 0) );
 	}
 
+
+	/**
+	 * Add additional downward force to falling
+	 */
 	private void FallDown(){
 		rb.AddForce (new Vector3 (0, -1.3f, 0));
 		falldownCounter = 3;
 	}
 
+
+	/**
+	 * When a player land, it sets jumping to false, when falldownCounter has decremented to zero
+	 */
 	private void Landing(){
 
 		if (falldownCounter == 0)
@@ -170,21 +256,24 @@ public class NewController : MonoBehaviour {
 	/**
 	 * Return the jumppower, multiplied if push button is pressed
 	 */
-	public float GetJumpPower(){
-		if (pressPush)
-			return jumpPower * 1.3f;
-		else
-			return jumpPower;
+	private float GetJumpPower(){
+//		if (pressPush)
+//			return jumpPower * 1.3f;
+//		else
+//			return jumpPower;
+
+		return jumpPower;
 	}
 
 	/**
 	 * Return the MaxVelocity, multiplied if push button is pressed
 	 */
-	public float GetMaxVelocity(){
-		if (pressPush)
-			return maxVelocity * 1.3f;
-		else
-			return maxVelocity;
+	private float GetMaxVelocity(){
+//		if (pressPush)
+//			return maxVelocity * 1.3f;
+//		else
+//			return maxVelocity;
+		return maxVelocity;
 	}
 
 	//Gets the input from the controller and maps it to variables
@@ -194,6 +283,7 @@ public class NewController : MonoBehaviour {
 		pressJump = (Input.GetAxis (prefix + "_Jump") == 1) ? true : false;
 		pressPush = (Input.GetAxis (prefix + "_Push") == 1) ? true : false;
 		pressThrow = (Input.GetAxis (prefix + "_Throw") == 1) ? true : false;
+		pressExplode = (Input.GetAxis (prefix + "_Explode") == 1) ? true : false;
 
 	}
 }

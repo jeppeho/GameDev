@@ -17,6 +17,8 @@ public class SphereHandModel : MonoBehaviour {
 	public GameObject FingerBone;
 	public Color handColor;
 
+	private bool firstUpdate = true;
+
 	private LeapVariables manager;
 
 	// Use this for initialization
@@ -31,9 +33,10 @@ public class SphereHandModel : MonoBehaviour {
 				//Debug.Log ("Creating Sphere");
 
 				//Insert prefab fingerbone in spheres array
-				finger_bones [i, g] = Instantiate(FingerBone, new Vector3(5,1,-130), Quaternion.Euler(0,0,0)) as GameObject;
-				finger_bones [i, g].GetComponent<Rigidbody> ().MovePosition (new Vector3 (5, 1, -130));
-				//spheres[i, g] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+				//finger_bones [i, g] = Instantiate(FingerBone, new Vector3(5,20,190), Quaternion.Euler(0,0,0)) as GameObject;
+				//finger_bones [i, g].GetComponent<Rigidbody> ().MovePosition (new Vector3 (5, 1, 190));
+				finger_bones [i, g] = Instantiate(FingerBone) as GameObject;
+				//finger_bones [i, g].GetComponent<Rigidbody> ().MovePosition (new Vector3 (5, 1, 190));
 
 				//Change scale of fingerbone
 				finger_bones[i,g].GetComponent<BoneBehavior>().setScale( new Vector3(0.2f, 0.2f, 0.2f) );
@@ -53,11 +56,21 @@ public class SphereHandModel : MonoBehaviour {
 		palm_bone.GetComponent<BoneBehavior> ().setScale (new Vector3 (0.4f, 0.4f, 0.4f));
 		palm_bone.GetComponent<BoneBehavior> ().setMass (boneMass);
 
+
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
+		//First update of hand and finger positions to prevent destruction of stage
+		if (firstUpdate) {
+			UpdatePalmBonePosition ();
+			UpdateFingerBonesPositions ();
+			firstUpdate = false;
+		}
+		
+		Debug.Log ("manager.HandIsValid() = " + manager.HandIsValid ());
 		if (manager.HandIsValid()) {
 			UpdatePalmBonePosition();
 			UpdateFingerBonesPositions();
