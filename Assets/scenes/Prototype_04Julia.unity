@@ -1814,6 +1814,7 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11417388, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
+    - {fileID: 11423940, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &763945035 stripped
@@ -2661,6 +2662,17 @@ Transform:
 GameObject:
   m_PrefabParentObject: {fileID: 183102, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
   m_PrefabInternal: {fileID: 761385278}
+--- !u!114 &1113243405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1113243404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97677197f6cce42f58969ca403b1c985, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1113243407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4895,6 +4907,10 @@ Prefab:
     - target: {fileID: 11499990, guid: 90557a4cc1fd3474d92977d069876ad2, type: 2}
       propertyPath: maxVelocity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11499990, guid: 90557a4cc1fd3474d92977d069876ad2, type: 2}
+      propertyPath: prefix
+      value: P1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 90557a4cc1fd3474d92977d069876ad2, type: 2}
