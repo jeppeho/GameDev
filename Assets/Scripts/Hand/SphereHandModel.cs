@@ -15,6 +15,7 @@ public class SphereHandModel : MonoBehaviour {
 	private GameObject[,] finger_bones;
 	private GameObject palm_bone;
 	public GameObject FingerBone;
+	public Color handColor;
 
 	private LeapVariables manager;
 
@@ -30,7 +31,8 @@ public class SphereHandModel : MonoBehaviour {
 				//Debug.Log ("Creating Sphere");
 
 				//Insert prefab fingerbone in spheres array
-				finger_bones [i, g] = Instantiate(FingerBone) as GameObject;
+				finger_bones [i, g] = Instantiate(FingerBone, new Vector3(5,1,-130), Quaternion.Euler(0,0,0)) as GameObject;
+				finger_bones [i, g].GetComponent<Rigidbody> ().MovePosition (new Vector3 (5, 1, -130));
 				//spheres[i, g] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 
 				//Change scale of fingerbone
@@ -40,13 +42,14 @@ public class SphereHandModel : MonoBehaviour {
 
 				finger_bones[i,g].GetComponent<BoneBehavior>().SetPositionY(200);
 
-				finger_bones[i,g].transform.position = new Vector3(5,1,-130);
+				//finger_bones[i,g].transform.position = new ;
 				//spheres[i, g].transform.localScale = new Vector3 (scale, scale, scale);
 			}
 		}
 
 		//Create palm bone
-		palm_bone = Instantiate(FingerBone) as GameObject;
+		palm_bone = Instantiate(FingerBone, new Vector3(5,1,-130), Quaternion.Euler(0,0,0)) as GameObject;
+		palm_bone.GetComponent<Rigidbody> ().MovePosition (new Vector3 (5, 1, -130));
 		palm_bone.GetComponent<BoneBehavior> ().setScale (new Vector3 (0.4f, 0.4f, 0.4f));
 		palm_bone.GetComponent<BoneBehavior> ().setMass (boneMass);
 
@@ -69,6 +72,10 @@ public class SphereHandModel : MonoBehaviour {
 		}
 	}
 
+	public void SetHandColor(Color c)
+	{
+		handColor = c;
+	}
 
 	/**
 	 * 	THIS SHOULD BE MOVED TO THE LEAP MANAGER SCRIPT

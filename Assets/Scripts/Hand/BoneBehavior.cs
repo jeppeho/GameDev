@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class BoneBehavior : MonoBehaviour {
-
+	
+	public Color handColor;
 	private Material mat;
 	private Vector3 position; //The position of this bone object
 	private Vector3 desired_position; //The position of the bone recorded by the LEAP
@@ -32,7 +33,12 @@ public class BoneBehavior : MonoBehaviour {
 
 		mat = GetComponent<Renderer> ().material;
 	}
-	
+
+	void Update()
+	{
+		handColor = GameObject.Find("HandController").GetComponent<SphereHandModel>().handColor;
+	}
+
 	// Update is called once per frame
 	void FixedUpdate () {
 
@@ -53,7 +59,7 @@ public class BoneBehavior : MonoBehaviour {
 		}
 
 		speed = Mathf.Lerp (minSpeed, maxSpeed, traction);
-		mat.color = Color.Lerp (Color.white, Color.red, (traction-0.5f)*2);
+		mat.color = Color.Lerp (Color.white, handColor, (traction-0.5f)*2);
 	}
 
 	void OnCollisionEnter(Collision col)

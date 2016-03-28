@@ -93,12 +93,12 @@ public class LeapVariables : MonoBehaviour {
 	}
 
 	//Get hand's grab strength (0-1f)
-	public float GetHandGrabStrength (int n){
+	public float GetHandGrabStrength (){
 		return hand.GrabStrength;
 	}
 
 	//Get hand's grab strength (0-1f)
-	public float GetHandPinchStrength (int n){
+	public float GetHandPinchStrength (){
 		return hand.PinchStrength;
 	}
 
@@ -110,6 +110,11 @@ public class LeapVariables : MonoBehaviour {
 	//Get palm's normal
 	public Vector3 GetPalmNormal (){
 		return GetHand().PalmNormal.ToUnity();
+	}
+
+	//Get palm's normal
+	public Vector3 GetPalmVelocity (){
+		return GetHand().PalmVelocity.ToUnity();
 	}
 
 	//Get finger 'f'
@@ -160,11 +165,34 @@ public class LeapVariables : MonoBehaviour {
 	}
 
 	//Whether palm's normal is appropriating a certain direction, by (magnitude) threshold 't'
-	public bool PalmNormalNear(Vector3 pos, float t)
+	public bool PalmNormalNear(Vector3 normal, float t)
 	{
-		return GetVectorsClose (GetPalmNormal (), pos, t);
+		return GetVectorsClose (GetPalmNormal (), normal, t);
 	}
-		
+
+	//Whether palm's normal is appropriating a certain direction, by (magnitude) threshold 't', when ignoring X, Y and/or Z (true/false)
+	public bool PalmNearIgnore(Vector3 pos, float t, bool ignoreX,  bool ignoreY,  bool ignoreZ)
+	{
+		Vector3 newPos;
+
+		if (ignoreX)
+		{	newPos.x = GetPalmPosition().x;		}
+		else
+		{	newPos.x = pos.x;				}
+
+		if (ignoreY)
+		{	newPos.y = GetPalmPosition().y;		}
+		else
+		{	newPos.y = pos.y;				}
+
+		if (ignoreZ)
+		{	newPos.z = GetPalmPosition().z;		}
+		else
+		{	newPos.z = pos.z;				}
+
+		return	GetVectorsClose (GetPalmPosition (), newPos, t);
+	}
+
 	//Whether palm is in between two certain y-positions (boths positions exclusive)
 	public bool PalmBetweenY(float y1, float y2)
 	{
@@ -180,5 +208,19 @@ public class LeapVariables : MonoBehaviour {
 	//Get whether finger 'f' is extended (true/false)
 	public bool GetFingerIsExtended (int f){
 		return GetFinger(f).IsExtended;
+	}
+
+	//Get whether the fingers meet a certain patthern, in terms of being extended (true/false)
+	public bool GetFingerPatternIsExtended (bool f0, bool f1, bool f2, bool f3, bool f4){
+		return (GetFinger (0).IsExtended == f0)
+			&& (GetFinger (1).IsExtended == f1)
+			&& (GetFinger (2).IsExtended == f2)
+			&& (GetFinger (3).IsExtended == f3)
+			&& (GetFinger (4).IsExtended == f4);
+	}
+
+	//Prints normal, position, fingers etc. to console
+	public void DebugVariables (){
+		Debug.Log ("Pos: " + GetPalmPosition ().ToString () + " | Norm:" + GetPalmNormal ().ToString () + " | FingersExt: {" + GetFingerIsExtended (0).ToString () + "," + GetFingerIsExtended (1).ToString () + "," + GetFingerIsExtended (2).ToString () + "," + GetFingerIsExtended (3).ToString () + "," + GetFingerIsExtended (4).ToString () + "}");
 	}
 }
