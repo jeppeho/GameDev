@@ -24,7 +24,7 @@ public class RelicController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
 		if (GetParent() == null) {
 
@@ -52,7 +52,9 @@ public class RelicController : MonoBehaviour {
 	 * Check if the relic is within the bounds of the level
 	 */
 	public bool IsWithinBounds(){
-		if (GetPosition ().x > maxX || GetPosition ().x < minX || GetPosition ().y < minY || GetPosition().z < minZ)
+		//if (GetPosition ().x > maxX || GetPosition ().x < minX || GetPosition ().y < minY || GetPosition().z < minZ)
+		//LevelManager lm = new LevelManager();
+		if (GetPosition ().x < LevelManager.MIN_X || GetPosition ().x > LevelManager.MAX_X || GetPosition ().y < LevelManager.MIN_Y || GetPosition().z < LevelManager.MIN_Z)
 			return false;
 		else
 			return true;
@@ -82,7 +84,7 @@ public class RelicController : MonoBehaviour {
 	IEnumerator MoveTowardsCenter(){
 
 		//Get target position for dropped carried object
-		Vector3 target = new Vector3 (5, GetPosition ().y, GetPosition ().z + 3f);
+		Vector3 target = new Vector3 (5, GetPosition ().y, GetPosition ().z + (3f * LevelManager.SPEED) );
 
 		Vector3 vectorToTarget = target - GetPosition (); 
 		vectorToTarget.Normalize ();
@@ -100,12 +102,23 @@ public class RelicController : MonoBehaviour {
 	}
 		
 
-	/**
-	 * If distance to parent is over some maximum
-	 */
-	public void ReleaseFromParent(){
-		
+	public void Throw(){
+
+		int count = 0;
+		//Debug.Log ("throwDirection = " + parent.GetComponent<NewController> ().GetDirection ());
+		Vector3 throwDirection = this.gameObject.GetComponentInParent<NewController> ().GetDirection ();
+		Vector3.Normalize (throwDirection);
+		throwDirection.y = 1;
+		throwDirection *= 200;
+		Debug.Log ("throwDirection = " + throwDirection);
+		RemoveParent ();
+
+		rb.AddForce ( throwDirection );
+		count++;
+
+
 	}
+
 
 	/**
 	 * Updates the freezeRotation parameter, with the inputted bool value
@@ -134,16 +147,6 @@ public class RelicController : MonoBehaviour {
 		ResetRotation ();
 	}
 
-	public void UpdateScale(float scale){
-		rb.transform.localScale = new Vector3 (scale, scale, scale);
-	}
-
-
-	public float GetScale(){
-		return rb.transform.localScale.x;
-	}
-
-
 	/**
 	 * Sets the parent variable to null,
 	 * updates the scale
@@ -154,6 +157,18 @@ public class RelicController : MonoBehaviour {
 		UpdateScale (1f);
 		UpdateFreezeRotation (false);
 	}
+
+	public void UpdateScale(float scale){
+		rb.transform.localScale = new Vector3 (scale, scale, scale);
+	}
+
+
+	public float GetScale(){
+		return rb.transform.localScale.x;
+	}
+
+
+
 
 	public Transform GetParent(){
 		return this.transform.parent;

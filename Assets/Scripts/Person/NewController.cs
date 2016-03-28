@@ -11,15 +11,18 @@ public class NewController : MonoBehaviour {
 	private float moveVertical;
 	private bool pressPush;
 	private bool pressJump;
+	private bool pressThrow;
 
 	GameObject player;
 	Rigidbody rb;
 
+	private Vector3 direction;
+
 	private bool isJumping = false;
 
-	private float accelerationRate = 10f;
-	public float maxVelocity = 5;
-	int numJumpFrames = 10;
+	public float accelerationRate;
+	public float maxVelocity;
+	private int numJumpFrames = 20;
 
 
 
@@ -28,8 +31,15 @@ public class NewController : MonoBehaviour {
 		rb = this.gameObject.GetComponent<Rigidbody> ();
 		player = this.gameObject;
 
+		//So the number doesn't have to be that big in the editor
+		accelerationRate *= 100;
+
 		//Keeps the tempo, while changing mass;
-		accelerationRate = 200 * rb.mass;
+		accelerationRate *= rb.mass;
+
+		//Multiply with the game speed
+		maxVelocity *= LevelManager.SPEED;
+		accelerationRate *= LevelManager.SPEED;
 	}
 	
 	// Update is called once per frame
@@ -38,19 +48,63 @@ public class NewController : MonoBehaviour {
 		GetInputButtonValues ();
 
 		//Set power if push button is pushed
-		if (pressPush)
-			SetPower (16, 8);
-		else
-			SetPower (10, 5);
+//		if (pressPush)
+//			SetPower (16, 8);
+//		else
+//			SetPower (10, 5);
 
-		Move ();
+
+		UpdateDirection ();
+
+		if (pressThrow)
+			ThrowRelic ();
+
+		if(moveHorizontal != 0 || moveVertical != 0)
+			Move ();
+
+		if (!IsGrounded ()) {
+			falldownCounter = 3;
+		}
 
 		FallDown ();
 
-		Jumping ();
+		if (pressJump && !isJumping) {
+			isJumping = true;
+			Jump2 ();
+			//StartCoroutine (Jump ());
+		}
+	}
 
-		//Debug.Log ("VELOCITY @" + rb.velocity);
-		//Debug.Log("isJumping = " + isJumping);
+	/**
+	 * Throws the relic and removes it as child
+	 */ 
+	private void ThrowRelic(){
+
+		//Get relic
+		GameObject relic = this.transform.Find("Relic").gameObject;
+	
+		//Throw relic and remove as child
+		if (relic) {
+			player.GetComponentInChildren<RelicController> ().Throw();
+			this.gameObject.GetComponent<CarriedObject>().ReleaseCarriedObject ();
+		}
+
+	}
+
+
+	/**
+	 * 	Updates the direction showing the facing of the player
+	 */
+	private void UpdateDirection (){
+
+		//Update if magnitude is below threshold
+		if(rb.velocity.magnitude > 1f)
+			direction = rb.velocity;
+
+	}
+
+	public Vector3 GetDirection(){
+		return direction;
 	}
 
 
@@ -60,23 +114,41 @@ public class NewController : MonoBehaviour {
 	private void Move(){
 
 		//Add force to rigidbody
-		rb.AddForce (moveHorizontal * accelerationRate, 0, moveVertical * accelerationRate);
+		float hor = moveHorizontal * accelerationRate;
+		float ver = moveVertical * accelerationRate;
+
+		Vector3 force = new Vector3 (hor, 0, ver);
+
+		force *= Time.deltaTime;
+
+		if (force.magnitude > maxVelocity)
+			force = Vector3.Normalize (force) * maxVelocity;
+
+		rb.AddForce (force);
 
 		//Check if max velocity exceeded
-		if(rb.velocity.magnitude > maxVelocity)
-			rb.velocity = Vector3.Normalize(rb.velocity) * maxVelocity;
+//		if(rb.velocity.magnitude > maxVelocity)
+//			rb.velocity = Vector3.Normalize(rb.velocity) * maxVelocity;
+
 	}
+
+	int falldownCounter = 0;
 
 	private void FallDown(){
 		if (!IsGrounded ()) {
-			//Debug.Log ("Falling doooooown");
+
+			float y = rb.velocity.y;
+
 			rb.AddForce (new Vector3 (0, -1.3f, 0));
+
 		} else {
-			//Debug.Log ("Landed");
-			isJumping = false;
+
+			if (falldownCounter == 0)
+				isJumping = false;
+			else
+				falldownCounter--;
 		}
 	}
-		
 
 
 	/**
@@ -94,22 +166,33 @@ public class NewController : MonoBehaviour {
 			isJumping = true;
 			StartCoroutine (Jump ());
 		}
-
 	}
 
 	IEnumerator Jump(){
+		
 		int frame = 0;
 
+		numJumpFrames = 5;
 
 		while (pressJump && frame < numJumpFrames) {
-			//Debug.Log ("frame " + frame + " < maxFrame " + maxFrame);
+
 			Vector3 force = new Vector3();
 
-			force.y += 2f - 2f * (frame / numJumpFrames);
+			force.y += 1f - 1f * (frame / numJumpFrames);
+			//force.y += 30f - 30f * (frame / numJumpFrames);
+			//force *= Time.deltaTime;
 			rb.AddForce ( force );
+			Debug.Log ("Frame " + frame + " / " + numJumpFrames);
 			frame += 1;
 			yield return new WaitForSeconds (0f);
 		}
+	}
+
+	private void Jump2(){
+		if(pressPush)
+			rb.AddForce ( new Vector3(0, 20, 0) );
+		else
+			rb.AddForce ( new Vector3(0, 10, 0) );
 	}
 		
 
@@ -126,6 +209,7 @@ public class NewController : MonoBehaviour {
 		moveVertical = Input.GetAxis (prefix + "_Vertical");
 		pressJump = (Input.GetAxis (prefix + "_Jump") == 1) ? true : false;
 		pressPush = (Input.GetAxis (prefix + "_Push") == 1) ? true : false;
+		pressThrow = (Input.GetAxis (prefix + "_Throw") == 1) ? true : false;
 
 	}
 }
