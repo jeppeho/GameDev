@@ -69,8 +69,7 @@ public class SphereHandModel : MonoBehaviour {
 			UpdateFingerBonesPositions ();
 			firstUpdate = false;
 		}
-		
-		Debug.Log ("manager.HandIsValid() = " + manager.HandIsValid ());
+
 		if (manager.HandIsValid()) {
 			UpdatePalmBonePosition();
 			UpdateFingerBonesPositions();
@@ -199,38 +198,6 @@ public class SphereHandModel : MonoBehaviour {
 		UpdatePalmBonePosition ();
 		UpdateFingerBonesPositions ();
 
-		//For each finger calculate the position of each bone
-		/*foreach (Finger finger in fingers) {
-
-			int finger_index = 0;
-			Bone bone;
-
-			//THUMB
-			if (finger.Type == Finger.FingerType.TYPE_THUMB) {
-				SetFingerBonePositions (finger, 0);
-			}else
-				//INDEX
-				if (finger.Type == Finger.FingerType.TYPE_INDEX) {
-					SetFingerBonePositions (finger, 1);
-				}else
-					//MIDDLE
-					if (finger.Type == Finger.FingerType.TYPE_MIDDLE) {
-						SetFingerBonePositions (finger, 2);
-					}else
-						//RING
-						if (finger.Type == Finger.FingerType.TYPE_RING) {
-							SetFingerBonePositions (finger, 3);
-						}else
-							//PINKY
-							if (finger.Type == Finger.FingerType.TYPE_PINKY) {
-								SetFingerBonePositions (finger, 4);
-			}
-		}*/
-
-		//Set positions of each sphere to that of the finger bone
-		
-		//SetSpherePositionsToBonePositions ();
-
 		//Set position of spheres to the same as bone_positions
 		for (int i = 0; i < NUM_FINGERS; i++) {
 			for (int g = 0; g < NUM_BONES; g++) {
@@ -322,14 +289,7 @@ private void UpdatePalmBonePosition(){
 	
 	palm_bone.GetComponent<BoneBehavior> ().setDesiredPosition( palm_bone_position );
 }
-
-	/*private void SetPalmBonePosition(Hand hand){
-		palm_bone_position = hand.PalmPosition.ToUnityScaled () * 12 + new Vector3 (-0.2f, 0.5f, 0f);
-
-		palm_bone_position += GetOffsetFromParent ();
-
-		palm_bone.GetComponent<BoneBehavior> ().setDesiredPosition (manager.GetPalmPosition());
-	}*/
+		
 
 private void UpdateFingerBonesPositions(){
 		//Set position of spheres to the same as bone_positions
@@ -346,21 +306,7 @@ private void UpdateFingerBonesPositions(){
 			}
 		}
 	}
-	
-	/*private void SetSpherePositionsToBonePositions(){
-		//Set position of spheres to the same as bone_positions
-		for (int i = 0; i < NUM_FINGERS; i++) {
-			for (int g = 1; g < NUM_BONES; g++) {
 
-				//Add parents offset to finger_bone_positions
-				AddOffsetFromParent(i, g);
-
-				//Set position of game sphere
-				finger_bones [i, g].GetComponent<BoneBehavior>().setDesiredPosition( finger_bone_positions [i, g] );
-
-			}
-		}
-	}*/
 
 
 	/**

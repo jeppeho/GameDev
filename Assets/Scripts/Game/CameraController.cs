@@ -24,7 +24,6 @@ public class CameraController : MonoBehaviour {
 	}
 
 	public float GetZPosition(){
-		Debug.Log ("Camera");
 		return this.transform.position.z;
 	}
 }

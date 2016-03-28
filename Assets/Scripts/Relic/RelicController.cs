@@ -60,6 +60,10 @@ public class RelicController : MonoBehaviour {
 			return true;
 	}
 
+
+	public void AddForwardForce(){
+	}
+
 	/*
 	 * Returns true if the relic is below ground level, otherwise false
 	 */
@@ -150,7 +154,7 @@ public class RelicController : MonoBehaviour {
 	/**
 	 * Sets the parent variable to null,
 	 * updates the scale
-	 * And unfreezes the rotation
+	 * and unfreezes the rotation
 	 */
 	public void RemoveParent(){
 		this.transform.parent = null;
@@ -166,9 +170,7 @@ public class RelicController : MonoBehaviour {
 	public float GetScale(){
 		return rb.transform.localScale.x;
 	}
-
-
-
+		
 
 	public Transform GetParent(){
 		return this.transform.parent;

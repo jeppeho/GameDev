@@ -192,6 +192,7 @@ public class NewController : MonoBehaviour {
 			rb.AddForce (force * Time.deltaTime);
 		}
 
+
 		//Make 2D vector to check ground velocity
 		Vector2 ground_speed = new Vector2 (rb.velocity.x, rb.velocity.z);
 
@@ -206,11 +207,11 @@ public class NewController : MonoBehaviour {
 			rb.velocity = updatedVel;
 		}
 
+
+		//If player is running towards camera, slow down velocity
 		if (rb.velocity.z < 0) {
-			float z = rb.velocity.z;
-			z = -z;
 			Vector3 vel = rb.velocity;
-			vel.z = z;
+			vel.z /= 2;
 			rb.velocity = vel;
 		}
 			
