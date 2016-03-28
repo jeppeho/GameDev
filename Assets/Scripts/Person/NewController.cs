@@ -22,8 +22,8 @@ public class NewController : MonoBehaviour {
 
 	public float accelerationRate;
 	public float maxVelocity;
+	int falldownCounter = 0;
 	private int numJumpFrames = 20;
-
 
 
 	// Use this for initialization
@@ -88,7 +88,6 @@ public class NewController : MonoBehaviour {
 			player.GetComponentInChildren<RelicController> ().Throw();
 			this.gameObject.GetComponent<CarriedObject>().ReleaseCarriedObject ();
 		}
-
 	}
 
 
@@ -100,7 +99,6 @@ public class NewController : MonoBehaviour {
 		//Update if magnitude is below threshold
 		if(rb.velocity.magnitude > 1f)
 			direction = rb.velocity;
-
 	}
 
 	public Vector3 GetDirection(){
@@ -119,20 +117,22 @@ public class NewController : MonoBehaviour {
 
 		Vector3 force = new Vector3 (hor, 0, ver);
 
-		force *= Time.deltaTime;
+		//Add force
+		rb.AddForce (force * Time.deltaTime);
 
-		if (force.magnitude > maxVelocity)
-			force = Vector3.Normalize (force) * maxVelocity;
 
-		rb.AddForce (force);
 
-		//Check if max velocity exceeded
-//		if(rb.velocity.magnitude > maxVelocity)
-//			rb.velocity = Vector3.Normalize(rb.velocity) * maxVelocity;
+		//Make vector to check ground velocity
+		Vector2 ground_speed = new Vector2 (rb.velocity.x, rb.velocity.z);
 
+		//If magnitude of x and z velocity is exceeded, then stomp it
+		if (ground_speed.magnitude > maxVelocity) {
+			ground_speed = Vector3.Normalize (ground_speed) * maxVelocity;
+
+			Vector3 updatedVel = new Vector3 (ground_speed.x, rb.velocity.y, ground_speed.y);
+			rb.velocity = updatedVel;
+		}
 	}
-
-	int falldownCounter = 0;
 
 	private void FallDown(){
 		if (!IsGrounded ()) {
@@ -158,7 +158,30 @@ public class NewController : MonoBehaviour {
 		bool isGrounded = Physics.Raycast (player.transform.position, -Vector3.up, 0.4f);//distToGround);
 		return isGrounded;
 	}
+
+	private void Jump2(){
+		if(pressPush)
+			rb.AddForce ( new Vector3(0, 13, 0) );
+		else
+			rb.AddForce ( new Vector3(0, 10, 0) );
+	}
 		
+
+	private void SetPower(int numFrames, float maxVelocity){
+		numJumpFrames = numFrames;
+		maxVelocity = maxVelocity;
+	}
+
+	//Gets the input from the controller and maps it to variables
+	private void GetInputButtonValues(){
+		moveHorizontal = Input.GetAxis( prefix + "_Horizontal" );
+		moveVertical = Input.GetAxis (prefix + "_Vertical");
+		pressJump = (Input.GetAxis (prefix + "_Jump") == 1) ? true : false;
+		pressPush = (Input.GetAxis (prefix + "_Push") == 1) ? true : false;
+		pressThrow = (Input.GetAxis (prefix + "_Throw") == 1) ? true : false;
+
+	}
+
 
 	private void Jumping(){
 
@@ -169,7 +192,7 @@ public class NewController : MonoBehaviour {
 	}
 
 	IEnumerator Jump(){
-		
+
 		int frame = 0;
 
 		numJumpFrames = 5;
@@ -186,30 +209,5 @@ public class NewController : MonoBehaviour {
 			frame += 1;
 			yield return new WaitForSeconds (0f);
 		}
-	}
-
-	private void Jump2(){
-		if(pressPush)
-			rb.AddForce ( new Vector3(0, 20, 0) );
-		else
-			rb.AddForce ( new Vector3(0, 10, 0) );
-	}
-		
-
-	private void SetPower(int numFrames, float maxVelocity){
-		numJumpFrames = numFrames;
-		maxVelocity = maxVelocity;
-	}
-
-
-
-	//Gets the input from the controller and maps it to variables
-	private void GetInputButtonValues(){
-		moveHorizontal = Input.GetAxis( prefix + "_Horizontal" );
-		moveVertical = Input.GetAxis (prefix + "_Vertical");
-		pressJump = (Input.GetAxis (prefix + "_Jump") == 1) ? true : false;
-		pressPush = (Input.GetAxis (prefix + "_Push") == 1) ? true : false;
-		pressThrow = (Input.GetAxis (prefix + "_Throw") == 1) ? true : false;
-
 	}
 }
