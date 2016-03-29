@@ -97,6 +97,9 @@ public class NewController : MonoBehaviour {
 				isJumping = true;
 				Jump ();
 			}
+
+			if(pressPush)
+				Suicide ();
 		}
 	}
 
@@ -286,5 +289,10 @@ public class NewController : MonoBehaviour {
 		pressThrow = (Input.GetAxis (prefix + "_Throw") == 1) ? true : false;
 		pressExplode = (Input.GetAxis (prefix + "_Explode") == 1) ? true : false;
 
+	}
+
+	public void Suicide(){
+
+			this.gameObject.GetComponent<PlayerManager> ().Suicide ();
 	}
 }

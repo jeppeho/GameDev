@@ -117,7 +117,7 @@ public class GestureCasting : MonoBehaviour {
 					{
 						Rigidbody rb = o.GetComponent<Rigidbody>();
 						if (rb != null)
-					{	rb.AddExplosionForce(6000f * blastCharge, manager.GetPalmPosition()+GetOffsetFromParent(), 100f);	}
+					{	rb.AddExplosionForce(6000f * blastCharge, manager.GetPalmPosition()+GetOffsetFromParent(), 25f);	}
 					}
 			}
 			activeSpell = spell.none;

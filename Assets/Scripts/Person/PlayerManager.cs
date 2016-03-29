@@ -59,7 +59,7 @@ public class PlayerManager : MonoBehaviour {
 			playerState = state.dead;
 			rb.freezeRotation = false;
 			rb.AddTorque(new Vector3(Random.Range(0.2f,1),0,Random.Range(0.2f,1)));
-			StartCoroutine(CountdownToRespawn(1f));
+			StartCoroutine(CountdownToRespawn(3f));
 		}
 	}
 
@@ -167,4 +167,9 @@ public class PlayerManager : MonoBehaviour {
 		else
 		{	return false;	}
 	}
+
+	public void Suicide(){
+		Death ();
+	}
+
 }
