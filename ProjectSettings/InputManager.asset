@@ -218,7 +218,7 @@ InputManager:
     descriptiveName: PS4 SQUARE button
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: joystick button 0
+    positiveButton: joystick 2 button 0
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000

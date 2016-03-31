@@ -48,6 +48,9 @@ public class RelicController : MonoBehaviour {
 		}
 	}
 
+
+
+
 	/**
 	 * Check if the relic is within the bounds of the level
 	 */
@@ -113,7 +116,7 @@ public class RelicController : MonoBehaviour {
 		Vector3 throwDirection = this.gameObject.GetComponentInParent<NewController> ().GetDirection ();
 		Vector3.Normalize (throwDirection);
 		throwDirection.y = 1;
-		throwDirection *= 200;
+		throwDirection *= 100;
 		Debug.Log ("throwDirection = " + throwDirection);
 		RemoveParent ();
 

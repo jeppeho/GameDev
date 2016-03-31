@@ -59,7 +59,7 @@ public class PlayerManager : MonoBehaviour {
 			playerState = state.dead;
 			rb.freezeRotation = false;
 			rb.AddTorque(new Vector3(Random.Range(0.2f,1),0,Random.Range(0.2f,1)));
-			StartCoroutine(CountdownToRespawn(3f));
+			StartCoroutine(CountdownToRespawn(2f));
 		}
 	}
 
@@ -76,7 +76,7 @@ public class PlayerManager : MonoBehaviour {
 	{
 		yield return new WaitForSeconds (time);
 		playerState = state.invulnerable;
-		StartCoroutine(FlashOnRespawn(1.5f));
+		StartCoroutine(FlashOnRespawn(1f));
 		Respawn();
 	}
 

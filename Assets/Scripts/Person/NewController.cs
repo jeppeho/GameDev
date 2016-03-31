@@ -57,26 +57,26 @@ public class NewController : MonoBehaviour {
 		//Get state of player, eg. dead, active etc.
 		playerState = this.gameObject.GetComponent<PlayerManager> ().GetState ();
 
-		if (playerState == "active") {
+		if (playerState == "active" || playerState == "invulnerable") {
 			
 			GetInputButtonValues ();
 
 			UpdateDirection ();
 
 			//Check if player should throw relic
-			if (pressThrow)
+			if (pressThrow && this.gameObject.GetComponent<CarriedObject>().isCarrying() == true)
 				Throw ();
 
 			//If explosionCounter is above target, then make explosion
-//			if (pressExplode) {
-//				Debug.Log ("explision = " + explosionCounter);
-//				if (explosionCounter > 200) {
-//					
-//					//StartCoroutine (ExplodeLayers ());
-//					Explode();
-//					explosionCounter = 0;
-//				}
-//			}
+			if (pressExplode) {
+				Debug.Log ("explision = " + explosionCounter);
+				if (explosionCounter > 200) {
+					
+					//StartCoroutine (ExplodeLayers ());
+					Explode();
+					explosionCounter = 0;
+				}
+			}
 
 			//Charge explosionCounter 
 			explosionCounter++;
@@ -84,6 +84,8 @@ public class NewController : MonoBehaviour {
 			//Move on X and Z axis
 			if (moveHorizontal != 0 || moveVertical != 0)
 				Move ();
+			else
+				AutoRun ();
 
 			//Check if player should fall or land
 			if (!IsGrounded ()) {
@@ -104,13 +106,18 @@ public class NewController : MonoBehaviour {
 	}
 
 
+	private void AutoRun(){
+		rb.AddForce(new Vector3(0,0,0.15f));
+	}
+
+
 	private void Explode(){
 
 		//Get the center of minion
 		Vector3 center = this.gameObject.transform.position;
 
 		//Radius to check for collision
-		float radius = 2;
+		float radius = 3;
 
 		//Get objects from collision
 		Collider[] hitColliders = Physics.OverlapSphere(center, radius);
@@ -143,6 +150,7 @@ public class NewController : MonoBehaviour {
 
 	/**
 	 * Throws the relic and removes it as child
+	 * TODO Check if gameObject is present
 	 */ 
 	private void Throw(){
 
@@ -188,9 +196,10 @@ public class NewController : MonoBehaviour {
 	
 		//Get CameraZ position
 		float cameraZ = GameObject.Find ("LeapControllerBlockHand").GetComponent<CameraController> ().GetZPosition ();
+		//float cameraZ = GameObject.Find ("Relic").GetComponent<CameraController> ().GetZPosition ();
 
 		//Only add force if player is behind invisisble wall
-		if (rb.position.z < cameraZ) {
+		if (rb.position.z < cameraZ + 3f) {
 
 			rb.AddForce (force * Time.deltaTime);
 		}
@@ -241,7 +250,7 @@ public class NewController : MonoBehaviour {
 	 * Add additional downward force to falling
 	 */
 	private void FallDown(){
-		rb.AddForce (new Vector3 (0, -1.3f, 0));
+		rb.AddForce (new Vector3 (0, -1f, 0));
 		falldownCounter = 3;
 	}
 

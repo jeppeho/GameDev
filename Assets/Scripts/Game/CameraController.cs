@@ -15,7 +15,12 @@ public class CameraController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		//Debug.Log ("Moving camera");
+		MoveForward();
+	}
+
+
+
+	private void MoveForward(){
 		Vector3 position = this.gameObject.transform.position;
 
 		position.z += camera_speed * Time.deltaTime; 

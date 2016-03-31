@@ -4,10 +4,10 @@ using System.Collections;
 public class CarriedObject : MonoBehaviour {
 
 
-	GameObject carriedObject;
-	Rigidbody rb;
+	public GameObject carriedObject = null;
+	private Rigidbody rb;
 	private Vector3 slotPosition;
-	bool dropping;
+	private bool dropping;
 
 	string playerState;
 
@@ -29,6 +29,13 @@ public class CarriedObject : MonoBehaviour {
 				ReleaseCarriedObject ();
 			}
 		}
+	}
+
+	public bool isCarrying(){
+		if (carriedObject != null)
+			return true;
+		else
+			return false;
 	}
 
 
