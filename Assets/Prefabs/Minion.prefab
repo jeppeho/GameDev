@@ -63,7 +63,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 160758}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.5514865, y: 0.5, z: -145.8}
+  m_LocalPosition: {x: 6.45, y: 0.62, z: -146.73}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 442896}
@@ -130,7 +130,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 2abc7e121b0a94ef9bc405b87af26c1c, type: 2}
+  - {fileID: 2100000, guid: dabb951f088b7442d94bad8bd33f2e24, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a04aa5ca8305dd5409b9d3595dfd13f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  impactResistance: 8
+  impactResistance: 7
 --- !u!114 &11479938
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -198,6 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba846847606f84983a589bb86db8a425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  carriedObject: {fileID: 0}
 --- !u!114 &11499990
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -209,10 +210,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d22933a2d27241d481b75d3de7f2f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefix: P2
+  prefix: P1
   accelerationRate: 10
-  maxAcceleration: 5
-  maxVelocity: 2
+  maxVelocity: 7
   jumpPower: 14
 --- !u!135 &13581342
 SphereCollider:

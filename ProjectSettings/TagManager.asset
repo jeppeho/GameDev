@@ -7,6 +7,7 @@ TagManager:
   - Environment
   - New Tag
   - Relic
+  - Water
   layers:
   - Default
   - TransparentFX
