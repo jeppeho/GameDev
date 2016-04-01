@@ -5,7 +5,7 @@ public class PlayerManager : MonoBehaviour {
 
 	private Rigidbody rb;
 	private MeshCollider collider;
-	private float lastVelY;
+	private Vector3 lastVel;
 	private enum state {active, inactive, dead, invulnerable};
 	private state playerState;
 	public float impactResistance = 3f;
@@ -19,7 +19,7 @@ public class PlayerManager : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		//Track falling velocity, so we have something to compare to, when landing on environment
-		lastVelY = rb.velocity.y;
+		lastVel = rb.velocity;
 		//Check to see if player has fallen off grid
 		if (transform.position.y <= -1f)
 		{
@@ -30,8 +30,9 @@ public class PlayerManager : MonoBehaviour {
 	//Check for impacts with environment
 	void OnCollisionEnter(Collision col)
 	{
-		//Make a new impact velocity, by subtracting fall speed
-		Vector3 impact = new Vector3 (col.relativeVelocity.x, col.relativeVelocity.y + lastVelY, col.relativeVelocity.z);
+		//Make a new impact velocity, by subtracting own velocity speed
+		Vector3 impact = col.relativeVelocity + lastVel;
+		Debug.Log (impact);
 		if (col.gameObject.tag == "Environment" && impact.magnitude >= impactResistance)
 		{
 			DeathSquished();

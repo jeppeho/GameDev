@@ -4,7 +4,7 @@ using System.Collections;
 public class GestureCasting : MonoBehaviour {
 
 	private LeapVariables manager;
-	private enum spell {none, summon, blast};
+	private enum spell {none, summon, blast, implosion};
 	private spell activeSpell;
 	private Vector3 tempPalmPosition;
 
@@ -44,7 +44,7 @@ public class GestureCasting : MonoBehaviour {
 			Debug.Log("Started summoning!");
 			setColor(Color.cyan);
 		}
-
+		/*
 		//Blast (initiate)
 		if (
 			activeSpell == spell.none
@@ -59,6 +59,21 @@ public class GestureCasting : MonoBehaviour {
 			tempPalmPosition = manager.GetPalmPosition();
 			Debug.Log("Started blasting!");
 			setColor(Color.red);
+		}*/
+		//Implosion (initiate)
+		if (
+			activeSpell == spell.none
+			&& manager.PalmNormalNear (Vector3.down, 0.65f)
+			&& manager.PalmBetweenY (0f, Mathf.Infinity)
+			&& manager.GetFingerPatternIsExtended (false, false, false, false, false)
+			&& manager.GetHandGrabStrength() >= 0.8
+		)
+		{
+			activeSpell = spell.implosion;
+			blastCharge = 0;
+			tempPalmPosition = manager.GetPalmPosition();
+			Debug.Log("Started imploding!");
+			setColor(Color.magenta);
 		}
 
 		//----------------------------------
@@ -90,7 +105,7 @@ public class GestureCasting : MonoBehaviour {
 				Debug.Log("Stopped summoning!");
 				setColor(Color.grey);
 			}
-
+		/*
 		//Blast
 		if (activeSpell == spell.blast) //SPELL
 			if (
@@ -104,24 +119,35 @@ public class GestureCasting : MonoBehaviour {
 			blastCharge = Mathf.Min (blastCharge+0.025f, 1);
 			setColor(Color.Lerp(Color.grey, Color.red, blastCharge+0.1f));
 		}
+		*/
+
+		//Implosion
+		if (activeSpell == spell.implosion) //SPELL
+		if (
+			//manager.PalmNormalNear (Vector3.down, 0.65f)
+			manager.GetFingerPatternIsExtended (false, false, false, false, false)
+			&& manager.GetHandGrabStrength() >= 0.8
+			//&& manager.PalmNear(tempPalmPosition, 1.0f)
+		)
+		{
+			//Implosion maintained
+			setColor(Color.Lerp(Color.grey, Color.magenta, 1));
+
+			{
+				GameObject[] objects = GameObject.FindGameObjectsWithTag("Environment");
+				foreach (GameObject o in objects)
+				{
+					Rigidbody rb = o.GetComponent<Rigidbody>();
+					if (rb != null)
+					{	rb.AddExplosionForce(-500f, manager.GetPalmPosition()+GetOffsetFromParent(), 35f);	}
+				}
+			}
+		}
 		else
 		{
-			//Blast released, by releasing grab but not moving/tilting hand
-			if (
-				blastCharge >= 0.66f
-				//&& manager.GetHandGrabStrength() <= 0.2
-				)
-			{
-					GameObject[] objects = GameObject.FindGameObjectsWithTag("Environment");
-					foreach (GameObject o in objects)
-					{
-						Rigidbody rb = o.GetComponent<Rigidbody>();
-						if (rb != null)
-					{	rb.AddExplosionForce(6000f * blastCharge, manager.GetPalmPosition()+GetOffsetFromParent(), 25f);	}
-					}
-			}
+			//Implosion released
 			activeSpell = spell.none;
-			Debug.Log("Stopped summoning!");
+			Debug.Log("Stopped imploding!");
 			setColor(Color.grey);
 		}
 	}
