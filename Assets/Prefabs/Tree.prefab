@@ -11,7 +11,7 @@ GameObject:
   - 33: {fileID: 3365654}
   - 136: {fileID: 13682546}
   - 23: {fileID: 2319672}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ GameObject:
   - 33: {fileID: 3323404}
   - 136: {fileID: 13678132}
   - 23: {fileID: 2383146}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 495102}
   - 54: {fileID: 5472096}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Tree
   m_TagString: Environment
   m_Icon: {fileID: 0}

@@ -10,7 +10,7 @@ public class LeapVariables : MonoBehaviour {
 
 	public Vector3 handPositionOffset;
 	public Vector3 handPositionScale;
-	//public Vector3 handSizeScale;
+	public float handSizeScale;
 	
 	private Vector3 handPositionScaleShift;
 	private Vector3 handPositionLastFrame;
@@ -42,13 +42,25 @@ public class LeapVariables : MonoBehaviour {
 	{
 		return new Vector3(v.x * handPositionScale.x, v.y * handPositionScale.y, v.z * handPositionScale.z) + handPositionOffset;
 	}
-/*
-	//For adding the custom (size-) scale to the hand as an object
+
+	//For adding the custom (size-) scale to the entire hand as an object
 	private Vector3 AddSizeScale(Vector3 v)
 	{
-		return new Vector3(v.x * handSizeScale.x, v.y * handSizeScale.y, v.z * handSizeScale.z);
+		//Scale up
+		Vector3 r = new Vector3(v.x * handSizeScale, v.y * handSizeScale, v.z * handSizeScale);
+		//..And calculate how far off that puts the palm's position
+			//First get the palm
+			Vector3 p = ToCustomScale (hand.PalmPosition);
+			//Then scale that by handSizeScale
+			p = new Vector3(p.x * handSizeScale, p.y * handSizeScale, p.z * handSizeScale);
+			//Then calculate how to counter for that shift in position
+			Vector3 counterScaleShift = p - ToCustomScale (hand.PalmPosition);
+		//Subtract that yet again
+		r = r - counterScaleShift;
+		//And return the result
+		return r;
 	}
-*/	
+
 	//For converting points in world space to vectors adjusted to our scene
 	private Vector3 ToCustomScale(Vector v)
 	{
@@ -124,7 +136,7 @@ public class LeapVariables : MonoBehaviour {
 
 	//Get position of fingertip 'f'
 	public Vector3 GetFingertipPosition (int f){
-		return AddScaleShift(  ToCustomScale(GetFinger(f).TipPosition)  );
+		return AddScaleShift(  AddSizeScale(ToCustomScale(GetFinger(f).TipPosition))  );
 	}
 
 	//Get bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
@@ -146,13 +158,13 @@ public class LeapVariables : MonoBehaviour {
 	//Get base position of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
 	public Vector3 GetBoneBasePosition (int f, int b)
 	{
-		return AddScaleShift( ToCustomScale (GetBone (f, b).PrevJoint));
+		return AddScaleShift( AddSizeScale(ToCustomScale (GetBone (f, b).PrevJoint)));
 	}
 
 	//Get center position of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
 	public Vector3 GetBoneCenterPosition (int f, int b)
 	{
-			return AddScaleShift( ToCustomScale (GetBone (f, b).Center));
+		return AddScaleShift( AddSizeScale(ToCustomScale (GetBone (f, b).Center)));
 	}
 
 	///////////////////////////////////////////////////////////////////// 

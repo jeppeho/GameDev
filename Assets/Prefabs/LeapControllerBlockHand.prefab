@@ -30,8 +30,6 @@ GameObject:
   - 4: {fileID: 451810}
   - 114: {fileID: 11469044}
   - 114: {fileID: 11440558}
-  - 114: {fileID: 11461146}
-  - 114: {fileID: 11421452}
   m_Layer: 0
   m_Name: LeapControllerBlockHand
   m_TagString: Untagged
@@ -143,17 +141,6 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 156732}
   m_Enabled: 1
---- !u!114 &11421452
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 183102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 755f2ce51a4624c1a9a1df440c8d2922, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11422026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -167,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handPositionOffset: {x: 0, y: -3, z: 1}
   handPositionScale: {x: 5, y: 1.6, z: 2.5}
+  handSizeScale: 1.5
 --- !u!114 &11426190
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -222,18 +210,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FingerBone: {fileID: 196962, guid: 727d892d2dd0b4bcdac674f5b5988403, type: 2}
+  fingerBoneScale: 1.5
   handColor: {r: 0.49803922, g: 0.49803922, b: 0.49803922, a: 0}
---- !u!114 &11461146
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 183102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97677197f6cce42f58969ca403b1c985, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11469044
 MonoBehaviour:
   m_ObjectHideFlags: 1

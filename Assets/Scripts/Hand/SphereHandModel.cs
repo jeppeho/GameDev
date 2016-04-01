@@ -15,6 +15,7 @@ public class SphereHandModel : MonoBehaviour {
 	private GameObject[,] finger_bones;
 	private GameObject palm_bone;
 	public GameObject FingerBone;
+	public float fingerBoneScale;
 	public Color handColor;
 
 	private bool firstUpdate = true;
@@ -39,7 +40,7 @@ public class SphereHandModel : MonoBehaviour {
 				//finger_bones [i, g].GetComponent<Rigidbody> ().MovePosition (new Vector3 (5, 1, 190));
 
 				//Change scale of fingerbone
-				finger_bones[i,g].GetComponent<BoneBehavior>().setScale( new Vector3(0.2f, 0.2f, 0.2f) );
+				finger_bones[i,g].GetComponent<BoneBehavior>().setScale( new Vector3(0.2f*fingerBoneScale, 0.2f*fingerBoneScale, 0.2f*fingerBoneScale) );
 				finger_bones[i,g].GetComponent<BoneBehavior>().setMass(boneMass);
 
 
@@ -53,7 +54,7 @@ public class SphereHandModel : MonoBehaviour {
 		//Create palm bone
 		palm_bone = Instantiate(FingerBone, new Vector3(5,1,-130), Quaternion.Euler(0,0,0)) as GameObject;
 		palm_bone.GetComponent<Rigidbody> ().MovePosition (new Vector3 (5, 1, -130));
-		palm_bone.GetComponent<BoneBehavior> ().setScale (new Vector3 (0.4f, 0.4f, 0.4f));
+		palm_bone.GetComponent<BoneBehavior> ().setScale (new Vector3 (0.4f*fingerBoneScale, 0.4f*fingerBoneScale, 0.4f*fingerBoneScale));
 		palm_bone.GetComponent<BoneBehavior> ().setMass (boneMass);
 
 
