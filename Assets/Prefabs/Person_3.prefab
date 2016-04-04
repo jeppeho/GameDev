@@ -11,7 +11,7 @@ GameObject:
   - 33: {fileID: 3362408}
   - 135: {fileID: 13598316}
   - 23: {fileID: 2398144}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,9 +29,9 @@ GameObject:
   - 54: {fileID: 5495128}
   - 114: {fileID: 11432360}
   - 136: {fileID: 13616018}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Person_3
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,7 +47,7 @@ GameObject:
   - 33: {fileID: 3327014}
   - 136: {fileID: 13634848}
   - 23: {fileID: 2332996}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

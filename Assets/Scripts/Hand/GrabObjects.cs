@@ -30,7 +30,7 @@ public class GrabObjects : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-		frame = this.gameObject.GetComponent<LeapVariables> ().GetFrame();
+		frame = this.gameObject.GetComponent<LeapManager> ().GetFrame();
 
 		UpdatePinch ( frame );
 

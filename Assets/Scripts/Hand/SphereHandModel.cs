@@ -4,28 +4,28 @@ using Leap;
 
 public class SphereHandModel : MonoBehaviour {
 
-
 	int NUM_FINGERS = 5;
 	int NUM_BONES = 4;
 	private Frame frame;
 
 	private Vector3[,] finger_bone_positions = new Vector3[5, 4];
 	private Vector3 palm_bone_position = new Vector3();
-	private float boneMass = 0.1f;
+	private float boneMass = 1.0f;
 	private GameObject[,] finger_bones;
 	private GameObject palm_bone;
 	public GameObject FingerBone;
 	public float fingerBoneScale;
 	public Color handColor;
-
+	public float globalTraction { get; set; }
 	private bool firstUpdate = true;
+	private float snapBackFactor = 55;
 
-	private LeapVariables manager;
+	private LeapManager manager;
 
 	// Use this for initialization
 	void Start () {
 
-		manager = this.gameObject.GetComponent<LeapVariables> ();
+		manager = this.gameObject.GetComponent<LeapManager> ();
 		//Create finger bones
 		finger_bones = new GameObject[NUM_FINGERS, NUM_BONES];
 
@@ -82,6 +82,14 @@ public class SphereHandModel : MonoBehaviour {
 			CreateHand (manager.GetHand());
 		} else {
 			MakeBonesFlyUp ();
+		}
+	}
+
+	void FixedUpdate()
+	{
+		if (globalTraction < 1)
+		{
+			globalTraction = Mathf.Min(1, 0.001f + globalTraction * snapBackFactor * Time.deltaTime);
 		}
 	}
 
@@ -284,9 +292,7 @@ public class SphereHandModel : MonoBehaviour {
 	 */
 
 private void UpdatePalmBonePosition(){
-	palm_bone_position = manager.GetPalmPosition();
-	
-	palm_bone_position += GetOffsetFromParent ();
+	palm_bone_position = manager.GetPalmWorldPosition();
 	
 	palm_bone.GetComponent<BoneBehavior> ().setDesiredPosition( palm_bone_position );
 }
@@ -297,10 +303,10 @@ private void UpdateFingerBonesPositions(){
 		for (int i = 0; i < NUM_FINGERS; i++) {
 			for (int g = 1; g < NUM_BONES; g++) {
 
-				finger_bone_positions[i, g] = manager.GetBoneCenterPosition(i,g);
+				finger_bone_positions[i, g] = manager.GetBoneCenterWorldPosition(i,g);
 				
 				//Add parents offset to finger_bone_positions
-				AddOffsetFromParent(i, g);
+				//AddOffsetFromParent(i, g);
 			
 				//Set position of game sphere
 				finger_bones [i, g].GetComponent<BoneBehavior>().setDesiredPosition( finger_bone_positions[i,g] );
@@ -337,6 +343,24 @@ private void UpdateFingerBonesPositions(){
 		return gameObject.GetComponentInParent<Transform> ().transform.position;
 	}
 
-
-
+	//Explode hand
+	public void ExplodeHand(float force, Vector3 center, float radius)
+	{
+		foreach (GameObject o in finger_bones)
+		{
+			o.GetComponent<BoneBehavior>().localTraction = 0;
+			Rigidbody rb = o.GetComponent<Rigidbody> ();
+			if (rb != null) 
+			{
+				rb.AddExplosionForce (force,center,radius);
+			}
+		}
+		palm_bone.GetComponent<BoneBehavior>().localTraction = 0;
+		palm_bone.GetComponent<Rigidbody> ().AddExplosionForce (force*2,center,radius);
+	}
+		
+	public void addGlobalTraction(float n)
+	{
+		globalTraction = Mathf.Clamp(globalTraction+n, 0,1);
+	}
 }

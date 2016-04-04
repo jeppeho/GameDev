@@ -47,7 +47,8 @@ GameObject:
   - 4: {fileID: 458448}
   - 114: {fileID: 11422026}
   - 114: {fileID: 11450000}
-  - 114: {fileID: 11474184}
+  - 114: {fileID: 11480124}
+  - 114: {fileID: 11487098}
   m_Layer: 0
   m_Name: HandController
   m_TagString: Untagged
@@ -149,7 +150,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 185974}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be6002c7e1f5041ac9b1b83ca1b2e04d, type: 3}
+  m_Script: {fileID: 11500000, guid: d8d7df671d4564a4d8d909e7dd2d12cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   handPositionOffset: {x: 0, y: -3, z: 2}
@@ -223,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97677197f6cce42f58969ca403b1c985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11474184
+--- !u!114 &11480124
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -232,6 +233,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ccd9d98d62cb2584bb7e4e347561007c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11487098
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 185974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34d954cc3a01c514695e7eaa9edb18f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   summonedObject: {fileID: 126238, guid: 1cec7b0ace4ec491dadbaf7ae4defbea, type: 2}

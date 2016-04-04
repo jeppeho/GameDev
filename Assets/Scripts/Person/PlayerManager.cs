@@ -32,7 +32,6 @@ public class PlayerManager : MonoBehaviour {
 	{
 		//Make a new impact velocity, by subtracting own velocity speed
 		Vector3 impact = col.relativeVelocity + lastVel;
-		Debug.Log (impact);
 		if (col.gameObject.tag == "Environment" && impact.magnitude >= impactResistance)
 		{
 			DeathSquished();
