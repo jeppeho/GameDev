@@ -12,7 +12,7 @@ GameObject:
   - 65: {fileID: 6581532}
   - 23: {fileID: 2334422}
   - 54: {fileID: 5465950}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: Cube
   m_TagString: Environment
   m_Icon: {fileID: 0}

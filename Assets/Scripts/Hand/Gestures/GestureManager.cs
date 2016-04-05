@@ -18,7 +18,7 @@ public class GestureManager : MonoBehaviour {
 
 	public void setHandColor(Color c)
 	{
-		GameObject.Find ("HandController").GetComponent<SphereHandModel> ().handColor = c;
+		GameObject.Find ("HandController").GetComponent<StoneHandManager> ().handColor = c;
 	}
 
 	public void clearActiveSpell()

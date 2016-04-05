@@ -46,9 +46,10 @@ GameObject:
   m_Component:
   - 4: {fileID: 458448}
   - 114: {fileID: 11422026}
-  - 114: {fileID: 11450000}
+  - 114: {fileID: 11405306}
   - 114: {fileID: 11480124}
   - 114: {fileID: 11487098}
+  - 114: {fileID: 11444126}
   m_Layer: 0
   m_Name: HandController
   m_TagString: Untagged
@@ -62,8 +63,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 156732}
-  m_LocalRotation: {x: 0.2472527, y: 0, z: 0, w: 0.96895105}
-  m_LocalPosition: {x: 0, y: 4.34, z: -7.79}
+  m_LocalRotation: {x: 0.23174793, y: 0, z: 0, w: 0.9727759}
+  m_LocalPosition: {x: 0, y: 7, z: -7.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 451810}
@@ -142,6 +143,23 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 156732}
   m_Enabled: 1
+--- !u!114 &11405306
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 185974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 511df8adce5b5cf42a64f66c757813c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FingerBoneModel: {fileID: 196962, guid: 727d892d2dd0b4bcdac674f5b5988403, type: 2}
+  fingerBoneScale: 1.5
+  globalTraction: 1
+  globalTractionRegeneration: 0.5
+  globalTractionBuffer: 0
+  handColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &11422026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -199,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 755f2ce51a4624c1a9a1df440c8d2922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11450000
+--- !u!114 &11444126
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -207,12 +225,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 185974}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65952675b90d94319b3d02195d4f2434, type: 3}
+  m_Script: {fileID: 11500000, guid: 38919993f04e96c498cdcd252cddbfd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FingerBone: {fileID: 196962, guid: 727d892d2dd0b4bcdac674f5b5988403, type: 2}
-  fingerBoneScale: 1.5
-  handColor: {r: 0.49803922, g: 0.49803922, b: 0.49803922, a: 0}
 --- !u!114 &11469044
 MonoBehaviour:
   m_ObjectHideFlags: 1

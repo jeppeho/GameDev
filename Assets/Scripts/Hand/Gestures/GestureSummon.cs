@@ -28,8 +28,8 @@ public class GestureSummon : Gesture {
 
 		if (
 			gestureManager.noSpellActive()
-			&& leapManager.PalmNormalNear (Vector3.down, 0.2f)
-			&& leapManager.PalmBetweenY (-0.4f, -1.5f)
+			&& leapManager.PalmNormalNear (Vector3.down, 0.25f)
+			&& leapManager.PalmBetweenY (-0.45f, -10f)
 			&& leapManager.GetFingerIsExtendedPattern (true, true, true, true, true)
 			//&& manager.GetPalmVelocity().magnitude < 5f
 		)
@@ -38,7 +38,7 @@ public class GestureSummon : Gesture {
 			summonCounter = 1;
 			tempPalmWorldPosition = leapManager.GetPalmWorldPosition ();
 			tempPalmPosition = leapManager.GetPalmPosition ();
-			gestureManager.setHandColor(Color.cyan);
+			gestureManager.setHandColor(Color.yellow);
 		}
 
 		//----------------------------------

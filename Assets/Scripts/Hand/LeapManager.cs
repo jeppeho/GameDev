@@ -190,6 +190,12 @@ public class LeapManager : MonoBehaviour {
 		return GetBoneCenterPosition (f, b) + GetOffsetFromParent ();
 	}
 
+	//Get center position of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
+	public Vector3 GetBoneRotation (int f, int b)
+	{
+		return GetBone (f, b).Direction.ToUnity ();
+	}
+
 	///////////////////////////////////////////////////////////////////// 
 	// Mostly for gesture recognition
 

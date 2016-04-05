@@ -46,12 +46,12 @@ public class GestureHurricane : Gesture {
 				&& leapManager.PalmBetweenY (3f, Mathf.Infinity)
 				&& leapManager.GetFingerIsExtendedPattern (false, false, false, false, false)
 				&& leapManager.GetHandGrabStrength () >= 0.8f
-				&& charge <1
+				//&& charge <1
 				)
 				{
 					charge = Mathf.Min(1, charge+ 0.005f);
 					pulsebase = (pulsebase + (charge *35 * Time.deltaTime)) % (2 * Mathf.PI);
-					gestureManager.setHandColor (Color.Lerp (Color.grey, Color.white, Mathf.Sin(pulsebase)));
+				gestureManager.setHandColor (Color.Lerp (Color.grey, Color.blue, Mathf.Sin(pulsebase)));
 					
 					//Create drag
 					Vector3 center = leapManager.GetPalmWorldPosition () + new Vector3 (0, 2, 0);
@@ -67,11 +67,11 @@ public class GestureHurricane : Gesture {
 							//get pull direction (and distance to hand)
 							Vector3 dir = center - rb.position;
 							//Calculate drag, based on distance to hand (reverse proportional)
-							float force = Mathf.Clamp (250f - dir.sqrMagnitude, 0, 250f) * charge * 3.0f;
+							float force = Mathf.Clamp (200f - dir.sqrMagnitude, 0, 200f) * charge * 3.0f;
 							//Set magnitude to force
 							dir = dir.normalized * force;
 							//Rotate pull, to create hurricane effect
-							dir = Quaternion.Euler (0, 30f, 0) * dir; 
+							dir = Quaternion.Euler (0, 15f, 0) * dir; 
 
 							//Apply
 							rb.AddForce (dir);
@@ -86,7 +86,7 @@ public class GestureHurricane : Gesture {
 							//get pull direction (and distance to hand)
 							Vector3 dir = center - rb.position;
 							//Calculate drag, based on distance to hand (reverse proportional)
-							float force = Mathf.Clamp (250f - dir.sqrMagnitude, 0, 250f) * charge * 0.005f;
+							float force = Mathf.Clamp (250f - dir.sqrMagnitude, 0, 250f) * charge * 0.001f;
 							//Set magnitude to force
 							dir = dir.normalized * force;
 							//Rotate pull, to create hurricane effect
@@ -114,7 +114,7 @@ public class GestureHurricane : Gesture {
 					}
 
 					//ExplodeHand
-					GameObject.Find ("HandController").GetComponent<SphereHandModel> ().ExplodeHand(2,center,50);
+					//GameObject.Find ("HandController").GetComponent<SphereHandModel> ().ExplodeHand(2,center,50);
 				}
 			}
 		}
