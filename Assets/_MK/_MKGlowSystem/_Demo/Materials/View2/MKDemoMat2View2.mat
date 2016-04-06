@@ -33,11 +33,11 @@ Material:
       data:
         first:
           name: _MKGlowPower
-        second: .629999995
+        second: 0.63
       data:
         first:
           name: _MKGlowTexStrength
-        second: 3.29999995
+        second: 3.3
       data:
         first:
           name: _MKGlowOffSet
@@ -46,12 +46,12 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 1, g: 0, b: 0, a: 1}
+        second: {r: 0.43382353, g: 0.43382353, b: 0.43382353, a: 1}
       data:
         first:
           name: _MKGlowColor
-        second: {r: .551470578, g: .409547985, b: .409547985, a: 1}
+        second: {r: 0.5514706, g: 0.40954798, b: 0.40954798, a: 1}
       data:
         first:
           name: _MKGlowTexColor
-        second: {r: 1, g: .132352948, b: .132352948, a: 1}
+        second: {r: 1, g: 0.13235295, b: 0.13235295, a: 1}

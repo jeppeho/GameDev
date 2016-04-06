@@ -12,7 +12,7 @@ GameObject:
   - 65: {fileID: 6522980}
   - 23: {fileID: 2339082}
   - 54: {fileID: 5498764}
-  - 114: {fileID: 11437086}
+  - 114: {fileID: 11400148}
   m_Layer: 8
   m_Name: FingerBoneCube
   m_TagString: Untagged
@@ -92,7 +92,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &11437086
+--- !u!114 &11400148
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -100,11 +100,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 196962}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 778072564ef014596ad5eb610595901f, type: 3}
+  m_Script: {fileID: 11500000, guid: 75d9f2980e349ac428450d44e3839839, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handColor: {r: 0, g: 0, b: 0, a: 0}
-  traction: 1
+  targetPosition: {x: 0, y: 0, z: 0}
+  scale: 0
+  boneMass: 1.5
+  tractionSpeed: 650
+  snappedSpeed: 2500
+  tractionRegeneration: 0.85
+  tractionBuffer: 0
+  magneticThreshold: 1.8
+  magneticFactor: 2
+  shatterThreshold: 1000
+  shatterFactor: 0.0001
+  handColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

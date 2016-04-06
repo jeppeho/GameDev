@@ -2,7 +2,7 @@
 using System.Collections;
 using Leap;
 
-public class LeapVariables : MonoBehaviour {
+public class LeapManager : MonoBehaviour {
 
 	private Controller controller;
 	private Frame frame;
@@ -24,6 +24,7 @@ public class LeapVariables : MonoBehaviour {
 		UpdateFrame();
 		UpdateHand ();
 		UpdateScaleShift ();
+		//DebugVariables (); //DEBUG
 	}
 
 	//Updating the scale-shift: The Vector that should be added to all positions, shifting them exponentially away from origo.
@@ -119,6 +120,11 @@ public class LeapVariables : MonoBehaviour {
 		return AddScaleShift(  ToCustomScale(hand.PalmPosition)  );
 	}
 
+	//Get palm's world position
+	public Vector3 GetPalmWorldPosition (){
+		return GetPalmPosition () + GetOffsetFromParent ();
+	}
+
 	//Get palm's normal
 	public Vector3 GetPalmNormal (){
 		return GetHand().PalmNormal.ToUnity();
@@ -137,6 +143,11 @@ public class LeapVariables : MonoBehaviour {
 	//Get position of fingertip 'f'
 	public Vector3 GetFingertipPosition (int f){
 		return AddScaleShift(  AddSizeScale(ToCustomScale(GetFinger(f).TipPosition))  );
+	}
+
+	public Vector3 GetFingertipWorldPosition (int f)
+	{
+		return GetFingertipPosition (f) + GetOffsetFromParent ();
 	}
 
 	//Get bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
@@ -161,10 +172,28 @@ public class LeapVariables : MonoBehaviour {
 		return AddScaleShift( AddSizeScale(ToCustomScale (GetBone (f, b).PrevJoint)));
 	}
 
+	//Get base position of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.) in the world
+	public Vector3 GetBoneBaseWorldPosition (int f, int b)
+	{
+		return GetBoneBasePosition (f, b) + GetOffsetFromParent ();
+	}
+
 	//Get center position of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
 	public Vector3 GetBoneCenterPosition (int f, int b)
 	{
 		return AddScaleShift( AddSizeScale(ToCustomScale (GetBone (f, b).Center)));
+	}
+
+	//Get center position of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.) in the world
+	public Vector3 GetBoneCenterWorldPosition (int f, int b)
+	{
+		return GetBoneCenterPosition (f, b) + GetOffsetFromParent ();
+	}
+
+	//Get center position of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
+	public Vector3 GetBoneRotation (int f, int b)
+	{
+		return GetBone (f, b).Direction.ToUnity ();
 	}
 
 	///////////////////////////////////////////////////////////////////// 
@@ -216,14 +245,14 @@ public class LeapVariables : MonoBehaviour {
 	{
 		return GetVectorsClose (GetFingertipPosition(f), pos, t);
 	}
-		
+
 	//Get whether finger 'f' is extended (true/false)
 	public bool GetFingerIsExtended (int f){
 		return GetFinger(f).IsExtended;
 	}
 
 	//Get whether the fingers meet a certain patthern, in terms of being extended (true/false)
-	public bool GetFingerPatternIsExtended (bool f0, bool f1, bool f2, bool f3, bool f4){
+	public bool GetFingerIsExtendedPattern (bool f0, bool f1, bool f2, bool f3, bool f4){
 		return (GetFinger (0).IsExtended == f0)
 			&& (GetFinger (1).IsExtended == f1)
 			&& (GetFinger (2).IsExtended == f2)
@@ -231,8 +260,16 @@ public class LeapVariables : MonoBehaviour {
 			&& (GetFinger (4).IsExtended == f4);
 	}
 
+	///////////////////////////////////////////////////////////////////// 
+	// Other methods
+
+
+	private Vector3 GetOffsetFromParent(){
+		return gameObject.GetComponentInParent<Transform> ().transform.position;
+	}
+
 	//Prints normal, position, fingers etc. to console
 	public void DebugVariables (){
-		Debug.Log ("Pos: " + GetPalmPosition ().ToString () + " | Norm:" + GetPalmNormal ().ToString () + " | FingersExt: {" + GetFingerIsExtended (0).ToString () + "," + GetFingerIsExtended (1).ToString () + "," + GetFingerIsExtended (2).ToString () + "," + GetFingerIsExtended (3).ToString () + "," + GetFingerIsExtended (4).ToString () + "}");
+		Debug.Log ("Pos: " + GetPalmPosition ().ToString () + " | Norm:" + GetPalmNormal ().ToString () + " | FingersExt: {" + GetFingerIsExtended (0).ToString () + "," + GetFingerIsExtended (1).ToString () + "," + GetFingerIsExtended (2).ToString () + "," + GetFingerIsExtended (3).ToString () + "," + GetFingerIsExtended (4).ToString () + "} | GrabStr: " + GetHandGrabStrength().ToString());
 	}
 }

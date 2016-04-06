@@ -12,7 +12,7 @@ GameObject:
   - 65: {fileID: 6581532}
   - 23: {fileID: 2334422}
   - 54: {fileID: 5465950}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: Cube
   m_TagString: Environment
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ Rigidbody:
   m_GameObject: {fileID: 126238}
   serializedVersion: 2
   m_Mass: 10
-  m_Drag: 1
+  m_Drag: 0.1
   m_AngularDrag: 1
   m_UseGravity: 1
   m_IsKinematic: 0
