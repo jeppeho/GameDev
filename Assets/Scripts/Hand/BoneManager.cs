@@ -8,6 +8,9 @@ public class BoneManager : MonoBehaviour {
 	//The position of the bone recorded by the LEAP (in Unity world-space), that the bone attempts to snap to
 	[HideInInspector]
 	public Vector3 targetPosition;
+	//The rotation of the bone recorded by the LEAP (in Unity world-space), that the bone attempts to adhere to
+	[HideInInspector]
+	public Quaternion targetRotation;
 	//The scale
 	[HideInInspector]
 	public float scale;
@@ -57,11 +60,12 @@ public class BoneManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+		targetRotation = new Quaternion (0, 0, 0, 1);
 		modelController = GameObject.Find ("HandController").GetComponent<StoneHandManager> ();
 		rb = gameObject.GetComponent<Rigidbody> ();
 		material = GetComponent<Renderer> ().material;
 
-		gameObject.transform.localScale = new Vector3(scale,scale,scale);
+		gameObject.transform.localScale = new Vector3(modelController.fingerBoneScale,modelController.fingerBoneScale,modelController.fingerBoneScale);
 	}
 	
 	// Update is called once per frame
@@ -71,9 +75,9 @@ public class BoneManager : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		//Update position
+		//Update position and scale
 		position = gameObject.GetComponent<Rigidbody> ().transform.position;
-		
+
 		//Update mass
 		rb.mass = boneMass * structure;
 
@@ -115,6 +119,8 @@ public class BoneManager : MonoBehaviour {
 		else
 		{
 			newVelocity = direction * snappedSpeed * Time.deltaTime;
+			//And rotate it into place
+			rb.rotation = targetRotation;
 		}
 			
 		//Either way, now check if the new velocity has been scaled too far, and surpasses the needed magnitude

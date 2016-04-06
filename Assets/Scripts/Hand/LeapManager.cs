@@ -6,6 +6,7 @@ public class LeapManager : MonoBehaviour {
 
 	private Controller controller;
 	private Frame frame;
+	private Frame firstFrame;
 	private Hand hand;
 
 	public Vector3 handPositionOffset;
@@ -17,6 +18,8 @@ public class LeapManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		controller = new Controller ();
+		UpdateFrame ();
+		firstFrame = frame;
 	}
 	
 	// Update is called once per frame
@@ -130,7 +133,12 @@ public class LeapManager : MonoBehaviour {
 		return GetHand().PalmNormal.ToUnity();
 	}
 
-	//Get palm's normal
+	//Get palm's rotation (quaternion)
+	public Quaternion GetPalmRotation (){
+		return GetHand ().Basis.Rotation (false);
+	}
+		
+	//Get palm's velocity
 	public Vector3 GetPalmVelocity (){
 		return GetHand().PalmVelocity.ToUnity();
 	}
@@ -190,10 +198,10 @@ public class LeapManager : MonoBehaviour {
 		return GetBoneCenterPosition (f, b) + GetOffsetFromParent ();
 	}
 
-	//Get center position of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
-	public Vector3 GetBoneRotation (int f, int b)
+	//Get rotation (quaternion) of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
+	public Quaternion GetBoneRotation (int f, int b)
 	{
-		return GetBone (f, b).Direction.ToUnity ();
+		return GetBone (f, b).Basis.Rotation ();
 	}
 
 	///////////////////////////////////////////////////////////////////// 
@@ -271,5 +279,11 @@ public class LeapManager : MonoBehaviour {
 	//Prints normal, position, fingers etc. to console
 	public void DebugVariables (){
 		Debug.Log ("Pos: " + GetPalmPosition ().ToString () + " | Norm:" + GetPalmNormal ().ToString () + " | FingersExt: {" + GetFingerIsExtended (0).ToString () + "," + GetFingerIsExtended (1).ToString () + "," + GetFingerIsExtended (2).ToString () + "," + GetFingerIsExtended (3).ToString () + "," + GetFingerIsExtended (4).ToString () + "} | GrabStr: " + GetHandGrabStrength().ToString());
+	}
+
+	private Quaternion GetRotationFromMatrix(this Matrix matrix) {
+		Vector3 up = matrix.TransformDirection(Leap.Vector.Up).ToUnity();
+		Vector3 forward = matrix.TransformDirection(Leap.Vector.Forward).ToUnity();
+		return Quaternion.LookRotation(forward, up);
 	}
 }

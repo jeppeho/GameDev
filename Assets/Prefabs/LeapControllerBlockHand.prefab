@@ -154,8 +154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 511df8adce5b5cf42a64f66c757813c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FingerBoneModel: {fileID: 196962, guid: 727d892d2dd0b4bcdac674f5b5988403, type: 2}
-  fingerBoneScale: 1.5
+  handObject: {fileID: 0}
+  fingerBoneScale: 1
   globalTraction: 1
   globalTractionRegeneration: 0.5
   globalTractionBuffer: 0
