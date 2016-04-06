@@ -177,7 +177,12 @@ public class BoneManager : MonoBehaviour {
 			//Kill some velocity
 			rb.velocity.Scale(Vector3.zero);
 		}
-	}
+
+        if (col.gameObject.layer == 15)   //I.e. Event Object
+        {
+            Destroy(col.gameObject);
+        }
+    }
 
 	private void UpdateCombinedTraction()
 	{
