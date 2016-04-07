@@ -110,7 +110,8 @@ public class PersonPrefixController : MonoBehaviour {
 
 	void Move(){
 
-		//Debug.Log ("moveHorizontal = " + moveHorizontal);
+		Debug.Log ("moveHorizontal = " + moveHorizontal);
+		Debug.Log ("moveVertical = " + moveVertical);
 		int accelerationTime = 300;
 		//int accelerationTime = 7;
 

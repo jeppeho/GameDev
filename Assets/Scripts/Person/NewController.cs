@@ -9,10 +9,20 @@ public class NewController : MonoBehaviour {
 	//Buttons
 	private float moveHorizontal;
 	private float moveVertical;
+	private float throwHorizontal;
+	private float throwVertical;
 	private bool pressPush;
 	private bool pressJump;
-	private bool pressThrow;
+	private float pressThrow;
 	private bool pressExplode;
+
+	private float throwBuffer;
+	private float throwCounter;
+
+	//Movement limits
+	private float farWalkZone;
+	private float nearWalkZone;
+	private float walkZoneWidth;
 
 	GameObject player;
 	Rigidbody rb;
@@ -31,7 +41,6 @@ public class NewController : MonoBehaviour {
 
 	string playerState;
 
-
 	// Use this for initialization
 	void Start () {
 		rb = this.gameObject.GetComponent<Rigidbody> ();
@@ -46,6 +55,10 @@ public class NewController : MonoBehaviour {
 		//Multiply with the game speed
 		maxVelocity *= LevelManager.SPEED;
 		accelerationRate *= LevelManager.SPEED;
+
+		nearWalkZone = LevelManager.MOVEMIN_Z+LevelManager.MOVE_ZONE_WIDTH;
+		farWalkZone = LevelManager.MOVEMAX_Z-LevelManager.MOVE_ZONE_WIDTH;
+		walkZoneWidth = LevelManager.MOVE_ZONE_WIDTH;
 	}
 
 	
@@ -58,9 +71,13 @@ public class NewController : MonoBehaviour {
 		if (playerState == "active" || playerState == "invulnerable") {
 			
 			GetInputButtonValues ();
-
 			UpdateDirection ();
-		
+
+			//Check if player is jumping
+			if (pressJump && !isJumping) {
+				isJumping = true;
+				Jump ();
+			}
 
 			//Move on X and Z axis
 			if (moveHorizontal != 0 || moveVertical != 0)
@@ -68,27 +85,37 @@ public class NewController : MonoBehaviour {
 			else
 				AutoRun ();
 			
-
 			//Check if player should fall or land
 			if (!IsGrounded ()) {
 				FallDown ();
 			} else {
 				Landing ();
 			}
-			
-			//Check if player is jumping
-			if (pressJump && !isJumping) {
-				isJumping = true;
-				Jump ();
-			}
 
-			if(pressPush)
+			if (pressPush)
 				Suicide ();
 
 
 			//Check if player should throw relic
-			if (pressThrow && this.gameObject.GetComponent<CarriedObject>().isCarrying() == true)
-				Throw ();
+			if (pressThrow > 0.05f && this.gameObject.GetComponent<CarriedObject> ().isCarrying () == true) {
+				throwBuffer += (pressThrow+1)/2;
+				throwCounter++;
+
+				if (throwCounter >= 5)
+				{
+					Throw ();
+					throwBuffer = 0; throwCounter = 0;
+				}
+			}
+			else
+			{
+				if (throwCounter >= 1)
+				{
+					Throw ();
+				}
+
+				throwBuffer = 0; throwCounter = 0;
+			}
 
 			//If explosionCounter is above target, then make explosion
 			if (pressExplode) {
@@ -104,7 +131,8 @@ public class NewController : MonoBehaviour {
 			explosionCounter++;
 		}
 			
-		LimitWalkingDistance();
+		//LimitWalkingDistance();
+		LimitWalkingDistanceSoft();
 	}
 
 
@@ -124,11 +152,11 @@ public class NewController : MonoBehaviour {
 			force /= 4;
 
 		//If player is running towards camera, slow down velocity
-		if (rb.velocity.z < 0) {
+		/*if (rb.velocity.z < 0) {
 			if (force.z < 0) {
 				force.z /= 4;
 			}
-		}
+		}*/
 			
 		rb.AddForce (force * Time.deltaTime);
 
@@ -236,13 +264,15 @@ public class NewController : MonoBehaviour {
 	 * TODO Check if gameObject is present
 	 */ 
 	private void Throw(){
+		float force = Mathf.Min (1, throwBuffer / 5);
+		Debug.Log (force);
 
 		//Get relic
 		GameObject relic = this.transform.Find("Relic").gameObject;
 	
 		//Throw relic and remove as child
 		if (relic) {
-			player.GetComponentInChildren<RelicController> ().Throw();
+			player.GetComponentInChildren<RelicController> ().Throw(force);
 			this.gameObject.GetComponent<CarriedObject>().ReleaseCarriedObject ();
 		}
 	}
@@ -262,7 +292,6 @@ public class NewController : MonoBehaviour {
 			if (vel.z > 0) {
 
 				int divisor = 20;
-				float extra = 0 / divisor;
 
 				//vel.z /= (GetDistanceFromCamera () / 20 + 0.95f);
 				vel.z /= (GetDistanceFromCamera () / divisor + 1);
@@ -271,9 +300,33 @@ public class NewController : MonoBehaviour {
 		}
 	}
 
-	/**
-	 * Returns the distance on the Z-axis from the player to the LEAP
-	 */
+	private void LimitWalkingDistanceSoft(){
+
+		float dis = GetDistanceFromCamera ();
+	
+		//In farzone
+		if (dis > farWalkZone) {
+			
+			Vector3 oldVel = rb.velocity;
+			float counterForce = maxVelocity * (dis-farWalkZone)/walkZoneWidth;
+
+			Vector3 counterVel = new Vector3 (0, 0, -counterForce);
+
+			rb.velocity = oldVel + counterVel;
+		}
+
+		if (dis < nearWalkZone) {
+
+			Vector3 oldVel = rb.velocity;
+			float counterForce = maxVelocity * (dis-nearWalkZone)/walkZoneWidth;
+
+			Vector3 counterVel = new Vector3 (0, 0, -counterForce);
+
+			rb.velocity = oldVel + counterVel;
+		}
+	}
+	
+	 // Returns the distance on the Z-axis from the player to the LEAP
 	private float GetDistanceFromCamera(){
 
 		//Get Z-position of the LEAP
@@ -311,11 +364,12 @@ public class NewController : MonoBehaviour {
 	private void GetInputButtonValues(){
 		moveHorizontal = Input.GetAxis( prefix + "_Horizontal" );
 		moveVertical = Input.GetAxis (prefix + "_Vertical");
+		throwHorizontal = Input.GetAxis( prefix + "_Horizontal2" );
+		throwVertical = Input.GetAxis (prefix + "_Vertical2");
 		pressJump = (Input.GetAxis (prefix + "_Jump") == 1) ? true : false;
 		pressPush = (Input.GetAxis (prefix + "_Push") == 1) ? true : false;
-		pressThrow = (Input.GetAxis (prefix + "_Throw") == 1) ? true : false;
 		pressExplode = (Input.GetAxis (prefix + "_Explode") == 1) ? true : false;
-
+		pressThrow = Input.GetAxis (prefix + "_Throw" );
 	}
 
 	/**
@@ -336,10 +390,20 @@ public class NewController : MonoBehaviour {
 	}
 		
 	private void UpdateDirection (){
+		//Make 2D vector to check velocity on X and Y axis
+		Vector2 throwDirection = new Vector2 (throwHorizontal, throwVertical);
 
-		//Update if magnitude is below threshold
-		if(rb.velocity.magnitude > 1f)
-			direction = rb.velocity;
+		//If right analog is in use
+		if (throwDirection.magnitude > 0.05f )
+		{
+			//Set to throwing angle (right stick), and normalize both
+			direction = new Vector3 (throwDirection.x, 0f, throwDirection.y).normalized ;
+		}
+		//Otherwise, go by velocity (if above 1f)
+		else if(rb.velocity.magnitude > 1f)
+		{
+			direction = rb.velocity.normalized;
+		}
 	}
 		
 	private bool IsGrounded(){

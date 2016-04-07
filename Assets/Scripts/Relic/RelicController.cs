@@ -109,18 +109,23 @@ public class RelicController : MonoBehaviour {
 	}
 		
 
-	public void Throw(){
+	public void Throw(float force){
 
 		int count = 0;
 		//Debug.Log ("throwDirection = " + parent.GetComponent<NewController> ().GetDirection ());
+		Vector3 bodyVelocity = this.gameObject.GetComponentInParent<Rigidbody>().velocity;
 		Vector3 throwDirection = this.gameObject.GetComponentInParent<NewController> ().GetDirection ();
+
+		Debug.Log ("orig. throwDirection = " + throwDirection);
 		Vector3.Normalize (throwDirection);
-		throwDirection.y = 1;
-		throwDirection *= 100;
+
+		throwDirection.y += 0.65f;
+		throwDirection *= 250 + 1000 * Mathf.Pow(force,1.8f);
+
 		Debug.Log ("throwDirection = " + throwDirection);
 		RemoveParent ();
 
-		rb.AddForce ( throwDirection );
+		rb.AddForce ( bodyVelocity + throwDirection );
 		count++;
 
 
