@@ -52,7 +52,7 @@ public class ScalePalmPosition : MonoBehaviour {
 		//Add offset
 		position += GameObjectOffset;
 
-		Debug.Log (this.gameObject.transform.position + " ---> " + position);
+		//Debug.Log (this.gameObject.transform.position + " ---> " + position);
 
 		//Set new position with offset
 		this.gameObject.transform.position = position;
