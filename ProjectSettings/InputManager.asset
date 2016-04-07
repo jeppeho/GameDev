@@ -118,6 +118,22 @@ InputManager:
     axis: 0
     joyNum: 1
   - serializedVersion: 3
+    m_Name: P1_Horizontal2
+    descriptiveName: PS4 Right stick analog
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 2
+    joyNum: 1
+  - serializedVersion: 3
     m_Name: P1_Vertical
     descriptiveName: PS4 Left stick analog
     descriptiveNegativeName: 
@@ -132,6 +148,22 @@ InputManager:
     invert: 1
     type: 2
     axis: 1
+    joyNum: 1
+  - serializedVersion: 3
+    m_Name: P1_Vertical2
+    descriptiveName: PS4 Right stick analog
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
+    snap: 0
+    invert: 1
+    type: 2
+    axis: 5
     joyNum: 1
   - serializedVersion: 3
     m_Name: P1_Jump
@@ -311,19 +343,19 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: P1_Throw
-    descriptiveName: PS4 ROUND button
+    descriptiveName: PS4 R2 trigger
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: joystick 1 button 2
+    positiveButton: 
     altNegativeButton: 
     altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
     snap: 0
     invert: 0
-    type: 0
-    axis: 0
+    type: 2
+    axis: 4
     joyNum: 1
   - serializedVersion: 3
     m_Name: KEYBOARD_Explode
@@ -375,17 +407,17 @@ InputManager:
     joyNum: 1
   - serializedVersion: 3
     m_Name: P2_Throw
-    descriptiveName: PS4 TRIANGLE button
+    descriptiveName: PS4 R2 trigger
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: joystick 2 button 2
+    positiveButton: 
     altNegativeButton: 
     altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
     snap: 0
     invert: 0
-    type: 0
-    axis: 0
+    type: 2
+    axis: 4
     joyNum: 1
