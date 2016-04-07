@@ -20,11 +20,11 @@ TagManager:
   - Hand
   - Relic
   - Player
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Landscape
+  - ObjectsKinematic
+  - ObjectsHeavy
+  - ObjectsLight
+  - ObjectsEvent
   - 
   - 
   - 

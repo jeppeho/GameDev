@@ -65,7 +65,7 @@ public class BoneBehavior : MonoBehaviour {
 		if (col.gameObject.tag == "Environment") {
 
 			float customImpact = Mathf.Clamp((col.relativeVelocity.sqrMagnitude- 100f) /250f, 0, 1);
-			traction = 1-customImpact;
+			traction = 1-customImpact/100; //DEBUG!!
 			//Kill some velocity
 			rb.velocity.Scale(Vector3.zero);
 			//Debug.Log(col.relativeVelocity.sqrMagnitude);

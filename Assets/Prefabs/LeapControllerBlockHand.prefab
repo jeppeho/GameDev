@@ -30,8 +30,6 @@ GameObject:
   - 4: {fileID: 451810}
   - 114: {fileID: 11469044}
   - 114: {fileID: 11440558}
-  - 114: {fileID: 11461146}
-  - 114: {fileID: 11421452}
   m_Layer: 0
   m_Name: LeapControllerBlockHand
   m_TagString: Untagged
@@ -48,8 +46,10 @@ GameObject:
   m_Component:
   - 4: {fileID: 458448}
   - 114: {fileID: 11422026}
-  - 114: {fileID: 11450000}
-  - 114: {fileID: 11474184}
+  - 114: {fileID: 11405306}
+  - 114: {fileID: 11480124}
+  - 114: {fileID: 11487098}
+  - 114: {fileID: 11444126}
   m_Layer: 0
   m_Name: HandController
   m_TagString: Untagged
@@ -63,8 +63,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 156732}
-  m_LocalRotation: {x: 0.2472527, y: 0, z: 0, w: 0.96895105}
-  m_LocalPosition: {x: 0, y: 4.34, z: -7.79}
+  m_LocalRotation: {x: 0.23174793, y: 0, z: 0, w: 0.9727759}
+  m_LocalPosition: {x: 0, y: 7, z: -7.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 451810}
@@ -143,17 +143,23 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 156732}
   m_Enabled: 1
---- !u!114 &11421452
+--- !u!114 &11405306
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 183102}
+  m_GameObject: {fileID: 185974}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 755f2ce51a4624c1a9a1df440c8d2922, type: 3}
+  m_Script: {fileID: 11500000, guid: 511df8adce5b5cf42a64f66c757813c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handObject: {fileID: 0}
+  fingerBoneScale: 1
+  globalTraction: 1
+  globalTractionRegeneration: 0.5
+  globalTractionBuffer: 0
+  handColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &11422026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -162,11 +168,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 185974}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be6002c7e1f5041ac9b1b83ca1b2e04d, type: 3}
+  m_Script: {fileID: 11500000, guid: d8d7df671d4564a4d8d909e7dd2d12cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handPositionOffset: {x: 0, y: -3, z: 1}
-  handPositionScale: {x: 5, y: 1.6, z: 2.5}
+  handPositionOffset: {x: 0, y: -3, z: 2}
+  handPositionScale: {x: 3.5, y: 2, z: 3.8}
+  handSizeScale: 1.5
 --- !u!114 &11426190
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -210,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 755f2ce51a4624c1a9a1df440c8d2922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11450000
+--- !u!114 &11444126
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -218,20 +225,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 185974}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65952675b90d94319b3d02195d4f2434, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FingerBone: {fileID: 196962, guid: 727d892d2dd0b4bcdac674f5b5988403, type: 2}
-  handColor: {r: 0.49803922, g: 0.49803922, b: 0.49803922, a: 0}
---- !u!114 &11461146
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 183102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97677197f6cce42f58969ca403b1c985, type: 3}
+  m_Script: {fileID: 11500000, guid: 38919993f04e96c498cdcd252cddbfd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &11469044
@@ -245,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97677197f6cce42f58969ca403b1c985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11474184
+--- !u!114 &11480124
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -254,6 +248,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ccd9d98d62cb2584bb7e4e347561007c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11487098
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 185974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34d954cc3a01c514695e7eaa9edb18f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   summonedObject: {fileID: 126238, guid: 1cec7b0ace4ec491dadbaf7ae4defbea, type: 2}

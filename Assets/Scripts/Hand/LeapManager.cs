@@ -2,21 +2,24 @@
 using System.Collections;
 using Leap;
 
-public class LeapVariables : MonoBehaviour {
+public class LeapManager : MonoBehaviour {
 
 	private Controller controller;
 	private Frame frame;
+	private Frame firstFrame;
 	private Hand hand;
 
 	public Vector3 handPositionOffset;
 	public Vector3 handPositionScale;
-	//public Vector3 handSizeScale;
+	public float handSizeScale;
 	
 	private Vector3 handPositionScaleShift;
 	private Vector3 handPositionLastFrame;
 	// Use this for initialization
 	void Start () {
 		controller = new Controller ();
+		UpdateFrame ();
+		firstFrame = frame;
 	}
 	
 	// Update is called once per frame
@@ -24,6 +27,7 @@ public class LeapVariables : MonoBehaviour {
 		UpdateFrame();
 		UpdateHand ();
 		UpdateScaleShift ();
+		//DebugVariables (); //DEBUG
 	}
 
 	//Updating the scale-shift: The Vector that should be added to all positions, shifting them exponentially away from origo.
@@ -42,13 +46,25 @@ public class LeapVariables : MonoBehaviour {
 	{
 		return new Vector3(v.x * handPositionScale.x, v.y * handPositionScale.y, v.z * handPositionScale.z) + handPositionOffset;
 	}
-/*
-	//For adding the custom (size-) scale to the hand as an object
+
+	//For adding the custom (size-) scale to the entire hand as an object
 	private Vector3 AddSizeScale(Vector3 v)
 	{
-		return new Vector3(v.x * handSizeScale.x, v.y * handSizeScale.y, v.z * handSizeScale.z);
+		//Scale up
+		Vector3 r = new Vector3(v.x * handSizeScale, v.y * handSizeScale, v.z * handSizeScale);
+		//..And calculate how far off that puts the palm's position
+			//First get the palm
+			Vector3 p = ToCustomScale (hand.PalmPosition);
+			//Then scale that by handSizeScale
+			p = new Vector3(p.x * handSizeScale, p.y * handSizeScale, p.z * handSizeScale);
+			//Then calculate how to counter for that shift in position
+			Vector3 counterScaleShift = p - ToCustomScale (hand.PalmPosition);
+		//Subtract that yet again
+		r = r - counterScaleShift;
+		//And return the result
+		return r;
 	}
-*/	
+
 	//For converting points in world space to vectors adjusted to our scene
 	private Vector3 ToCustomScale(Vector v)
 	{
@@ -107,12 +123,22 @@ public class LeapVariables : MonoBehaviour {
 		return AddScaleShift(  ToCustomScale(hand.PalmPosition)  );
 	}
 
+	//Get palm's world position
+	public Vector3 GetPalmWorldPosition (){
+		return GetPalmPosition () + GetOffsetFromParent ();
+	}
+
 	//Get palm's normal
 	public Vector3 GetPalmNormal (){
 		return GetHand().PalmNormal.ToUnity();
 	}
 
-	//Get palm's normal
+	//Get palm's rotation (quaternion)
+	public Quaternion GetPalmRotation (){
+		return GetHand ().Basis.Rotation (false);
+	}
+		
+	//Get palm's velocity
 	public Vector3 GetPalmVelocity (){
 		return GetHand().PalmVelocity.ToUnity();
 	}
@@ -124,7 +150,12 @@ public class LeapVariables : MonoBehaviour {
 
 	//Get position of fingertip 'f'
 	public Vector3 GetFingertipPosition (int f){
-		return AddScaleShift(  ToCustomScale(GetFinger(f).TipPosition)  );
+		return AddScaleShift(  AddSizeScale(ToCustomScale(GetFinger(f).TipPosition))  );
+	}
+
+	public Vector3 GetFingertipWorldPosition (int f)
+	{
+		return GetFingertipPosition (f) + GetOffsetFromParent ();
 	}
 
 	//Get bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
@@ -146,13 +177,31 @@ public class LeapVariables : MonoBehaviour {
 	//Get base position of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
 	public Vector3 GetBoneBasePosition (int f, int b)
 	{
-		return AddScaleShift( ToCustomScale (GetBone (f, b).PrevJoint));
+		return AddScaleShift( AddSizeScale(ToCustomScale (GetBone (f, b).PrevJoint)));
+	}
+
+	//Get base position of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.) in the world
+	public Vector3 GetBoneBaseWorldPosition (int f, int b)
+	{
+		return GetBoneBasePosition (f, b) + GetOffsetFromParent ();
 	}
 
 	//Get center position of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
 	public Vector3 GetBoneCenterPosition (int f, int b)
 	{
-			return AddScaleShift( ToCustomScale (GetBone (f, b).Center));
+		return AddScaleShift( AddSizeScale(ToCustomScale (GetBone (f, b).Center)));
+	}
+
+	//Get center position of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.) in the world
+	public Vector3 GetBoneCenterWorldPosition (int f, int b)
+	{
+		return GetBoneCenterPosition (f, b) + GetOffsetFromParent ();
+	}
+
+	//Get rotation (quaternion) of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
+	public Quaternion GetBoneRotation (int f, int b)
+	{
+		return GetBone (f, b).Basis.Rotation ();
 	}
 
 	///////////////////////////////////////////////////////////////////// 
@@ -204,14 +253,14 @@ public class LeapVariables : MonoBehaviour {
 	{
 		return GetVectorsClose (GetFingertipPosition(f), pos, t);
 	}
-		
+
 	//Get whether finger 'f' is extended (true/false)
 	public bool GetFingerIsExtended (int f){
 		return GetFinger(f).IsExtended;
 	}
 
 	//Get whether the fingers meet a certain patthern, in terms of being extended (true/false)
-	public bool GetFingerPatternIsExtended (bool f0, bool f1, bool f2, bool f3, bool f4){
+	public bool GetFingerIsExtendedPattern (bool f0, bool f1, bool f2, bool f3, bool f4){
 		return (GetFinger (0).IsExtended == f0)
 			&& (GetFinger (1).IsExtended == f1)
 			&& (GetFinger (2).IsExtended == f2)
@@ -219,8 +268,22 @@ public class LeapVariables : MonoBehaviour {
 			&& (GetFinger (4).IsExtended == f4);
 	}
 
+	///////////////////////////////////////////////////////////////////// 
+	// Other methods
+
+
+	private Vector3 GetOffsetFromParent(){
+		return gameObject.GetComponentInParent<Transform> ().transform.position;
+	}
+
 	//Prints normal, position, fingers etc. to console
 	public void DebugVariables (){
-		Debug.Log ("Pos: " + GetPalmPosition ().ToString () + " | Norm:" + GetPalmNormal ().ToString () + " | FingersExt: {" + GetFingerIsExtended (0).ToString () + "," + GetFingerIsExtended (1).ToString () + "," + GetFingerIsExtended (2).ToString () + "," + GetFingerIsExtended (3).ToString () + "," + GetFingerIsExtended (4).ToString () + "}");
+		Debug.Log ("Pos: " + GetPalmPosition ().ToString () + " | Norm:" + GetPalmNormal ().ToString () + " | FingersExt: {" + GetFingerIsExtended (0).ToString () + "," + GetFingerIsExtended (1).ToString () + "," + GetFingerIsExtended (2).ToString () + "," + GetFingerIsExtended (3).ToString () + "," + GetFingerIsExtended (4).ToString () + "} | GrabStr: " + GetHandGrabStrength().ToString());
+	}
+
+	private Quaternion GetRotationFromMatrix(this Matrix matrix) {
+		Vector3 up = matrix.TransformDirection(Leap.Vector.Up).ToUnity();
+		Vector3 forward = matrix.TransformDirection(Leap.Vector.Forward).ToUnity();
+		return Quaternion.LookRotation(forward, up);
 	}
 }
