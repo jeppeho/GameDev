@@ -24,6 +24,18 @@ public class NoiseGenerator : MonoBehaviour {
 
 	private int numSamples = 128;
 
+	private int lastRandom = -1; //This is used for the GetRandomNotLastValue()... not a good implementation
+
+
+	public int GetRandomNotLastValue(int numValues){
+		int randomInt = Mathf.FloorToInt (Random.Range (0, numValues));
+
+		while(randomInt == lastRandom)
+			randomInt = Mathf.FloorToInt (Random.Range (0, numValues));
+		
+		return randomInt; 
+	}
+
 	public float[] GetRandomNoise1D(float minMap, float maxMap){
 
 		float[] noise = new float[numSamples];
@@ -89,6 +101,8 @@ public class NoiseGenerator : MonoBehaviour {
 
 		return noise;
 	}
+
+
 
 	public void SetRandomSeed(int seed){
 		Random.seed = seed;
