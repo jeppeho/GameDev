@@ -50,12 +50,12 @@ public class LevelGenerator : MonoBehaviour {
 	private void GenerateLevel(){
 
 		//GENERATE PLANE
-		float[] planeNoise = NG.GetPerlinNoise1D (0, 10, 0.6f, -1, 1);
+		float[] planeNoise = NG.GetPerlinNoise1D (3, 10, 0.6f, -1, 1);
 		float[] steppingStoneNoise = NG.GetPerlinNoise1D (0, 5, 0.8f, -0.5f, 1);
 		float[] steppingStoneNoise2 = NG.GetPerlinNoise1D (0, 5, 0.8f, -1, 0.5f);
 		float[] steppingStoneNoise3 = NG.GetRandomNoise1D (-0.5f, 1);
 		//NG.CreateVisualRepresentationSingle (planeNoise, 20);
-		NG.CreateVisualRepresentationSingle (steppingStoneNoise3, 5);
+		NG.CreateVisualRepresentationSingle (planeNoise, 20);
 
 		//Set start planes
 		for (int i = 0; i < startingCell; i++)
@@ -66,13 +66,13 @@ public class LevelGenerator : MonoBehaviour {
 
 			float n = planeNoise [sample];
 
-			if (n < -0.7f && n > -1f) {
+			if (n < -0.6f && n > -1f) {
 				CreateLavaSlice (new Vector3 (0, 0, sample));
 				if (steppingStoneNoise3 [sample] > 0) {
 					CreateLavaSteppingStone (new Vector3 (steppingStoneNoise [sample] * levelWidth / 2, 0, sample), sample);
 				}
-				//CreateLavaSteppingStone (new Vector3 (steppingStoneNoise2[sample] * levelWidth / 2, 0, sample), sample);
-			}else if(n < -0.6f)
+				CreateLavaSteppingStone (new Vector3 (steppingStoneNoise2[sample] * levelWidth / 2, 0, sample), sample);
+			}else if(n < -0.5f)
 				CreateLavaStoneSlice (new Vector3 (0, 0, sample));
 			else if (n > 0.0f && n < 0.2f)
 				CreateWaterSlice (new Vector3 (0, 0, sample));
@@ -88,14 +88,14 @@ public class LevelGenerator : MonoBehaviour {
 
 
 		//GENERATE CUBESTACKS
-//		float[] stackNoise = NG.GetRandomNoise1D(-1, 1);
-//		float[] stackPositionNoise = NG.GetRandomNoise1D(-5, 5);
-//		float[] stackWidthNoise = NG.GetPerlinNoise1D (0, 3, 0.5f, 0.5f, 2.5f);
-//
-//		//STACKS PLACED AT RANDOM WITH A PERLIN NOISE TO DECIDE WIDTH
-////		for (int sample = 0; sample < PN.GetNumSamples (); sample++)
-////			if (stackNoise[sample] < 0.2f && stackNoise[sample] > -0.2f) 
-////				CreateCubeStack(new Vector3(stackPositionNoise[sample], 0, sample), stackWidthNoise[sample]);
+		float[] stackNoise = NG.GetRandomNoise1D(-1, 1);
+		float[] stackPositionNoise = NG.GetRandomNoise1D(-5, 5);
+		float[] stackWidthNoise = NG.GetPerlinNoise1D (0, 3, 0.5f, 0.5f, 2.5f);
+
+		//STACKS PLACED AT RANDOM WITH A PERLIN NOISE TO DECIDE WIDTH
+		for (int sample = 0; sample < NG.GetNumSamples (); sample++)
+			if (stackNoise[sample] < 0.2f && stackNoise[sample] > -0.2f) 
+				CreateCubeStack(new Vector3(stackPositionNoise[sample], 0, sample), stackWidthNoise[sample]);
 //
 //		//FEW BIG OR MANY SMALL STACKS - OR NONE..?
 //		float[] stackVarNoise = NG.GetPerlinNoise1D (0, 3, 0.5f, 0f, 0.5f);

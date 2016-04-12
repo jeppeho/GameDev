@@ -150,13 +150,14 @@ public class NewController : MonoBehaviour {
 		//Check if player is moving through water
 		if (GetTagOfSurface () == "Water")
 			force /= 4;
+		
 
 		//If player is running towards camera, slow down velocity
-		/*if (rb.velocity.z < 0) {
+		if (rb.velocity.z < 0) {
 			if (force.z < 0) {
-				force.z /= 4;
+				force.z /= 2;
 			}
-		}*/
+		}
 			
 		rb.AddForce (force * Time.deltaTime);
 
@@ -231,10 +232,11 @@ public class NewController : MonoBehaviour {
 			jumpPower /= 3;
 
 		//Add speed on X and Z axis if jumping
-		float hor = moveHorizontal * accelerationRate / 5;
-		float ver = moveVertical * accelerationRate / 5;
+//		float hor = moveHorizontal * accelerationRate / 5;
+//		float ver = moveVertical * accelerationRate / 5;
 
-		rb.AddForce ( new Vector3(hor, jumpPower, ver) );
+		//rb.AddForce ( new Vector3(hor, jumpPower, ver) );
+		rb.AddForce ( new Vector3(0, jumpPower, 0) );
 	}
 
 
