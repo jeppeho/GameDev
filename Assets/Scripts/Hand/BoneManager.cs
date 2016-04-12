@@ -203,11 +203,13 @@ public class BoneManager : MonoBehaviour {
 
 			//Kill some velocity
 			rb.velocity.Scale(Vector3.zero);
-
-
+		}
+		if (col.gameObject.layer == 15)   //I.e. Event Object
+		{
+			Destroy(col.gameObject);
 		}
 	}
-
+	
 	private void PlayImpact(float magnitude)
 	{
 		//Handle audio
@@ -215,11 +217,6 @@ public class BoneManager : MonoBehaviour {
 		{
 			audioManager.Play ("rockImpact", Mathf.Clamp((magnitude+20) / 200 + Random.Range(-0.1f, 0.1f),0,1), gameObject);
 		}
-
-        if (col.gameObject.layer == 15)   //I.e. Event Object
-        {
-            Destroy(col.gameObject);
-        }
     }
 
 	private void UpdateCombinedTraction()
