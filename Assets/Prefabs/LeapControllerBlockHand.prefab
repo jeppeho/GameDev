@@ -154,8 +154,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 511df8adce5b5cf42a64f66c757813c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioplayerCasting: {fileID: 0}
   handObject: {fileID: 0}
-  fingerBoneScale: 1
+  fingerBoneScale: 0.9
   globalTraction: 1
   globalTractionRegeneration: 0.5
   globalTractionBuffer: 0
@@ -173,7 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handPositionOffset: {x: 0, y: -3, z: 2}
   handPositionScale: {x: 3.5, y: 2, z: 3.8}
-  handSizeScale: 1.5
+  handSizeScale: 2.2
 --- !u!114 &11426190
 MonoBehaviour:
   m_ObjectHideFlags: 1

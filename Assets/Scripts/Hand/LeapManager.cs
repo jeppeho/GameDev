@@ -204,6 +204,12 @@ public class LeapManager : MonoBehaviour {
 		return GetBone (f, b).Basis.Rotation ();
 	}
 
+	//Get rotation (quaternion) of bone 'b' on finger 'f' (thumb = 0, index = 1 etc.) (metarcarpal = 0, proximal = 1 etc.)
+	public Vector3 GetBoneDiretion (int f, int b)
+	{
+		return GetBone (f, b).Direction.ToUnity ();
+	}
+
 	///////////////////////////////////////////////////////////////////// 
 	// Mostly for gesture recognition
 
