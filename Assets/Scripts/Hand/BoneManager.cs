@@ -80,9 +80,12 @@ public class BoneManager : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
+		if (rb == null)
+		{
+		}
 
 		//Update position and scale
-		position = gameObject.GetComponent<Rigidbody> ().transform.position;
+		position = rb.transform.position;
 
 		//Update mass
 		rb.mass = boneMass * structure;

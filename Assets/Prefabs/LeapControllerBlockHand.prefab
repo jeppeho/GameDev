@@ -251,8 +251,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccd9d98d62cb2584bb7e4e347561007c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handManager: {fileID: 0}
-  baseColor: {r: 0.31617647, g: 0.19753012, b: 0.14413927, a: 0}
 --- !u!114 &11487098
 MonoBehaviour:
   m_ObjectHideFlags: 1

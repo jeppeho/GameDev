@@ -57,7 +57,7 @@ public class RelicController : MonoBehaviour {
 	public bool IsWithinBounds(){
 		//if (GetPosition ().x > maxX || GetPosition ().x < minX || GetPosition ().y < minY || GetPosition().z < minZ)
 		//LevelManager lm = new LevelManager();
-		if (GetPosition ().x < LevelManager.MIN_X || GetPosition ().x > LevelManager.MAX_X || GetPosition ().y < LevelManager.MIN_Y || GetPosition().z < LevelManager.MIN_Z)
+		if (GetPosition ().x < LevelManager.MIN_X || GetPosition ().x > LevelManager.MAX_X || GetPosition ().y < LevelManager.MIN_Y || GetPosition().z < LevelManager.RELIC_MINZ)
 			return false;
 		else
 			return true;

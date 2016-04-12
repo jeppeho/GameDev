@@ -56,9 +56,9 @@ public class NewController : MonoBehaviour {
 		maxVelocity *= LevelManager.SPEED;
 		accelerationRate *= LevelManager.SPEED;
 
-		nearWalkZone = LevelManager.MOVEMIN_Z+LevelManager.MOVE_ZONE_WIDTH;
-		farWalkZone = LevelManager.MOVEMAX_Z-LevelManager.MOVE_ZONE_WIDTH;
-		walkZoneWidth = LevelManager.MOVE_ZONE_WIDTH;
+		nearWalkZone = LevelManager.MOVE_MINZ+LevelManager.MOVE_ZONEWIDTH;
+		farWalkZone = LevelManager.MOVE_MAXZ-LevelManager.MOVE_ZONEWIDTH;
+		walkZoneWidth = LevelManager.MOVE_ZONEWIDTH;
 	}
 
 	
