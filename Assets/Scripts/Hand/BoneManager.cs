@@ -82,6 +82,7 @@ public class BoneManager : MonoBehaviour {
 	{
 		if (rb == null)
 		{
+			gameObject.GetComponent<Rigidbody> (); //This is just a quick fix.. not sure why nessicary!
 		}
 
 		//Update position and scale
