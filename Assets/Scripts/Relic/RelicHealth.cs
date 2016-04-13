@@ -17,14 +17,11 @@ public class RelicHealth : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		Debug.Log ("GetNormalizedHealth() = " + GetNormalizedHealth ());
-
 		if (!HasParent ())
 			DrainEnergy (1);
 
 		UpdateColor ();
 	}
-
 
 
 	/**
@@ -53,22 +50,25 @@ public class RelicHealth : MonoBehaviour {
 	}
 
 	/**
-	 * Drain energy
+	 * Drain energy and update the color
 	 */
 	private void DrainEnergy(float drain){
 		health -= drain;
 		if(health % 100 == 0)
 			Debug.Log("Health = " + health);
 
+		UpdateColor ();
+
 		if (health < 0) {
 			DeleteObject ();
 		}
 	}
 
+
+	/**
+	 * Updates the color on the basis of how much health is left
+	 */
 	private void UpdateColor(){
-
-
-
 		this.GetComponent<Renderer> ().material.color =  new Color(1, GetNormalizedHealth(), GetNormalizedHealth());
 	}
 
@@ -82,7 +82,6 @@ public class RelicHealth : MonoBehaviour {
 	}
 
 	private void DeleteObject(){
-		Debug.Log ("DESTROYING");
 		Destroy (this.gameObject);
 	}
 }

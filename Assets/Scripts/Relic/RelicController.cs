@@ -52,6 +52,7 @@ public class RelicController : MonoBehaviour {
 			//Make sure velocity doesn't go nuts
 			CapVelocity ();
 
+			//OLD WAY
 //			if (!IsWithinBounds ()) {
 //
 //				if (GetPosition ().y < 1f) {

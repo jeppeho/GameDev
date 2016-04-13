@@ -183,7 +183,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 469704, guid: 511ee22fdc618429cbe49feba0237e03, type: 2}
       propertyPath: m_RootOrder
-      value: 19
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 511ee22fdc618429cbe49feba0237e03, type: 2}
@@ -271,7 +271,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 451810, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 183102, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
       propertyPath: m_Name
@@ -321,7 +321,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 427762, guid: c79b7611d6b65f942953756996eed9ff, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c79b7611d6b65f942953756996eed9ff, type: 2}
@@ -1167,22 +1167,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 13
---- !u!1 &1916988037 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 152758, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-  m_PrefabInternal: {fileID: 2004941928}
---- !u!114 &1916988044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1916988037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baf2a1b4219ed4db1a6f412e8745dea4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startHealth: 1000
 --- !u!1 &1996801148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1341,10 +1325,6 @@ Prefab:
     - target: {fileID: 479642, guid: 09b54316904da4311ad77ab122610f45, type: 2}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11489854, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: cameraZOffsetBound
-      value: -4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09b54316904da4311ad77ab122610f45, type: 2}
