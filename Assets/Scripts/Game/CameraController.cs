@@ -28,6 +28,10 @@ public class CameraController : MonoBehaviour {
 		this.gameObject.transform.position = position;
 	}
 
+	public Vector3 GetPosition(){
+		return this.transform.position;
+	}
+
 	public float GetZPosition(){
 		return this.transform.position.z;
 	}
