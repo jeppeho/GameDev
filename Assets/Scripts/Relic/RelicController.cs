@@ -197,7 +197,7 @@ public class RelicController : MonoBehaviour {
 		Debug.Log ("throwDirection = " + throwDirection);
 		RemoveParent ();
 
-		rb.AddForce ( bodyVelocity + throwDirection );
+		rb.AddForce ( /*bodyVelocity +*/ throwDirection );
 	
 		count++;
 	}

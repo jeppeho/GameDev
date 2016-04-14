@@ -118,6 +118,22 @@ InputManager:
     axis: 0
     joyNum: 1
   - serializedVersion: 3
+    m_Name: P1_XboxHorizontal
+    descriptiveName: PS4 Left stick analog
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 0
+    joyNum: 1
+  - serializedVersion: 3
     m_Name: P1_Horizontal2
     descriptiveName: PS4 Right stick analog
     descriptiveNegativeName: 
@@ -134,7 +150,39 @@ InputManager:
     axis: 2
     joyNum: 1
   - serializedVersion: 3
+    m_Name: P1_XboxHorizontal2
+    descriptiveName: PS4 Right stick analog
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 3
+    joyNum: 1
+  - serializedVersion: 3
     m_Name: P1_Vertical
+    descriptiveName: PS4 Left stick analog
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
+    snap: 0
+    invert: 1
+    type: 2
+    axis: 1
+    joyNum: 1
+  - serializedVersion: 3
+    m_Name: P1_XboxVertical
     descriptiveName: PS4 Left stick analog
     descriptiveNegativeName: 
     negativeButton: 
@@ -164,6 +212,22 @@ InputManager:
     invert: 1
     type: 2
     axis: 5
+    joyNum: 1
+  - serializedVersion: 3
+    m_Name: P1_XboxVertical2
+    descriptiveName: PS4 Right stick analog
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
+    snap: 0
+    invert: 1
+    type: 2
+    axis: 4
     joyNum: 1
   - serializedVersion: 3
     m_Name: P1_Jump
@@ -356,6 +420,22 @@ InputManager:
     invert: 0
     type: 2
     axis: 4
+    joyNum: 1
+  - serializedVersion: 3
+    m_Name: P1_XboxThrow
+    descriptiveName: PS4 R2 trigger
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 9
     joyNum: 1
   - serializedVersion: 3
     m_Name: KEYBOARD_Explode
