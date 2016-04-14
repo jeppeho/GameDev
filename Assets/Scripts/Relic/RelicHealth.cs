@@ -36,12 +36,11 @@ public class RelicHealth : MonoBehaviour {
 	 */
 	void OnCollisionEnter(Collision col){
 		
-		//float relicForce = rb.velocity.magnitude;
 		float relativeVelocity = col.relativeVelocity.magnitude;
 
 		if (!manager.HasParent ()) {
 
-			Debug.Log ("relativeVelocity = " + relativeVelocity);
+			//Only drain if above some threshold
 			if (relativeVelocity > 3f) {
 				float drain = Mathf.FloorToInt (relativeVelocity * 2);
 
@@ -50,11 +49,12 @@ public class RelicHealth : MonoBehaviour {
 					drain = 30f;
 
 				DrainEnergy (drain);
+			}
+		} else {
+			if (relativeVelocity > 20) {
 
-				if (relativeVelocity > 20) {
-					//Remove from parent
-					manager.RemoveParent();
-				}
+				//Remove from parent
+				manager.RemoveParent ();
 			}
 		}
 	}
