@@ -7,30 +7,28 @@ public class RelicHealth : MonoBehaviour {
 	private float health;
 
 	private Rigidbody rb;
+	private RelicManager manager;
 
 	// Use this for initialization
 	void Start () {
 		health = startHealth;
 		rb = GetComponent<Rigidbody> ();
+		manager = GetComponent<RelicManager> ();
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		if (!HasParent ())
+
+
+		if (!manager.HasParent ())
 			DrainEnergy (1);
 
 		UpdateColor ();
 	}
 
 
-	/**
-	 * If game object has a parent return true
-	 * else return false
-	 */
-	private bool HasParent(){
-		return transform.parent;
-	}
+
 
 	/**
 	 * On collision drain energy, linearly to velocity between colliding objects
@@ -38,15 +36,25 @@ public class RelicHealth : MonoBehaviour {
 	 */
 	void OnCollisionEnter(Collision col){
 		
-		float relicForce = rb.velocity.magnitude;
+		//float relicForce = rb.velocity.magnitude;
+		float relativeVelocity = col.relativeVelocity.magnitude;
 
-		float drain = Mathf.FloorToInt (col.relativeVelocity.magnitude * 2);
+		Debug.Log ("relativeVelocity = " + relativeVelocity);
+		if (relativeVelocity > 3f) {
+			float drain = Mathf.FloorToInt (relativeVelocity * 2);
 
-		//Limit max energy drain
-		if (drain > 30f)
-			drain = 30f;
+			//Limit max energy drain
+			if (drain > 30f)
+				drain = 30f;
 
-		DrainEnergy (drain);
+			DrainEnergy (drain);
+
+			if (relativeVelocity > 20) {
+				//Remove from parent
+				manager.RemoveParent();
+			}
+				
+		}
 	}
 
 	/**
@@ -60,6 +68,7 @@ public class RelicHealth : MonoBehaviour {
 		UpdateColor ();
 
 		if (health < 0) {
+			manager.RemoveParent ();
 			DeleteObject ();
 		}
 	}

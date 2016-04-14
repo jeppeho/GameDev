@@ -52,14 +52,14 @@ public class CarriedObject : MonoBehaviour {
 					carriedObject = collision.gameObject;
 
 					//Set player as parent to Relic
-					carriedObject.GetComponent<RelicController>().SetParent(this.gameObject.transform);
+					carriedObject.GetComponent<RelicManager>().SetParent(this.gameObject.transform);
 				}
 			}
 		}
 	}
 
 	public void ReleaseCarriedObject(){
-		carriedObject.GetComponent<RelicController>().RemoveParent();
+		carriedObject.GetComponent<RelicManager>().RemoveParent();
 		carriedObject = null;
 	}
 		
