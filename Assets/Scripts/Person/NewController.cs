@@ -6,6 +6,9 @@ public class NewController : MonoBehaviour {
 	//Prefix for controller type
 	public string prefix;
 
+	//Prefix for producer of controller
+	public string producer;
+
 	//Buttons
 	private float moveHorizontal;
 	private float moveVertical;
@@ -98,7 +101,19 @@ public class NewController : MonoBehaviour {
 
 			//Check if player should throw relic
 			if (pressThrow > 0.05f && this.gameObject.GetComponent<CarriedObject> ().isCarrying () == true) {
-				throwBuffer += (pressThrow+1)/2;
+
+				//Reverse if Xbox
+
+
+				if (producer.Equals("Xbox"))
+				{
+						throwBuffer += pressThrow;
+				}
+				else
+				{
+						throwBuffer += (pressThrow+1)/2;		
+				}
+
 				throwCounter++;
 
 				if (throwCounter >= 5)
@@ -267,7 +282,7 @@ public class NewController : MonoBehaviour {
 	 */ 
 	private void Throw(){
 		float force = Mathf.Min (1, throwBuffer / 5);
-		Debug.Log (force);
+		//Debug.Log (force);
 
 		//Get relic
 		GameObject relic = this.transform.Find("Relic").gameObject;
@@ -364,14 +379,14 @@ public class NewController : MonoBehaviour {
 
 	//Gets the input from the controller and maps it to variables
 	private void GetInputButtonValues(){
-		moveHorizontal = Input.GetAxis( prefix + "_Horizontal" );
-		moveVertical = Input.GetAxis (prefix + "_Vertical");
-		throwHorizontal = Input.GetAxis( prefix + "_Horizontal2" );
-		throwVertical = Input.GetAxis (prefix + "_Vertical2");
+		moveHorizontal = Input.GetAxis( prefix + "_" + producer + "Horizontal" );
+		moveVertical = Input.GetAxis (prefix + "_" + producer + "Vertical");
+		throwHorizontal = Input.GetAxis( prefix + "_" + producer + "Horizontal2" );
+		throwVertical = Input.GetAxis (prefix + "_" + producer + "Vertical2");
 		pressJump = (Input.GetAxis (prefix + "_Jump") == 1) ? true : false;
 		pressPush = (Input.GetAxis (prefix + "_Push") == 1) ? true : false;
 		pressExplode = (Input.GetAxis (prefix + "_Explode") == 1) ? true : false;
-		pressThrow = Input.GetAxis (prefix + "_Throw" );
+		pressThrow = Input.GetAxis (prefix + "_" + producer + "Throw" );
 	}
 
 	/**
