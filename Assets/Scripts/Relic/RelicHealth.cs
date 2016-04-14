@@ -39,21 +39,23 @@ public class RelicHealth : MonoBehaviour {
 		//float relicForce = rb.velocity.magnitude;
 		float relativeVelocity = col.relativeVelocity.magnitude;
 
-		Debug.Log ("relativeVelocity = " + relativeVelocity);
-		if (relativeVelocity > 3f) {
-			float drain = Mathf.FloorToInt (relativeVelocity * 2);
+		if (!manager.HasParent ()) {
 
-			//Limit max energy drain
-			if (drain > 30f)
-				drain = 30f;
+			Debug.Log ("relativeVelocity = " + relativeVelocity);
+			if (relativeVelocity > 3f) {
+				float drain = Mathf.FloorToInt (relativeVelocity * 2);
 
-			DrainEnergy (drain);
+				//Limit max energy drain
+				if (drain > 30f)
+					drain = 30f;
 
-			if (relativeVelocity > 20) {
-				//Remove from parent
-				manager.RemoveParent();
+				DrainEnergy (drain);
+
+				if (relativeVelocity > 20) {
+					//Remove from parent
+					manager.RemoveParent();
+				}
 			}
-				
 		}
 	}
 

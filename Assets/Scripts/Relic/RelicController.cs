@@ -34,7 +34,7 @@ public class RelicController : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		if (manager.GetParent() == null) {
+		if (!manager.HasParent()) {
 
 			//Check if below ground
 			if (manager.GetPosition ().y < 0.2f) {
