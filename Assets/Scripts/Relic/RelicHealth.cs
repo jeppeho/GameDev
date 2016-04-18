@@ -19,12 +19,10 @@ public class RelicHealth : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-
-
 		if (!manager.HasParent ())
 			DrainEnergy (1);
-
-		//UpdateColor ();
+		else
+			UpdateColor ();
 	}
 
 
@@ -65,23 +63,12 @@ public class RelicHealth : MonoBehaviour {
 	public void DrainEnergy(float drain){
 		health -= drain;
 
-		//UpdateColor ();
-		if(drain > 1)
-			UpdateColor ();
+		if (drain > 1)
+			FlashColor ();
 		else if (Time.frameCount % 30 == 0)
-			this.GetComponent<Renderer> ().material.color = new Color (1, 1, 1);
+			FlashColor ();
 		else
 			UpdateColor ();
-			
-		Debug.Log ("Draining energy with drain = " + drain);
-
-//		if (drain > 1) {
-//			//Flash when draining energy
-//
-//			this.GetComponent<Renderer> ().material.color =  new Color(1, 1, 1);
-//		} else {
-//			UpdateColor ();
-//		}
 
 		if (health < 0) {
 			manager.RemoveParent ();
@@ -96,6 +83,10 @@ public class RelicHealth : MonoBehaviour {
 	private void UpdateColor(){
 		this.GetComponent<Renderer> ().material.color =  new Color(1, GetNormalizedHealth(), GetNormalizedHealth());
 		this.GetComponent<Renderer> ().material.color =  new Color(GetNormalizedHealth(), 0, 0);
+	}
+
+	private void FlashColor(){
+		this.GetComponent<Renderer> ().material.color = new Color (1, 1, 1);
 	}
 
 	/**

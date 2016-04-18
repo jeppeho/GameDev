@@ -490,6 +490,22 @@ InputManager:
     descriptiveName: PS4 R2 trigger
     descriptiveNegativeName: 
     negativeButton: 
+    positiveButton: joystick 1 button 7
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 5
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: P2_Horizontal2
+    descriptiveName: PS4 Right stick analog
+    descriptiveNegativeName: 
+    negativeButton: 
     positiveButton: 
     altNegativeButton: 
     altPositiveButton: 
@@ -499,5 +515,37 @@ InputManager:
     snap: 0
     invert: 0
     type: 2
-    axis: 4
-    joyNum: 1
+    axis: 2
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: P2_Vertical2
+    descriptiveName: PS4 Right stick analog
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
+    snap: 0
+    invert: 1
+    type: 2
+    axis: 3
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: P2_Throw
+    descriptiveName: PS4 R2 trigger
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0

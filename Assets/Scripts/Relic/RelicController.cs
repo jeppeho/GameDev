@@ -50,7 +50,6 @@ public class RelicController : MonoBehaviour {
 
 				//If relic is about to go behind camera
 				float wall = camera.GetComponent<CameraController> ().GetPosition ().z + cameraZOffsetBound;
-				Debug.Log (camera.GetComponent<CameraController> ().GetPosition ().z + " + " + cameraZOffsetBound + " = " + wall);
 				if (manager.GetPosition ().z < wall ) {
 					PushForward ();
 				}
@@ -169,8 +168,9 @@ public class RelicController : MonoBehaviour {
 
 		Vector3.Normalize (throwDirection);
 
-		throwDirection.y += 0.65f;
-		throwDirection *= 250 + 1000 * Mathf.Pow(force,2f);
+		throwDirection.y += 0.1f;
+		throwDirection *= 750 + 5000 * Mathf.Pow(force,2f);
+		Debug.Log ("throw Force = " + force);
 
 		manager.RemoveParent ();
 

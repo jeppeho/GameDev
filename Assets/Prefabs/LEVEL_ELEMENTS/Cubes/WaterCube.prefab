@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 498414}
-  m_Layer: 4
+  m_Layer: 11
   m_Name: WaterCube
   m_TagString: Water
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ GameObject:
   - 33: {fileID: 3359736}
   - 65: {fileID: 6536290}
   - 23: {fileID: 2362932}
-  m_Layer: 4
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

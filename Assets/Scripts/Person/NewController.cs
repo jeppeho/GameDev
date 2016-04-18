@@ -70,11 +70,13 @@ public class NewController : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
+
+
 		//Get state of player, eg. dead, active etc.
 		playerState = this.gameObject.GetComponent<PlayerManager> ().GetState ();
 
 		if (playerState == "active" || playerState == "invulnerable") {
-			
+
 			GetInputButtonValues ();
 			UpdateDirection ();
 
@@ -85,9 +87,9 @@ public class NewController : MonoBehaviour {
 			}
 
 			//Move on X and Z axis
-			if (moveHorizontal != 0 || moveVertical != 0)
+			if (moveHorizontal != 0 || moveVertical != 0) {
 				Move ();
-			else {
+			} else {
 				//TODO only if active
 				AutoRun ();
 			}
@@ -221,7 +223,6 @@ public class NewController : MonoBehaviour {
 
 	private void AutoRun(){
 		if (GetTagOfSurface () == "Water") {
-			Debug.Log ("I'm walking ooooon waaaateeeerr!!");
 			//rb.AddForce (new Vector3 (0, 0, 0.1f));
 			rb.AddForce (new Vector3 (0, 0, autoRunSpeed / 2));
 		} else {
@@ -412,11 +413,23 @@ public class NewController : MonoBehaviour {
 
 	//Gets the input from the controller and maps it to variables
 	private void GetInputButtonValues(){
+		moveHorizontal = Input.GetAxis( prefix + "_Horizontal" );
+		moveVertical = Input.GetAxis ( prefix + "_Vertical");
+		throwHorizontal = Input.GetAxis( prefix + "_Horizontal2" );
+		throwVertical = Input.GetAxis (prefix + "_Vertical2");
+		pressJump = (Input.GetAxis (prefix + "_Jump") == 1) ? true : false;
+		pressPush = (Input.GetAxis (prefix + "_Push") == 1) ? true : false;
+		pressExplode = (Input.GetAxis (prefix + "_Explode") == 1) ? true : false;
+		pressThrow = Input.GetAxis (prefix + "_Throw" );
+	}
+
+	private void GetInputButtonValuesOLD(){
+		producer = "";
+
 		moveHorizontal = Input.GetAxis( prefix + "_" + producer + "Horizontal" );
-		moveVertical = Input.GetAxis (prefix + "_" + producer + "Vertical");
+		moveVertical = Input.GetAxis ( prefix + "_" + producer + "Vertical");
 		throwHorizontal = Input.GetAxis( prefix + "_" + producer + "Horizontal2" );
 		throwVertical = Input.GetAxis (prefix + "_" + producer + "Vertical2");
-		Debug.Log ("throwVertical = " + throwVertical);
 		pressJump = (Input.GetAxis (prefix + "_Jump") == 1) ? true : false;
 		pressPush = (Input.GetAxis (prefix + "_Push") == 1) ? true : false;
 		pressExplode = (Input.GetAxis (prefix + "_Explode") == 1) ? true : false;
@@ -453,7 +466,7 @@ public class NewController : MonoBehaviour {
 		
 		//Check if left stick is used
 		} else if (leftStickDirection.magnitude > 0.05f) {
-			Debug.Log (" leftStickDirection.magnitude = " + leftStickDirection.magnitude);
+			
 			direction = new Vector3 (leftStickDirection.x, 0f, leftStickDirection.y).normalized;
 		
 			//Else throw straight ahead
