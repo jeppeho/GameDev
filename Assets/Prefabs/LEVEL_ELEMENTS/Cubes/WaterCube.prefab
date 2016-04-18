@@ -8,7 +8,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 498414}
-  m_Layer: 11
+  - 65: {fileID: 6541676}
+  m_Layer: 4
   m_Name: WaterCube
   m_TagString: Water
   m_Icon: {fileID: 0}
@@ -26,9 +27,9 @@ GameObject:
   - 33: {fileID: 3359736}
   - 65: {fileID: 6536290}
   - 23: {fileID: 2362932}
-  m_Layer: 11
+  m_Layer: 4
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,6 +98,18 @@ BoxCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 190658}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &6541676
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 177484}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1

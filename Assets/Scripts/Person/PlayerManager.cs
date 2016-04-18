@@ -25,6 +25,10 @@ public class PlayerManager : MonoBehaviour {
 		{
 			DeathFall ();
 		}
+
+		if (transform.position.z < ( GameObject.Find ("LeapControllerBlockHand").GetComponent<CameraController> ().GetZPosition () - 6f )) {
+			Death ();
+		}
 	}
 
 	//Check for impacts with environment
@@ -32,10 +36,11 @@ public class PlayerManager : MonoBehaviour {
 	{
 		//Make a new impact velocity, by subtracting own velocity speed
 		Vector3 impact = col.relativeVelocity + lastVel;
+
 		if (col.gameObject.tag == "Environment" && impact.magnitude >= impactResistance)
 		{
 			DeathSquished();
-
+			Debug.Log (" impact = " + impact.magnitude);
 			//Remove energy from the relic
 			GameObject relic = GameObject.Find ("Relic");
 			relic.GetComponent<RelicHealth> ().DrainEnergy (impact.magnitude * 10);
@@ -69,7 +74,7 @@ public class PlayerManager : MonoBehaviour {
 	}
 
 	//Respawning
-	private void Respawn()
+	private void Respawn/*Prototype*/()
 	{
 		float z_offset = 4 * LevelManager.SPEED;
 		transform.position = new Vector3 (0, 0.5f, GameObject.Find ("Camera").transform.TransformPoint(Vector3.zero).z + z_offset);
@@ -79,7 +84,7 @@ public class PlayerManager : MonoBehaviour {
 		GetComponent<Rigidbody> ().freezeRotation = true;
 	}
 
-	private void RespawnWithPcgLevel(){
+	private void RespawnPCG_LEVEL(){
 
 		//Get z-position of camera
 		int z = Mathf.FloorToInt(GameObject.Find ("Camera").transform.position.z);

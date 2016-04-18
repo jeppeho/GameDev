@@ -10,7 +10,7 @@ public static class LevelManager {
 	//public static float MIN_X = 0, MAX_X = 10, MIN_Y = 0, MAX_Y = 30, RELIC_MINZ = -150, MOVE_MINZ = -8, MOVE_MAXZ = 15, MOVE_ZONEWIDTH = 5;
 
 	//NEW VALUES WITH AT ZERO AND START AT ZERO
-	public static float MIN_X = -5, MAX_X = 5, MIN_Y = 0, MAX_Y = 30, RELIC_MINZ = -150, MOVE_MINZ = -8, MOVE_MAXZ = 15, MOVE_ZONEWIDTH = 5;
+	public static float MIN_X = -5, MAX_X = 5, MIN_Y = 0, MAX_Y = 30, RELIC_MINZ = -150, MOVE_MINZ = -9, MOVE_MAXZ = 15, MOVE_ZONEWIDTH = 5;
 
 	public static int numPlayers = 4;
 
@@ -22,7 +22,7 @@ public static class LevelManager {
 
 	public static Vector3 GetRespawnPoint(/*int player,*/ int z){
 
-		int offset = 20;
+		int offset = 10;
 		int index = 0;
 
 		for (int i = offset; i > 0; i--) {

@@ -191,9 +191,9 @@ public class NewController : MonoBehaviour {
 		Vector3 force = new Vector3 (hor, 0, ver);
 
 		//Check if player is moving through water
-		if (GetTagOfSurface () == "Water")
-			force /= 4;
-		
+		if (GetSurfaceTag () == "Water") {
+			force /= 3;
+		}
 
 		//If player is running towards camera, slow down velocity
 		if (rb.velocity.z < 0) {
@@ -222,7 +222,17 @@ public class NewController : MonoBehaviour {
 
 
 	private void AutoRun(){
-		if (GetTagOfSurface () == "Water") {
+
+//		float bottomline = GameObject.Find ("LeapControllerBlockHand").GetComponent<Transform> ().transform.position.z;
+//		bottomline += 0;
+//
+//		Debug.Log ((rb.transform.position.z < bottomline) + " | " + rb.transform.position.z + " <  " + bottomline);
+//		if (rb.transform.position.z < bottomline) {
+//			Debug.Log ("Hello rb.transform.position.z = " +  rb.transform.position.z);
+//			rb.AddForce (new Vector3 (0, 0, LevelManager.SPEED));
+//		}
+//		else 
+		if (GetSurfaceTag () == "Water") {
 			//rb.AddForce (new Vector3 (0, 0, 0.1f));
 			rb.AddForce (new Vector3 (0, 0, autoRunSpeed / 2));
 		} else {
@@ -277,7 +287,7 @@ public class NewController : MonoBehaviour {
 		float jumpPower = GetJumpPower();
 
 		//Make smaller jump, if on water
-		if (GetTagOfSurface () == "Water")
+		if (GetSurfaceTag () == "Water")
 			jumpPower /= 3;
 
 		//Add speed on X and Z axis if jumping
@@ -440,9 +450,10 @@ public class NewController : MonoBehaviour {
 	 * Shoots a ray down and returns the tag as a string 
 	 * if the ray hits anything. Else it returns null.
 	 */
-	private string GetTagOfSurface(){
+	private string GetSurfaceTag(){
+		
 		RaycastHit hit = new RaycastHit();
-		if (Physics.Raycast (rb.position, Vector3.down, out hit, 1f)) {
+		if (Physics.Raycast (rb.position, Vector3.down, out hit, 0.8f)) {
 			return hit.collider.gameObject.tag;
 		} else {
 			return null;

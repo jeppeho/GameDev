@@ -394,15 +394,15 @@ public class LevelGenerator : MonoBehaviour {
 			position.x = x + 0.5f;
 
 			//Set Y position
-			float difference = Mathf.Abs( x - canyonNoise[z] );
+			float difference = Mathf.Abs( (x + 0.5f) - canyonNoise[z] );
 
-			if (difference < 3f)
-				position.y = 0;
-			else
+			if (difference > 3f)
 				position.y = difference;
+			else
+				position.y = 0f;
 
 			GameObject cube = Instantiate (cliffCube, position, Quaternion.identity) as GameObject;
-			cube.transform.localScale = new Vector3 (1, difference/2, 1);
+			cube.transform.localScale = new Vector3 (1, 1, 1);
 		}
 
 		//Create cubestack
