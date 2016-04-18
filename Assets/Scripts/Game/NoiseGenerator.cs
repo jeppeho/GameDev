@@ -22,7 +22,7 @@ using System.Collections;
 
 public class NoiseGenerator : MonoBehaviour {
 
-	private int numSamples = 512;
+	private int numSamples = 256;
 
 	private int lastRandom = -1; //This is used for the GetRandomNotLastValue()... not a good implementation
 

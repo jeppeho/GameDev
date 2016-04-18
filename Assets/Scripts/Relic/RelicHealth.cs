@@ -62,10 +62,8 @@ public class RelicHealth : MonoBehaviour {
 	/**
 	 * Drain energy and update the color
 	 */
-	private void DrainEnergy(float drain){
+	public void DrainEnergy(float drain){
 		health -= drain;
-		if(health % 100 == 0)
-			Debug.Log("Health = " + health);
 
 		UpdateColor ();
 

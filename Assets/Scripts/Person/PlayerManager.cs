@@ -35,6 +35,11 @@ public class PlayerManager : MonoBehaviour {
 		if (col.gameObject.tag == "Environment" && impact.magnitude >= impactResistance)
 		{
 			DeathSquished();
+
+			//Remove energy from the relic
+			GameObject relic = GameObject.Find ("Relic");
+			relic.GetComponent<RelicHealth> ().DrainEnergy (impact.magnitude * 10);
+			Debug.Log ("Just removed " + impact.magnitude + " from relic health");
 		}
 	}
 
@@ -68,7 +73,15 @@ public class PlayerManager : MonoBehaviour {
 	{
 		float z_offset = 4 * LevelManager.SPEED;
 		transform.position = new Vector3 (5, 0.5f, GameObject.Find ("Camera").transform.TransformPoint(Vector3.zero).z + z_offset);
+
+
+
 		transform.rotation = new Quaternion ();
+
+		int z = Mathf.FloorToInt(GameObject.Find ("Camera").transform.position.z);
+		transform.position = LevelManager.GetRespawnPoint(z);
+		Debug.Log ("Position = " + transform.position);
+
 		GetComponent<Rigidbody> ().freezeRotation = true;
 	}
 

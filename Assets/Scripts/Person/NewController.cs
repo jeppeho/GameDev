@@ -36,6 +36,7 @@ public class NewController : MonoBehaviour {
 
 	public float accelerationRate = 10;
 	public float maxVelocity = 1;
+	private float autoRunSpeed = 0.05f;
 	public float jumpPower = 10;
 
 	private int explosionCounter = 300;
@@ -58,6 +59,7 @@ public class NewController : MonoBehaviour {
 		//Multiply with the game speed
 		maxVelocity *= LevelManager.SPEED;
 		accelerationRate *= LevelManager.SPEED;
+		autoRunSpeed *= LevelManager.SPEED;
 
 		nearWalkZone = LevelManager.MOVE_MINZ+LevelManager.MOVE_ZONEWIDTH;
 		farWalkZone = LevelManager.MOVE_MAXZ-LevelManager.MOVE_ZONEWIDTH;
@@ -85,9 +87,10 @@ public class NewController : MonoBehaviour {
 			//Move on X and Z axis
 			if (moveHorizontal != 0 || moveVertical != 0)
 				Move ();
-			else
+			else {
+				//TODO only if active
 				AutoRun ();
-			
+			}
 			//Check if player should fall or land
 			if (!IsGrounded ()) {
 				FallDown ();
@@ -148,6 +151,29 @@ public class NewController : MonoBehaviour {
 			
 		//LimitWalkingDistance();
 		LimitWalkingDistanceSoft();
+
+		LimitBoundariesOnXAxis ();
+	}
+
+
+	/**
+	 * Inverts the velocity on the X axis, 
+	 * if player is trying to go on to sides of the level.
+	 * This script should be changed, when we start using the PCG levels 
+	 * (because of placement of boundaries)
+	 */
+	private void LimitBoundariesOnXAxis(){
+
+		if (rb.transform.position.x < 0) {
+			Vector3 vel = rb.velocity;
+			vel.x *= -1f;
+			rb.velocity = vel;
+		} else if (rb.transform.position.x > 10) {
+			Vector3 vel = rb.velocity;
+			vel.x *= -1f;
+			rb.velocity = vel;
+		}
+	
 	}
 
 
@@ -194,7 +220,14 @@ public class NewController : MonoBehaviour {
 
 
 	private void AutoRun(){
-		rb.AddForce( new Vector3(0, 0, 0.15f) );
+		if (GetTagOfSurface () == "Water") {
+			Debug.Log ("I'm walking ooooon waaaateeeerr!!");
+			//rb.AddForce (new Vector3 (0, 0, 0.1f));
+			rb.AddForce (new Vector3 (0, 0, autoRunSpeed / 2));
+		} else {
+			//rb.AddForce (new Vector3 (0, 0, 0.15f));
+			rb.AddForce (new Vector3 (0, 0, autoRunSpeed));
+		}
 	}
 
 
