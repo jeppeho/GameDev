@@ -211,7 +211,7 @@ InputManager:
     snap: 0
     invert: 1
     type: 2
-    axis: 5
+    axis: 3
     joyNum: 1
   - serializedVersion: 3
     m_Name: P1_XboxVertical2
@@ -410,7 +410,7 @@ InputManager:
     descriptiveName: PS4 R2 trigger
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: 
+    positiveButton: joystick 1 button 7
     altNegativeButton: 
     altPositiveButton: 
     gravity: 3
@@ -419,7 +419,7 @@ InputManager:
     snap: 0
     invert: 0
     type: 2
-    axis: 4
+    axis: 5
     joyNum: 1
   - serializedVersion: 3
     m_Name: P1_XboxThrow

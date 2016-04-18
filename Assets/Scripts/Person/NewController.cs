@@ -416,6 +416,7 @@ public class NewController : MonoBehaviour {
 		moveVertical = Input.GetAxis (prefix + "_" + producer + "Vertical");
 		throwHorizontal = Input.GetAxis( prefix + "_" + producer + "Horizontal2" );
 		throwVertical = Input.GetAxis (prefix + "_" + producer + "Vertical2");
+		Debug.Log ("throwVertical = " + throwVertical);
 		pressJump = (Input.GetAxis (prefix + "_Jump") == 1) ? true : false;
 		pressPush = (Input.GetAxis (prefix + "_Push") == 1) ? true : false;
 		pressExplode = (Input.GetAxis (prefix + "_Explode") == 1) ? true : false;
@@ -440,20 +441,25 @@ public class NewController : MonoBehaviour {
 	}
 		
 	private void UpdateDirection (){
-		//Make 2D vector to check velocity on X and Y axis
-		Vector2 throwDirection = new Vector2 (throwHorizontal, throwVertical);
+		
+		//Use right stick
+		Vector2 rightStickDirection = new Vector2 (throwHorizontal, throwVertical);
+		//Use left stick
+		Vector2 leftStickDirection = new Vector2 (moveHorizontal, moveVertical);
 
-		//If right analog is in use
-		if (throwDirection.magnitude > 0.05f )
-		{
-			//Set to throwing angle (right stick), and normalize both
-			direction = new Vector3 (throwDirection.x, 0f, throwDirection.y).normalized ;
-		}
-		//Otherwise, go by velocity (if above 1f)
-		else if(rb.velocity.magnitude > 1f)
-		{
-			direction = rb.velocity.normalized;
-		}
+		//Check if right stick is used
+		if (rightStickDirection.magnitude > 0.05f) {
+			direction = new Vector3 (rightStickDirection.x, 0f, rightStickDirection.y).normalized;
+		
+		//Check if left stick is used
+		} else if (leftStickDirection.magnitude > 0.05f) {
+			Debug.Log (" leftStickDirection.magnitude = " + leftStickDirection.magnitude);
+			direction = new Vector3 (leftStickDirection.x, 0f, leftStickDirection.y).normalized;
+		
+			//Else throw straight ahead
+		} else {
+			direction = new Vector3 (0f, 0f, 1f);
+		} 
 	}
 		
 	private bool IsGrounded(){

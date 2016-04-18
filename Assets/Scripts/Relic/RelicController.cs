@@ -3,7 +3,7 @@ using System.Collections;
 
 public class RelicController : MonoBehaviour {
 
-	public float cameraZOffsetBound = 4f;
+	private float cameraZOffsetBound = -3.5f;
 
 	//private Vector3 targetPosition;
 	private Rigidbody rb;
@@ -17,6 +17,9 @@ public class RelicController : MonoBehaviour {
 	float minX, maxX, minY, minZ;
 
 	RelicManager manager;
+
+	int escapeDirection = 1;
+	float prevX = 0;
 
 
 	// Use this for initialization
@@ -46,8 +49,16 @@ public class RelicController : MonoBehaviour {
 				PushToCenter ();
 
 				//If relic is about to go behind camera
-				if (manager.GetPosition ().z < camera.GetComponent<CameraController> ().GetPosition ().z + cameraZOffsetBound) {
+				float wall = camera.GetComponent<CameraController> ().GetPosition ().z + cameraZOffsetBound;
+				Debug.Log (camera.GetComponent<CameraController> ().GetPosition ().z + " + " + cameraZOffsetBound + " = " + wall);
+				if (manager.GetPosition ().z < wall ) {
 					PushForward ();
+				}
+
+
+
+				if (manager.GetPosition ().z < wall - 1f) {
+					GetUnstuck (wall);
 				}
 			}
 
@@ -58,6 +69,33 @@ public class RelicController : MonoBehaviour {
 			//Follow parent
 			FlyAboveParent ();
 		}
+	}
+
+	private void GetUnstuck(float wall){
+
+		float currentX = rb.transform.position.x;
+
+		//If relic is out to the sides or at the same position at the prev position
+		if (currentX > 4f || currentX < -4f || prevX == currentX)
+			escapeDirection = -1;
+		
+		//Get distance to camera wall
+		float distanceToView = wall - manager.GetPosition ().z;
+
+
+		float x = 100f * escapeDirection;
+
+		float y = 0;
+		if (manager.GetPosition ().z < wall - 3f) {
+			if (rb.transform.position.y < 4f) {
+				y = (4f - rb.transform.position.y) * 20f;
+			}
+		}
+
+		rb.AddForce (new Vector3 (x, y, 100f * distanceToView));
+
+		prevX = currentX;
+
 	}
 
 
@@ -83,7 +121,7 @@ public class RelicController : MonoBehaviour {
 	}
 
 	private void PushForward(){
-		rb.AddForce( new Vector3( 0, 0, 550 ) );
+		rb.AddForce( new Vector3( 0, 0, 20 ) );
 	}
 
 
@@ -132,7 +170,7 @@ public class RelicController : MonoBehaviour {
 		Vector3.Normalize (throwDirection);
 
 		throwDirection.y += 0.65f;
-		throwDirection *= 250 + 1000 * Mathf.Pow(force,1.8f);
+		throwDirection *= 250 + 1000 * Mathf.Pow(force,2f);
 
 		manager.RemoveParent ();
 

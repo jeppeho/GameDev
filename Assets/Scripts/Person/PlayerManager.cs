@@ -72,17 +72,27 @@ public class PlayerManager : MonoBehaviour {
 	private void Respawn()
 	{
 		float z_offset = 4 * LevelManager.SPEED;
-		transform.position = new Vector3 (5, 0.5f, GameObject.Find ("Camera").transform.TransformPoint(Vector3.zero).z + z_offset);
-
-
+		transform.position = new Vector3 (0, 0.5f, GameObject.Find ("Camera").transform.TransformPoint(Vector3.zero).z + z_offset);
 
 		transform.rotation = new Quaternion ();
 
-		int z = Mathf.FloorToInt(GameObject.Find ("Camera").transform.position.z);
-		transform.position = LevelManager.GetRespawnPoint(z);
-		Debug.Log ("Position = " + transform.position);
-
 		GetComponent<Rigidbody> ().freezeRotation = true;
+	}
+
+	private void RespawnWithPcgLevel(){
+
+		//Get z-position of camera
+		int z = Mathf.FloorToInt(GameObject.Find ("Camera").transform.position.z);
+
+		//Get the respawn point for current position
+		transform.position = LevelManager.GetRespawnPoint(z);
+
+		//Reset rotation
+		transform.rotation = new Quaternion ();
+
+		//Freeze rotation
+		GetComponent<Rigidbody> ().freezeRotation = true;
+
 	}
 
 	IEnumerator CountdownToRespawn(float time)
