@@ -164,11 +164,11 @@ public class NewController : MonoBehaviour {
 	 */
 	private void LimitBoundariesOnXAxis(){
 
-		if (rb.transform.position.x < 0) {
+		if (rb.transform.position.x < -5) {
 			Vector3 vel = rb.velocity;
 			vel.x *= -1f;
 			rb.velocity = vel;
-		} else if (rb.transform.position.x > 10) {
+		} else if (rb.transform.position.x > 5) {
 			Vector3 vel = rb.velocity;
 			vel.x *= -1f;
 			rb.velocity = vel;
