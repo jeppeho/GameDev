@@ -49,7 +49,7 @@ public class GestureHurricane : Gesture {
 				//&& charge <1
 				)
 				{
-					charge = Mathf.Min(1, charge+ 0.005f);
+				charge = Mathf.Min(1, charge+ 0.006f);
 					pulsebase = (pulsebase + (charge *35 * Time.deltaTime)) % (2 * Mathf.PI);
 				gestureManager.setHandColor (Color.Lerp (Color.grey, Color.blue, Mathf.Sin(pulsebase)));
 					
@@ -71,7 +71,7 @@ public class GestureHurricane : Gesture {
 							//Set magnitude to force
 							dir = dir.normalized * force;
 							//Rotate pull, to create hurricane effect
-							dir = Quaternion.Euler (0, 15f, 0) * dir; 
+							dir = Quaternion.Euler (0, 12f, 0) * dir; 
 
 							//Apply
 							rb.AddForce (dir);
