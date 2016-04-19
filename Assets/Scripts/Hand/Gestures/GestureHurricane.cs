@@ -24,7 +24,7 @@ public class GestureHurricane : Gesture {
 
 		if (
 			gestureManager.noSpellActive()
-			&& leapManager.PalmNormalNear (Vector3.down, 0.65f)
+			&& leapManager.PalmNormalNear (Vector3.down, 0.75f)
 			&& leapManager.PalmBetweenY (3f, Mathf.Infinity)
 			&& leapManager.GetFingerIsExtendedPattern (false, false, false, false, false)
 			&& leapManager.GetHandGrabStrength() >= 0.8f
@@ -42,7 +42,7 @@ public class GestureHurricane : Gesture {
 		if (gestureManager.activeSpell == thisSpell)
 		{
 			if (
-				leapManager.PalmNormalNear (Vector3.down, 0.85f)
+				leapManager.PalmNormalNear (Vector3.down, 0.95f)
 				&& leapManager.PalmBetweenY (3f, Mathf.Infinity)
 				&& leapManager.GetFingerIsExtendedPattern (false, false, false, false, false)
 				&& leapManager.GetHandGrabStrength () >= 0.8f
