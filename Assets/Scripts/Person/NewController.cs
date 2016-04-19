@@ -36,6 +36,7 @@ public class NewController : MonoBehaviour {
 
 	public float accelerationRate = 10;
 	public float maxVelocity = 1;
+	private float autoRunSpeed = 0.05f;
 	public float jumpPower = 10;
 
 	private int explosionCounter = 300;
@@ -58,6 +59,7 @@ public class NewController : MonoBehaviour {
 		//Multiply with the game speed
 		maxVelocity *= LevelManager.SPEED;
 		accelerationRate *= LevelManager.SPEED;
+		autoRunSpeed *= LevelManager.SPEED;
 
 		nearWalkZone = LevelManager.MOVE_MINZ+LevelManager.MOVE_ZONEWIDTH;
 		farWalkZone = LevelManager.MOVE_MAXZ-LevelManager.MOVE_ZONEWIDTH;
@@ -68,11 +70,13 @@ public class NewController : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
+
+
 		//Get state of player, eg. dead, active etc.
 		playerState = this.gameObject.GetComponent<PlayerManager> ().GetState ();
 
 		if (playerState == "active" || playerState == "invulnerable") {
-			
+
 			GetInputButtonValues ();
 			UpdateDirection ();
 
@@ -83,11 +87,12 @@ public class NewController : MonoBehaviour {
 			}
 
 			//Move on X and Z axis
-			if (moveHorizontal != 0 || moveVertical != 0)
+			if (moveHorizontal != 0 || moveVertical != 0) {
 				Move ();
-			else
+			} else {
+				//TODO only if active
 				AutoRun ();
-			
+			}
 			//Check if player should fall or land
 			if (!IsGrounded ()) {
 				FallDown ();
@@ -148,6 +153,29 @@ public class NewController : MonoBehaviour {
 			
 		//LimitWalkingDistance();
 		LimitWalkingDistanceSoft();
+
+		LimitBoundariesOnXAxis ();
+	}
+
+
+	/**
+	 * Inverts the velocity on the X axis, 
+	 * if player is trying to go on to sides of the level.
+	 * This script should be changed, when we start using the PCG levels 
+	 * (because of placement of boundaries)
+	 */
+	private void LimitBoundariesOnXAxis(){
+
+		if (rb.transform.position.x < -5) {
+			Vector3 vel = rb.velocity;
+			vel.x *= -1f;
+			rb.velocity = vel;
+		} else if (rb.transform.position.x > 5) {
+			Vector3 vel = rb.velocity;
+			vel.x *= -1f;
+			rb.velocity = vel;
+		}
+	
 	}
 
 
@@ -163,9 +191,9 @@ public class NewController : MonoBehaviour {
 		Vector3 force = new Vector3 (hor, 0, ver);
 
 		//Check if player is moving through water
-		if (GetTagOfSurface () == "Water")
-			force /= 4;
-		
+		if (GetSurfaceTag () == "Water") {
+			force /= 3;
+		}
 
 		//If player is running towards camera, slow down velocity
 		if (rb.velocity.z < 0) {
@@ -194,7 +222,23 @@ public class NewController : MonoBehaviour {
 
 
 	private void AutoRun(){
-		rb.AddForce( new Vector3(0, 0, 0.15f) );
+
+//		float bottomline = GameObject.Find ("LeapControllerBlockHand").GetComponent<Transform> ().transform.position.z;
+//		bottomline += 0;
+//
+//		Debug.Log ((rb.transform.position.z < bottomline) + " | " + rb.transform.position.z + " <  " + bottomline);
+//		if (rb.transform.position.z < bottomline) {
+//			Debug.Log ("Hello rb.transform.position.z = " +  rb.transform.position.z);
+//			rb.AddForce (new Vector3 (0, 0, LevelManager.SPEED));
+//		}
+//		else 
+		if (GetSurfaceTag () == "Water") {
+			//rb.AddForce (new Vector3 (0, 0, 0.1f));
+			rb.AddForce (new Vector3 (0, 0, autoRunSpeed / 2));
+		} else {
+			//rb.AddForce (new Vector3 (0, 0, 0.15f));
+			rb.AddForce (new Vector3 (0, 0, autoRunSpeed));
+		}
 	}
 
 
@@ -243,7 +287,7 @@ public class NewController : MonoBehaviour {
 		float jumpPower = GetJumpPower();
 
 		//Make smaller jump, if on water
-		if (GetTagOfSurface () == "Water")
+		if (GetSurfaceTag () == "Water")
 			jumpPower /= 3;
 
 		//Add speed on X and Z axis if jumping
@@ -379,8 +423,21 @@ public class NewController : MonoBehaviour {
 
 	//Gets the input from the controller and maps it to variables
 	private void GetInputButtonValues(){
+		moveHorizontal = Input.GetAxis( prefix + "_Horizontal" );
+		moveVertical = Input.GetAxis ( prefix + "_Vertical");
+		throwHorizontal = Input.GetAxis( prefix + "_Horizontal2" );
+		throwVertical = Input.GetAxis (prefix + "_Vertical2");
+		pressJump = (Input.GetAxis (prefix + "_Jump") == 1) ? true : false;
+		pressPush = (Input.GetAxis (prefix + "_Push") == 1) ? true : false;
+		pressExplode = (Input.GetAxis (prefix + "_Explode") == 1) ? true : false;
+		pressThrow = Input.GetAxis (prefix + "_Throw" );
+	}
+
+	private void GetInputButtonValuesOLD(){
+		producer = "";
+
 		moveHorizontal = Input.GetAxis( prefix + "_" + producer + "Horizontal" );
-		moveVertical = Input.GetAxis (prefix + "_" + producer + "Vertical");
+		moveVertical = Input.GetAxis ( prefix + "_" + producer + "Vertical");
 		throwHorizontal = Input.GetAxis( prefix + "_" + producer + "Horizontal2" );
 		throwVertical = Input.GetAxis (prefix + "_" + producer + "Vertical2");
 		pressJump = (Input.GetAxis (prefix + "_Jump") == 1) ? true : false;
@@ -393,9 +450,10 @@ public class NewController : MonoBehaviour {
 	 * Shoots a ray down and returns the tag as a string 
 	 * if the ray hits anything. Else it returns null.
 	 */
-	private string GetTagOfSurface(){
+	private string GetSurfaceTag(){
+		
 		RaycastHit hit = new RaycastHit();
-		if (Physics.Raycast (rb.position, Vector3.down, out hit, 1f)) {
+		if (Physics.Raycast (rb.position, Vector3.down, out hit, 0.8f)) {
 			return hit.collider.gameObject.tag;
 		} else {
 			return null;
@@ -407,20 +465,25 @@ public class NewController : MonoBehaviour {
 	}
 		
 	private void UpdateDirection (){
-		//Make 2D vector to check velocity on X and Y axis
-		Vector2 throwDirection = new Vector2 (throwHorizontal, throwVertical);
+		
+		//Use right stick
+		Vector2 rightStickDirection = new Vector2 (throwHorizontal, throwVertical);
+		//Use left stick
+		Vector2 leftStickDirection = new Vector2 (moveHorizontal, moveVertical);
 
-		//If right analog is in use
-		if (throwDirection.magnitude > 0.05f )
-		{
-			//Set to throwing angle (right stick), and normalize both
-			direction = new Vector3 (throwDirection.x, 0f, throwDirection.y).normalized ;
-		}
-		//Otherwise, go by velocity (if above 1f)
-		else if(rb.velocity.magnitude > 1f)
-		{
-			direction = rb.velocity.normalized;
-		}
+		//Check if right stick is used
+		if (rightStickDirection.magnitude > 0.05f) {
+			direction = new Vector3 (rightStickDirection.x, 0f, rightStickDirection.y).normalized;
+		
+		//Check if left stick is used
+		} else if (leftStickDirection.magnitude > 0.05f) {
+			
+			direction = new Vector3 (leftStickDirection.x, 0f, leftStickDirection.y).normalized;
+		
+			//Else throw straight ahead
+		} else {
+			direction = new Vector3 (0f, 0f, 1f);
+		} 
 	}
 		
 	private bool IsGrounded(){
