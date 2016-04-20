@@ -4,7 +4,7 @@ using System.Collections;
 public static class LevelManager {
 
 	//CAMERA SPEED
-	public static float SPEED = 3f;
+	public static float SPEED = 30f;
 
 	//OLD VALUES
 	//public static float MIN_X = 0, MAX_X = 10, MIN_Y = 0, MAX_Y = 30, RELIC_MINZ = -150, MOVE_MINZ = -8, MOVE_MAXZ = 15, MOVE_ZONEWIDTH = 5;
@@ -18,7 +18,7 @@ public static class LevelManager {
 
 
 	//TODO Should not be made here...
-	public static int numSamples = 256;
+	public static int numSamples = 512;
 
 	public static Vector3 GetRespawnPoint(/*int player,*/ int z){
 
@@ -32,8 +32,6 @@ public static class LevelManager {
 			}
 
 		}
-			
-		Debug.Log ("finding respawn point [" + index + "]");
 		return respawnPoints[index /* * player */];
 	}
 

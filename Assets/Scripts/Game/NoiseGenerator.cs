@@ -22,18 +22,20 @@ using System.Collections;
 
 public class NoiseGenerator : MonoBehaviour {
 
-	private int numSamples = 256;
+	private int numSamples = 512;
 
-	private int lastRandom = -1; //This is used for the GetRandomNotLastValue()... not a good implementation
+	public int GetRandomButNotPreviousValue(int min, int max, int prev){
 
+		int index = prev;
 
-	public int GetRandomNotLastValue(int numValues){
-		int randomInt = Mathf.FloorToInt (Random.Range (0, numValues));
+		if(max - min > 0)
+			while (index == prev)
+				index = Random.Range (min, max);
 
-		while(randomInt == lastRandom)
-			randomInt = Mathf.FloorToInt (Random.Range (0, numValues));
-		
-		return randomInt; 
+		if(index == prev)
+			Debug.Log("ERROR | Prev = " + prev + ", and index = " + index + " in " + this + ".GetRandomButNotPreviousValue()");
+
+		return index;
 	}
 
 	public float[] GetRandomNoise1D(float minMap, float maxMap){

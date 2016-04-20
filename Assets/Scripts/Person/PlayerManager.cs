@@ -74,7 +74,7 @@ public class PlayerManager : MonoBehaviour {
 	}
 
 	//Respawning
-	private void Respawn/*Prototype*/()
+	private void RespawnPrototype()
 	{
 		float z_offset = 4 * LevelManager.SPEED;
 		transform.position = new Vector3 (0, 0.5f, GameObject.Find ("Camera").transform.TransformPoint(Vector3.zero).z + z_offset);
@@ -84,7 +84,7 @@ public class PlayerManager : MonoBehaviour {
 		GetComponent<Rigidbody> ().freezeRotation = true;
 	}
 
-	private void RespawnPCG_LEVEL(){
+	private void Respawn/*PCG_LEVEL*/(){
 
 		//Get z-position of camera
 		int z = Mathf.FloorToInt(GameObject.Find ("Camera").transform.position.z);
