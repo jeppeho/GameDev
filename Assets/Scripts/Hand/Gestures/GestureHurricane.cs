@@ -24,7 +24,7 @@ public class GestureHurricane : Gesture {
 
 		if (
 			gestureManager.noSpellActive()
-			&& leapManager.PalmNormalNear (Vector3.down, 0.65f)
+			&& leapManager.PalmNormalNear (Vector3.down, 0.75f)
 			&& leapManager.PalmBetweenY (3f, Mathf.Infinity)
 			&& leapManager.GetFingerIsExtendedPattern (false, false, false, false, false)
 			&& leapManager.GetHandGrabStrength() >= 0.8f
@@ -42,14 +42,14 @@ public class GestureHurricane : Gesture {
 		if (gestureManager.activeSpell == thisSpell)
 		{
 			if (
-				leapManager.PalmNormalNear (Vector3.down, 0.85f)
+				leapManager.PalmNormalNear (Vector3.down, 0.95f)
 				&& leapManager.PalmBetweenY (3f, Mathf.Infinity)
 				&& leapManager.GetFingerIsExtendedPattern (false, false, false, false, false)
 				&& leapManager.GetHandGrabStrength () >= 0.8f
 				//&& charge <1
 				)
 				{
-					charge = Mathf.Min(1, charge+ 0.005f);
+				charge = Mathf.Min(1, charge+ 0.006f);
 					pulsebase = (pulsebase + (charge *35 * Time.deltaTime)) % (2 * Mathf.PI);
 				gestureManager.setHandColor (Color.Lerp (Color.grey, Color.blue, Mathf.Sin(pulsebase)));
 					
@@ -71,7 +71,7 @@ public class GestureHurricane : Gesture {
 							//Set magnitude to force
 							dir = dir.normalized * force;
 							//Rotate pull, to create hurricane effect
-							dir = Quaternion.Euler (0, 15f, 0) * dir; 
+							dir = Quaternion.Euler (0, 12f, 0) * dir; 
 
 							//Apply
 							rb.AddForce (dir);

@@ -28,7 +28,7 @@ public class GestureSummon : Gesture {
 
 		if (
 			gestureManager.noSpellActive()
-			&& leapManager.PalmNormalNear (Vector3.down, 0.25f)
+			&& leapManager.PalmNormalNear (Vector3.down, 0.35f)
 			&& leapManager.PalmBetweenY (-0.45f, -10f)
 			&& leapManager.GetFingerIsExtendedPattern (true, true, true, true, true)
 			//&& manager.GetPalmVelocity().magnitude < 5f
@@ -48,7 +48,7 @@ public class GestureSummon : Gesture {
 		if (gestureManager.activeSpell == thisSpell)
 		{
 			if (
-				leapManager.PalmNormalNear (Vector3.down, 0.35f)
+				leapManager.PalmNormalNear (Vector3.down, 0.45f)
 				&& leapManager.GetFingerIsExtendedPattern (true, true, true, true, true)
 				&& leapManager.PalmNearIgnore (tempPalmPosition, 5f, false, true, true)) {
 				float palmY = leapManager.GetPalmPosition ().y;
