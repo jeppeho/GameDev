@@ -20,6 +20,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &164088
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 455818}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &183102
 GameObject:
   m_ObjectHideFlags: 0
@@ -47,9 +62,11 @@ GameObject:
   - 4: {fileID: 458448}
   - 114: {fileID: 11422026}
   - 114: {fileID: 11405306}
-  - 114: {fileID: 11480124}
+  - 114: {fileID: 11421016}
   - 114: {fileID: 11487098}
   - 114: {fileID: 11444126}
+  - 114: {fileID: 11442052}
+  - 114: {fileID: 11494496}
   m_Layer: 0
   m_Name: HandController
   m_TagString: Untagged
@@ -76,13 +93,26 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 183102}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 1, z: -150}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 458448}
   - {fileID: 419160}
+  - {fileID: 455818}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &455818
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 164088}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 451810}
+  m_RootOrder: 2
 --- !u!4 &458448
 Transform:
   m_ObjectHideFlags: 1
@@ -161,6 +191,18 @@ MonoBehaviour:
   globalTractionRegeneration: 0.5
   globalTractionBuffer: 0
   handColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &11421016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 185974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccd9d98d62cb2584bb7e4e347561007c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeSpell: 
 --- !u!114 &11422026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -218,13 +260,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 755f2ce51a4624c1a9a1df440c8d2922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11444126
+--- !u!114 &11442052
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 185974}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 730460e1af01f814990ba57ce64d72bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11444126
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 185974}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38919993f04e96c498cdcd252cddbfd8, type: 3}
   m_Name: 
@@ -240,17 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97677197f6cce42f58969ca403b1c985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11480124
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 185974}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccd9d98d62cb2584bb7e4e347561007c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  freezeCameraForDebug: 0
 --- !u!114 &11487098
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -263,6 +306,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   summonedObject: {fileID: 126238, guid: 1cec7b0ace4ec491dadbaf7ae4defbea, type: 2}
+--- !u!114 &11494496
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 185974}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b1a15f9e6938c247b539be5ae6abc2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!124 &12494864
 Behaviour:
   m_ObjectHideFlags: 1

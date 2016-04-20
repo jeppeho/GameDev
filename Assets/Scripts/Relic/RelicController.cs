@@ -25,13 +25,15 @@ public class RelicController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rb = this.gameObject.GetComponent<Rigidbody> ();
-		manager = GetComponent<RelicManager> ();
+		manager = this.GetComponent<RelicManager> ();
+		//	ATTENSION - from this line forth, nothing makes sense. The manager can be debugged, but no method within it can be called, without a null-point-exception. After 1,5 hours of trying to resolve this error, I give up. /Nils
 		manager.UpdateFreezeRotation (false);
 		movingToTarget = false;
 
 		minX = 0; maxX = 10.5f; minY = 0; minZ = -150; //Bounds - should be put in a LevelManager script
 
 		camera = GameObject.Find ("LeapControllerBlockHand");
+
 	}
 	
 	// Update is called once per frame

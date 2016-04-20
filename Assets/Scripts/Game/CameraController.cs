@@ -4,6 +4,7 @@ using System.Collections;
 public class CameraController : MonoBehaviour {
 
 	private float camera_speed = 1;
+	public bool freezeCameraForDebug = false;
 
 	// Use this for initialization
 	void Start () {
@@ -14,8 +15,9 @@ public class CameraController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-		MoveForward();
+		if (!freezeCameraForDebug) {
+			MoveForward ();
+		}
 	}
 
 
