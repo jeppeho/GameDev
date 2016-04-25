@@ -23,7 +23,7 @@ using System.Collections;
 public class NoiseGenerator : MonoBehaviour {
 
 	//NumSamples has to be either 2, 4, 8, 16, 32, 64, 128, 256 etc.
-	private int numSamples = 256;
+	private int numSamples = 512;
 
 	//Is being set from LevelGenerator
 	private int levelLength;
