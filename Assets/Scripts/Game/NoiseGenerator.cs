@@ -22,7 +22,33 @@ using System.Collections;
 
 public class NoiseGenerator : MonoBehaviour {
 
-	private int numSamples = 512;
+	private int numSamples = 256;
+	private int levelLength = 100;
+
+
+	public float[] ConvertSamplesToUnits(float[] noise){
+	
+		float[] remappedNoise = new float[GetLevelLength()];
+		float rate = GetNumSamples() / GetLevelLength();
+
+		float samples = GetNumSamples ();
+		float ll = GetLevelLength ();
+		rate = samples / ll;
+		Debug.Log ("Rate = " + rate);
+
+		for (int i = 0; i < GetLevelLength(); i++) {
+			float newI = i;
+			int index = Mathf.FloorToInt (newI * rate);
+
+			remappedNoise [i] = noise [index];
+
+			Debug.Log ("i = " + i + "; and gets value = " + remappedNoise[i] + " at original noise index = " + index);
+		}
+
+		return remappedNoise;
+
+	}
+
 
 	public int GetRandomButNotPreviousValue(int min, int max, int prev){
 
@@ -156,6 +182,10 @@ public class NoiseGenerator : MonoBehaviour {
 	public int GetNumSamples(){
 		return numSamples;
 	}
+
+	public int GetLevelLength(){
+		return levelLength;
+	}
 		
 
 	public void CreateVisualAxes(){
@@ -181,7 +211,7 @@ public class NoiseGenerator : MonoBehaviour {
 
 			//GET VALUES
 			int y = Mathf.FloorToInt ((noise [sample] * scaleY));
-			int x = 20;
+			int x = 50;
 			float scale = 2;
 			float color = (noise [sample] + 1) / 2; //This only goes well when mapped -1 to 1...
 

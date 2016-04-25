@@ -9,11 +9,42 @@ public class RelicManager : MonoBehaviour {
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+
+	/**
+	 * Set a parent to the relic
+	 * Minimize the scale
+	 * Freeze rotation
+	 * And resets rotation to zero.
+	 */
+	public void SetParent(Transform parent){
+		this.transform.SetParent (parent, false);
+		UpdateScale (0.8f);
+		UpdateFreezeRotation (true);
+		ResetRotation ();
+		SetKinematic (true);
 	}
+
+	/**
+	 * Sets the parent variable to null,
+	 * updates the scale
+	 * and unfreezes the rotation
+	 */
+	public void ReleaseFromParent(){
+		this.transform.parent = null;
+		UpdateScale (1f);
+		UpdateFreezeRotation (false);
+		SetKinematic (false);
+	}
+
+	/**
+	 * If game object has a parent return true
+	 * else return false
+	 */
+	public bool HasParent(){
+		return transform.parent;
+	}
+
 
 
 	/**
@@ -29,7 +60,7 @@ public class RelicManager : MonoBehaviour {
 	}
 
 
-	/*
+	/**
 	 * Returns true if the relic is below ground level, otherwise false
 	 */
 	public bool IsBelowGround(){
@@ -55,39 +86,6 @@ public class RelicManager : MonoBehaviour {
 	}
 
 
-	/**
-	 * If game object has a parent return true
-	 * else return false
-	 */
-	public bool HasParent(){
-		return transform.parent;
-	}
-
-
-	/**
-	 * Set a parent to the relic
-	 * Minimize the scale
-	 * Freeze rotation
-	 * And resets rotation to zero.
-	 */
-	public void SetParent(Transform parent){
-		this.transform.SetParent (parent, false);
-		UpdateScale (0.8f);
-		UpdateFreezeRotation (true);
-		ResetRotation ();
-	}
-
-	/**
-	 * Sets the parent variable to null,
-	 * updates the scale
-	 * and unfreezes the rotation
-	 */
-	public void RemoveParent(){
-		this.transform.parent = null;
-		UpdateScale (1f);
-		UpdateFreezeRotation (false);
-	}
-
 	public void UpdateScale(float scale){
 		rb.transform.localScale = new Vector3 (scale, scale, scale);
 	}
@@ -109,4 +107,9 @@ public class RelicManager : MonoBehaviour {
 	public Vector3 GetPosition (){
 		return rb.transform.position;
 	}
+
+	public void SetKinematic(bool kinematic){
+		rb.isKinematic = kinematic;
+	}
+	
 }

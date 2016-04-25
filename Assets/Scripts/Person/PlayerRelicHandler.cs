@@ -1,37 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CarriedObject : MonoBehaviour {
+public class PlayerRelicHandler : MonoBehaviour {
 
 
 	public GameObject carriedObject = null;
 	private Rigidbody rb;
-	private Vector3 slotPosition;
-	private bool dropping;
+	//private bool dropping;
 
 	string playerState;
 
 	// Use this for initialization
 	void Start () {
-		dropping = false;
+		//dropping = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
+		//COULD I CHECK THIS IN THE PLAYERMANAGER???
 		//Get state of player
 		playerState = this.gameObject.GetComponent<PlayerManager> ().GetState ();
 
-		//If player dies, release object
-		if (playerState == "dead") {
+		//If player not active, release object
+		if (playerState != "active") {
 
 			if (carriedObject != null) {
-				ReleaseCarriedObject ();
+				ReleaseRelic ();
 			}
 		}
 	}
 
-	public bool isCarrying(){
+	public bool HasRelic(){
 		if (carriedObject != null)
 			return true;
 		else
@@ -58,8 +58,8 @@ public class CarriedObject : MonoBehaviour {
 		}
 	}
 
-	public void ReleaseCarriedObject(){
-		carriedObject.GetComponent<RelicManager>().RemoveParent();
+	public void ReleaseRelic(){
+		carriedObject.GetComponent<RelicManager>().ReleaseFromParent();
 		carriedObject = null;
 	}
 		

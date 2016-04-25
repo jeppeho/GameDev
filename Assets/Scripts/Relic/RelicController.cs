@@ -62,6 +62,8 @@ public class RelicController : MonoBehaviour {
 			}
 
 			//Make sure velocity doesn't go nuts
+			SnapToPlayer();
+
 			CapVelocity ();
 
 		} else {
@@ -70,6 +72,47 @@ public class RelicController : MonoBehaviour {
 		}
 	}
 
+
+	/**
+	 * When the relic is whitin reach of a player,
+	 * it will addforce towards the position of the player
+	 */
+	private void SnapToPlayer(){
+
+		float radius = 1.5f;
+
+		Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, radius);
+
+		for (int col = 0; col < hitColliders.Length; col++) {
+		
+			if (hitColliders [col].tag == "Player") {
+
+				//Get vector towards player
+				Vector3 vecTowardsPlayer = hitColliders [col].transform.position - rb.transform.position;
+
+				//Negate the relative velocity between player and relic
+				Vector3 playerVelocity = hitColliders [col].GetComponent<Rigidbody> ().velocity;
+				Vector3 relativeVelocity = rb.velocity - playerVelocity;
+
+				vecTowardsPlayer -= (relativeVelocity * Time.deltaTime);
+
+				//Add downforce so it does not fly over player
+				vecTowardsPlayer.y = Mathf.Abs (vecTowardsPlayer.y) - 2f;
+
+				vecTowardsPlayer *= Time.deltaTime * 10000f;
+
+				rb.AddForce (vecTowardsPlayer);
+			}
+		}
+	}
+
+
+
+	/**
+	 * Whenever the relic is behind the camera, fx if it's stuck somewhere, 
+	 * this method will try to get in the camera FOV by pushing it forward and 
+	 * move it from side to side
+	 */
 	private void GetUnstuck(float wall){
 
 		float currentX = rb.transform.position.x;
@@ -162,7 +205,7 @@ public class RelicController : MonoBehaviour {
 	public void Throw(float force){
 
 		int count = 0;
-		//Debug.Log ("throwDirection = " + parent.GetComponent<NewController> ().GetDirection ());
+
 		Vector3 bodyVelocity = this.gameObject.GetComponentInParent<Rigidbody>().velocity;
 		Vector3 throwDirection = this.gameObject.GetComponentInParent<NewController> ().GetDirection ();
 
@@ -172,7 +215,9 @@ public class RelicController : MonoBehaviour {
 		throwDirection *= 750 + 5000 * Mathf.Pow(force,2f);
 		Debug.Log ("throw Force = " + force);
 
-		manager.RemoveParent ();
+		manager.ReleaseFromParent ();
+
+		throwDirection *= Time.deltaTime * 100f;
 
 		rb.AddForce ( /*bodyVelocity +*/ throwDirection );
 

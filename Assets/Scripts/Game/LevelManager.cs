@@ -4,13 +4,14 @@ using System.Collections;
 public static class LevelManager {
 
 	//CAMERA SPEED
-	public static float SPEED = 30f;
+	public static float SPEED = 3f;
 
 	//OLD VALUES
 	//public static float MIN_X = 0, MAX_X = 10, MIN_Y = 0, MAX_Y = 30, RELIC_MINZ = -150, MOVE_MINZ = -8, MOVE_MAXZ = 15, MOVE_ZONEWIDTH = 5;
 
 	//NEW VALUES WITH AT ZERO AND START AT ZERO
-	public static float MIN_X = -5, MAX_X = 5, MIN_Y = 0, MAX_Y = 30, RELIC_MINZ = -150, MOVE_MINZ = -9, MOVE_MAXZ = 15, MOVE_ZONEWIDTH = 5;
+	//It shouldn't be necessary with both min and max x, as they are centered around 0
+	public static float MIN_X = -15, MAX_X = 15, MIN_Y = 0, MAX_Y = 30, RELIC_MINZ = -150, MOVE_MINZ = -9, MOVE_MAXZ = 15, MOVE_ZONEWIDTH = 5;
 
 	public static int numPlayers = 4;
 
@@ -18,7 +19,7 @@ public static class LevelManager {
 
 
 	//TODO Should not be made here...
-	public static int numSamples = 512;
+	public static int numSamples = 256;
 
 	public static Vector3 GetRespawnPoint(/*int player,*/ int z){
 

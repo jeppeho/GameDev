@@ -36,8 +36,10 @@ public class NewController : MonoBehaviour {
 
 	public float accelerationRate = 10;
 	public float maxVelocity = 1;
-	private float autoRunSpeed = 0.05f;
-	public float jumpPower = 10;
+	private float autoRunSpeed = 1.5f;
+	public float jumpPower = 10f;
+	public float fallDownForce = 45f;
+	public float horizontalJumpScalar = 3f;
 
 	private int explosionCounter = 300;
 
@@ -60,7 +62,7 @@ public class NewController : MonoBehaviour {
 		maxVelocity *= LevelManager.SPEED;
 		accelerationRate *= LevelManager.SPEED;
 		autoRunSpeed *= LevelManager.SPEED;
-
+		Debug.Log("autoRunSpeed = " + autoRunSpeed);
 		nearWalkZone = LevelManager.MOVE_MINZ+LevelManager.MOVE_ZONEWIDTH;
 		farWalkZone = LevelManager.MOVE_MAXZ-LevelManager.MOVE_ZONEWIDTH;
 		walkZoneWidth = LevelManager.MOVE_ZONEWIDTH;
@@ -69,8 +71,6 @@ public class NewController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-
-
 
 		//Get state of player, eg. dead, active etc.
 		playerState = this.gameObject.GetComponent<PlayerManager> ().GetState ();
@@ -91,7 +91,7 @@ public class NewController : MonoBehaviour {
 				Move ();
 			} else {
 				//TODO only if active
-				AutoRun ();
+				//AutoRun ();
 			}
 			//Check if player should fall or land
 			if (!IsGrounded ()) {
@@ -105,7 +105,7 @@ public class NewController : MonoBehaviour {
 
 
 			//Check if player should throw relic
-			if (pressThrow > 0.05f && this.gameObject.GetComponent<CarriedObject> ().isCarrying () == true) {
+			if (pressThrow > 0.05f && this.gameObject.GetComponent<PlayerRelicHandler> ().HasRelic () == true) {
 
 				//Reverse if Xbox
 
@@ -166,11 +166,11 @@ public class NewController : MonoBehaviour {
 	 */
 	private void LimitBoundariesOnXAxis(){
 
-		if (rb.transform.position.x < -5) {
+		if (rb.transform.position.x < LevelManager.MIN_X) {
 			Vector3 vel = rb.velocity;
 			vel.x *= -1f;
 			rb.velocity = vel;
-		} else if (rb.transform.position.x > 5) {
+		} else if (rb.transform.position.x > LevelManager.MAX_X) {
 			Vector3 vel = rb.velocity;
 			vel.x *= -1f;
 			rb.velocity = vel;
@@ -232,16 +232,21 @@ public class NewController : MonoBehaviour {
 //			rb.AddForce (new Vector3 (0, 0, LevelManager.SPEED));
 //		}
 //		else 
+
 		if (GetSurfaceTag () == "Water") {
 			//rb.AddForce (new Vector3 (0, 0, 0.1f));
-			rb.AddForce (new Vector3 (0, 0, autoRunSpeed / 2));
+			rb.AddForce (new Vector3 (0, 0, autoRunSpeed / 2f * Time.deltaTime));
 		} else {
 			//rb.AddForce (new Vector3 (0, 0, 0.15f));
-			rb.AddForce (new Vector3 (0, 0, autoRunSpeed));
+			rb.AddForce (new Vector3 (0, 0, autoRunSpeed * Time.deltaTime));
 		}
 	}
 
 
+	/**
+	 * 
+	 * TODO If we use this function multiply by Time.deltaTime in the AddForce method!!!
+	 */
 	private void Explode(){
 
 		//Get the center of minion
@@ -291,11 +296,10 @@ public class NewController : MonoBehaviour {
 			jumpPower /= 3;
 
 		//Add speed on X and Z axis if jumping
-//		float hor = moveHorizontal * accelerationRate / 5;
-//		float ver = moveVertical * accelerationRate / 5;
+		float x = moveHorizontal * accelerationRate * horizontalJumpScalar;
+		float z = moveVertical * accelerationRate * horizontalJumpScalar;
 
-		//rb.AddForce ( new Vector3(hor, jumpPower, ver) );
-		rb.AddForce ( new Vector3(0, jumpPower, 0) );
+		rb.AddForce ( new Vector3(x, jumpPower, z) * Time.deltaTime );
 	}
 
 
@@ -303,7 +307,7 @@ public class NewController : MonoBehaviour {
 	 * Add additional downward force to falling
 	 */
 	private void FallDown(){
-		rb.AddForce (new Vector3 (0, -1f, 0));
+		rb.AddForce (new Vector3 (0, -fallDownForce, 0) * Time.deltaTime);
 		falldownCounter = 1;
 	}
 
@@ -334,7 +338,7 @@ public class NewController : MonoBehaviour {
 		//Throw relic and remove as child
 		if (relic) {
 			player.GetComponentInChildren<RelicController> ().Throw(force);
-			this.gameObject.GetComponent<CarriedObject>().ReleaseCarriedObject ();
+			this.gameObject.GetComponent<PlayerRelicHandler>().ReleaseRelic ();
 		}
 	}
 

@@ -4,28 +4,42 @@ using System.Collections;
 public class RelicHealth : MonoBehaviour {
 
 	public float startHealth = 1000;
+	public float maxHandDistanceToTakeEnergy = 2f;
 	private float health;
 
 	private Rigidbody rb;
 	private RelicManager manager;
+
+	private GameObject handCore;
 
 	// Use this for initialization
 	void Start () {
 		health = startHealth;
 		rb = GetComponent<Rigidbody> ();
 		manager = GetComponent<RelicManager> ();
+
+		//Get the core ball of the hand 
+		handCore = GameObject.Find ("ball");
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		if (!manager.HasParent ())
-			DrainEnergy (1);
-		else
-			UpdateColor ();
+		if (!manager.HasParent ()) {
+			if (GetDistanceToCore () < maxHandDistanceToTakeEnergy) {
+				DrainEnergy (1);
+			} else {
+				UpdateColor ();
+			}
+		}
 	}
 
+	private float GetDistanceToCore(){
 
+		Vector3 vectorToCore = rb.transform.position - handCore.GetComponent<CoreManager> ().GetHandCorePosition ();
+
+		return vectorToCore.magnitude;
+	}
 
 
 	/**
@@ -52,7 +66,7 @@ public class RelicHealth : MonoBehaviour {
 			if (relativeVelocity > 20) {
 
 				//Remove from parent
-				manager.RemoveParent ();
+				manager.ReleaseFromParent ();
 			}
 		}
 	}
@@ -65,13 +79,13 @@ public class RelicHealth : MonoBehaviour {
 
 		if (drain > 1)
 			FlashColor ();
-		else if (Time.frameCount % 30 == 0)
+		else if (Time.frameCount % 5 == 0)
 			FlashColor ();
 		else
 			UpdateColor ();
 
 		if (health < 0) {
-			manager.RemoveParent ();
+			manager.ReleaseFromParent ();
 			DeleteObject ();
 		}
 	}

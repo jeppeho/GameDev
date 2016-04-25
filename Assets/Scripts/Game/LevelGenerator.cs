@@ -17,10 +17,7 @@ public class LevelGenerator : MonoBehaviour {
 
 	private int levelWidth = 10;
 
-	private int numCubeWidth = 6;
-
-
-
+	private int halfWidth = 6;
 
 	//Gameobjects
 	public GameObject planePrefab;
@@ -30,17 +27,20 @@ public class LevelGenerator : MonoBehaviour {
 
 	//Level cubes
 	//public GameObject groundCube;
-	public GameObject waterCube;
-	public GameObject cliffCube;
+	public GameObject lavaCube;
+	//public GameObject cliffCube;
 	//public GameObject bridgeCube;
-	public GameObject woodCube;
+	//public GameObject woodCube;
 
 	//REAL MODELS
 	public GameObject[] groundEdges;
 	public GameObject groundMiddle;
 	public GameObject[] pillars;
+	public GameObject[] pillars_hex;
 	public GameObject[] bridgeSteps;
 	public GameObject[] sides;
+	public GameObject[] steppingStones;
+	public GameObject cliff;
 
 
 	private int prevPillarIndex = -1;
@@ -48,6 +48,7 @@ public class LevelGenerator : MonoBehaviour {
 	private int prevSecondbridgeStepIndex = -1;
 	private int prevGroundEdgeIndex = -1;
 	private int prevSidesIndex = -1;
+	private int prevSteppingStoneIndex = -1;
 
 
 	//Ground slices
@@ -70,10 +71,12 @@ public class LevelGenerator : MonoBehaviour {
 	private float[] cliffBridgeNoise2;
 	private float[] waterStoneNoise;
 	private float[] pillarNoise;
+	private float[] pillarPositionNoise;
 	private float[] cubeStackNoise;
 	private float[] cubeStackHeightNoise;
 	private float[] woodSteppingStones1;
 	private float[] woodSteppingStones2;
+	private float[] cliffHeightNoise;
 
 	private Vector3[] respawnPoints;
 	private float respawnpointOffset;
@@ -83,35 +86,27 @@ public class LevelGenerator : MonoBehaviour {
 
 		NG = new NoiseGenerator ();
 
-		GenerateLevelNew ();
-	
-	}
-
-
-	private void GenerateLevelNew(){
-
 		//Instantiate arrays
 		levelAreas = new AreaType[NG.GetNumSamples()];
 		respawnPoints = new Vector3[NG.GetNumSamples () * LevelManager.numPlayers];
-		//cubes = new GameObject[NG.GetNumSamples];
-
-		//Create noise arrays
-//		levelAreaNoise = NG.GetPerlinNoise1D (3, 10, 0.6f, -1, 1);
-//		SetLevelAreaArray ();
 
 		generateAcceptableLevel ();
 
-		//NG.CreateVisualRepresentationSingle (levelAreaNoise, 20f);
-
-		canyonNoise = NG.GetPerlinNoise1D (4, 7, 0.6f, -numCubeWidth +1, numCubeWidth -1);
-		cliffBridgeNoise = NG.GetPerlinNoise1D (1, 6, 0.5f, -numCubeWidth + 0.5f, (numCubeWidth / 4) );
-		cliffBridgeNoise2 = NG.GetPerlinNoise1D (4, 6, 1f, (-numCubeWidth / 4), numCubeWidth - 0.5f);
-		waterStoneNoise = NG.GetPerlinNoise1D (6, 10, 0.7f, -numCubeWidth, numCubeWidth);
+		//Create noise array to use with level elements
+		canyonNoise = NG.GetPerlinNoise1D (4, 7, 0.6f, -halfWidth +1, halfWidth -1);
+		cliffBridgeNoise = NG.GetPerlinNoise1D (1, 6, 0.5f, -halfWidth + 0.5f, (halfWidth / 4) );
+		cliffBridgeNoise2 = NG.GetPerlinNoise1D (4, 6, 1f, (-halfWidth / 4), halfWidth - 0.5f);
+		waterStoneNoise = NG.GetPerlinNoise1D (6, 10, 0.7f, -halfWidth, halfWidth);
 		pillarNoise = NG.GetPerlinNoise1D (8, 10, 0.8f, -1, 1);
+		pillarPositionNoise = NG.GetPerlinNoise1D (8, 10, 0.8f, -1, 1);
 		cubeStackNoise = NG.GetPerlinNoise1D (8, 10, 0.8f, -1, 1);
 		cubeStackHeightNoise = NG.GetPerlinNoise1D (6, 10, 1f, 2, 7);
-		woodSteppingStones1 = NG.GetPerlinNoise1D (4, 10, 0.8f, -numCubeWidth + 1, 0);
-		woodSteppingStones2 = NG.GetPerlinNoise1D (4, 10, 0.8f, 0, numCubeWidth - 1);
+		woodSteppingStones1 = NG.GetPerlinNoise1D (4, 10, 0.8f, -halfWidth -1, halfWidth + 1);
+		woodSteppingStones2 = NG.GetPerlinNoise1D (4, 10, 0.8f, -halfWidth -1, halfWidth + 1);
+		cliffHeightNoise = NG.GetPerlinNoise1D (6, 10, 1f, 300, 600);
+
+
+		NG.CreateVisualRepresentationSingle (levelAreaNoise, 20f);
 
 		for (int sample = 0; sample < NG.GetNumSamples (); sample++) {
 
@@ -121,25 +116,27 @@ public class LevelGenerator : MonoBehaviour {
 
 			//TEMPORARY
 			if (levelAreas [sample] == AreaType.start){
-				Debug.Log ("Ground = " + sample);
-				CreateGround (sample);
-			
+				//CreateGround (sample);
+				CreateGroundSection(sample);
+
 			} else if (levelAreas [sample] == AreaType.canyon) {
 
-				CreateCanyonSlice (sample);
+				//CreateCanyonSlice (sample);
+				CreateCliffSection(sample);
 
 			} else if (levelAreas [sample] == AreaType.water) {
 
-				CreateWaterCube (sample);
+				CreateLavaSection (sample);
 
 			} else if (levelAreas [sample] == AreaType.gap) {
-				
+
 				//CreateBridges (sample);
 				CreateBridgeStep (sample);
 
 			} else if (levelAreas [sample] == AreaType.grass) {
-				
-				CreateGround(sample);
+
+				//CreateGround(sample);
+				CreateGroundSection(sample);
 
 			} else {
 				Debug.Log ("Level area type not defined @" + sample + " | " + levelAreas [sample]);
@@ -147,6 +144,9 @@ public class LevelGenerator : MonoBehaviour {
 		}
 
 		LevelManager.respawnPoints = respawnPoints;
+
+		NG.ConvertSamplesToUnits (levelAreaNoise);
+
 	}
 
 
@@ -159,11 +159,21 @@ public class LevelGenerator : MonoBehaviour {
 	
 		for (int sample = startingCell + 1; sample < NG.GetNumSamples() - 1; sample++) {
 
+			//Remove areas of length 1
 			if (levelAreas[sample - 1] != levelAreas[sample] 
 				&& levelAreas [sample + 1] != levelAreas [sample]
 				&& levelAreas[sample - 1] == levelAreas [sample + 1])
 			{
 				levelAreas [sample] = levelAreas [sample - 1]; 
+			}
+
+			//Remove areas of length 2
+			if (levelAreas [sample] == levelAreas [sample + 1]
+			   && levelAreas [sample - 1] != levelAreas [sample]
+			   && levelAreas [sample - 1] == levelAreas [sample + 2]) 
+			{
+				levelAreas[sample] = levelAreas [sample - 1]; 
+				levelAreas[sample + 1] = levelAreas [sample - 1]; 
 			}
 		}
 	}
@@ -173,6 +183,9 @@ public class LevelGenerator : MonoBehaviour {
 
 		bool accepted = false;
 		int numTests = 10000;
+
+		//To keep score of how many tries it took to get an accepted
+		int acceptedNum = 0;
 
 		Debug.Log ("Generating acceptable level with " + numTests + " tries");
 
@@ -202,7 +215,15 @@ public class LevelGenerator : MonoBehaviour {
 				accepted = true;
 				Debug.Log ("No succes for generating acceptable level");
 			}
+
+
+			if (accepted == true)
+				Debug.Log (acceptedNum + " tries to generate accepted level!");
+			else
+				acceptedNum++;
 		}
+
+
 
 		Debug.Log ("WATER = " + GetCountOfAreaType (AreaType.water));
 		Debug.Log ("CANYON = " + GetCountOfAreaType (AreaType.canyon));
@@ -251,7 +272,7 @@ public class LevelGenerator : MonoBehaviour {
 
 				levelAreas[sample] = AreaType.water;
 			}
-			else if (n > 0f && n < 0.2f) {
+			else if (n > 0.2f && n < 0.4f) {
 
 				levelAreas[sample] = AreaType.canyon;
 
@@ -279,31 +300,13 @@ public class LevelGenerator : MonoBehaviour {
 
 
 	//----------------------------------
-	// CREATING SLICE OF LEVEL METHODS
+	// METHODS FOR CREATING A SECTION OF THE LEVEL
+	// A section is one step deep on the Z-axis
 	//----------------------------------
 
 
-	private void CreateGround(int z){
 
-		//Great ground floor
-		CreateGroundSlice (z);
-
-		//Insert pillars
-		if ( (pillarNoise [z] > 0.5f && pillarNoise[z] < 0.7f)
-			|| (pillarNoise [z] > -0.1f && pillarNoise[z] < 0.1f)
-			|| (pillarNoise[z] > -0.6f && pillarNoise[z] < -0.5f)
-		) {
-
-			CreatePillar(z);
-		}
-
-		//Set respawn point
-		SetRespawnPointOnGrass (z);
-	}
-
-
-
-	private void CreateGroundSlice(int z){
+	private void CreateGroundSection(int z){
 
 		Vector3 position = new Vector3( 0, 0, z );
 	
@@ -313,8 +316,10 @@ public class LevelGenerator : MonoBehaviour {
 
 		//If next area type is not grass
 		if (z < NG.GetNumSamples() - 2) {
-			AreaType nextArea = levelAreas [z + 2];
-			if (nextArea == AreaType.water || nextArea == AreaType.gap) {
+			AreaType nextArea = levelAreas [z + 1];
+			AreaType nextNextArea = levelAreas [z + 2];
+			if ( (nextNextArea == AreaType.water || nextNextArea == AreaType.gap ) 
+				&& nextArea == AreaType.grass ) {
 
 				CreateGroundEdge (z, false);
 
@@ -323,127 +328,150 @@ public class LevelGenerator : MonoBehaviour {
 
 		//If previous area type is not grass
 		if (z >= 2) {
-			AreaType prevArea = levelAreas [z - 2];
-			if (prevArea == AreaType.water || prevArea == AreaType.gap) {
+			AreaType prevArea = levelAreas [z - 1];
+			AreaType prevPrevArea = levelAreas [z - 2];
+			if ( (prevPrevArea == AreaType.water || prevPrevArea == AreaType.gap )
+				&& prevArea == AreaType.grass) {
 
 				CreateGroundEdge (z, true);
 
 			}
 		}
+
+		//Insert pillars
+//		if ( (pillarNoise [z] > 0.5f && pillarNoise[z] < 0.6f)
+//			|| (pillarNoise [z] > -0.1f && pillarNoise[z] < 0.0f)
+//			|| (pillarNoise[z] > -0.6f && pillarNoise[z] < -0.5f)
+//		) {
+
+		if (z > 0 && z < NG.GetNumSamples ()) {
+
+			if (levelAreas [z - 1] == AreaType.grass && levelAreas [z + 1] == AreaType.grass) {
+
+				if (levelAreaNoise [z] < 0.6f) {
+
+					if (z % 10 == 0) {
+
+						CreatePillar (z, false);
+
+					}
+				}
+
+				if (levelAreaNoise [z] > -0.5f) {
+					if (z % 3 == 0 && z % 10 != 0) {
+		
+						CreateCrystalGroupSmall (z);
+
+					}
+				}
+			}
+		}
+
+
+		//Set respawn point
+		SetRespawnPointOnGrass (z);
 	}
+		
 
-
-
-
-
-
-	private void CreateWaterCube(int sample){
+	private void CreateLavaSection(int sample){
 
 		Vector3 position = new Vector3 (0, -1, sample);
 
-		for (int i = -numCubeWidth; i < numCubeWidth; i++) {
+		for (int i = -halfWidth - 10; i < halfWidth + 10; i++) {
 			position.x = i + 0.5f;
-			GameObject cube = Instantiate (waterCube, position, Quaternion.identity) as GameObject;
+			GameObject cube = Instantiate (lavaCube, position, Quaternion.identity) as GameObject;
 		}
 
 
 		//Don't check array out of bounds
 		if ( sample > 0 && sample < NG.GetNumSamples() - 2 ) {
+
 			//Only if prev and next area is water
 			if (levelAreas [sample - 1] == AreaType.water && levelAreas [sample + 1] == AreaType.water) {
-				//CreateWoodCube (sample);
-				if (sample % 4 == 0) {
-					//CreateWoodCubes (sample);
-					CreateWaterSteppingStone(woodSteppingStones1, sample);
-					//Debug.Log("#1 steppingstone & sample + 2 = " + (sample + 2));
 
+				if (sample % 4 == 0) {
+
+					CreateSteppingStone(woodSteppingStones1, sample);
+
+					if (levelAreaNoise [sample] < 0.0f) {
+
+						if (sample % 8 == 0) {
+
+							CreatePillar (sample, true);
+
+						}
+					}
+						
 					SetRespawnPointOnSteppingStone (sample, woodSteppingStones1 [sample]);
 					SetRespawnPointOnSteppingStone (sample + 1, woodSteppingStones1 [sample]);
 				} 
 				if ((sample + 2) % 4 == 0) {
-					//Debug.Log("#2 steppingstone");
-					CreateWaterSteppingStone(woodSteppingStones2, sample);
+
+					CreateSteppingStone(woodSteppingStones2, sample);
 
 					SetRespawnPointOnSteppingStone (sample, woodSteppingStones2 [sample]);
-					SetRespawnPointOnSteppingStone (sample +1 , woodSteppingStones2 [sample]);
+					SetRespawnPointOnSteppingStone (sample + 1 , woodSteppingStones2 [sample]);
 				}
 			}
 		}
 	}
 
 
-	private void CreateWaterSteppingStone(float[] noise, int z){
-		GameObject cube = Instantiate (woodCube, new Vector3(noise[z], -0.9f, z), Quaternion.identity) as GameObject;
-	}
 
-
-
-	private void CreateCanyonSlice(int z){
-
-		Vector3 position = new Vector3( 0, 0, z );
-
-		//Instantiate middle part
-		GameObject middle = Instantiate (groundMiddle, position, Quaternion.identity) as GameObject;
-
-		/*
-		 * Temporary solution, we need actual model
-		 */
-		for (int x = -numCubeWidth * 2; x < numCubeWidth * 2; x++) {
-			position.x = x + 0.5f;
-
-			//Set Y position
-			float difference = Mathf.Abs( (x + 0.5f) - canyonNoise[z] );
-
-			if (difference > 3f) {
-				position.y = 4f;
-				GameObject cube = Instantiate (cliffCube, position, Quaternion.identity) as GameObject;
-				//cube.transform.localScale = new Vector3 (1, 1, 1);
-			}
-
-
-
-		}
-
-
-
-		//Create cubestack
-		if (cubeStackNoise [z] > 0.6f) {
-			//CreateCubeStack (z);
-			CreatePillar (z);
-		}
-
-		SetRespawnPointInCanyon (z);
-
-	}
-
-
-
-	private void CreateCanyonCube(int z){
+	private void CreateCliffSection(int z){
 
 		Vector3 position = new Vector3 ( 0, 0, z );
 
-		for (int x = -numCubeWidth; x < numCubeWidth; x++) {
-			position.x = x + 0.5f;
+		GameObject middle = Instantiate (groundMiddle, position, Quaternion.identity) as GameObject;
 
-			//Set Y position
-			float difference = Mathf.Abs( (x + 0.5f) - canyonNoise[z] );
+		if (z % 2 == 0) {
 
-			if (difference > 3f)
-				position.y = 4f;
-			else
-				position.y = 0f;
+			for (int x = -halfWidth - 10; x < halfWidth + 10; x += 2) {
 
-			GameObject cube = Instantiate (cliffCube, position, Quaternion.identity) as GameObject;
-			cube.transform.localScale = new Vector3 (1, 1, 1);
-		}
+				//Check if to close to road
+				float difference = (x + 0.5f) - canyonNoise [z];
 
-		//Create cubestack
-		if (cubeStackNoise [z] > 0.6f) {
-			//CreateCubeStack (z);
-			CreatePillar (z);
+				if ( Mathf.Abs ( difference) > 4f) {
+
+					position.x = Random.Range (x - 0.2f, x + 0.2f);
+
+					GameObject cliffy = Instantiate (cliff, position, Quaternion.identity) as GameObject;
+					cliffy.name = "normal cliff";
+					float height = cliffHeightNoise [z] + Mathf.Abs ( difference ) * 30;
+					float width = Random.Range (110, 150);
+					cliffy.transform.localScale = new Vector3 (width, height, width);
+
+					float rotationZ = difference * 1.4f;
+					cliffy.transform.RotateAround (position, new Vector3 (0, 0, 1), -rotationZ);
+
+					//ADD NARROWING AREA IN FRONT OF CANYON
+					if (levelAreas [z-2] != AreaType.canyon) {
+
+						for (int i = 1; i < Mathf.Abs(difference) - 4 && i < 5; i+=2) {
+
+							position.x += Random.Range (-0.2f, 0.2f);
+							position.z = z - i ;
+
+							GameObject cliffy2 = Instantiate (cliff, position, Quaternion.identity) as GameObject;
+							cliffy2.name = "extra cliff";
+							//float height2 = 1000f;
+							cliffy2.transform.localScale = new Vector3 (width, height, width);
+
+
+//							float rotationZ2 = difference * 1.4f;
+							cliffy.transform.RotateAround (position, new Vector3 (0, 0, 1), -rotationZ);
+
+							position.z = z;
+						}
+					}
+						
+						
+				}
+			}
 		}
 
 		SetRespawnPointInCanyon (z);
+
 	}
 
 
@@ -451,7 +479,8 @@ public class LevelGenerator : MonoBehaviour {
 
 
 	//----------------------------------
-	// INSTANTIATING AND PLACING OBJECTS METHODS
+	// METHODS FOR INSTANTIATING AND PLACING OBJECTS
+	// Objects such as pillars, sides and stepping stones
 	//----------------------------------
 
 
@@ -460,71 +489,152 @@ public class LevelGenerator : MonoBehaviour {
 		Vector3 position = new Vector3 (0, 0, z);
 
 
-		int index2 = NG.GetRandomButNotPreviousValue (0, groundEdges.Length, prevGroundEdgeIndex);
-		GameObject edge2 = Instantiate (groundEdges [index2], position, Quaternion.identity) as GameObject;
+		int index = NG.GetRandomButNotPreviousValue (0, groundEdges.Length, prevGroundEdgeIndex);
+		GameObject edge = Instantiate (groundEdges [index], position, Quaternion.identity) as GameObject;
+
+		Vector3 scale = edge.transform.localScale;
+		scale.y = 5;
+		edge.transform.localScale = scale;
 
 		//Invert on z-axis
 		if (invertOnZ) {
-			edge2.transform.RotateAround (position, new Vector3 (0, 1, 0), 180);
+			edge.transform.RotateAround (position, new Vector3 (0, 1, 0), 180);
 		}
 
-		prevGroundEdgeIndex = index2;
+		prevGroundEdgeIndex = index;
+
+	}
+
+
+	private void CreateGapSideEdge(int z, bool invertOnZ){
+
+		Vector3 position = new Vector3 (-12, 0, z);
+		int rotation = 90;
+		//Invert on z-axis
+		if (invertOnZ) {
+			rotation += 180;
+			position.x = 12;
+		}
+
+		int index = NG.GetRandomButNotPreviousValue (0, groundEdges.Length, prevGroundEdgeIndex);
+		GameObject edge = Instantiate (groundEdges [index], position, Quaternion.identity) as GameObject;
+
+		Vector3 scale = edge.transform.localScale;
+		scale.y = 5;
+		edge.transform.localScale = scale;
+
+		edge.transform.RotateAround (position, new Vector3 (0, 1, 0), rotation);
+
+		prevGroundEdgeIndex = index;
 
 	}
 
 
 
-	private void CreatePillar(int z){
+	private void CreatePillar(int z, bool createHex){
 
-		//Get and X-value
-		float x = Random.Range (-numCubeWidth + 1f, numCubeWidth - 1f);
+		float x = pillarPositionNoise [z];
 
 		int pillarIndex = NG.GetRandomButNotPreviousValue (0, pillars.Length, prevPillarIndex);
 
+		if (pillarIndex == 1)
+			x -= halfWidth;
+		else if (pillarIndex == 2)
+			x += halfWidth;
+			
+
+		GameObject pillar;
+
 		Vector3 position = new Vector3( x, 0, z );
-		GameObject pillar = Instantiate (pillars [pillarIndex], position, Quaternion.identity) as GameObject; 
+		if(createHex)
+			pillar = Instantiate (pillars_hex [pillarIndex], position, Quaternion.identity) as GameObject; 
+		else
+			pillar = Instantiate (pillars [pillarIndex], position, Quaternion.identity) as GameObject; 
 
 		//Set size
-		float size = Random.Range (60, 120);
+		float size = Random.Range (110, 130);
 		pillar.transform.localScale = new Vector3 (size, size, size);
 
 		//Rotate around Y-axis
-		pillar.transform.RotateAround( position, new Vector3(0,1,0), Random.Range(0, 360));
+		int rotation = 0;
+		if (pillarIndex == 1)
+			rotation = Random.Range (120, 180);
+		else if (pillarIndex == 2)
+			rotation = Random.Range (0, -60);
+
+		else
+			rotation = Random.Range (0, 360);
+		
+
+		pillar.transform.RotateAround( position, new Vector3( 0, 1, 0), rotation );
 
 		//Update
 		prevPillarIndex = pillarIndex;
+
+	}
+
+	private void CreateCrystalGroupSmall(int z){
+
+		float x = Random.Range (-halfWidth + 1f, halfWidth - 1f);
+
+		Vector3 position = new Vector3( x, 0, z );
+
+		for (int i = 0; i < pillars.Length; i++) {
+			GameObject pillar = Instantiate (pillars [i], position, Quaternion.identity) as GameObject;
+			float scale = Random.Range (35, 50);
+			pillar.transform.localScale = new Vector3 (scale, scale, scale);
+			//Rotate around Y-axis
+			pillar.transform.RotateAround( new Vector3(x - 1f, 0, z), new Vector3(0,1,0), 120 * i);
+			pillar.transform.RotateAround( position, new Vector3(0,1,0), Random.Range(0, 360));
+		
+		}
+	}
+
+
+
+	private void CreateSteppingStone(float[] noise, int z){
+		Debug.Log ("CreateSteppingStone");
+		int index = NG.GetRandomButNotPreviousValue (0, steppingStones.Length, prevSteppingStoneIndex);
+		GameObject steppingStone = Instantiate(steppingStones[index], new Vector3(noise[z], 0, z), Quaternion.identity) as GameObject;
+
+		int scale = Random.Range (30, 50);
+		steppingStone.transform.localScale = new Vector3 (scale, scale, scale);
+
+		prevSteppingStoneIndex = index;
 	}
 
 
 	private void CreateSides(int z){
 
-		if (levelAreas [z] == AreaType.grass) {
+		//Put in every 5th slice or add an edge
+		if (z % 10 == 0) {
 
-			//Put in every 5th slice or add an edge
-			if (z % 5 == 0 || levelAreas [z] != levelAreas [z + 1] || levelAreas [z] != levelAreas [z - 1]) {
+			//float scale = Random.Range(90, 110);
+			int min = 130;
+			int max = 150;
 
-				//Scale with levelAreaNoise
-				float scale = Mathf.Pow((1 + levelAreaNoise [z]), 1.7f) * 40f;
+			Vector3 scalar = new Vector3 (Random.Range(min, max), Random.Range(min, max), Random.Range(min, max));
+			int rotationVariator = 30;
+			float x = halfWidth + 10;
 
+			Vector3 positionLeft = new Vector3 (-x, 0, z);
+			Vector3 positionRight = new Vector3 (x, 0, z);
 
-				Vector3 positionLeft = new Vector3 (-numCubeWidth - 3, 0, z);
-				Vector3 positionRight = new Vector3 (numCubeWidth + 3, 0, z);
+			//Get index for model
+			int index = NG.GetRandomButNotPreviousValue (0, sides.Length, prevSidesIndex);
 
-				//Get index for model
-				int index = NG.GetRandomButNotPreviousValue (0, sides.Length, prevSidesIndex);
+			GameObject leftSide = Instantiate (sides [index], positionLeft, Quaternion.identity) as GameObject;
+			leftSide.transform.RotateAround (positionLeft, new Vector3 (0, 1, 0), Random.Range(-rotationVariator, rotationVariator) + 180);
+			leftSide.transform.localScale = scalar;
 
-				GameObject leftSide = Instantiate (sides [index], positionLeft, Quaternion.identity) as GameObject;
-				leftSide.transform.RotateAround (positionLeft, new Vector3 (0, 1, 0), 180);
-				leftSide.transform.localScale = new Vector3 (50, scale, 40);
+			//Get new index for model
+			index = NG.GetRandomButNotPreviousValue (0, sides.Length, index);
 
-				//Get new index for model
-				index = NG.GetRandomButNotPreviousValue (0, sides.Length, index);
+			GameObject rightSide = Instantiate (sides [index], positionRight, Quaternion.identity) as GameObject;
+			rightSide.transform.RotateAround (positionRight, new Vector3 (0, 1, 0), Random.Range(-rotationVariator, rotationVariator));
+			rightSide.transform.localScale = scalar;
 
-				GameObject rightSide = Instantiate (sides [index], positionRight, Quaternion.identity) as GameObject;
-				rightSide.transform.localScale = new Vector3 (50, scale, 40);
-
-				prevSidesIndex = index;
-			}
+			prevSidesIndex = index;
 		}
 	}
 
@@ -547,11 +657,15 @@ public class LevelGenerator : MonoBehaviour {
 		step2.transform.RotateAround( position2, new Vector3(0,1,0), Random.Range(0, 360));
 
 		//Set scale
-		float size = Random.Range (10, 25);
-		step1.transform.localScale = new Vector3 (size, size, size);
-		size = Random.Range (10, 25);
-		step2.transform.localScale = new Vector3 (size, size, size);
+		float size = Random.Range (27, 37);
+		step1.transform.localScale = new Vector3 (size, 500, size);
+		size = Random.Range (27, 37);
+		step2.transform.localScale = new Vector3 (size, 500, size);
 
+		if (z % 20 == 0) {
+			CreateGapSideEdge (z, true);
+			CreateGapSideEdge (z, false);
+		}
 
 		SetRespawnPointOnBridge (z, position1.x);
 
@@ -562,21 +676,21 @@ public class LevelGenerator : MonoBehaviour {
 	/**
 	 * Used as stepping stone over water
 	 */
-	private void CreateWoodCube(int z){
-
-		float x = waterStoneNoise [z];
-
-		//Limit width on the X-axis
-		x = x / numCubeWidth * (numCubeWidth - 1);
-
-		//Randomize position a bit
-		x += Random.Range (-1, 1);
-		z += Random.Range (-1, 1);
-
-		Vector3 position = new Vector3 (x, 0.2f, z);
-
-		GameObject cube = Instantiate (woodCube, position, Quaternion.identity) as GameObject;
-	}
+//	private void CreateWoodCube(int z){
+//
+//		float x = waterStoneNoise [z];
+//
+//		//Limit width on the X-axis
+//		x = x / numCubeWidth * (numCubeWidth - 1);
+//
+//		//Randomize position a bit
+//		x += Random.Range (-1, 1);
+//		z += Random.Range (-1, 1);
+//
+//		Vector3 position = new Vector3 (x, 0.2f, z);
+//
+//		GameObject cube = Instantiate (woodCube, position, Quaternion.identity) as GameObject;
+//	}
 
 
 	/**
@@ -757,5 +871,91 @@ public class LevelGenerator : MonoBehaviour {
 	//		cube2.transform.Rotate(new Vector3(0, -GetBrigdeStepRotation(z, cliffBridgeNoise2), 0) );
 	//
 	//		SetRespawnPointOnBridge (z, position1.x);
+	//	}
+
+
+
+	//	private void CreateWaterSteppingStone(float[] noise, int z){
+	//		GameObject cube = Instantiate (woodCube, new Vector3(noise[z], -0.9f, z), Quaternion.identity) as GameObject;
+	//	}
+
+
+
+	//
+	//	private void CreateCanyonCube(int z){
+	//
+	//		Vector3 position = new Vector3 ( 0, 0, z );
+	//
+	//		for (int x = -numCubeWidth; x < numCubeWidth; x++) {
+	//			position.x = x + 0.5f;
+	//
+	//			//Set Y position
+	//			float difference = Mathf.Abs( (x + 0.5f) - canyonNoise[z] );
+	//
+	//			if (difference > 3f)
+	//				position.y = 4f;
+	//			else
+	//				position.y = 0f;
+	//
+	//			GameObject cube = Instantiate (cliffCube, position, Quaternion.identity) as GameObject;
+	//			cube.transform.localScale = new Vector3 (1, 1, 1);
+	//		}
+	//
+	//		//Create cubestack
+	////		if (cubeStackNoise [z] > 0.6f) {
+	////			//CreateCubeStack (z);
+	////			CreatePillar (z);
+	////		}
+	//
+	//		SetRespawnPointInCanyon (z);
+	//	}
+
+
+	//	private void CreateCanyonSection(int z){
+	//
+	//		Vector3 position = new Vector3( 0, 0, z );
+	//
+	//		//Instantiate middle part
+	//		GameObject middle = Instantiate (groundMiddle, position, Quaternion.identity) as GameObject;
+	//
+	//		/*
+	//		 * Temporary solution, we need actual model
+	//		 */
+	//		for (int x = -numCubeWidth * 2; x < numCubeWidth * 2; x++) {
+	//			position.x = x + 0.5f;
+	//
+	//			//Set Y position
+	//			float difference = Mathf.Abs( (x + 0.5f) - canyonNoise[z] );
+	//
+	//			if (difference > 3f) {
+	//				position.y = 4f;
+	//				GameObject cube = Instantiate (cliffCube, position, Quaternion.identity) as GameObject;
+	//				//cube.transform.localScale = new Vector3 (1, 1, 1);
+	//			}
+	//
+	//
+	//
+	//		}
+	//			
+	//		SetRespawnPointInCanyon (z);
+	//	}
+
+
+	//	private void CreateGround(int z){
+	//
+	//		//Great ground floor
+	//		CreateGroundSection (z);
+	//
+	//		//Insert pillars
+	//		if ( (pillarNoise [z] > 0.5f && pillarNoise[z] < 0.6f)
+	//			|| (pillarNoise [z] > -0.1f && pillarNoise[z] < 0.0f)
+	//			|| (pillarNoise[z] > -0.6f && pillarNoise[z] < -0.5f)
+	//		) {
+	//
+	//			CreatePillar(z);
+	//		}
+	//
+	//		//Set respawn point
+	//		SetRespawnPointOnGrass (z);
 	//	}
 }

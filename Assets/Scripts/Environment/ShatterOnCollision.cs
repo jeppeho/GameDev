@@ -20,6 +20,11 @@ public class ShatterOnCollision : MonoBehaviour {
 			
 		}
 
+		//Minimize pieces a bit
+		Vector3 scale = shatteredObject.transform.localScale;
+		scale *= 0.95f;
+		shatteredObject.transform.localScale = scale;
+
 		shatteredObject.SetActive (false);
 	}
 	
@@ -32,7 +37,9 @@ public class ShatterOnCollision : MonoBehaviour {
 
 	private void ShatterObject(){
 		intactObject.SetActive (false);
+
 		shatteredObject.SetActive (true);
+
 	}
 
 

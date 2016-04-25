@@ -37,4 +37,8 @@ public class CoreManager : MonoBehaviour {
 		Vector3 newVelocity = direction * snappedSpeed * Time.deltaTime;
 		rb.velocity = newVelocity;
 	}
+
+	public Vector3 GetHandCorePosition(){
+		return rb.transform.position;
+	}
 }

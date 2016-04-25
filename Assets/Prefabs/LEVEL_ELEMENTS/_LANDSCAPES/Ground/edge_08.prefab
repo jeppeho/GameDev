@@ -42,7 +42,7 @@ Transform:
   m_GameObject: {fileID: 145512}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.5}
-  m_LocalScale: {x: 100, y: 100, z: 80}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 494480}
   m_RootOrder: 0
@@ -102,7 +102,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Convex: 1
+  m_Convex: 0
   m_Mesh: {fileID: 4300000, guid: 461e20dee1a8a400f9f4d3e44fda84c4, type: 3}
 --- !u!95 &9535326
 Animator:

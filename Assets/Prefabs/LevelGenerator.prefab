@@ -41,17 +41,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grassPercentage: 0
-  waterPercentage: 0
+  waterPercentage: 40
   canyonPercentage: 0
-  gapPercentage: 25
+  gapPercentage: 0
   planePrefab: {fileID: 171214, guid: f8781240a8e3d487d8e4df00e5394e2b, type: 2}
   waterSmallPrefab: {fileID: 119884, guid: 2067c238b181942f6b5b016e2b73290f, type: 2}
   stackCube: {fileID: 140410, guid: 30347eaf9a2ae415e82dbcf9dbe1b3f9, type: 2}
-  groundCube: {fileID: 142786, guid: e177d5459b49745dca27906662c49273, type: 2}
-  waterCube: {fileID: 177484, guid: 1dac131e717184b4c88825d684ee97f4, type: 2}
-  cliffCube: {fileID: 182820, guid: 1d518837d2d0941be83cd869b01e9a2c, type: 2}
-  bridgeCube: {fileID: 106712, guid: bbcb20a54a30646f382c26834b62ec4d, type: 2}
-  woodCube: {fileID: 116304, guid: 893c1ea1f98f145a3834f2ec240f004f, type: 2}
+  lavaCube: {fileID: 177484, guid: 1dac131e717184b4c88825d684ee97f4, type: 2}
   groundEdges:
   - {fileID: 101152, guid: 2675aac30f15f49f7aa10656a96f9ddb, type: 2}
   - {fileID: 191322, guid: c115570e383e945aa9e9f490480a35c1, type: 2}
@@ -64,6 +60,10 @@ MonoBehaviour:
   - {fileID: 129774, guid: 19e80a332e19640efaed0b596f176e94, type: 2}
   - {fileID: 104972, guid: 469356b28aa554b20aefd3c4176e96a2, type: 2}
   - {fileID: 139152, guid: 4c7ebec6fa215404d9edc3551f31ecd5, type: 2}
+  pillars_hex:
+  - {fileID: 100802, guid: bb33cae4d8ff647bcb52ca055e1bbbee, type: 2}
+  - {fileID: 169652, guid: 6a99d49cbfd9c4d4ea525f85f007f940, type: 2}
+  - {fileID: 195722, guid: 60724d7968d6f4dd0bf7faa2be2b0dd0, type: 2}
   bridgeSteps:
   - {fileID: 174770, guid: 9236fe134cb434087956eb0bbc7c7fd8, type: 2}
   - {fileID: 160036, guid: 425f260160b1e4b7c8b06b0681451fb6, type: 2}
@@ -75,6 +75,11 @@ MonoBehaviour:
   - {fileID: 166986, guid: e679ef428e7e84e5ebb6cb3836fa9d9c, type: 2}
   - {fileID: 139248, guid: 4fac589f0acb44e21be69beeb7cb384a, type: 2}
   - {fileID: 185394, guid: 5950402d638b544a59d9c883d06f7735, type: 2}
+  steppingStones:
+  - {fileID: 174770, guid: 9236fe134cb434087956eb0bbc7c7fd8, type: 2}
+  - {fileID: 160036, guid: 425f260160b1e4b7c8b06b0681451fb6, type: 2}
+  - {fileID: 136580, guid: 06ae01adabe3f4a0c83995fb1f8c7a0a, type: 2}
+  cliff: {fileID: 177974, guid: 0f795f361e5d44df2829518b99b3bd2c, type: 2}
 --- !u!114 &11488600
 MonoBehaviour:
   m_ObjectHideFlags: 1
