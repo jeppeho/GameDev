@@ -242,7 +242,7 @@ MonoBehaviour:
   producer: 
   accelerationRate: 10
   maxVelocity: 2
-  jumpPower: 300
+  jumpPower: 400
   fallDownForce: 45
   horizontalJumpScalar: 3
 --- !u!135 &13581342

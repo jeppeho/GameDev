@@ -128,10 +128,6 @@ Prefab:
       propertyPath: handObject
       value: 
       objectReference: {fileID: 372002851}
-    - target: {fileID: 2053436, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
-      propertyPath: far clip plane
-      value: 60
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
   m_IsPrefabParent: 0
@@ -331,10 +327,6 @@ Prefab:
       propertyPath: m_Name
       value: Minion (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 11499990, guid: 90557a4cc1fd3474d92977d069876ad2, type: 2}
-      propertyPath: jumpPower
-      value: 400
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 90557a4cc1fd3474d92977d069876ad2, type: 2}
   m_IsPrefabParent: 0
@@ -377,18 +369,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: useWater
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: levelLength
-      value: 400
-      objectReference: {fileID: 0}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: minLavaPercentage
-      value: 40
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
   m_IsPrefabParent: 0
@@ -430,10 +410,6 @@ Prefab:
     - target: {fileID: 479642, guid: 09b54316904da4311ad77ab122610f45, type: 2}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11481994, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: startHealth
-      value: 500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09b54316904da4311ad77ab122610f45, type: 2}

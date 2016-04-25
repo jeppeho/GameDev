@@ -40,11 +40,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1458f938b0ee948e2aca5fec5b7ad8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelLength: 250
-  minRegularGroundPercentage: 0
-  minLavaPercentage: 20
-  minCliffPercentage: 0
-  minBridgePercentage: 0
+  levelLength: 400
+  minRegularGroundPercentage: 20
+  minLavaPercentage: 10
+  minCliffPercentage: 10
+  minBridgePercentage: 10
   useWater: 1
   planePrefab: {fileID: 171214, guid: f8781240a8e3d487d8e4df00e5394e2b, type: 2}
   waterSmallPrefab: {fileID: 119884, guid: 2067c238b181942f6b5b016e2b73290f, type: 2}
