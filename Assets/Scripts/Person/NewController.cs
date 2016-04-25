@@ -62,7 +62,7 @@ public class NewController : MonoBehaviour {
 		maxVelocity *= LevelManager.SPEED;
 		accelerationRate *= LevelManager.SPEED;
 		autoRunSpeed *= LevelManager.SPEED;
-		Debug.Log("autoRunSpeed = " + autoRunSpeed);
+
 		nearWalkZone = LevelManager.MOVE_MINZ+LevelManager.MOVE_ZONEWIDTH;
 		farWalkZone = LevelManager.MOVE_MAXZ-LevelManager.MOVE_ZONEWIDTH;
 		walkZoneWidth = LevelManager.MOVE_ZONEWIDTH;

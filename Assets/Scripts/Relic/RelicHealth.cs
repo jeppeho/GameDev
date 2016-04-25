@@ -34,6 +34,10 @@ public class RelicHealth : MonoBehaviour {
 		}
 	}
 
+
+	/**
+	 * Returns the distance from the relic to the core of the god hand
+	 */
 	private float GetDistanceToCore(){
 
 		Vector3 vectorToCore = rb.transform.position - handCore.GetComponent<CoreManager> ().GetHandCorePosition ();
@@ -53,7 +57,7 @@ public class RelicHealth : MonoBehaviour {
 		if (!manager.HasParent ()) {
 
 			//Only drain if above some threshold
-			if (relativeVelocity > 3f) {
+			if (relativeVelocity > 5f) {
 				float drain = Mathf.FloorToInt (relativeVelocity * 2);
 
 				//Limit max energy drain

@@ -17,17 +17,21 @@ public static class LevelManager {
 
 	public static Vector3[] respawnPoints;
 
+	//Is set in the LevelGenerator
+	public static int levelLength;
 
-	//TODO Should not be made here...
-	public static int numSamples = 256;
 
+	/**
+	 * Returns a respawn point, dependant on the current z-position
+	 */
 	public static Vector3 GetRespawnPoint(/*int player,*/ int z){
 
 		int offset = 10;
 		int index = 0;
 
+		//Try at offset, otherwise move closer to camera
 		for (int i = offset; i > 0; i--) {
-			if (z + i < numSamples) {
+			if (z + i < levelLength) {
 				index = z + i;
 				break;
 			}

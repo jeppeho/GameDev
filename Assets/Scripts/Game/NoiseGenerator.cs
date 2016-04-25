@@ -22,27 +22,43 @@ using System.Collections;
 
 public class NoiseGenerator : MonoBehaviour {
 
+	//NumSamples has to be either 2, 4, 8, 16, 32, 64, 128, 256 etc.
 	private int numSamples = 256;
-	private int levelLength = 100;
 
+	//Is being set from LevelGenerator
+	private int levelLength;
+
+	public void SetLevelLength(int ll){
+		this.levelLength = ll;
+	}
 
 	public float[] ConvertSamplesToUnits(float[] noise){
 	
-		float[] remappedNoise = new float[GetLevelLength()];
-		float rate = GetNumSamples() / GetLevelLength();
+		float[] remappedNoise = new float[levelLength];
+		float rate = GetNumSamples() / levelLength;
 
-		float samples = GetNumSamples ();
-		float ll = GetLevelLength ();
-		rate = samples / ll;
-		Debug.Log ("Rate = " + rate);
+		//Convert to float values
+		float s = GetNumSamples ();
+		float ll = levelLength;
 
-		for (int i = 0; i < GetLevelLength(); i++) {
+		//Calculate conversion rate
+		rate = s / ll;
+
+		for (int i = 0; i < levelLength; i++) {
+
+			//Convert i to float
 			float newI = i;
-			int index = Mathf.FloorToInt (newI * rate);
 
-			remappedNoise [i] = noise [index];
+			//Find the index
+			int sampleIndex = Mathf.FloorToInt (newI * rate);
 
-			Debug.Log ("i = " + i + "; and gets value = " + remappedNoise[i] + " at original noise index = " + index);
+			//Dont go array out of bounds
+			if (i >= levelLength - 1)
+				i = levelLength - 1;
+
+			remappedNoise [i] = noise [sampleIndex];
+
+			//Debug.Log ("i = " + i + "; and gets value = " + remappedNoise[i] + " at original noise index = " + index);
 		}
 
 		return remappedNoise;
@@ -74,6 +90,8 @@ public class NoiseGenerator : MonoBehaviour {
 
 		//Map the noise
 		noise = Map (noise, minMap, maxMap);
+
+		noise = ConvertSamplesToUnits (noise);
 
 		//Return the noise
 		return noise;
@@ -126,6 +144,9 @@ public class NoiseGenerator : MonoBehaviour {
 
 		//Map the noise
 		noise = Map (noise, minMap, maxMap);
+
+		//Convert to levelLength
+		noise = ConvertSamplesToUnits (noise);
 
 		return noise;
 	}
@@ -181,10 +202,6 @@ public class NoiseGenerator : MonoBehaviour {
 
 	public int GetNumSamples(){
 		return numSamples;
-	}
-
-	public int GetLevelLength(){
-		return levelLength;
 	}
 		
 

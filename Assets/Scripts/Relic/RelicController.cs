@@ -156,7 +156,7 @@ public class RelicController : MonoBehaviour {
 	
 		Vector3 force = new Vector3 ();
 
-		if (Mathf.Abs (manager.GetPosition ().x) > 4)
+		if (Mathf.Abs (manager.GetPosition ().x) > LevelManager.MAX_X)
 			force.x = 20 * manager.GetPosition ().x * -1;
 
 		force.x += Random.Range (-20, 20);

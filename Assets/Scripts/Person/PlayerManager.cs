@@ -42,8 +42,10 @@ public class PlayerManager : MonoBehaviour {
 			Debug.Log (" impact = " + impact.magnitude);
 			//Remove energy from the relic
 			GameObject relic = GameObject.Find ("Relic");
-			relic.GetComponent<RelicHealth> ().DrainEnergy (impact.magnitude * 10);
-			Debug.Log ("Just removed " + impact.magnitude + " from relic health");
+			if (relic) {
+				relic.GetComponent<RelicHealth> ().DrainEnergy (impact.magnitude * 10);
+				Debug.Log ("Just removed " + impact.magnitude + " from relic health");
+			}
 		}
 	}
 

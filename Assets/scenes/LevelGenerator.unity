@@ -104,7 +104,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &91289505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,8 +134,8 @@ MonoBehaviour:
   producer: 
   accelerationRate: 7
   maxVelocity: 7
-  jumpPower: 350
-  fallDownForce: 50
+  jumpPower: 250
+  fallDownForce: 40
   horizontalJumpScalar: 5
 --- !u!114 &91289507
 MonoBehaviour:
@@ -326,7 +326,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11469044, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 419160, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -483,10 +483,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1458f938b0ee948e2aca5fec5b7ad8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grassPercentage: 0
-  waterPercentage: 40
-  canyonPercentage: 0
-  gapPercentage: 0
+  levelLength: 200
+  minRegularGroundPercentage: 0
+  minLavaPercentage: 0
+  minCliffPercentage: 0
+  minBridgePercentage: 0
   planePrefab: {fileID: 171214, guid: f8781240a8e3d487d8e4df00e5394e2b, type: 2}
   waterSmallPrefab: {fileID: 119884, guid: 2067c238b181942f6b5b016e2b73290f, type: 2}
   stackCube: {fileID: 140410, guid: 30347eaf9a2ae415e82dbcf9dbe1b3f9, type: 2}
