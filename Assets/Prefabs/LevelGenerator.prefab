@@ -40,10 +40,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1458f938b0ee948e2aca5fec5b7ad8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grassPercentage: 0
-  waterPercentage: 40
-  canyonPercentage: 0
-  gapPercentage: 0
+  levelLength: 250
+  minRegularGroundPercentage: 0
+  minLavaPercentage: 20
+  minCliffPercentage: 0
+  minBridgePercentage: 0
+  useWater: 1
   planePrefab: {fileID: 171214, guid: f8781240a8e3d487d8e4df00e5394e2b, type: 2}
   waterSmallPrefab: {fileID: 119884, guid: 2067c238b181942f6b5b016e2b73290f, type: 2}
   stackCube: {fileID: 140410, guid: 30347eaf9a2ae415e82dbcf9dbe1b3f9, type: 2}
@@ -80,6 +82,7 @@ MonoBehaviour:
   - {fileID: 160036, guid: 425f260160b1e4b7c8b06b0681451fb6, type: 2}
   - {fileID: 136580, guid: 06ae01adabe3f4a0c83995fb1f8c7a0a, type: 2}
   cliff: {fileID: 177974, guid: 0f795f361e5d44df2829518b99b3bd2c, type: 2}
+  waterPrefab: {fileID: 100000, guid: 6b436d069d11415d1100ab9b44295342, type: 2}
 --- !u!114 &11488600
 MonoBehaviour:
   m_ObjectHideFlags: 1

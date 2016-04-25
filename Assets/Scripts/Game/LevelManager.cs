@@ -4,7 +4,7 @@ using System.Collections;
 public static class LevelManager {
 
 	//CAMERA SPEED
-	public static float SPEED = 3f;
+	public static float SPEED = 2f;
 
 	//OLD VALUES
 	//public static float MIN_X = 0, MAX_X = 10, MIN_Y = 0, MAX_Y = 30, RELIC_MINZ = -150, MOVE_MINZ = -8, MOVE_MAXZ = 15, MOVE_ZONEWIDTH = 5;
@@ -17,8 +17,8 @@ public static class LevelManager {
 
 	public static Vector3[] respawnPoints;
 
-	//Is set in the LevelGenerator
-	public static int levelLength;
+	//Should be set by the levelGenerator somehow...
+	public static int levelLength = 1000;
 
 
 	/**
@@ -26,18 +26,23 @@ public static class LevelManager {
 	 */
 	public static Vector3 GetRespawnPoint(/*int player,*/ int z){
 
+		LevelGenerator lg = GameObject.Find ("LevelGenerator").GetComponent<LevelGenerator>();
+
 		int offset = 10;
 		int index = 0;
 
 		//Try at offset, otherwise move closer to camera
 		for (int i = offset; i > 0; i--) {
-			if (z + i < levelLength) {
+			if (z + i < lg.levelLength) {
 				index = z + i;
 				break;
 			}
 
 		}
-		return respawnPoints[index /* * player */];
+		Debug.Log ("levelLength = " + lg.levelLength);
+		Debug.Log ("index = " + index);
+		Debug.Log ("respawnPoints[index] = " + lg.GetRespawnPoints() [index]); 
+		return lg.GetRespawnPoints()[index /* * player */];
 	}
 
 }

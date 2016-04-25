@@ -44,7 +44,7 @@ GameObject:
   - 33: {fileID: 3339750}
   - 135: {fileID: 13581342}
   - 23: {fileID: 2308536}
-  m_Layer: 10
+  m_Layer: 13
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 160758}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.3600001, y: 0.62, z: -2.199997}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 442896}
@@ -214,7 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a04aa5ca8305dd5409b9d3595dfd13f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  impactResistance: 7
+  impactResistance: 3
 --- !u!114 &11479938
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 160758}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba846847606f84983a589bb86db8a425, type: 3}
+  m_Script: {fileID: 11500000, guid: 811829905d9034a58b64d652f72369c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   carriedObject: {fileID: 0}
@@ -240,9 +240,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefix: P1
   producer: 
-  accelerationRate: 7
-  maxVelocity: 7
-  jumpPower: 7
+  accelerationRate: 10
+  maxVelocity: 2
+  jumpPower: 300
+  fallDownForce: 45
+  horizontalJumpScalar: 3
 --- !u!135 &13581342
 SphereCollider:
   m_ObjectHideFlags: 1

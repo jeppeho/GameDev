@@ -192,7 +192,7 @@ public class NewController : MonoBehaviour {
 
 		//Check if player is moving through water
 		if (GetSurfaceTag () == "Water") {
-			force /= 3;
+			force /= 5;
 		}
 
 		//If player is running towards camera, slow down velocity
