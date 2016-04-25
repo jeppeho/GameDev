@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class GestureSummon : Gesture {
 
@@ -14,13 +15,12 @@ public class GestureSummon : Gesture {
 	// Use this for initialization
 	void Start () {
 		base.Init ();
-		Vector3 tempPalmWorldPosition = leapManager.GetPalmWorldPosition ();
-		Vector3 tempPalmPosition = leapManager.GetPalmPosition ();
-		thisSpell = GestureManager.spell.summon;
+		thisSpell = "summon";
+		Debug.Log ("Set thisSpell: " + thisSpell.ToString());
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
 		//----------------------------------
 		// Initiate
@@ -45,16 +45,19 @@ public class GestureSummon : Gesture {
 		// Maintain
 		//----------------------------------
 
-		if (gestureManager.activeSpell == thisSpell)
+		if (gestureManager.activeSpell.Equals(thisSpell))
 		{
+			//Debug.Log ("Summon is active!");
 			if (
-				leapManager.PalmNormalNear (Vector3.down, 0.45f)
-				&& leapManager.GetFingerIsExtendedPattern (true, true, true, true, true)
-				&& leapManager.PalmNearIgnore (tempPalmPosition, 5f, false, true, true)) {
+			leapManager.PalmNormalNear (Vector3.down, 0.45f)
+			&& leapManager.GetFingerIsExtendedPattern (true, true, true, true, true)
+			&& leapManager.PalmNearIgnore (tempPalmPosition, 5f, false, true, true)
+			)
+			{
 				float palmY = leapManager.GetPalmPosition ().y;
 				float nextBoxY = -0.2f + summonCounter * 1.1f;
 
-				if (palmY > nextBoxY + 0.5) {
+				if (palmY > nextBoxY + 0.8f) {
 					if (summonCounter == 1) //As the first block is being summoned, update palm position
 					{	tempPalmWorldPosition = leapManager.GetPalmWorldPosition ();	}
 

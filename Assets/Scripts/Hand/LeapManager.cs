@@ -68,7 +68,7 @@ public class LeapManager : MonoBehaviour {
 	//For converting points in world space to vectors adjusted to our scene
 	private Vector3 ToCustomScale(Vector v)
 	{
-		return v.ToUnityScaled() *12  /*+ new Vector3(-0.2f, 0.5f, 0f)*/;
+		return v.ToUnityScaled() *12f  /*+ new Vector3(-0.2f, 0.5f, 0f)*/;
 	}
 
 	//Whether two vectors are closer than distance 'd'

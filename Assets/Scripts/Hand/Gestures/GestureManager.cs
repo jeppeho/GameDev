@@ -4,16 +4,16 @@ using System.Collections;
 public class GestureManager : MonoBehaviour {
 
 	private LeapManager leapManager;
-	public enum spell {none, summon, hurricane};
-	public spell activeSpell { get; set; }
+	public string activeSpell; //{ get; set; }
 
 	// Use this for initialization
 	void Start () {
-		activeSpell = spell.none;
+		activeSpell = "none";
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		//Debug.Log("activeSpell is " + activeSpell.ToString());
 	}
 
 	public void setHandColor(Color c)
@@ -23,12 +23,23 @@ public class GestureManager : MonoBehaviour {
 
 	public void clearActiveSpell()
 	{
-		activeSpell = spell.none;
+		activeSpell = "none";
 		setHandColor(Color.grey);
+		Debug.Log ("activeSpell was cleared!");
 	}
 
 	public bool noSpellActive()
 	{
-		return (activeSpell == spell.none);
+		return (activeSpell.Equals("none"));
+	}
+
+	public string getActiveSpell()
+	{
+		return activeSpell;
+	}
+
+	public void setActiveSpell(string s)
+	{
+		activeSpell = s;
 	}
 }
