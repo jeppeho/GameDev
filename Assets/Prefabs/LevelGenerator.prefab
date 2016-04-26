@@ -41,10 +41,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelLength: 400
-  minRegularGroundPercentage: 20
-  minLavaPercentage: 10
-  minCliffPercentage: 10
-  minBridgePercentage: 10
+  minRegularGroundPercentage: 0
+  minLavaPercentage: 0
+  minCliffPercentage: 0
+  minBridgePercentage: 0
   useWater: 1
   planePrefab: {fileID: 171214, guid: f8781240a8e3d487d8e4df00e5394e2b, type: 2}
   waterSmallPrefab: {fileID: 119884, guid: 2067c238b181942f6b5b016e2b73290f, type: 2}
@@ -67,9 +67,7 @@ MonoBehaviour:
   - {fileID: 169652, guid: 6a99d49cbfd9c4d4ea525f85f007f940, type: 2}
   - {fileID: 195722, guid: 60724d7968d6f4dd0bf7faa2be2b0dd0, type: 2}
   bridgeSteps:
-  - {fileID: 174770, guid: 9236fe134cb434087956eb0bbc7c7fd8, type: 2}
-  - {fileID: 160036, guid: 425f260160b1e4b7c8b06b0681451fb6, type: 2}
-  - {fileID: 136580, guid: 06ae01adabe3f4a0c83995fb1f8c7a0a, type: 2}
+  - {fileID: 182578, guid: ab1e4d2a37db24e5e969c914f09fa251, type: 2}
   sides:
   - {fileID: 190544, guid: 238d60e676e0c4eca97f291a6d49a3ae, type: 2}
   - {fileID: 167434, guid: 543f19b7d48174264ad56924074b573b, type: 2}
@@ -78,9 +76,7 @@ MonoBehaviour:
   - {fileID: 139248, guid: 4fac589f0acb44e21be69beeb7cb384a, type: 2}
   - {fileID: 185394, guid: 5950402d638b544a59d9c883d06f7735, type: 2}
   steppingStones:
-  - {fileID: 174770, guid: 9236fe134cb434087956eb0bbc7c7fd8, type: 2}
-  - {fileID: 160036, guid: 425f260160b1e4b7c8b06b0681451fb6, type: 2}
-  - {fileID: 136580, guid: 06ae01adabe3f4a0c83995fb1f8c7a0a, type: 2}
+  - {fileID: 182578, guid: ab1e4d2a37db24e5e969c914f09fa251, type: 2}
   cliff: {fileID: 177974, guid: 0f795f361e5d44df2829518b99b3bd2c, type: 2}
   waterPrefab: {fileID: 100000, guid: 6b436d069d11415d1100ab9b44295342, type: 2}
 --- !u!114 &11488600

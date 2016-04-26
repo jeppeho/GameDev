@@ -41,7 +41,8 @@ public class LevelGenerator : MonoBehaviour {
 	public GameObject waterPrefab;
 
 
-	private int prevPillarIndex = -1;
+	private int prevLargeCrystalIndex = -1;
+	private int prevSmallCrystalIndex = -1;
 	private int prevFirstbridgeStepIndex = -1;
 	private int prevSecondbridgeStepIndex = -1;
 	private int prevGroundEdgeIndex = -1;
@@ -58,6 +59,7 @@ public class LevelGenerator : MonoBehaviour {
 	private float[] bridgeNoise2;
 	private float[] crystalNoise;
 	private float[] crystalPositionNoise;
+	private float[] smallCrystalPositionNoise;
 	private float[] lavaSteppingStonesNoise1;
 	private float[] lavaSteppingStonesNoise2;
 	private float[] cliffHeightNoise;
@@ -84,9 +86,10 @@ public class LevelGenerator : MonoBehaviour {
 		bridgeNoise2 = NG.GetPerlinNoise1D (5, 6, 1f, (-halfWidth / 2), halfWidth);
 		crystalNoise = NG.GetPerlinNoise1D (8, 10, 0.8f, -1, 1);
 		crystalPositionNoise = NG.GetPerlinNoise1D (8, 10, 0.8f, -1, 1);
+		smallCrystalPositionNoise = NG.GetPerlinNoise1D (6, 10, 0.5f, -halfWidth, halfWidth);
 		lavaSteppingStonesNoise1 = NG.GetPerlinNoise1D (4, 10, 0.8f, -halfWidth -1, halfWidth + 1);
 		lavaSteppingStonesNoise2 = NG.GetPerlinNoise1D (4, 10, 0.8f, -halfWidth -1, halfWidth + 1);
-		cliffHeightNoise = NG.GetPerlinNoise1D (6, 10, 1f, 300, 600);
+		cliffHeightNoise = NG.GetPerlinNoise1D (1, 10, 1f, 50, 600);
 
 
 		//NG.CreateVisualRepresentationSingle (levelAreaNoise, 20f);
@@ -346,7 +349,7 @@ public class LevelGenerator : MonoBehaviour {
 				}
 
 				if (levelAreaNoise [z] > -0.5f) {
-					if (z % 3 == 0 && z % 10 != 0) {
+					if (z % 4 != 0 /*&& z % 10 != 0*/) {
 		
 						CreateCrystalGroupSmall (z);
 
@@ -378,14 +381,13 @@ public class LevelGenerator : MonoBehaviour {
 
 						//Create water prefab
 						int center = i + (g - i) / 2;
-						GameObject water = Instantiate (waterPrefab, new Vector3 (0, -0.2f, center), Quaternion.identity) as GameObject;
+						GameObject water = Instantiate (waterPrefab, new Vector3 (0, -0.5f, center), Quaternion.identity) as GameObject;
 
 						//Stretch on the Z-axis
 						int length = g - i;
 						water.transform.localScale = new Vector3 (20, 0,length);
 
 						//Create floor
-
 						GameObject floor = Instantiate (lavaCube, new Vector3( 0, -1, center), Quaternion.identity) as GameObject;
 						floor.transform.localScale = new Vector3 (20, 1,length);
 						break;
@@ -412,13 +414,15 @@ public class LevelGenerator : MonoBehaviour {
 		}
 
 
+		int distBetweenSteps = 6;
+
 		//Don't check array out of bounds
-		if ( sample > 0 && sample < levelLength - 2 ) {
+		if ( sample > 0 && sample < levelLength - distBetweenSteps/2 ) {
 
 			//Only if prev and next area is water
 			if (levelAreas [sample - 1] == AreaType.lava && levelAreas [sample + 1] == AreaType.lava) {
 
-				if (sample % 4 == 0) {
+				if (sample % distBetweenSteps == 0) {
 
 					CreateSteppingStone(lavaSteppingStonesNoise1, sample);
 
@@ -434,7 +438,8 @@ public class LevelGenerator : MonoBehaviour {
 					SetRespawnPointOnSteppingStone (sample, lavaSteppingStonesNoise1 [sample]);
 					SetRespawnPointOnSteppingStone (sample + 1, lavaSteppingStonesNoise1 [sample]);
 				} 
-				if ((sample + 2) % 4 == 0) {
+
+				else if ((sample + distBetweenSteps/2) % distBetweenSteps == 0) {
 
 					CreateSteppingStone(lavaSteppingStonesNoise2, sample);
 
@@ -464,14 +469,17 @@ public class LevelGenerator : MonoBehaviour {
 
 					position.x = Random.Range (x - 0.2f, x + 0.2f);
 
+					//Instantiate object
 					GameObject cliffy = Instantiate (cliff, position, Quaternion.identity) as GameObject;
 					cliffy.name = "normal cliff";
 					float height = cliffHeightNoise [z] + Mathf.Abs ( difference ) * 30;
 		
+					//Rescale
 					float width = Random.Range (110, 150);
 					cliffy.transform.localScale = new Vector3 (width, height, width);
 
-					float rotationZ = difference * 1.4f;
+					//Rotate
+					float rotationZ = difference * 1f;
 					cliffy.transform.RotateAround (position, new Vector3 (0, 0, 1), -rotationZ);
 
 					//ADD NARROWING AREA IN FRONT OF CANYON
@@ -565,7 +573,7 @@ public class LevelGenerator : MonoBehaviour {
 
 		float x = crystalPositionNoise [z];
 
-		int pillarIndex = NG.GetRandomButNotPreviousValue (0, pillars.Length, prevPillarIndex);
+		int pillarIndex = NG.GetRandomButNotPreviousValue (0, pillars.Length, prevLargeCrystalIndex);
 
 		if (pillarIndex == 1)
 			x -= halfWidth;
@@ -582,7 +590,7 @@ public class LevelGenerator : MonoBehaviour {
 			pillar = Instantiate (pillars [pillarIndex], position, Quaternion.identity) as GameObject; 
 
 		//Set size
-		float size = Random.Range (110, 130);
+		float size = Random.Range (80, 110);
 		pillar.transform.localScale = new Vector3 (size, size, size);
 
 		//Rotate around Y-axis
@@ -599,26 +607,44 @@ public class LevelGenerator : MonoBehaviour {
 		pillar.transform.RotateAround( position, new Vector3( 0, 1, 0), rotation );
 
 		//Update
-		prevPillarIndex = pillarIndex;
+		prevLargeCrystalIndex = pillarIndex;
 
 	}
+
 
 	private void CreateCrystalGroupSmall(int z){
 
 		float x = Random.Range (-halfWidth + 1f, halfWidth - 1f);
-
+		x = smallCrystalPositionNoise [z];
 		Vector3 position = new Vector3( x, 0, z );
 
-		for (int i = 0; i < pillars.Length; i++) {
-			GameObject pillar = Instantiate (pillars [i], position, Quaternion.identity) as GameObject;
-			float scale = Random.Range (35, 50);
-			pillar.transform.localScale = new Vector3 (scale, scale, scale);
-			//Rotate around Y-axis
-			pillar.transform.RotateAround( new Vector3(x - 1f, 0, z), new Vector3(0,1,0), 120 * i);
-			pillar.transform.RotateAround( position, new Vector3(0,1,0), Random.Range(0, 360));
-		
-		}
+		int index = NG.GetRandomButNotPreviousValue (0, pillars.Length, prevSmallCrystalIndex);
+
+		GameObject pillar = Instantiate (pillars_hex [index], position, Quaternion.identity) as GameObject;
+		float scale = Random.Range (25, 40);
+		pillar.transform.localScale = new Vector3 (scale, scale, scale);
+		pillar.transform.RotateAround( position, new Vector3(0,1,0), Random.Range(0, 360));
+
+		prevSmallCrystalIndex = index;
+
 	}
+
+//	private void CreateCrystalGroupSmallOLD(int z){
+//
+//		float x = Random.Range (-halfWidth + 1f, halfWidth - 1f);
+//
+//		Vector3 position = new Vector3( x, 0, z );
+//
+//		for (int i = 0; i < pillars.Length; i++) {
+//			GameObject pillar = Instantiate (pillars [i], position, Quaternion.identity) as GameObject;
+//			float scale = Random.Range (35, 50);
+//			pillar.transform.localScale = new Vector3 (scale, scale, scale);
+//			//Rotate around Y-axis
+//			pillar.transform.RotateAround( new Vector3(x - 1f, 0, z), new Vector3(0,1,0), 120 * i);
+//			pillar.transform.RotateAround( position, new Vector3(0,1,0), Random.Range(0, 360));
+//		
+//		}
+//	}
 
 
 
