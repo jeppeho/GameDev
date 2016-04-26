@@ -97,8 +97,6 @@ public class GestureGust : Gesture {
 
 								//Apply
 								rb.AddForce (dir);
-
-								Debug.Log ("Applied force " + force.ToString("00.0000") + " from charge " + pull.ToString());
 							}
 
 						}

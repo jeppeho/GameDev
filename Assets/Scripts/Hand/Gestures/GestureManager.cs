@@ -25,7 +25,6 @@ public class GestureManager : MonoBehaviour {
 	{
 		activeSpell = "none";
 		setHandColor(Color.grey);
-		Debug.Log ("activeSpell was cleared!");
 	}
 
 	public bool noSpellActive()
