@@ -89,21 +89,23 @@ public class RelicController : MonoBehaviour {
 		
 			if (hitColliders [col].tag == "Player") {
 
-				//Get vector towards player
-				Vector3 vecTowardsPlayer = hitColliders [col].transform.position - rb.transform.position;
+				if (hitColliders [col].GetComponent<PlayerManager> ().GetState () == "active") {
+					//Get vector towards player
+					Vector3 vecTowardsPlayer = hitColliders [col].transform.position - rb.transform.position;
 
-				//Negate the relative velocity between player and relic
-				Vector3 playerVelocity = hitColliders [col].GetComponent<Rigidbody> ().velocity;
-				Vector3 relativeVelocity = rb.velocity - playerVelocity;
+					//Negate the relative velocity between player and relic
+					Vector3 playerVelocity = hitColliders [col].GetComponent<Rigidbody> ().velocity;
+					Vector3 relativeVelocity = rb.velocity - playerVelocity;
 
-				vecTowardsPlayer -= (relativeVelocity * Time.deltaTime);
+					vecTowardsPlayer -= (relativeVelocity * Time.deltaTime);
 
-				//Add downforce so it does not fly over player
-				vecTowardsPlayer.y = Mathf.Abs (vecTowardsPlayer.y) - 2f;
+					//Add downforce so it does not fly over player
+					vecTowardsPlayer.y = Mathf.Abs (vecTowardsPlayer.y) - 2f;
 
-				vecTowardsPlayer *= Time.deltaTime * 10000f;
+					vecTowardsPlayer *= Time.deltaTime * 10000f;
 
-				rb.AddForce (vecTowardsPlayer);
+					rb.AddForce (vecTowardsPlayer);
+				}
 			}
 		}
 	}
@@ -173,7 +175,7 @@ public class RelicController : MonoBehaviour {
 	//Updates the position to be above the parents head
 	private void FlyAboveParent(){
 		Vector3 slotPosition = manager.GetParent().position;
-		slotPosition.y += 2f;
+		slotPosition.y += 1f;
 		manager.UpdatePosition( slotPosition );
 	}
 

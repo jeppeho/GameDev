@@ -22,6 +22,9 @@ public class NewController : MonoBehaviour {
 	private float throwBuffer;
 	private float throwCounter;
 
+	private string lastSurfaceTag; //Keeps last tag that was not null
+	private string surfaceTag; //Can be null
+
 	//Movement limits
 	private float farWalkZone;
 	private float nearWalkZone;
@@ -79,6 +82,7 @@ public class NewController : MonoBehaviour {
 
 			GetInputButtonValues ();
 			UpdateDirection ();
+			UpdateSurfaceTags ();
 
 			//Check if player is jumping
 			if (pressJump && !isJumping) {
@@ -151,8 +155,8 @@ public class NewController : MonoBehaviour {
 			explosionCounter++;
 		}
 			
-		//LimitWalkingDistance();
-		LimitWalkingDistanceSoft();
+		LimitWalkingDistance();
+		//LimitWalkingDistanceSoft();
 
 		LimitBoundariesOnXAxis ();
 	}
@@ -184,6 +188,8 @@ public class NewController : MonoBehaviour {
 	 */
 	private void Move(){
 
+
+
 		//Get force to rigidbody
 		float hor = moveHorizontal * accelerationRate;
 		float ver = moveVertical * accelerationRate;
@@ -191,8 +197,8 @@ public class NewController : MonoBehaviour {
 		Vector3 force = new Vector3 (hor, 0, ver);
 
 		//Check if player is moving through water
-		if (GetSurfaceTag () == "Water") {
-			force /= 5;
+		if (GetSurfaceTag () == "Water" || GetLastSurfaceTag() == "Water" ) {
+			force /= 4;
 		}
 
 		//If player is running towards camera, slow down velocity
@@ -201,7 +207,7 @@ public class NewController : MonoBehaviour {
 				force.z /= 2;
 			}
 		}
-			
+
 		rb.AddForce (force * Time.deltaTime);
 
 		//Make 2D vector to check velocity on X and Y axis
@@ -291,14 +297,18 @@ public class NewController : MonoBehaviour {
 
 		float jumpPower = GetJumpPower();
 
+		float x = 0; float z = 0;
+
 		//Make smaller jump, if on water
-		if (GetSurfaceTag () == "Water")
-			jumpPower /= 3;
-
-		//Add speed on X and Z axis if jumping
-		float x = moveHorizontal * accelerationRate * horizontalJumpScalar;
-		float z = moveVertical * accelerationRate * horizontalJumpScalar;
-
+		if (GetSurfaceTag () == "Water") {
+			jumpPower /= 1.5f;
+//			rb.velocity.x /= 5;
+//			rb.velocity.z /= 5;
+		}else {
+			//Add speed on X and Z axis if jumping
+			x = moveHorizontal * accelerationRate * horizontalJumpScalar;
+			z = moveVertical * accelerationRate * horizontalJumpScalar;
+		}
 		rb.AddForce ( new Vector3(x, jumpPower, z) * Time.deltaTime );
 	}
 
@@ -451,18 +461,28 @@ public class NewController : MonoBehaviour {
 	}
 
 	/**
-	 * Shoots a ray down and returns the tag as a string 
-	 * if the ray hits anything. Else it returns null.
+	 * Shoots a ray down and updates surfaceTag and lastSurfaceTag
 	 */
-	private string GetSurfaceTag(){
+	private void UpdateSurfaceTags(){
 		
 		RaycastHit hit = new RaycastHit();
 		if (Physics.Raycast (rb.position, Vector3.down, out hit, 0.8f)) {
-			return hit.collider.gameObject.tag;
+			lastSurfaceTag = hit.collider.gameObject.tag;
+			surfaceTag =  hit.collider.gameObject.tag;
 		} else {
-			return null;
+			surfaceTag = null;
 		}
 	}
+
+	private string GetSurfaceTag(){
+		return surfaceTag;
+	}
+
+	private string GetLastSurfaceTag (){
+		return lastSurfaceTag;
+	}
+	 
+
 
 	public Vector3 GetDirection(){
 		return direction;

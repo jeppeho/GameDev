@@ -56,7 +56,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 152758}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.61, z: 1.66}
+  m_LocalPosition: {x: 0.25, y: 1.69, z: -0.28281355}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 407430}
@@ -132,7 +132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf2a1b4219ed4db1a6f412e8745dea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startHealth: 3000
+  startHealth: 500
+  maxHandDistanceToTakeEnergy: 2
 --- !u!114 &11489854
 MonoBehaviour:
   m_ObjectHideFlags: 1

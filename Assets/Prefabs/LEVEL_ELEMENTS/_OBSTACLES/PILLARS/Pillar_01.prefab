@@ -590,7 +590,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 140036}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -605,7 +605,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 137746}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -620,7 +620,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 106436}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -635,7 +635,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 152374}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -650,7 +650,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154402}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -665,7 +665,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 180340}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -731,7 +731,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Convex: 1
+  m_Convex: 0
   m_Mesh: {fileID: 4300000, guid: a9d01b65911e24e1683d364e1e8f6398, type: 3}
 --- !u!64 &6476272
 MeshCollider:

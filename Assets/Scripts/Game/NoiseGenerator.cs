@@ -23,7 +23,7 @@ using System.Collections;
 public class NoiseGenerator : MonoBehaviour {
 
 	//NumSamples has to be either 2, 4, 8, 16, 32, 64, 128, 256 etc.
-	private int numSamples = 256;
+	private int numSamples = 512;
 
 	//Is being set from LevelGenerator
 	private int levelLength;
@@ -66,17 +66,37 @@ public class NoiseGenerator : MonoBehaviour {
 	}
 
 
+
 	public int GetRandomButNotPreviousValue(int min, int max, int prev){
 
 		int index = prev;
 
-		if(max - min > 0)
+		if (max - min == 1)
+			index = 0;
+		else if (max - min > 1)
 			while (index == prev)
 				index = Random.Range (min, max);
+		else
+			Debug.Log("min = " + min + " | max = " + max + "ERROR | Prev = " + prev + ", and index = " + index + " in " + this + ".GetRandomButNotPreviousValue()");
 
-		if(index == prev)
-			Debug.Log("ERROR | Prev = " + prev + ", and index = " + index + " in " + this + ".GetRandomButNotPreviousValue()");
+		return index;
+	}
 
+
+	public int GetRandomButNotPreviousValueOLD(int min, int max, int prev){
+
+		int index = prev;
+
+		if (max - min > 1)
+			while (index == prev)
+				index = Random.Range (min, max);
+		else if (max - min == 0)
+			index = 0;
+
+//		if(index == prev)
+		Debug.Log("ERROR | Prev = " + prev + ", and index = " + index + " in " + this + ".GetRandomButNotPreviousValue()");
+//
+	
 		return index;
 	}
 

@@ -74,7 +74,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Convex: 1
+  m_Convex: 0
   m_Mesh: {fileID: 4300000, guid: e7659bbe127f1415facb48e4475ec834, type: 3}
 --- !u!95 &9586018
 Animator:
