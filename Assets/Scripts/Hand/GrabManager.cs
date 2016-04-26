@@ -18,7 +18,7 @@ public class GrabManager : MonoBehaviour {
 	//Include only certain layers
 	private LayerMask allowedLayers;
 
-	private int releaseCounter = 6;
+	private int releaseCounter = 5;
 
 	private LeapManager leapManager;
 	protected GestureManager gestureManager;

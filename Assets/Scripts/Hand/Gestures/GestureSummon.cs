@@ -50,7 +50,7 @@ public class GestureSummon : Gesture {
 		{
 			//Debug.Log ("Summon is active!");
 			if (
-			leapManager.PalmNormalNear (Vector3.down, 0.45f)
+				leapManager.PalmNormalNear (gestureManager.calibratedDown, 0.45f)
 			&& leapManager.GetFingerIsExtendedPattern (true, true, true, true, true)
 			&& leapManager.PalmNearIgnore (tempPalmPosition, 5f, false, true, true)
 			)

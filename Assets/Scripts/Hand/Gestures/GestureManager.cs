@@ -20,6 +20,7 @@ public class GestureManager : MonoBehaviour {
 		activeSpell = "none";
 
 		calibratedDownFrame = new List<Vector3> ();
+		calibratedDown = new Vector3 (0f, -1f, -0.1f); //Default down-vector
 
 		if (calibrateOnStart)
 		{
