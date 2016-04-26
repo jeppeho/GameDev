@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Leap;
 
 public class LeapManager : MonoBehaviour {
@@ -15,18 +16,28 @@ public class LeapManager : MonoBehaviour {
 	
 	private Vector3 handPositionScaleShift;
 	private Vector3 handPositionLastFrame;
+	private List<float> handFrameVelocity;
+	private float handVelocity;
+
 	// Use this for initialization
 	void Start () {
 		controller = new Controller ();
+		handFrameVelocity = new List<float> ();
+
 		UpdateFrame ();
+
 		firstFrame = frame;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		UpdateFrame();
 		UpdateHand ();
+
+		UpdateHandVelocity ();
+
 		UpdateScaleShift ();
+
 		//DebugVariables (); //DEBUG
 	}
 
@@ -108,6 +119,30 @@ public class LeapManager : MonoBehaviour {
 		hand = frame.Hands [0];
 	}
 
+	private void UpdateHandVelocity()
+	{
+		//How many frames taken into account, in order to determine a smoothed velocity
+		int range = 10;
+
+		//Add data
+		handFrameVelocity.Add (GetPalmVelocity().magnitude * Time.deltaTime);
+
+		//Clean up
+		if (handFrameVelocity.Count >= range)
+		{	handFrameVelocity.RemoveAt (0);	}
+			
+		handVelocity = 0;
+
+		//Find velocity
+		for (int i = 0; i < handFrameVelocity.Count; i++)
+		{
+			handVelocity += handFrameVelocity [i];
+			//Debug.Log ("Subvelocity: "+handFrameVelocity[i].ToString());
+		}
+
+		handVelocity /= handFrameVelocity.Count;
+	}
+
 	//Get hand's grab strength (0-1f)
 	public float GetHandGrabStrength (){
 		return hand.GrabStrength;
@@ -141,6 +176,11 @@ public class LeapManager : MonoBehaviour {
 	//Get palm's velocity
 	public Vector3 GetPalmVelocity (){
 		return GetHand().PalmVelocity.ToUnity();
+	}
+
+	//Get palm's velocity
+	public float GetPalmSmoothedVelocity (){
+		return handVelocity;
 	}
 
 	//Get finger 'f'
@@ -284,7 +324,7 @@ public class LeapManager : MonoBehaviour {
 
 	//Prints normal, position, fingers etc. to console
 	public void DebugVariables (){
-		Debug.Log ("Pos: " + GetPalmPosition ().ToString () + " | Norm:" + GetPalmNormal ().ToString () + " | FingersExt: {" + GetFingerIsExtended (0).ToString () + "," + GetFingerIsExtended (1).ToString () + "," + GetFingerIsExtended (2).ToString () + "," + GetFingerIsExtended (3).ToString () + "," + GetFingerIsExtended (4).ToString () + "} | GrabStr: " + GetHandGrabStrength().ToString());
+		Debug.Log ("Pos: " + GetPalmPosition ().ToString () + " | Norm:" + GetPalmNormal ().ToString () + " | FingersExt: {" + GetFingerIsExtended (0).ToString () + "," + GetFingerIsExtended (1).ToString () + "," + GetFingerIsExtended (2).ToString () + "," + GetFingerIsExtended (3).ToString () + "," + GetFingerIsExtended (4).ToString () + "} | GrabStr: " + GetHandGrabStrength().ToString() + " | SmoothedVelocity: " + GetPalmSmoothedVelocity().ToString());
 	}
 
 	private Quaternion GetRotationFromMatrix(this Matrix matrix) {
