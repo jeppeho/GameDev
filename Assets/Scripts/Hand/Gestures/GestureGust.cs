@@ -11,6 +11,7 @@ public class GestureGust : Gesture {
 	private Vector3 tempGustCenter;
 	private Vector3 tempPalmWorldPosition;
 	private float gustProgression;
+	public float yThreshold = 5.2f;
 
 	// Use this for initialization
 	void Start () {
@@ -29,7 +30,7 @@ public class GestureGust : Gesture {
 		if (
 			gestureManager.noSpellActive()
 			&& leapManager.PalmNormalNear (Vector3.down, 0.75f)
-			&& leapManager.PalmBetweenY (4.75f, Mathf.Infinity)
+			&& leapManager.PalmBetweenY (yThreshold, Mathf.Infinity)
 			&& leapManager.GetFingerIsExtendedPattern (false, false, false, false, false)
 			&& leapManager.GetHandGrabStrength() >= 0.8f
 		)
@@ -76,7 +77,7 @@ public class GestureGust : Gesture {
 					float searchRadiusSqr = 250.0f;
 
 					GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
-					GameObject[] objects = GameObject.FindGameObjectsWithTag ("Environment");
+					GameObject[] objects = GameObject.FindGameObjectsWithTag ("Interactables");
 
 					foreach (GameObject o in objects)
 					{

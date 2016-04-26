@@ -6,10 +6,11 @@ using System.Linq;
 public class GrabManager : MonoBehaviour {
 
 	private float pinchThreshold = 0.8f;
-	private float distanceThreshold = 2f;
+	private float distanceThreshold = 2.5f;
 
-	private Vector3 thumbPosition;
-	private Vector3 prev_palm_position;
+	private Vector3 grabPosition;
+	private Vector3 prevPalmPosition;
+	private int grabbedObjectLayer;
 
 	private bool pinching = false;
 
@@ -17,13 +18,17 @@ public class GrabManager : MonoBehaviour {
 	//Include only certain layers
 	private LayerMask allowedLayers;
 
-	private int _releaseCounter = 5;
+	private int releaseCounter = 5;
 
 	private LeapManager leapManager;
+	protected GestureManager gestureManager;
+
 	// Use this for initialization
 	void Start ()
 	{
-		leapManager = GetComponent<LeapManager> ();
+		leapManager = gameObject.GetComponent<LeapManager> ();
+		gestureManager = gameObject.GetComponent<GestureManager> ();
+
 		//Construct layermask
 		LayerMask mask1 = 1 << 13;
 		LayerMask mask2 = 1 << 14;
@@ -31,38 +36,43 @@ public class GrabManager : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	void FixedUpdate ()
 	{
-		UpdatePinch ();
+		if (gestureManager.noSpellActive ())
+		{
+			UpdatePinch ();
 
-		if (grabbedObject != null) {
+			if (pinching && grabbedObject != null) {
 
-			//Get relative movement based on palm position
-			Vector3 palmPosition = leapManager.GetPalmWorldPosition ();
-			Vector3 palmMovement = palmPosition - prev_palm_position;
-			prev_palm_position = palmPosition;
+				//Get relative movement based on palm position
+				Vector3 palmPosition = leapManager.GetPalmWorldPosition ();
+				Vector3 palmMovement = palmPosition - prevPalmPosition;
+				prevPalmPosition = palmPosition;
 
-			//Find the vector towards the thumb
-			Vector3 directionToThumb = thumbPosition - grabbedObject.transform.position;
+				//Find the vector towards the thumb
+				Vector3 directionToThumb = grabPosition - grabbedObject.transform.position;
 
-			//directionToThumb *= 0.002f; //Limit the speed
+				//directionToThumb *= 0.002f; //Limit the speed
 
-			//I think gravity should be disabled when trying to make relative movement to palm or thumb
-			//Make sure to set it to true on release
-			//Maybe make an OnRelease() method
-
-			grabbedObject.attachedRigidbody.useGravity = false;
-			grabbedObject.attachedRigidbody.AddForce (palmMovement);
+				grabbedObject.attachedRigidbody.useGravity = false;
+				grabbedObject.attachedRigidbody.MovePosition (grabPosition);
+				//DEBUGGING:
+				//grabbedObject.gameObject.GetComponent<Renderer> ().material.color = Color.magenta;
+			}
 		}
 	}
 
 	private void UpdatePinch()
 	{
 		bool pinchTriggered = false;
+		bool releaseTriggered = false;
+
 		float pinchStrength = 0;
 
-		//Get thumb position
-		thumbPosition = leapManager.GetFingertipWorldPosition(0);
+		//Get grab position
+		Vector3 thumbPos = leapManager.GetFingertipWorldPosition(0);
+		Vector3 indexPos = leapManager.GetFingertipWorldPosition(1);
+		grabPosition = thumbPos + (indexPos - thumbPos)/2f;
 
 		//Get pinch strength
 		pinchStrength = leapManager.GetHandPinchStrength();
@@ -70,50 +80,33 @@ public class GrabManager : MonoBehaviour {
 		//if pinch strength is high enough
 		if (pinchStrength >= pinchThreshold)
 		{
-			ResetReleaseCounter ();
+			releaseCounter = 5; //Reset counter
 			pinchTriggered = true;
 		}
 		else
 		{
-			if (pinching == true)
+			if (releaseCounter > 0)
 			{
-				//Pinch
-				if (_releaseCounter > 0)
-				{
-					decreaseReleaseCounter ();
-				}
-				else
-				{
-					pinching = false;
-					grabbedObject.attachedRigidbody.useGravity = true;
-					grabbedObject = null;
-				}
-					//Release object
+				releaseCounter--; //Decrease counter
+			}
+			else
+			{
+				releaseTriggered = true;
 			}
 		}
 
 		if (pinchTriggered && !pinching)
 		{
-			OnPinch (thumbPosition);
+			pinching = true;
+			OnPinch (grabPosition);
 		}
 
-		if (!pinchTriggered && pinching)
+		if (releaseTriggered && pinching)
 		{
+			pinching = false;
 			OnRelease ();
 		}
 	}
-
-
-	void ResetReleaseCounter()
-	{
-		_releaseCounter = 5;
-	}
-
-	void decreaseReleaseCounter()
-	{
-		_releaseCounter -= 1;
-	}
-
 
 	/*
 		When a pinch has been detected this method will
@@ -122,56 +115,36 @@ public class GrabManager : MonoBehaviour {
 	*/
 	void OnPinch(Vector3 pinchPosition)
 	{
-		if (grabbedObject != null) {
-			Debug.Log("Pinching "+grabbedObject.ToString());
-		}
-		else
-		if (grabbedObject != null) {
-			Debug.Log("Pinching null");
-		}
-
+		Debug.Log ("Pinching!");
 
 		//Get all objects within PINCH_DISTANCE
-		List<Collider> inProximity = new List<Collider>();
+		List<Collider> inProximity = new List<Collider> ();
 
-		inProximity.AddRange( Physics.OverlapSphere (pinchPosition, distanceThreshold, allowedLayers).ToList() );
-
-		Debug.Log ("Considering " + inProximity.Count.ToString() +  " objects for pinching | " + inProximity[0].ToString ());
-
-		//DEBUG! Because world positions are fucked up..
-
-		if (inProximity[0] != null)
-		{
-			grabbedObject = inProximity[0];
-			pinching = true;
-			Debug.Log ("Grabbed " + grabbedObject.ToString());
-		}
+		inProximity.AddRange (Physics.OverlapSphere (pinchPosition, distanceThreshold, allowedLayers).ToList ());
 
 		//Get the nearest object
 		float searchDistance = distanceThreshold;
 
-		for (int i = 0; i < inProximity.Count; i++)
-		{
+		for (int i = 0; i < inProximity.Count; i++) {
 			Vector3 worldPost = inProximity [i].transform.position;
 
 			float newDistance = (pinchPosition - worldPost).magnitude;
 
-			Debug.Log (pinchPosition.ToString() + "->" + worldPost.ToString());
+			//Debug.Log (pinchPosition.ToString () + "->" + worldPost.ToString ());
 
-			if (newDistance < searchDistance)
-			{
-				grabbedObject = inProximity[i];
+			if (newDistance < searchDistance) {
+				grabbedObject = inProximity [i];
 				searchDistance = newDistance;
 			}
-
-			if (grabbedObject != null)
-			{
-				pinching = true;
-			}
-
-			grabbedObject.gameObject.SetActive (false);
 		}
 
+		if (grabbedObject != null)
+		{
+			//Store layer, so it can be reverted
+			grabbedObjectLayer = grabbedObject.gameObject.layer;
+			//Change the object to a light object, to avoid shattering of hand
+			grabbedObject.gameObject.layer = 14;
+		}
 	}
 
 	/*
@@ -180,8 +153,12 @@ public class GrabManager : MonoBehaviour {
 	*/
 	void OnRelease()
 	{
-		grabbedObject.attachedRigidbody.useGravity = true;
-		grabbedObject = null;
-		pinching = false;
+		Debug.Log ("Releasing!");
+		if (grabbedObject != null)
+		{
+			grabbedObject.gameObject.layer = grabbedObjectLayer;
+			grabbedObject.attachedRigidbody.useGravity = true;
+			grabbedObject = null;
+		}
 	}
 }

@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 446404}
   m_Layer: 13
   m_Name: shatteredObject
-  m_TagString: Untagged
+  m_TagString: Interactables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,7 +46,7 @@ GameObject:
   - 23: {fileID: 2393656}
   - 64: {fileID: 6476272}
   - 114: {fileID: 11404554}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: intactObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,9 +176,9 @@ GameObject:
   - 33: {fileID: 3367666}
   - 23: {fileID: 2301922}
   - 64: {fileID: 6475724}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: bottomObject
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

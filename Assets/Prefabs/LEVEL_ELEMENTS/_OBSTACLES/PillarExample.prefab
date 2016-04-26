@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 406224}
   - 33: {fileID: 3362564}
   - 23: {fileID: 2302846}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: shard9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ GameObject:
   - 4: {fileID: 488434}
   - 33: {fileID: 3300100}
   - 23: {fileID: 2346354}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: shard11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - 4: {fileID: 477224}
   - 33: {fileID: 3365066}
   - 23: {fileID: 2307074}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: shard8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ GameObject:
   - 4: {fileID: 454148}
   - 33: {fileID: 3320350}
   - 23: {fileID: 2359650}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: shard6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,9 +79,9 @@ GameObject:
   - 33: {fileID: 3388366}
   - 23: {fileID: 2365772}
   - 64: {fileID: 6489130}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: bottom
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,7 +96,7 @@ GameObject:
   - 4: {fileID: 424092}
   - 33: {fileID: 3378742}
   - 23: {fileID: 2327880}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: shard10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,7 +115,7 @@ GameObject:
   - 23: {fileID: 2384010}
   - 54: {fileID: 5417234}
   - 64: {fileID: 6468052}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: shard4
   m_TagString: Environment
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   - 23: {fileID: 2307660}
   - 54: {fileID: 5463344}
   - 64: {fileID: 6438302}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: shard1
   m_TagString: Environment
   m_Icon: {fileID: 0}
@@ -153,7 +153,7 @@ GameObject:
   - 23: {fileID: 2373194}
   - 54: {fileID: 5472790}
   - 64: {fileID: 6441400}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: shard3
   m_TagString: Environment
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ GameObject:
   - 4: {fileID: 472846}
   - 95: {fileID: 9591852}
   - 114: {fileID: 11418206}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PillarExample
   m_TagString: Environment
   m_Icon: {fileID: 0}
@@ -185,9 +185,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 475732}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: shatteredObject
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -204,7 +204,7 @@ GameObject:
   - 23: {fileID: 2349238}
   - 54: {fileID: 5427862}
   - 64: {fileID: 6451566}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: shard5
   m_TagString: Environment
   m_Icon: {fileID: 0}
@@ -219,9 +219,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 406426}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: shatter_02
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -238,7 +238,7 @@ GameObject:
   - 23: {fileID: 2323302}
   - 54: {fileID: 5445662}
   - 64: {fileID: 6491378}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: shard2
   m_TagString: Environment
   m_Icon: {fileID: 0}
@@ -257,7 +257,7 @@ GameObject:
   - 23: {fileID: 2317796}
   - 64: {fileID: 6426868}
   - 114: {fileID: 11401888}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: intactObject
   m_TagString: Environment
   m_Icon: {fileID: 0}
@@ -274,7 +274,7 @@ GameObject:
   - 4: {fileID: 414372}
   - 33: {fileID: 3373642}
   - 23: {fileID: 2363650}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: shard7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
