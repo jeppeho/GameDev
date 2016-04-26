@@ -27,7 +27,7 @@ public class GestureHurricane : Gesture {
 
 		if (
 			gestureManager.noSpellActive()
-			&& leapManager.PalmNormalNear (Vector3.down, 0.75f)
+			&& leapManager.PalmNormalNear (gestureManager.calibratedDown, 0.75f)
 			&& leapManager.GetPalmSmoothedVelocity() <= 1.0f
 			&& leapManager.PalmBetweenY (3f, Mathf.Infinity)
 			&& leapManager.GetFingerIsExtendedPattern (false, false, false, false, false)

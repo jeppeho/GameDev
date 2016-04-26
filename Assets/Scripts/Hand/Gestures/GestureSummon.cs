@@ -28,7 +28,7 @@ public class GestureSummon : Gesture {
 
 		if (
 			gestureManager.noSpellActive()
-			&& leapManager.PalmNormalNear (Vector3.down, 0.35f)
+			&& leapManager.PalmNormalNear (gestureManager.calibratedDown, 0.35f)
 			&& leapManager.GetPalmSmoothedVelocity() <= 1.0f
 			&& leapManager.PalmBetweenY (-0.45f, -10f)
 			&& leapManager.GetFingerIsExtendedPattern (true, true, true, true, true)
