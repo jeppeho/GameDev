@@ -26,7 +26,7 @@ public class GestureGust_Legacy : Gesture {
 
 		if (
 			gestureManager.noSpellActive()
-			&& leapManager.PalmNormalNear (Vector3.down, 0.75f)
+			&& leapManager.PalmNormalNear (gestureManager.calibratedDown, 0.75f)
 			&& leapManager.PalmBetweenY (4.75f, Mathf.Infinity)
 			&& leapManager.GetFingerIsExtendedPattern (false, false, false, false, false)
 			&& leapManager.GetHandGrabStrength() >= 0.8f
@@ -51,7 +51,7 @@ public class GestureGust_Legacy : Gesture {
 		{
 			//Debug.Log ("Gust is active!");
 			if (
-				leapManager.PalmNormalNear (Vector3.down, 0.95f)
+				leapManager.PalmNormalNear (gestureManager.calibratedDown, 0.95f)
 				&& leapManager.GetFingerIsExtendedPattern (false, false, false, false, false)
 				&& leapManager.GetHandGrabStrength () >= 0.8f
 				&& leapManager.PalmNearIgnore (tempPalmWorldPosition, 7f, false, true, true)
@@ -68,7 +68,7 @@ public class GestureGust_Legacy : Gesture {
 					float searchRadiusSqr = 250.0f;
 
 					GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
-					GameObject[] objects = GameObject.FindGameObjectsWithTag ("Environment");
+					GameObject[] objects = GameObject.FindGameObjectsWithTag ("Interactables");
 
 					foreach (GameObject o in objects)
 					{

@@ -11,9 +11,9 @@ GameObject:
   - 33: {fileID: 3318218}
   - 23: {fileID: 2361310}
   - 64: {fileID: 6425890}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: bottomObject
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,7 +32,7 @@ GameObject:
   - 54: {fileID: 5472756}
   m_Layer: 13
   m_Name: shard3
-  m_TagString: Untagged
+  m_TagString: Interactables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,7 +51,7 @@ GameObject:
   - 54: {fileID: 5405622}
   m_Layer: 13
   m_Name: shard4
-  m_TagString: Untagged
+  m_TagString: Interactables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64,9 +64,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 466458}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: shatteredObject
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -83,7 +83,7 @@ GameObject:
   - 114: {fileID: 11479694}
   m_Layer: 13
   m_Name: Pillar_03
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,9 +100,9 @@ GameObject:
   - 23: {fileID: 2384172}
   - 64: {fileID: 6440904}
   - 114: {fileID: 11444872}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: intactObject
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,7 +121,7 @@ GameObject:
   - 54: {fileID: 5428340}
   m_Layer: 13
   m_Name: shard6
-  m_TagString: Untagged
+  m_TagString: Interactables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,7 +140,7 @@ GameObject:
   - 54: {fileID: 5401490}
   m_Layer: 13
   m_Name: shard5
-  m_TagString: Untagged
+  m_TagString: Interactables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -159,7 +159,7 @@ GameObject:
   - 54: {fileID: 5433446}
   m_Layer: 13
   m_Name: shard1
-  m_TagString: Untagged
+  m_TagString: Interactables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -178,7 +178,7 @@ GameObject:
   - 54: {fileID: 5428386}
   m_Layer: 13
   m_Name: shard2
-  m_TagString: Untagged
+  m_TagString: Interactables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -791,6 +791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a8bba0a0f504525821cb7f61abe83a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cooldown: 0
 --- !u!114 &11479694
 MonoBehaviour:
   m_ObjectHideFlags: 1

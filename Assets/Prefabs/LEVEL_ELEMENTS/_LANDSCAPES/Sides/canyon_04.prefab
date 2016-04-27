@@ -12,9 +12,9 @@ GameObject:
   - 23: {fileID: 2364976}
   - 95: {fileID: 9555474}
   - 64: {fileID: 6477490}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: canyon_04
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

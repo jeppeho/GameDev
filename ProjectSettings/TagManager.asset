@@ -5,7 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Environment
-  - New Tag
+  - Interactables
   - Relic
   - Water
   layers:
@@ -25,7 +25,7 @@ TagManager:
   - ObjectsHeavy
   - ObjectsLight
   - ObjectsEvent
-  - 
+  - CarriedObject
   - 
   - 
   - 

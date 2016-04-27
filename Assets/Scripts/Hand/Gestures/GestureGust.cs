@@ -11,6 +11,7 @@ public class GestureGust : Gesture {
 	private Vector3 tempGustCenter;
 	private Vector3 tempPalmWorldPosition;
 	private float gustProgression;
+	public float yThreshold = 5.2f;
 
 	// Use this for initialization
 	void Start () {
@@ -28,8 +29,8 @@ public class GestureGust : Gesture {
 
 		if (
 			gestureManager.noSpellActive()
-			&& leapManager.PalmNormalNear (Vector3.down, 0.75f)
-			&& leapManager.PalmBetweenY (4.75f, Mathf.Infinity)
+			&& leapManager.PalmNormalNear (gestureManager.calibratedDown, 0.75f)
+			&& leapManager.PalmBetweenY (yThreshold, Mathf.Infinity)
 			&& leapManager.GetFingerIsExtendedPattern (false, false, false, false, false)
 			&& leapManager.GetHandGrabStrength() >= 0.8f
 		)
@@ -54,7 +55,7 @@ public class GestureGust : Gesture {
 		{
 			//Debug.Log ("Gust is active!");
 			if (
-			leapManager.PalmNormalNear (Vector3.down, 0.95f)
+				leapManager.PalmNormalNear (gestureManager.calibratedDown, 0.95f)
 			&& leapManager.GetFingerIsExtendedPattern (false, false, false, false, false)
 			&& leapManager.GetHandGrabStrength () >= 0.8f
 			//&& leapManager.PalmNearIgnore (tempPalmWorldPosition, 7f, false, true, true)
@@ -76,7 +77,7 @@ public class GestureGust : Gesture {
 					float searchRadiusSqr = 250.0f;
 
 					GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
-					GameObject[] objects = GameObject.FindGameObjectsWithTag ("Environment");
+					GameObject[] objects = GameObject.FindGameObjectsWithTag ("Interactables");
 
 					foreach (GameObject o in objects)
 					{
@@ -97,8 +98,6 @@ public class GestureGust : Gesture {
 
 								//Apply
 								rb.AddForce (dir);
-
-								Debug.Log ("Applied force " + force.ToString("00.0000") + " from charge " + pull.ToString());
 							}
 
 						}
