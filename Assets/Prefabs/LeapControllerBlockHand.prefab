@@ -320,7 +320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34d954cc3a01c514695e7eaa9edb18f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  summonedObject: {fileID: 126238, guid: 1cec7b0ace4ec491dadbaf7ae4defbea, type: 2}
+  summonedObjectType: {fileID: 108262, guid: 2f574cdc161b2f14ab007fcda1b7cb76, type: 2}
 --- !u!114 &11494496
 MonoBehaviour:
   m_ObjectHideFlags: 1

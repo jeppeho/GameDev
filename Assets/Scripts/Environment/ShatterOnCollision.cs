@@ -14,11 +14,13 @@ public class ShatterOnCollision : MonoBehaviour {
 		//Go through all child objects
 		foreach (Transform t in transform) {
 
-			//Find shattered child and intactchild
+			//Find shattered child and intactchild, by checking begining of name
 			if (t.name == "shatteredObject")
+			{
 				shatteredObject = t.gameObject;
+			}
 			else if (t.name == "intactObject")
-				intactObject = t.gameObject;	
+				intactObject = t.gameObject;
 		}
 
 		//Minimize pieces a bit
@@ -59,7 +61,7 @@ public class ShatterOnCollision : MonoBehaviour {
 		force *= Time.deltaTime * 4000;
 
 		foreach (Transform t in shatteredObject.transform) {
-			Debug.Log ("name = " + t.name);
+			//Debug.Log ("name = " + t.name);
 			t.GetComponent<Rigidbody> ().AddForce (force);
 		}
 	}
