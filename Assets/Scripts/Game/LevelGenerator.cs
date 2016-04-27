@@ -39,6 +39,7 @@ public class LevelGenerator : MonoBehaviour {
 	public GameObject[] steppingStones;
 	public GameObject cliff;
 	public GameObject waterPrefab;
+	public GameObject boulderPrefab;
 
 
 	private int prevLargeCrystalIndex = -1;
@@ -132,6 +133,8 @@ public class LevelGenerator : MonoBehaviour {
 		//Put in water, where needed
 		if(useWater)
 			CreateWater ();
+
+		InsertBoulders ();
 
 		//Copy respawn points to the LevelManager
 		LevelManager.respawnPoints = respawnPoints;
@@ -361,44 +364,6 @@ public class LevelGenerator : MonoBehaviour {
 		//Set respawn point
 		SetRespawnPointOnGrass (z);
 	}
-		
-
-
-	/**
-	 * Searches through the levelAreas array and covers lava spots with water
-	 */
-	private void CreateWater(){
-
-		for (int i = startingCell; i < levelLength; i++) {
-		
-			if (levelAreas [i - 1] != AreaType.lava && levelAreas [i] == AreaType.lava) {
-
-				for (int g = i; g < levelLength; g++) {
-				
-					if (levelAreas [g + 1] != AreaType.lava && levelAreas [g] == AreaType.lava
-						|| g == levelLength - 1
-					) {
-
-						//Create water prefab
-						int center = i + (g - i) / 2;
-						GameObject water = Instantiate (waterPrefab, new Vector3 (0, -0.5f, center), Quaternion.identity) as GameObject;
-
-						//Stretch on the Z-axis
-						int length = g - i;
-						water.transform.localScale = new Vector3 (20, 0,length);
-
-						//Create floor
-						GameObject floor = Instantiate (lavaCube, new Vector3( 0, -1, center), Quaternion.identity) as GameObject;
-						floor.transform.localScale = new Vector3 (20, 1,length);
-						break;
-					}
-				}
-				
-			}
-
-		}
-	
-	}
 
 
 	private void CreateLavaSection(int sample){
@@ -412,7 +377,6 @@ public class LevelGenerator : MonoBehaviour {
 				GameObject cube = Instantiate (lavaCube, position, Quaternion.identity) as GameObject;
 			}
 		}
-
 
 		int distBetweenSteps = 6;
 
@@ -451,6 +415,39 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 
+	/**
+	 * Searches through the levelAreas array and covers lava spots with water
+	 */
+	private void CreateWater(){
+
+		for (int i = startingCell; i < levelLength; i++) {
+
+			if (levelAreas [i - 1] != AreaType.lava && levelAreas [i] == AreaType.lava) {
+
+				for (int g = i; g < levelLength; g++) {
+
+					if (levelAreas [g + 1] != AreaType.lava && levelAreas [g] == AreaType.lava
+						|| g == levelLength - 1
+					) {
+
+						//Create water prefab
+						int center = i + (g - i) / 2;
+						GameObject water = Instantiate (waterPrefab, new Vector3 (0, -0.2f, center), Quaternion.identity) as GameObject;
+
+						//Stretch on the Z-axis
+						int length = g - i + 5;
+						water.transform.localScale = new Vector3 (20, 0,length);
+
+						//Create floor
+						GameObject floor = Instantiate (lavaCube, new Vector3( 0, -1, center), Quaternion.identity) as GameObject;
+						floor.transform.localScale = new Vector3 (20, 1,length);
+						break;
+					}
+				}	
+			}
+		}
+	}
+
 
 	private void CreateCliffSection(int z){
 
@@ -460,7 +457,7 @@ public class LevelGenerator : MonoBehaviour {
 
 		if (z % 2 == 0) {
 
-			for (int x = -halfWidth - 10; x < halfWidth + 10; x += 2) {
+			for (int x = -halfWidth - 5; x < halfWidth + 5; x += 2) {
 
 				//Check if to close to road
 				float difference = (x + 0.5f) - canyonNoise [z];
@@ -510,6 +507,46 @@ public class LevelGenerator : MonoBehaviour {
 
 		SetRespawnPointInCanyon (z);
 
+	}
+
+
+	/**
+	 * Inserts boulders on the whole level, if the minimum distance to prev boulder is reached
+	 * or an area with lots of cliffs is approaching
+	 */
+	private void InsertBoulders(){
+
+		int lastBoulderZ = 0;
+		int minBoulderDistance = 50;
+
+		for (int z = 0; z < levelLength; z++) {
+
+			if (levelAreas [z] == AreaType.cliff && levelAreas [z - 1] != AreaType.cliff) {
+
+				//Count number of nearby oncoming cliffs
+				int numCliffs = 0;
+				for (int i = 0; i < 20; i++) {
+					if (levelAreas [z] == AreaType.cliff) {
+						numCliffs++;
+					}
+				}
+
+				int lastBoulderDistance = z - lastBoulderZ;
+
+				if (lastBoulderDistance > minBoulderDistance || (numCliffs > 12 && lastBoulderDistance > 10)) {
+
+					float x = canyonNoise [z];
+					int rotation = 40 + Random.Range (-50, 50);
+
+					x += rotation / 15;
+
+					CreateBoulder (x, z, rotation);
+
+					lastBoulderZ = z;
+				}
+
+			}
+		}
 	}
 
 
@@ -628,6 +665,23 @@ public class LevelGenerator : MonoBehaviour {
 		prevSmallCrystalIndex = index;
 
 	}
+
+
+	private void CreateBoulder(float x, int z, int rotation){
+
+		//Set position
+		Vector3 position = new Vector3 (x, -0.5f, z);
+
+		//Instantiate boulder
+		GameObject boulder = Instantiate (boulderPrefab, position, Quaternion.identity) as GameObject; 
+
+		//Rotate boulder around Y axis
+		boulder.transform.RotateAround( position, new Vector3(0,1,0), rotation);
+
+	}
+
+
+
 
 //	private void CreateCrystalGroupSmallOLD(int z){
 //

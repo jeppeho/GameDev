@@ -37,7 +37,7 @@ public class PlayerManager : MonoBehaviour {
 		//Make a new impact velocity, by subtracting own velocity speed
 		Vector3 impact = col.relativeVelocity + lastVel;
 
-		if (col.gameObject.tag == "Environment" && impact.magnitude >= impactResistance) {
+		if (/*col.gameObject.tag == "Environment"*/ col.gameObject.layer == 13 && impact.magnitude >= impactResistance) {
 			DeathSquished ();
 			Debug.Log (" impact = " + impact.magnitude);
 			//Remove energy from the relic

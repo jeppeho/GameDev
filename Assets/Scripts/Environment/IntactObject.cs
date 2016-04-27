@@ -31,7 +31,6 @@ public class IntactObject : MonoBehaviour {
 	}
 
 	public void SetBreakForce(float force){
-		Debug.Log ("breakForce = " + Mathf.FloorToInt(force));
 		this.breakForce = Mathf.FloorToInt(force);
 	}
 }

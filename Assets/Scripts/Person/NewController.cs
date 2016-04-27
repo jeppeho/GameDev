@@ -48,6 +48,9 @@ public class NewController : MonoBehaviour {
 
 	int falldownCounter = 0;
 
+	float dashWaitTime = 60;
+	float dashTime = 0;
+
 	string playerState;
 
 	// Use this for initialization
@@ -83,6 +86,7 @@ public class NewController : MonoBehaviour {
 			GetInputButtonValues ();
 			UpdateDirection ();
 			UpdateSurfaceTags ();
+			IncrementDashTime ();
 
 			//Check if player is jumping
 			if (pressJump && !isJumping) {
@@ -105,7 +109,8 @@ public class NewController : MonoBehaviour {
 			}
 
 			if (pressPush)
-				Suicide ();
+				Dash ();
+				//Suicide ();
 
 
 			//Check if player should throw relic
@@ -184,11 +189,35 @@ public class NewController : MonoBehaviour {
 
 
 	/**
+	 * Moves the player in the direction of the left stick quickly
+	 */
+	private void Dash(){
+
+		if (dashTime > dashWaitTime) {
+
+			dashTime = 0;
+
+			float hor = moveHorizontal * accelerationRate;
+			float ver = moveVertical * accelerationRate;
+			float y = 0;
+
+			//Add force to prevent player getting stuck in edge
+			if (GetSurfaceTag () == "water")
+				y = 0.1f;
+			
+			Vector3 force = new Vector3 (hor, y, ver);
+
+			force = force.normalized;
+
+			rb.AddForce (force * Time.deltaTime * 3000);
+		}
+	}
+
+
+	/**
 	 * Add force on X and Z axis based on controller input.
 	 */
 	private void Move(){
-
-
 
 		//Get force to rigidbody
 		float hor = moveHorizontal * accelerationRate;
@@ -207,6 +236,9 @@ public class NewController : MonoBehaviour {
 				force.z /= 2;
 			}
 		}
+
+		if (dashTime < 30)
+			force /= (31 - dashTime);
 
 		rb.AddForce (force * Time.deltaTime);
 
@@ -481,8 +513,11 @@ public class NewController : MonoBehaviour {
 	private string GetLastSurfaceTag (){
 		return lastSurfaceTag;
 	}
-	 
 
+	private void IncrementDashTime(){
+		if(dashTime <= dashWaitTime)
+			dashTime += 60 * Time.deltaTime; 
+	}
 
 	public Vector3 GetDirection(){
 		return direction;

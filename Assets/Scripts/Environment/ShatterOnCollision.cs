@@ -59,7 +59,6 @@ public class ShatterOnCollision : MonoBehaviour {
 		force *= Time.deltaTime * 4000;
 
 		foreach (Transform t in shatteredObject.transform) {
-			Debug.Log ("name = " + t.name);
 			t.GetComponent<Rigidbody> ().AddForce (force);
 		}
 	}

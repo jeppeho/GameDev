@@ -9,7 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 497530}
   - 114: {fileID: 11461242}
-  - 114: {fileID: 11488600}
   m_Layer: 0
   m_Name: LevelGenerator
   m_TagString: Untagged
@@ -79,17 +78,7 @@ MonoBehaviour:
   - {fileID: 182578, guid: ab1e4d2a37db24e5e969c914f09fa251, type: 2}
   cliff: {fileID: 177974, guid: 0f795f361e5d44df2829518b99b3bd2c, type: 2}
   waterPrefab: {fileID: 100000, guid: 6b436d069d11415d1100ab9b44295342, type: 2}
---- !u!114 &11488600
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 159036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  boulderPrefab: {fileID: 154896, guid: ddbccce3d8a5f40c49c71a8181555db5, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
