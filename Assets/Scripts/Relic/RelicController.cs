@@ -119,15 +119,17 @@ public class RelicController : MonoBehaviour {
 	private void GetUnstuck(float wall){
 
 		//Get Current z position for camera
-		float cameraZ = manager.GetPosition ().z;
+		float cameraZ = camera.GetComponent<CameraController>().GetZPosition ();
 		float relicZ = rb.transform.position.z;
 
 		float relicX = rb.transform.position.x;
 
 		float distToCamera = cameraZ - relicZ;
 
+		int maxDist = 7;
+
 		//If relic is right behind camera, then push it forward
-		if (distToCamera < 5) {
+		if (distToCamera < maxDist && distToCamera > 0) {
 
 			Vector3 force = new Vector3 (relicX * -1 + distToCamera, distToCamera, distToCamera);
 
@@ -135,10 +137,11 @@ public class RelicController : MonoBehaviour {
 
 			rb.AddForce (force);
 
-		} else {
+
+		} else if(distToCamera > maxDist){
 			//If relic is to far behind camera, move it and push forward
-			rb.transform.position = new Vector3 (relicX / 2, 5, cameraZ);
-			rb.AddForce (0, 0, Time.deltaTime * 1000);
+			rb.transform.position = new Vector3 (relicX / 2, 5, cameraZ - maxDist);
+			rb.AddForce (0, 0, Time.deltaTime * 3000);
 		}
 
 	}
@@ -149,37 +152,37 @@ public class RelicController : MonoBehaviour {
 	 * this method will try to get in the camera FOV by pushing it forward and 
 	 * move it from side to side
 	 */
-//	private void GetUnstuckOLD(float wall){
-//
-//		float currentRelicX = rb.transform.position.x;
-//
-//		//If relic is out to the sides or at the same position at the prev position
-//		if (currentRelicX > 4f || currentRelicX < -4f || prevX == currentRelicX)
-//			escapeDirection = -1;
-//
-//		//Get Current z position for camera
-//		float currentCameraZ = manager.GetPosition ().z;
-//
-//		//Get distance to camera wall
-//		float distanceToView = wall - currentCameraZ;
-//
-//		float x = 100f * escapeDirection;
-//
-//		float y = 0;
-//		if (currentCameraZ < wall - 1f) {
-//			if (rb.transform.position.y < 20f) {
-//				y =  200f;
+	private void GetUnstuckOLD(float wall){
+
+		float currentRelicX = rb.transform.position.x;
+
+		//If relic is out to the sides or at the same position at the prev position
+		if (currentRelicX > 4f || currentRelicX < -4f || prevX == currentRelicX)
+			escapeDirection = -1;
+
+		//Get Current z position for camera
+		float currentCameraZ = manager.GetPosition ().z;
+
+		//Get distance to camera wall
+		float distanceToView = wall - currentCameraZ;
+
+		float x = 100f * escapeDirection;
+
+		float y = 0;
+		if (currentCameraZ < wall - 1f) {
+			if (rb.transform.position.y < 20f) {
+				y =  200f;
+			}
+//			if (rb.transform.position.y < 4f) {
+//				y = (4f - rb.transform.position.y) * 2000f;
 //			}
-////			if (rb.transform.position.y < 4f) {
-////				y = (4f - rb.transform.position.y) * 2000f;
-////			}
-//		}
-//
-//		rb.AddForce (new Vector3 (x, y, 100f * distanceToView));
-//
-//		prevX = currentRelicX;
-//
-//	}
+		}
+
+		rb.AddForce (new Vector3 (x, y, 100f * distanceToView));
+
+		prevX = currentRelicX;
+
+	}
 
 
 	private void CapVelocity(){

@@ -68,8 +68,13 @@ public class LevelGenerator : MonoBehaviour {
 	private Vector3[] respawnPoints;
 	private float respawnpointOffset;
 
+	//The parent object for all level elements
+	private GameObject levelContainer;
+
 	// Use this for initialization
 	void Start () {
+
+		levelContainer = GameObject.Find ("LevelElements");
 
 		NG = new NoiseGenerator ();
 
@@ -88,8 +93,8 @@ public class LevelGenerator : MonoBehaviour {
 		crystalNoise = NG.GetPerlinNoise1D (8, 10, 0.8f, -1, 1);
 		crystalPositionNoise = NG.GetPerlinNoise1D (8, 10, 0.8f, -1, 1);
 		smallCrystalPositionNoise = NG.GetPerlinNoise1D (6, 10, 0.5f, -halfWidth, halfWidth);
-		lavaSteppingStonesNoise1 = NG.GetPerlinNoise1D (4, 10, 0.8f, -halfWidth -1, halfWidth + 1);
-		lavaSteppingStonesNoise2 = NG.GetPerlinNoise1D (4, 10, 0.8f, -halfWidth -1, halfWidth + 1);
+		lavaSteppingStonesNoise1 = NG.GetPerlinNoise1D (4, 10, 0.8f, -halfWidth -1, halfWidth/3);
+		lavaSteppingStonesNoise2 = NG.GetPerlinNoise1D (4, 10, 0.8f, -halfWidth / 3, halfWidth + 1);
 		cliffHeightNoise = NG.GetPerlinNoise1D (1, 10, 1f, 50, 600);
 
 
@@ -141,6 +146,45 @@ public class LevelGenerator : MonoBehaviour {
 
 		NG.ConvertSamplesToUnits (levelAreaNoise);
 
+	}
+
+
+//	void Update(){
+//		//DisableStuffBehindCamera();
+//	}
+//
+//	private void DisableStuffBehindCamera(){
+//
+//		if(Time.frameCount % 200 == 0){
+//			Debug.Log ("Checking for disabling");
+//
+//			GameObject camera = GameObject.Find ("LeapControllerBlockHand");
+//			float cameraZ = camera.GetComponent<CameraController> ().GetZPosition ();
+//
+//			Debug.Log ("CameraZ = " + cameraZ);
+//
+//			foreach(Transform t in levelContainer.transform){
+//
+//				if (t.gameObject.activeSelf == true) {
+//
+//					float objectPos = t.GetComponent<Transform> ().position.z;
+//					Debug.Log ("objectPos = " + objectPos);
+//
+//					if (objectPos < cameraZ - 10) {
+//						Debug.Log ("Disabling object = " + t.gameObject.name);
+//						t.gameObject.SetActive (false);
+//					}
+//				}
+//			}
+//		}
+//	}
+
+
+	/**
+	 * Makes the provided gameObject a child of the levelContainer
+	 */
+	private void SetContainerAsParent(GameObject g){
+		g.transform.SetParent (levelContainer.transform);
 	}
 
 
@@ -305,8 +349,10 @@ public class LevelGenerator : MonoBehaviour {
 		Vector3 position = new Vector3( 0, 0, z );
 	
 		//Instantiate middle part
-		GameObject middle = Instantiate (groundMiddle, position, Quaternion.identity) as GameObject;
+		GameObject ground = Instantiate (groundMiddle, position, Quaternion.identity) as GameObject;
 
+		//Set levelContainer as parent
+		SetContainerAsParent (ground);
 
 		//If next area type is not grass
 		if (z < levelLength - 2) {
@@ -434,12 +480,19 @@ public class LevelGenerator : MonoBehaviour {
 						int center = i + (g - i) / 2;
 						GameObject water = Instantiate (waterPrefab, new Vector3 (0, -0.2f, center), Quaternion.identity) as GameObject;
 
+						//Set levelContainer as parent
+						SetContainerAsParent (water);
+
 						//Stretch on the Z-axis
 						int length = g - i + 5;
 						water.transform.localScale = new Vector3 (20, 0,length);
 
 						//Create floor
 						GameObject floor = Instantiate (lavaCube, new Vector3( 0, -1, center), Quaternion.identity) as GameObject;
+
+						//Set levelContainer as parent
+						SetContainerAsParent (floor);
+
 						floor.transform.localScale = new Vector3 (20, 1,length);
 						break;
 					}
@@ -453,7 +506,10 @@ public class LevelGenerator : MonoBehaviour {
 
 		Vector3 position = new Vector3 ( 0, 0, z );
 
-		GameObject middle = Instantiate (groundMiddle, position, Quaternion.identity) as GameObject;
+		GameObject ground = Instantiate (groundMiddle, position, Quaternion.identity) as GameObject;
+
+		//Set levelContainer as parent
+		SetContainerAsParent (ground);
 
 		if (z % 2 == 0) {
 
@@ -470,7 +526,10 @@ public class LevelGenerator : MonoBehaviour {
 					GameObject cliffy = Instantiate (cliff, position, Quaternion.identity) as GameObject;
 					cliffy.name = "normal cliff";
 					float height = cliffHeightNoise [z] + Mathf.Abs ( difference ) * 30;
-		
+
+					//Set levelContainer as parent
+					SetContainerAsParent (cliffy);
+
 					//Rescale
 					float width = Random.Range (110, 150);
 					cliffy.transform.localScale = new Vector3 (width, height, width);
@@ -488,6 +547,10 @@ public class LevelGenerator : MonoBehaviour {
 							position.z = z - i ;
 
 							GameObject cliffy2 = Instantiate (cliff, position, Quaternion.identity) as GameObject;
+
+							//Set levelContainer as parent
+							SetContainerAsParent (cliffy2);
+
 							cliffy2.name = "extra cliff";
 							//float height2 = 1000f;
 							cliffy2.transform.localScale = new Vector3 (width, height, width);
@@ -567,6 +630,9 @@ public class LevelGenerator : MonoBehaviour {
 		int index = NG.GetRandomButNotPreviousValue (0, groundEdges.Length, prevGroundEdgeIndex);
 		GameObject edge = Instantiate (groundEdges [index], position, Quaternion.identity) as GameObject;
 
+		//Set levelContainer as parent
+		SetContainerAsParent (edge);
+
 		Vector3 scale = edge.transform.localScale;
 		scale.y = 5;
 		edge.transform.localScale = scale;
@@ -593,6 +659,7 @@ public class LevelGenerator : MonoBehaviour {
 
 		int index = NG.GetRandomButNotPreviousValue (0, groundEdges.Length, prevGroundEdgeIndex);
 		GameObject edge = Instantiate (groundEdges [index], position, Quaternion.identity) as GameObject;
+		SetContainerAsParent (edge);
 
 		Vector3 scale = edge.transform.localScale;
 		scale.y = 5;
@@ -626,6 +693,9 @@ public class LevelGenerator : MonoBehaviour {
 		else
 			pillar = Instantiate (pillars [pillarIndex], position, Quaternion.identity) as GameObject; 
 
+		//Set levelContainer as parent
+		SetContainerAsParent (pillar);
+
 		//Set size
 		float size = Random.Range (80, 110);
 		pillar.transform.localScale = new Vector3 (size, size, size);
@@ -658,6 +728,10 @@ public class LevelGenerator : MonoBehaviour {
 		int index = NG.GetRandomButNotPreviousValue (0, pillars.Length, prevSmallCrystalIndex);
 
 		GameObject pillar = Instantiate (pillars_hex [index], position, Quaternion.identity) as GameObject;
+
+		//Set levelContainer as parent
+		SetContainerAsParent (pillar);
+
 		float scale = Random.Range (25, 40);
 		pillar.transform.localScale = new Vector3 (scale, scale, scale);
 		pillar.transform.RotateAround( position, new Vector3(0,1,0), Random.Range(0, 360));
@@ -674,6 +748,9 @@ public class LevelGenerator : MonoBehaviour {
 
 		//Instantiate boulder
 		GameObject boulder = Instantiate (boulderPrefab, position, Quaternion.identity) as GameObject; 
+
+		//Set levelContainer as parent
+		SetContainerAsParent (boulder);
 
 		//Rotate boulder around Y axis
 		boulder.transform.RotateAround( position, new Vector3(0,1,0), rotation);
@@ -706,6 +783,9 @@ public class LevelGenerator : MonoBehaviour {
 		int index = NG.GetRandomButNotPreviousValue (0, steppingStones.Length, prevSteppingStoneIndex);
 		GameObject steppingStone = Instantiate(steppingStones[index], new Vector3(noise[z], 0, z), Quaternion.identity) as GameObject;
 
+		//Set levelContainer as parent
+		SetContainerAsParent (steppingStone);
+
 		int scale = Random.Range (30, 50);
 		steppingStone.transform.localScale = new Vector3 (scale, scale, scale);
 
@@ -736,12 +816,18 @@ public class LevelGenerator : MonoBehaviour {
 			leftSide.transform.RotateAround (positionLeft, new Vector3 (0, 1, 0), Random.Range(-rotationVariator, rotationVariator) + 180);
 			leftSide.transform.localScale = scalar;
 
+			//Set levelContainer as parent
+			SetContainerAsParent (leftSide);
+
 			//Get new index for model
 			index = NG.GetRandomButNotPreviousValue (0, sides.Length, index);
 
 			GameObject rightSide = Instantiate (sides [index], positionRight, Quaternion.identity) as GameObject;
 			rightSide.transform.RotateAround (positionRight, new Vector3 (0, 1, 0), Random.Range(-rotationVariator, rotationVariator));
 			rightSide.transform.localScale = scalar;
+
+			//Set levelContainer as parent
+			SetContainerAsParent (rightSide);
 
 			prevSidesIndex = index;
 		}
@@ -760,6 +846,10 @@ public class LevelGenerator : MonoBehaviour {
 		//Instantiate steps
 		GameObject step1 = Instantiate (bridgeSteps[firstBridgeIndex], position1, Quaternion.identity) as GameObject;
 		GameObject step2 = Instantiate (bridgeSteps[secondBridgeIndex], position2, Quaternion.identity) as GameObject;
+
+		//Set levelContainer as parent
+		SetContainerAsParent (step1);
+		SetContainerAsParent (step2);
 
 		//Rotate around Y-axis
 		step1.transform.RotateAround( position1, new Vector3(0,1,0), Random.Range(0, 360));

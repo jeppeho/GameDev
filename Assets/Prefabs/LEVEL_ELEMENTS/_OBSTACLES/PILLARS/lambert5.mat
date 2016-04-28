@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: lambert4
+  m_Name: lambert5
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _EMISSION
   m_LightmapFlags: 1
@@ -103,7 +103,7 @@ Material:
       data:
         first:
           name: _Glossiness
-        second: 0.76
+        second: 0.88
       data:
         first:
           name: _BumpScale
@@ -127,13 +127,13 @@ Material:
       data:
         first:
           name: _Metallic
-        second: 0.56
+        second: 0.51
     m_Colors:
       data:
         first:
           name: _EmissionColor
-        second: {r: 0, g: 0.45588237, b: 0.45588237, a: 1}
+        second: {r: 0.72794116, g: 0.03746755, b: 0.19460987, a: 1}
       data:
         first:
           name: _Color
-        second: {r: 0, g: 0.16013518, b: 0.7490196, a: 0.316}
+        second: {r: 1, g: 0.30147058, b: 0.30147058, a: 0.228}

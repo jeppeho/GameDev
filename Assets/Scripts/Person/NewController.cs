@@ -193,9 +193,9 @@ public class NewController : MonoBehaviour {
 	 */
 	private void Dash(){
 
-		if (dashTime > dashWaitTime) {
+		if (dashTime > dashWaitTime || dashTime < 10) {
 
-			dashTime = 0;
+//			dashTime = 0;
 
 			float hor = moveHorizontal * accelerationRate;
 			float ver = moveVertical * accelerationRate;
@@ -209,8 +209,12 @@ public class NewController : MonoBehaviour {
 
 			force = force.normalized;
 
-			rb.AddForce (force * Time.deltaTime * 3000);
+			rb.AddForce (force * Time.deltaTime * 300);
 		}
+
+		//Reset dashTime
+		if (dashTime > dashWaitTime)
+			dashTime = 0;
 	}
 
 
@@ -238,7 +242,7 @@ public class NewController : MonoBehaviour {
 		}
 
 		if (dashTime < 30)
-			force /= (31 - dashTime);
+			force /= (11 - dashTime/3);
 
 		rb.AddForce (force * Time.deltaTime);
 
