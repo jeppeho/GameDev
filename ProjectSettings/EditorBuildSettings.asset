@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/scenes/TEST SCENES/LeapScene.unity
+    path: Assets/scenes/Tutorial Start.unity
   - enabled: 1
-    path: Assets/scenes/PROTOTYPE SCENES/Prototype_03.unity
+    path: Assets/scenes/LevelGenerator.unity
