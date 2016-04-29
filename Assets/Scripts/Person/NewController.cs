@@ -48,8 +48,8 @@ public class NewController : MonoBehaviour {
 
 	int falldownCounter = 0;
 
-	float dashWaitTime = 60;
-	float dashTime = 0;
+	public float dashWaitTime = 60;
+	float dashTime;
 
 	string playerState;
 
@@ -72,6 +72,8 @@ public class NewController : MonoBehaviour {
 		nearWalkZone = LevelManager.MOVE_MINZ+LevelManager.MOVE_ZONEWIDTH;
 		farWalkZone = LevelManager.MOVE_MAXZ-LevelManager.MOVE_ZONEWIDTH;
 		walkZoneWidth = LevelManager.MOVE_ZONEWIDTH;
+
+		dashTime = dashWaitTime + 1;
 	}
 
 	
@@ -193,9 +195,7 @@ public class NewController : MonoBehaviour {
 	 */
 	private void Dash(){
 
-		if (dashTime > dashWaitTime || dashTime < 10) {
-
-//			dashTime = 0;
+		if (dashTime > dashWaitTime || dashTime < 7) {
 
 			float hor = moveHorizontal * accelerationRate;
 			float ver = moveVertical * accelerationRate;
@@ -209,7 +209,7 @@ public class NewController : MonoBehaviour {
 
 			force = force.normalized;
 
-			rb.AddForce (force * Time.deltaTime * 300);
+			rb.AddForce (force * Time.deltaTime * 900);
 		}
 
 		//Reset dashTime

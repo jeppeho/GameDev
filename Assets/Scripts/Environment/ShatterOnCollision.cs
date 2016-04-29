@@ -29,7 +29,7 @@ public class ShatterOnCollision : MonoBehaviour {
 		shatteredObject.transform.localScale = scale;
 
 		//Set breakforce, based on scale
-		intactObject.GetComponent<IntactObject> ().SetBreakForce (this.transform.localScale.x / 2f);
+		intactObject.GetComponent<IntactObject> ().SetBreakForce (this.transform.localScale.x / 3f);
 
 		//Deactive shattered shards
 		shatteredObject.SetActive (false);
@@ -46,25 +46,30 @@ public class ShatterOnCollision : MonoBehaviour {
 		}
 
 		prevIsUntouched = isUntouched;
+
 	}
 
+
 	private void ShatterObject(){
+
 		intactObject.SetActive (false);
 		shatteredObject.SetActive (true);
 
 		//Add force from hand to shards
-		Vector3 force = intactObject.GetComponent<IntactObject> ().GetHitVector ();
+		Vector3 handForce = intactObject.GetComponent<IntactObject> ().GetHitVector ();
 
-		//Push shard to the ground
-		force.y = -500;
+		handForce = handForce.normalized * 5;
 
-		force *= Time.deltaTime * 4000;
-
+		//For each shard
 		foreach (Transform t in shatteredObject.transform) {
-			t.GetComponent<Rigidbody> ().AddForce (force);
+
+			t.GetComponent<Rigidbody> ().mass = 8f;
+			t.GetComponent<Rigidbody> ().drag = 3f;
+			t.GetComponent<Rigidbody> ().angularDrag = 0.5f;
+
+			//Add hand vector as force to hand
+			t.GetComponent<Rigidbody> ().AddForce (handForce * 1000);
 		}
 	}
-
-
 
 }

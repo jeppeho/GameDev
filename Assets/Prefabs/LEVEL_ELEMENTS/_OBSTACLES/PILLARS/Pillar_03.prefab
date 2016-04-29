@@ -450,7 +450,7 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 165200}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: 33825b930e0dc4e7c8671cbf0ccc8495, type: 2}

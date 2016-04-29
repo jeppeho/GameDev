@@ -1,5 +1,20 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &114024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 412244}
+  m_Layer: 0
+  m_Name: LevelElements
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &159036
 GameObject:
   m_ObjectHideFlags: 0
@@ -16,6 +31,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &412244
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 114024}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 497530}
+  m_RootOrder: 0
 --- !u!4 &497530
 Transform:
   m_ObjectHideFlags: 1
@@ -25,7 +52,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 412244}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!114 &11461242
@@ -40,6 +68,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelLength: 400
+  beginningAreaLength: 50
+  goalAreaLength: 40
   minRegularGroundPercentage: 0
   minLavaPercentage: 0
   minCliffPercentage: 0
@@ -66,7 +96,7 @@ MonoBehaviour:
   - {fileID: 169652, guid: 6a99d49cbfd9c4d4ea525f85f007f940, type: 2}
   - {fileID: 195722, guid: 60724d7968d6f4dd0bf7faa2be2b0dd0, type: 2}
   bridgeSteps:
-  - {fileID: 182578, guid: ab1e4d2a37db24e5e969c914f09fa251, type: 2}
+  - {fileID: 138102, guid: c0cc571c35b134f1c90ad4e56b44048e, type: 2}
   sides:
   - {fileID: 190544, guid: 238d60e676e0c4eca97f291a6d49a3ae, type: 2}
   - {fileID: 167434, guid: 543f19b7d48174264ad56924074b573b, type: 2}
@@ -75,7 +105,7 @@ MonoBehaviour:
   - {fileID: 139248, guid: 4fac589f0acb44e21be69beeb7cb384a, type: 2}
   - {fileID: 185394, guid: 5950402d638b544a59d9c883d06f7735, type: 2}
   steppingStones:
-  - {fileID: 182578, guid: ab1e4d2a37db24e5e969c914f09fa251, type: 2}
+  - {fileID: 112952, guid: b43f9b7f063004dabb4de0537bf04e0a, type: 2}
   cliff: {fileID: 177974, guid: 0f795f361e5d44df2829518b99b3bd2c, type: 2}
   waterPrefab: {fileID: 100000, guid: 6b436d069d11415d1100ab9b44295342, type: 2}
   boulderPrefab: {fileID: 154896, guid: ddbccce3d8a5f40c49c71a8181555db5, type: 2}

@@ -198,7 +198,7 @@ public class RelicController : MonoBehaviour {
 	
 		Vector3 force = new Vector3 ();
 
-		if (Mathf.Abs (manager.GetPosition ().x) > LevelManager.MAX_X)
+		if (Mathf.Abs (manager.GetPosition ().x) > LevelManager.MAX_X / 3)
 			force.x = 20 * manager.GetPosition ().x * -1;
 
 		force.x += Random.Range (-20, 20);
@@ -215,7 +215,7 @@ public class RelicController : MonoBehaviour {
 	//Updates the position to be above the parents head
 	private void FlyAboveParent(){
 		Vector3 slotPosition = manager.GetParent().position;
-		slotPosition.y += 1f;
+		slotPosition.y += 1.1f;
 		manager.UpdatePosition( slotPosition );
 	}
 
@@ -261,7 +261,8 @@ public class RelicController : MonoBehaviour {
 
 		manager.ReleaseFromParent ();
 
-		throwDirection *= Time.deltaTime * 100f;
+		//throwDirection *= Time.deltaTime * 13f; //For new simple prefab
+		throwDirection *= Time.deltaTime * 100f; //For old prefab 
 
 		rb.AddForce ( /*bodyVelocity +*/ throwDirection );
 

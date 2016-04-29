@@ -19,7 +19,7 @@ public class RelicManager : MonoBehaviour {
 	 */
 	public void SetParent(Transform parent){
 		this.transform.SetParent (parent, false);
-		UpdateScale (0.8f);
+		//UpdateScale (0.8f);
 		UpdateFreezeRotation (true);
 		ResetRotation ();
 		SetKinematic (true);
@@ -32,7 +32,7 @@ public class RelicManager : MonoBehaviour {
 	 */
 	public void ReleaseFromParent(){
 		this.transform.parent = null;
-		UpdateScale (1f);
+		//UpdateScale (1f);
 		UpdateFreezeRotation (false);
 		SetKinematic (false);
 	}

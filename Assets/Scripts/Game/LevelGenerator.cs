@@ -4,6 +4,9 @@ using System.Collections;
 public class LevelGenerator : MonoBehaviour {
 
 	public int levelLength = 400;
+	public int beginningAreaLength = 30;
+	public int goalAreaLength = 20;
+
 	public int minRegularGroundPercentage;
 	public int minLavaPercentage;
 	public int minCliffPercentage;
@@ -63,6 +66,7 @@ public class LevelGenerator : MonoBehaviour {
 	private float[] smallCrystalPositionNoise;
 	private float[] lavaSteppingStonesNoise1;
 	private float[] lavaSteppingStonesNoise2;
+	private float[] lavaSteppingStonesNoise3;
 	private float[] cliffHeightNoise;
 
 	private Vector3[] respawnPoints;
@@ -95,10 +99,15 @@ public class LevelGenerator : MonoBehaviour {
 		smallCrystalPositionNoise = NG.GetPerlinNoise1D (6, 10, 0.5f, -halfWidth, halfWidth);
 		lavaSteppingStonesNoise1 = NG.GetPerlinNoise1D (4, 10, 0.8f, -halfWidth -1, halfWidth/3);
 		lavaSteppingStonesNoise2 = NG.GetPerlinNoise1D (4, 10, 0.8f, -halfWidth / 3, halfWidth + 1);
+
+//		lavaSteppingStonesNoise1 = NG.GetPerlinNoise1D (4, 10, 0.8f, -halfWidth + 1, -halfWidth / 2);
+//		lavaSteppingStonesNoise2 = NG.GetPerlinNoise1D (4, 10, 0.8f, -halfWidth / 2, halfWidth / 2);
+//		lavaSteppingStonesNoise3 = NG.GetPerlinNoise1D (4, 10, 0.8f, halfWidth/2, halfWidth - 1);
+
 		cliffHeightNoise = NG.GetPerlinNoise1D (1, 10, 1f, 50, 600);
 
 
-		//NG.CreateVisualRepresentationSingle (levelAreaNoise, 20f);
+		NG.CreateVisualRepresentationSingle (levelAreaNoise, 20f);
 
 		for (int sample = 0; sample < levelLength; sample++) {
 
@@ -134,6 +143,9 @@ public class LevelGenerator : MonoBehaviour {
 				Debug.Log ("Level area type not defined @" + sample + " | " + levelAreas [sample]);
 			}
 		}
+
+		//Create the last edge
+		CreateGroundEdge (levelLength, false);
 
 		//Put in water, where needed
 		if(useWater)
@@ -232,6 +244,8 @@ public class LevelGenerator : MonoBehaviour {
 			accepted = true;
 		
 			levelAreaNoise = NG.GetPerlinNoise1D (3, 10, 0.6f, -1, 1);
+			InsertLevelBeginningArea ();
+			InsertGoalArea ();
 			SetLevelAreaArray ();
 
 			if (GetCountOfAreaType (AreaType.lava) < minLavaPercentage)
@@ -269,6 +283,54 @@ public class LevelGenerator : MonoBehaviour {
 		Debug.Log ("GRASS = " + GetCountOfAreaType (AreaType.grass));
 	}
 
+	/**
+	 * Used to set the first part of the level to a specific area type.
+	 * Sets the first levelAreaNoise index to zero and lerps between that 
+	 * a number of level sections back, specified by the public variable beginningAreaLength.
+	 */
+	private void InsertLevelBeginningArea(){
+
+		float a = 0f;
+		float b = levelAreaNoise [beginningAreaLength];
+
+		Debug.Log ("A = " + a + " | B = " + b);
+
+
+		for (int sample = 0; sample <= beginningAreaLength; sample++) {
+
+			float t = (float)sample / (float)beginningAreaLength;
+			float v = Mathf.Lerp( a, b, t);
+
+			Debug.Log (sample + "] t = " + t + " | LAN = " + levelAreaNoise [sample] + " -> " + v);
+			levelAreaNoise [sample] = v;
+		}
+	}
+
+
+	/**
+	 * Used to set the last part of the level to a specific area type.
+	 * Sets the last levelAreaNoise index to zero and lerps between that 
+	 * a number of level sections back, specified by the public variable goalAreaLength.
+	 */
+	private void InsertGoalArea(){
+
+		float a = levelAreaNoise[ levelLength - goalAreaLength ];
+		float b = 0f;
+
+
+		int firstSample = levelLength - goalAreaLength;
+
+		for(int sample = 0; sample < goalAreaLength; sample++){
+
+			float t = (float)sample / (float)(goalAreaLength - 1f);
+			float v = Mathf.Lerp (a, b, t);
+
+			levelAreaNoise [firstSample + sample] = v;
+
+		}
+	
+	}
+
 
 	/**
 	 * Returns the percentage-wise represenation of a certain area type
@@ -296,9 +358,13 @@ public class LevelGenerator : MonoBehaviour {
 	 */
 	private void SetLevelAreaArray(){
 
+		int startLenngth = 20;
+
 		//SET START LINE
 		for (int sample = 0; sample < startingCell; sample++)
 			levelAreas[sample] = AreaType.start;
+
+
 
 
 		//SET OBSTACLE COURSE
@@ -378,17 +444,12 @@ public class LevelGenerator : MonoBehaviour {
 			}
 		}
 
-		//Insert pillars
-//		if ( (pillarNoise [z] > 0.5f && pillarNoise[z] < 0.6f)
-//			|| (pillarNoise [z] > -0.1f && pillarNoise[z] < 0.0f)
-//			|| (pillarNoise[z] > -0.6f && pillarNoise[z] < -0.5f)
-//		) {
-
+		//Insert small and large pillars
 		if (z > 0 && z < levelLength) {
 
 			if (levelAreas [z - 1] == AreaType.grass && levelAreas [z + 1] == AreaType.grass) {
 
-				if (levelAreaNoise [z] < 0.6f) {
+				if (levelAreaNoise [z] > -0.5f  && levelAreaNoise[z] < 0.3f) {
 
 					if (z % 10 == 0) {
 
@@ -397,8 +458,8 @@ public class LevelGenerator : MonoBehaviour {
 					}
 				}
 
-				if (levelAreaNoise [z] > -0.5f) {
-					if (z % 4 != 0 /*&& z % 10 != 0*/) {
+				if (levelAreaNoise [z] < 0.6f && levelAreaNoise[z] > 0.3f) {
+					if (z % 3 != 0 /*&& z % 10 != 0*/) {
 		
 						CreateCrystalGroupSmall (z);
 
@@ -425,9 +486,10 @@ public class LevelGenerator : MonoBehaviour {
 		}
 
 		int distBetweenSteps = 6;
+		int numPaths = 2;
 
 		//Don't check array out of bounds
-		if ( sample > 0 && sample < levelLength - distBetweenSteps/2 ) {
+		if ( sample > 0 && sample < levelLength - distBetweenSteps ) {
 
 			//Only if prev and next area is water
 			if (levelAreas [sample - 1] == AreaType.lava && levelAreas [sample + 1] == AreaType.lava) {
@@ -445,19 +507,62 @@ public class LevelGenerator : MonoBehaviour {
 						}
 					}
 						
-					SetRespawnPointOnSteppingStone (sample, lavaSteppingStonesNoise1 [sample]);
-					SetRespawnPointOnSteppingStone (sample + 1, lavaSteppingStonesNoise1 [sample]);
+					for(int i = 0; i < distBetweenSteps; i++)
+						SetRespawnPointOnSteppingStone (sample + i, lavaSteppingStonesNoise1 [sample]);
 				} 
 
-				else if ((sample + distBetweenSteps/2) % distBetweenSteps == 0) {
+				else if ((sample + distBetweenSteps / numPaths) % distBetweenSteps == 0) {
 
 					CreateSteppingStone(lavaSteppingStonesNoise2, sample);
 
-					SetRespawnPointOnSteppingStone (sample, lavaSteppingStonesNoise2 [sample]);
-					SetRespawnPointOnSteppingStone (sample + 1 , lavaSteppingStonesNoise2 [sample]);
+					for(int i = 0; i < distBetweenSteps; i++)
+						SetRespawnPointOnSteppingStone (sample + i, lavaSteppingStonesNoise2 [sample]);
 				}
+
+//				else if ((sample + distBetweenSteps/numNoise * 2) % distBetweenSteps == 0) {
+//
+//					CreateSteppingStone(lavaSteppingStonesNoise3, sample);
+//
+//					for(int i = 0; i < distBetweenSteps; i++)
+//						SetRespawnPointOnSteppingStone (sample + i, lavaSteppingStonesNoise3 [sample]);
+//				}
 			}
 		}
+
+		//Don't check array out of bounds
+//		if ( sample > 0 && sample < levelLength - distBetweenSteps/2 ) {
+//
+//			//Only if prev and next area is water
+//			if (levelAreas [sample - 1] == AreaType.lava && levelAreas [sample + 1] == AreaType.lava) {
+//
+//				if (sample % distBetweenSteps == 0) {
+//
+//					CreateSteppingStone(lavaSteppingStonesNoise1, sample);
+//
+//					if (levelAreaNoise [sample] < 0.0f) {
+//
+//						if (sample % 8 == 0) {
+//
+//							CreateCrystalLarge (sample, true);
+//
+//						}
+//					}
+//
+//					SetRespawnPointOnSteppingStone (sample, lavaSteppingStonesNoise1 [sample]);
+//					SetRespawnPointOnSteppingStone (sample + 1, lavaSteppingStonesNoise1 [sample]);
+//				} 
+//
+//				else if ((sample + distBetweenSteps/2) % distBetweenSteps == 0) {
+//
+//					CreateSteppingStone(lavaSteppingStonesNoise2, sample);
+//
+//					SetRespawnPointOnSteppingStone (sample, lavaSteppingStonesNoise2 [sample]);
+//					SetRespawnPointOnSteppingStone (sample + 1 , lavaSteppingStonesNoise2 [sample]);
+//				}
+//			}
+//		}
+
+
 	}
 
 
@@ -466,25 +571,25 @@ public class LevelGenerator : MonoBehaviour {
 	 */
 	private void CreateWater(){
 
-		for (int i = startingCell; i < levelLength; i++) {
+		for (int sample = startingCell; sample < levelLength; sample++) {
 
-			if (levelAreas [i - 1] != AreaType.lava && levelAreas [i] == AreaType.lava) {
+			if (levelAreas [sample - 1] != AreaType.lava && levelAreas [sample] == AreaType.lava) {
 
-				for (int g = i; g < levelLength; g++) {
+				for (int g = sample; g < levelLength; g++) {
 
 					if (levelAreas [g + 1] != AreaType.lava && levelAreas [g] == AreaType.lava
 						|| g == levelLength - 1
 					) {
 
 						//Create water prefab
-						int center = i + (g - i) / 2;
-						GameObject water = Instantiate (waterPrefab, new Vector3 (0, -0.2f, center), Quaternion.identity) as GameObject;
+						int center = sample + (g - sample) / 2;
+						GameObject water = Instantiate (waterPrefab, new Vector3 (0, -0.7f, center), Quaternion.identity) as GameObject;
 
 						//Set levelContainer as parent
 						SetContainerAsParent (water);
 
 						//Stretch on the Z-axis
-						int length = g - i + 5;
+						int length = (g - sample) * 2 / 3;
 						water.transform.localScale = new Vector3 (20, 0,length);
 
 						//Create floor
@@ -493,6 +598,7 @@ public class LevelGenerator : MonoBehaviour {
 						//Set levelContainer as parent
 						SetContainerAsParent (floor);
 
+						length *= 2; 
 						floor.transform.localScale = new Vector3 (20, 1,length);
 						break;
 					}
