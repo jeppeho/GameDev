@@ -387,7 +387,8 @@ public class NewController : MonoBehaviour {
 	
 		//Throw relic and remove as child
 		if (relic) {
-			player.GetComponentInChildren<RelicController> ().Throw(force);
+			//player.GetComponentInChildren<RelicController> ().Throw(force);
+			StartCoroutine( player.GetComponentInChildren<RelicController> ().ThrowRelic( force ) );
 			this.gameObject.GetComponent<PlayerRelicHandler>().ReleaseRelic ();
 		}
 	}

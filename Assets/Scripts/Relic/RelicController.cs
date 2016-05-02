@@ -20,6 +20,7 @@ public class RelicController : MonoBehaviour {
 
 	int escapeDirection = 1;
 	float prevX = 0;
+	float maxSpeed = 4f;
 
 
 	// Use this for initialization
@@ -190,8 +191,6 @@ public class RelicController : MonoBehaviour {
 
 	private void CapVelocity(){
 
-		float maxSpeed = 4f;
-
 		if (rb.velocity.magnitude > maxSpeed) {
 			rb.velocity = rb.velocity.normalized * maxSpeed;
 		}
@@ -256,30 +255,68 @@ public class RelicController : MonoBehaviour {
 		}
 	}
 
-		
 
-	public void Throw(float force){
-
-		int count = 0;
+	public IEnumerator ThrowRelic(float throwForce){
 
 		Vector3 bodyVelocity = this.gameObject.GetComponentInParent<Rigidbody>().velocity;
 		Vector3 throwDirection = this.gameObject.GetComponentInParent<NewController> ().GetDirection ();
 
-		Vector3.Normalize (throwDirection);
+		//Get throwDirection from player
+		Vector3 force = throwDirection;
 
-		throwDirection.y += 1f;
-		throwDirection *= 750 + 5000 * Mathf.Pow(force,2f);
-		Debug.Log ("throw Force = " + force);
+		//Make the throw a bit upwards
+		force.y += 0.3f;
+
+		throwForce = Mathf.Pow (throwForce, 2);
+
+		force *= throwForce; 
+
+		int index = 0;
+		int maxTime = 15;
+
+		maxSpeed = 6;
+
+		while (index < maxTime) {
+
+			//Get source based on index in coroutine
+			Vector3 currentForce = force * (maxTime - index) / maxTime * 2;
+			Debug.Log ("currentForce = " + currentForce);
+
+			//Add force
+			rb.AddForce (force * Time.deltaTime * 25000);
+
+			index++;
+			yield return new WaitForSeconds(0.01f);
+		}
 
 		manager.ReleaseFromParent ();
 
-		//throwDirection *= Time.deltaTime * 13f; //For new simple prefab
-		throwDirection *= Time.deltaTime * 100f; //For old prefab 
-
-		rb.AddForce ( /*bodyVelocity +*/ throwDirection );
-
-		count++;
 	}
+
+		
+//
+//	public void Throw(float force){
+//
+//		int count = 0;
+//
+//		Vector3 bodyVelocity = this.gameObject.GetComponentInParent<Rigidbody>().velocity;
+//		Vector3 throwDirection = this.gameObject.GetComponentInParent<NewController> ().GetDirection ();
+//
+//		Vector3.Normalize (throwDirection);
+//
+//		throwDirection.y += 1f;
+//		throwDirection *= 750 + 5000 * Mathf.Pow(force,2f);
+//		Debug.Log ("throw Force = " + force);
+//
+//		manager.ReleaseFromParent ();
+//
+//		//throwDirection *= Time.deltaTime * 13f; //For new simple prefab
+//		throwDirection *= Time.deltaTime * 100f; //For old prefab 
+//
+//		rb.AddForce ( /*bodyVelocity +*/ throwDirection );
+//
+//		count++;
+//	}
 
 
 }
