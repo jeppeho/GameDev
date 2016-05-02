@@ -93,7 +93,9 @@ public class NewController : MonoBehaviour {
 			//Check if player is jumping
 			if (pressJump && !isJumping) {
 				isJumping = true;
+				Debug.Log ("IsJumping!!!");
 				Jump ();
+				//StartCoroutine (JumpMinion());
 			}
 
 			//Move on X and Z axis
@@ -353,6 +355,40 @@ public class NewController : MonoBehaviour {
 	}
 
 
+	IEnumerator JumpMinion(){
+
+		float jumpPower = GetJumpPower();
+
+		float x = 0; float z = 0;
+
+		//Make smaller jump, if on water
+		if (GetSurfaceTag () == "Water") {
+			jumpPower /= 1.5f;
+		}else {
+			//Add speed on X and Z axis if jumping
+			x = moveHorizontal * accelerationRate * horizontalJumpScalar;
+			z = moveVertical * accelerationRate * horizontalJumpScalar;
+		}
+			
+		int numFrames = 10;
+		int index = 0;
+
+		Vector3 force = new Vector3 (x, jumpPower, z);
+		force /= numFrames;
+
+		while (index < numFrames) {
+
+			isJumping = true;
+			rb.AddForce ( force * Time.deltaTime );
+			index++;
+
+			yield return new WaitForSeconds (0.01f);
+		}
+		isJumping = false;
+
+	}
+
+
 	/**
 	 * Add additional downward force to falling
 	 */
@@ -380,16 +416,12 @@ public class NewController : MonoBehaviour {
 	 */ 
 	private void Throw(){
 		float force = Mathf.Min (1, throwBuffer / 5);
-		//Debug.Log (force);
 
-		//Get relic
-		GameObject relic = this.transform.Find("Relic").gameObject;
-	
 		//Throw relic and remove as child
-		if (relic) {
-			//player.GetComponentInChildren<RelicController> ().Throw(force);
+		if (this.gameObject.GetComponent<PlayerRelicHandler>().HasRelic()/*relic*/) {
+
 			StartCoroutine( player.GetComponentInChildren<RelicController> ().ThrowRelic( force ) );
-			this.gameObject.GetComponent<PlayerRelicHandler>().ReleaseRelic ();
+			//this.gameObject.GetComponent<PlayerRelicHandler>().ReleaseRelic ();
 		}
 	}
 

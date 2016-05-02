@@ -71,9 +71,9 @@ MonoBehaviour:
   beginningAreaLength: 50
   goalAreaLength: 40
   minRegularGroundPercentage: 0
-  minLavaPercentage: 0
-  minCliffPercentage: 0
-  minBridgePercentage: 0
+  minLavaPercentage: 25
+  minCliffPercentage: 10
+  minBridgePercentage: 15
   useWater: 1
   planePrefab: {fileID: 171214, guid: f8781240a8e3d487d8e4df00e5394e2b, type: 2}
   waterSmallPrefab: {fileID: 119884, guid: 2067c238b181942f6b5b016e2b73290f, type: 2}
@@ -95,6 +95,7 @@ MonoBehaviour:
   - {fileID: 100802, guid: bb33cae4d8ff647bcb52ca055e1bbbee, type: 2}
   - {fileID: 169652, guid: 6a99d49cbfd9c4d4ea525f85f007f940, type: 2}
   - {fileID: 195722, guid: 60724d7968d6f4dd0bf7faa2be2b0dd0, type: 2}
+  pillarSmallHex: {fileID: 0}
   bridgeSteps:
   - {fileID: 138102, guid: c0cc571c35b134f1c90ad4e56b44048e, type: 2}
   sides:

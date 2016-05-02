@@ -50,7 +50,7 @@ GameObject:
   - 33: {fileID: 3318508}
   - 135: {fileID: 13501716}
   - 23: {fileID: 2323132}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,6 +232,9 @@ MonoBehaviour:
   accelerationRate: 7
   maxVelocity: 7
   jumpPower: 7
+  fallDownForce: 45
+  horizontalJumpScalar: 3
+  dashWaitTime: 60
 --- !u!114 &11432040
 MonoBehaviour:
   m_ObjectHideFlags: 1

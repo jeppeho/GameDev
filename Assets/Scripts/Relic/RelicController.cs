@@ -104,6 +104,7 @@ public class RelicController : MonoBehaviour {
 
 					//Add downforce so it does not fly over player
 					vecTowardsPlayer.y = Mathf.Abs (vecTowardsPlayer.y) - 1.6f;
+					vecTowardsPlayer.y = 0;
 
 					vecTowardsPlayer *= Time.deltaTime * 2000f;
 
@@ -258,6 +259,8 @@ public class RelicController : MonoBehaviour {
 
 	public IEnumerator ThrowRelic(float throwForce){
 
+		Debug.Log ("Starting coroutine");
+
 		Vector3 bodyVelocity = this.gameObject.GetComponentInParent<Rigidbody>().velocity;
 		Vector3 throwDirection = this.gameObject.GetComponentInParent<NewController> ().GetDirection ();
 
@@ -274,13 +277,17 @@ public class RelicController : MonoBehaviour {
 		int index = 0;
 		int maxTime = 15;
 
-		maxSpeed = 6;
+		maxSpeed = 10;
+
+		//Release relic from minion
+		manager.ReleaseFromParent ();
 
 		while (index < maxTime) {
 
+			maxSpeed = 4f + (float)(6f * (maxTime - index) / maxTime);
+
 			//Get source based on index in coroutine
-			Vector3 currentForce = force * (maxTime - index) / maxTime * 2;
-			Debug.Log ("currentForce = " + currentForce);
+			Vector3 currentForce = force * ((float)maxTime - (float)index) / (float)maxTime * 2f;
 
 			//Add force
 			rb.AddForce (force * Time.deltaTime * 25000);
@@ -289,7 +296,9 @@ public class RelicController : MonoBehaviour {
 			yield return new WaitForSeconds(0.01f);
 		}
 
-		manager.ReleaseFromParent ();
+		maxSpeed = 4;
+
+
 
 	}
 
