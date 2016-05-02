@@ -41,7 +41,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 6
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_LightmapsMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -66,7 +66,8 @@ LightmapSettings:
     m_FinalGather: 0
     m_FinalGatherRayCount: 1024
     m_ReflectionCompression: 2
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000001, guid: da4c4c33059adc843bec2b524b85b759,
+    type: 2}
   m_RuntimeCPUUsage: 25
 --- !u!196 &4
 NavMeshSettings:
@@ -708,23 +709,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 11
---- !u!1 &698262654 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 169652, guid: 6a99d49cbfd9c4d4ea525f85f007f940, type: 2}
-  m_PrefabInternal: {fileID: 1476435534}
---- !u!114 &698262658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 698262654}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8b68c5e8d6644995b3e170bc2ff445f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeOutTexture: {fileID: 0}
-  fadeSpeed: 0.8
 --- !u!1001 &708356511
 Prefab:
   m_ObjectHideFlags: 0
@@ -1395,6 +1379,7 @@ MonoBehaviour:
   jumpPower: 400
   fallDownForce: 45
   horizontalJumpScalar: 3
+  dashWaitTime: 60
 --- !u!114 &1382654388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1516,6 +1501,22 @@ Prefab:
     - {fileID: 11482802, guid: 6a99d49cbfd9c4d4ea525f85f007f940, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 6a99d49cbfd9c4d4ea525f85f007f940, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1702732093 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 145480, guid: 469356b28aa554b20aefd3c4176e96a2, type: 2}
+  m_PrefabInternal: {fileID: 2069423570}
+--- !u!114 &1702732099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1702732093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e33dde58c684dd4ca4fec97b65d268c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 0
 --- !u!1 &1768455681
 GameObject:
   m_ObjectHideFlags: 0
@@ -1699,6 +1700,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2327984, guid: 09b54316904da4311ad77ab122610f45, type: 2}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 152758, guid: 09b54316904da4311ad77ab122610f45, type: 2}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
