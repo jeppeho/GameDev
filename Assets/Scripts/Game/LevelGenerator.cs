@@ -149,7 +149,7 @@ public class LevelGenerator : MonoBehaviour {
 		}
 
 		//Create the last edge
-		CreateGroundEdge (levelLength, false);
+		CreateGroundEdge (levelLength - 7, false);
 
 		//Put in water, where needed
 		if(useWater)
@@ -249,7 +249,7 @@ public class LevelGenerator : MonoBehaviour {
 
 			accepted = true;
 		
-			levelAreaNoise = NG.GetPerlinNoise1D (3, 10, 0.6f, -1, 1);
+			levelAreaNoise = NG.GetPerlinNoise1D (3, 6, 0.6f, -1, 1);
 			InsertLevelBeginningArea ();
 			InsertGoalArea ();
 			SetLevelAreaArray ();
@@ -372,7 +372,7 @@ public class LevelGenerator : MonoBehaviour {
 
 			float n = levelAreaNoise [sample];
 
-			if (n > -1f && n < -0.3f) {
+			if (n >= -1f && n < -0.3f) {
 
 				levelAreas[sample] = AreaType.lava;
 			}
@@ -432,7 +432,7 @@ public class LevelGenerator : MonoBehaviour {
 			AreaType nextArea = levelAreas [z + 1];
 			AreaType nextNextArea = levelAreas [z + 2];
 			if ( (nextNextArea == AreaType.lava || nextNextArea == AreaType.bridge ) 
-				&& nextArea == AreaType.lowGround ) {
+				&& nextArea == AreaType.lowGround || nextArea == AreaType.highGround ) {
 
 				CreateGroundEdge (z, false);
 
@@ -444,7 +444,7 @@ public class LevelGenerator : MonoBehaviour {
 			AreaType prevArea = levelAreas [z - 1];
 			AreaType prevPrevArea = levelAreas [z - 2];
 			if ( (prevPrevArea == AreaType.lava || prevPrevArea == AreaType.bridge )
-				&& prevArea == AreaType.lowGround) {
+				&& prevArea == AreaType.lowGround || prevArea == AreaType.highGround) {
 
 				CreateGroundEdge (z, true);
 
@@ -803,7 +803,7 @@ public class LevelGenerator : MonoBehaviour {
 		SetContainerAsParent (edge);
 
 		Vector3 scale = edge.transform.localScale;
-		scale.y = 5;
+		scale.y = 30;
 		edge.transform.localScale = scale;
 
 		//Invert on z-axis
@@ -831,7 +831,7 @@ public class LevelGenerator : MonoBehaviour {
 		SetContainerAsParent (edge);
 
 		Vector3 scale = edge.transform.localScale;
-		scale.y = 5;
+		scale.y = 30;
 		edge.transform.localScale = scale;
 
 		edge.transform.RotateAround (position, new Vector3 (0, 1, 0), rotation);
@@ -974,18 +974,19 @@ public class LevelGenerator : MonoBehaviour {
 						|| g == levelLength - 1
 					) {
 
+
 						Debug.Log ("PIIIIIT FOOOOOOG");
 
 						//Create water prefab
 						int center = sample + (g - sample) / 2;
-						GameObject fog = Instantiate (pitFog, new Vector3(0, -5, center), Quaternion.identity) as GameObject;
+						GameObject fog = Instantiate (pitFog, new Vector3(0, -15, center), Quaternion.identity) as GameObject;
 
 						//Set levelContainer as parent
 						SetContainerAsParent (fog);
 
 						//Stretch on the Z-axis
-						int length = (g - sample) / 3;
-						fog.transform.localScale = new Vector3 (4, 0,length);
+//						int length = (g - sample) / 3;
+						fog.transform.localScale = new Vector3 (4, 0, 1 /*length*/);
 //
 						break;
 					}
@@ -1060,11 +1061,11 @@ public class LevelGenerator : MonoBehaviour {
 
 			//Set scale
 			float size = Random.Range (40, 50);
-			step1.transform.localScale = new Vector3 (size, 500, size);
+			step1.transform.localScale = new Vector3 (size, 1500, size);
 			size = Random.Range (40, 50);
-			step2.transform.localScale = new Vector3 (size, 500, size);
+			step2.transform.localScale = new Vector3 (size, 1500, size);
 
-			if (z % 20 == 0) {
+		if (z % 20 == 0 || (z > 0 && levelAreas[z - 1] != AreaType.bridge ) || (z > levelLength && levelAreas[z + 1] != AreaType.bridge ) ) {
 				CreateGapSideEdge (z, true);
 				CreateGapSideEdge (z, false);
 			}
