@@ -52,7 +52,7 @@ public class RelicController : MonoBehaviour {
 
 			//If relic is about to go behind camera
 			float wall = camera.GetComponent<CameraController> ().GetPosition ().z + cameraZOffsetBound;
-			Debug.Log ("Wall = " + wall);
+
 			if (manager.GetPosition ().z < wall ) {
 				PushForward ();
 			}
