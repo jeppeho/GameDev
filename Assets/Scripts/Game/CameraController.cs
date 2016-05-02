@@ -3,14 +3,23 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour {
 
-	private float camera_speed = 1;
+
+	private float cameraStartSpeed = 0.2f;
+	private float cameraNormalSpeed = 1f;
+	private float cameraSpeed;
+
+	public int slowStartNumFrames = 200;
+
 	public bool freezeCameraForDebug = false;
+
 
 	// Use this for initialization
 	void Start () {
-
+		cameraSpeed = cameraStartSpeed;
 		//Scale the cameraspeed
-		camera_speed *= LevelManager.SPEED;
+		cameraSpeed *= LevelManager.SPEED;
+
+		StartCoroutine (slowStart ());
 	}
 	
 	// Update is called once per frame
@@ -21,11 +30,28 @@ public class CameraController : MonoBehaviour {
 	}
 
 
+	IEnumerator slowStart(){
+
+		while(Time.frameCount < slowStartNumFrames){
+
+			SetCameraSpeed( Mathf.Lerp (cameraStartSpeed, cameraNormalSpeed, (float)Time.frameCount / (float)slowStartNumFrames) );
+
+			yield return new WaitForSeconds(0.1f);
+		}
+
+	}
+
+	/**
+	 * Multiplies parameter speed with LevelManager.SPEED
+	 */
+	private void SetCameraSpeed(float speed){
+		cameraSpeed = speed * LevelManager.SPEED;
+	}
 
 	private void MoveForward(){
 		Vector3 position = this.gameObject.transform.position;
 
-		position.z += camera_speed * Time.deltaTime; 
+		position.z += cameraSpeed * Time.deltaTime; 
 
 		this.gameObject.transform.position = position;
 	}

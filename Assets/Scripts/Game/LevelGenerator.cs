@@ -293,15 +293,11 @@ public class LevelGenerator : MonoBehaviour {
 		float a = 0f;
 		float b = levelAreaNoise [beginningAreaLength];
 
-		Debug.Log ("A = " + a + " | B = " + b);
-
-
 		for (int sample = 0; sample <= beginningAreaLength; sample++) {
 
 			float t = (float)sample / (float)beginningAreaLength;
 			float v = Mathf.Lerp( a, b, t);
 
-			Debug.Log (sample + "] t = " + t + " | LAN = " + levelAreaNoise [sample] + " -> " + v);
 			levelAreaNoise [sample] = v;
 		}
 	}

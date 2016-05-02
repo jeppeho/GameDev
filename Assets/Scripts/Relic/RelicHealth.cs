@@ -25,8 +25,8 @@ public class RelicHealth : MonoBehaviour {
 		sphere = GameObject.Find ("RelicSphere");
 		Debug.Log ("Relic = " + sphere);
 
-		specularColor = new Color (1, 0.5f, 0.5f);//new Color (1f, 0.8f, 0.3f, 1f);
-		baseColor = new Color (1, 0.5f, 0.5f);//new Color (1f, 0.7f, 0.2f, 1f);
+		specularColor = new Color (1f, 0.8f, 0.3f, 1f); // new Color (1, 0.5f, 0.5f);//
+		baseColor = new Color (1f, 0.7f, 0.2f, 1f); // new Color (1, 0.5f, 0.5f);//
 
 		//Get the core ball of the hand 
 		handCore = GameObject.Find ("ball");

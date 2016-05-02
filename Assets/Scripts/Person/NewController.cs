@@ -105,7 +105,11 @@ public class NewController : MonoBehaviour {
 			}
 			//Check if player should fall or land
 			if (!IsGrounded ()) {
-				FallDown ();
+
+				//IF ELEVATION IS USED CHANGE ONE TO LEVELAREA NOISE
+				if (IsAboveHeight(1) == false) {
+					FallDown ();
+				}
 			} else {
 				Landing ();
 			}
@@ -551,6 +555,11 @@ public class NewController : MonoBehaviour {
 		
 	private bool IsGrounded(){
 		bool isGrounded = Physics.Raycast (player.transform.position, -Vector3.up, 0.4f);//distToGround);
+		return isGrounded;
+	}
+
+	private bool IsAboveHeight(float height){
+		bool isGrounded = Physics.Raycast (player.transform.position, -Vector3.up, height);//distToGround);
 		return isGrounded;
 	}
 }

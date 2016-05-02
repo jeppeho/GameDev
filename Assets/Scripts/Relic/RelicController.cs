@@ -42,25 +42,25 @@ public class RelicController : MonoBehaviour {
 		if (!manager.HasParent()) {
 
 			//Check if below ground
-			if (manager.GetPosition ().y < 0.2f) {
+			if (manager.GetPosition ().y < 2f) {
 			
-				rb.AddForce (new Vector3 (0, 2000f, 0));
+				rb.AddForce (new Vector3 (0, Random.Range (20, 40), 0));
 			
-			} else {
+			}
 
-				PushToCenter ();
+			PushToCenter ();
 
-				//If relic is about to go behind camera
-				float wall = camera.GetComponent<CameraController> ().GetPosition ().z + cameraZOffsetBound;
-				if (manager.GetPosition ().z < wall ) {
-					PushForward ();
-				}
+			//If relic is about to go behind camera
+			float wall = camera.GetComponent<CameraController> ().GetPosition ().z + cameraZOffsetBound;
+			Debug.Log ("Wall = " + wall);
+			if (manager.GetPosition ().z < wall ) {
+				PushForward ();
+			}
 
 
 
-				if (manager.GetPosition ().z < wall - 1f) {
-					GetUnstuck (wall);
-				}
+			if (manager.GetPosition ().z < wall - 1f) {
+				GetUnstuck (wall);
 			}
 
 			//Make sure velocity doesn't go nuts
@@ -80,13 +80,15 @@ public class RelicController : MonoBehaviour {
 	 * it will addforce towards the position of the player
 	 */
 	private void SnapToPlayer(){
+		
+		float radius = 3f;
 
-		float radius = 1.5f;
-
+		//Get all objects within radius
 		Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, radius);
 
+		//Go through objects
 		for (int col = 0; col < hitColliders.Length; col++) {
-		
+
 			if (hitColliders [col].tag == "Player") {
 
 				if (hitColliders [col].GetComponent<PlayerManager> ().GetState () == "active") {
@@ -100,12 +102,13 @@ public class RelicController : MonoBehaviour {
 					vecTowardsPlayer -= (relativeVelocity * Time.deltaTime);
 
 					//Add downforce so it does not fly over player
-					vecTowardsPlayer.y = Mathf.Abs (vecTowardsPlayer.y) - 2f;
+					vecTowardsPlayer.y = Mathf.Abs (vecTowardsPlayer.y) - 1.6f;
 
-					vecTowardsPlayer *= Time.deltaTime * 10000f;
+					vecTowardsPlayer *= Time.deltaTime * 2000f;
 
 					rb.AddForce (vecTowardsPlayer);
 				}
+				break;
 			}
 		}
 	}
@@ -187,7 +190,7 @@ public class RelicController : MonoBehaviour {
 
 	private void CapVelocity(){
 
-		float maxSpeed = 10f;
+		float maxSpeed = 4f;
 
 		if (rb.velocity.magnitude > maxSpeed) {
 			rb.velocity = rb.velocity.normalized * maxSpeed;
@@ -198,24 +201,33 @@ public class RelicController : MonoBehaviour {
 	
 		Vector3 force = new Vector3 ();
 
-		if (Mathf.Abs (manager.GetPosition ().x) > LevelManager.MAX_X / 3)
-			force.x = 20 * manager.GetPosition ().x * -1;
+		if (Mathf.Abs (manager.GetPosition ().x) > LevelManager.MAX_X / 1.5f)
+			force.x = 500 * manager.GetPosition ().x * -1;
 
-		force.x += Random.Range (-20, 20);
+		force.x += Random.Range (-5, 5);
 
 		rb.AddForce ( force );
 	}
 
 	private void PushForward(){
-		rb.AddForce( new Vector3( 0, 0, 20 ) );
+		rb.AddForce( new Vector3( 0, 0, 10 ) );
 	}
 
 
 
 	//Updates the position to be above the parents head
 	private void FlyAboveParent(){
+
+		//Get player position
 		Vector3 slotPosition = manager.GetParent().position;
-		slotPosition.y += 1.1f;
+
+		//Lift relic above head
+		slotPosition.y += 1.5f;
+
+		//Set velocity to zero
+		rb.velocity = new Vector3 (0, 0, 0);
+
+		//Update relic position
 		manager.UpdatePosition( slotPosition );
 	}
 
@@ -255,7 +267,7 @@ public class RelicController : MonoBehaviour {
 
 		Vector3.Normalize (throwDirection);
 
-		throwDirection.y += 0.1f;
+		throwDirection.y += 1f;
 		throwDirection *= 750 + 5000 * Mathf.Pow(force,2f);
 		Debug.Log ("throw Force = " + force);
 
