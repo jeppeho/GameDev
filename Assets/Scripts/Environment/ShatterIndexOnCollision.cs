@@ -11,6 +11,8 @@ public class ShatterIndexOnCollision : MonoBehaviour {
 
 	private bool isUntouched = true;
 	private bool prevIsUntouched = true;
+	private int cooldown = 0;
+	private int finalIndex;
 
 	// Use this for initialization
 	void Start () {
@@ -67,7 +69,7 @@ public class ShatterIndexOnCollision : MonoBehaviour {
 			shatteredObject [i].transform.localScale = scale;
 
 			//Set breakforce, based on scale
-			intactObject [i].GetComponent<IntactObject> ().SetBreakForce (this.transform.localScale.x / 2f);
+			intactObject [i].GetComponent<IntactObject> ().SetBreakForce (1f);
 
 			//Deactive shattered shards
 			shatteredObject [i].SetActive (false);
@@ -75,22 +77,32 @@ public class ShatterIndexOnCollision : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		
 		for (int i = 0; i < instances; i++)
 		{
-			IntactObject childScript = intactObject [i].GetComponent<IntactObject> ();
-			isUntouched = childScript.IsUntouched ();
-
-			childScript.UpdateCooldown ();
-
-			//Check if this is first frame, after the crystal has been touched
-			if (isUntouched == false && prevIsUntouched == true)
+			if (intactObject [i].active)
 			{
-				ShatterObject (i);
-			}
+				IntactObject childScript = intactObject [i].GetComponent<IntactObject> ();
+				isUntouched = childScript.IsUntouched ();
 
-			prevIsUntouched = isUntouched;
+				childScript.UpdateCooldown ();
+
+				//Check if this is first frame, after the crystal has been touched
+				if (isUntouched == false && prevIsUntouched == true) {
+					finalIndex = i;
+					ShatterObject (finalIndex);
+				}
+
+				prevIsUntouched = isUntouched;
+			}
+		}
+
+		if (cooldown > 0) {
+			cooldown--;
+			if (cooldown <= 0) {
+				resetLayers (finalIndex);
+			}
 		}
 	}
 
@@ -100,16 +112,32 @@ public class ShatterIndexOnCollision : MonoBehaviour {
 		shatteredObject[n].SetActive (true);
 
 		//Add force from hand to shards
-		Vector3 force = intactObject[n].GetComponent<IntactObject> ().GetHitVector ();
+		Vector3 impactForce = intactObject[n].GetComponent<IntactObject> ().GetHitVector ();
 
 		//Push shard to the ground
-		force.y = -500;
+		//handForce.y = -500;
 
-		force *= Time.deltaTime * 4000;
-
+		//For each shard
 		foreach (Transform t in shatteredObject[n].transform) {
-			//Debug.Log ("name = " + t.name);
-			//t.GetComponent<Rigidbody> ().AddForce (force);
+
+			t.GetComponent<Rigidbody> ().mass = 15f;
+			t.GetComponent<Rigidbody> ().drag = 0.25f;
+			t.GetComponent<Rigidbody> ().angularDrag = 0.8f;
+			t.GetComponent<Rigidbody> ().useGravity = true;
+
+			//Add hand vector as force to hand
+			t.GetComponent<Rigidbody> ().AddForce (impactForce * 75);
+
+			t.gameObject.layer = 17; //Set to CollisionfreeObject
+			cooldown = 5;
+			Debug.Log ("Shattering pillar!");
+		}
+	}
+
+	private void resetLayers(int n)
+	{
+		foreach (Transform t in shatteredObject[n].transform) {
+			t.gameObject.layer = 13; //Set to ObjectsHeavy
 		}
 	}
 }

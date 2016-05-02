@@ -6,14 +6,14 @@ public class IntactObject : MonoBehaviour {
 	private bool untouched = true;
 	private int breakForce = 20;
 	private Vector3 hitVector;
-	public int cooldown = 0;
+	public float cooldown = 0;
 
 	void OnCollisionEnter(Collision col){
 
 		//If object is not currently cooling down
 		if (cooldown <= 0)
 		{
-			//If collider layer is not Hand
+			//If collider layer is not player
 			if (col.gameObject.layer != 10) {
 
 				//If threshold force is used
@@ -41,11 +41,11 @@ public class IntactObject : MonoBehaviour {
 	public void UpdateCooldown()
 	{
 		if (cooldown > 0)
-		{	cooldown--;		}
+		{	cooldown -= Time.deltaTime;		}
 	}
 
 	public void ResetCooldown()
 	{
-		cooldown = 10;
+		cooldown = 0.5f;
 	}
 }

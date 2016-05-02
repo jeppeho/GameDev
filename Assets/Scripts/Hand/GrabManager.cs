@@ -143,7 +143,7 @@ public class GrabManager : MonoBehaviour {
 			//Store layer, so it can be reverted
 			grabbedObjectLayer = grabbedObject.gameObject.layer;
 			//Change the object to a light object, to avoid shattering of hand
-			grabbedObject.gameObject.layer = 14;
+			grabbedObject.gameObject.layer = 16;
 		}
 	}
 
