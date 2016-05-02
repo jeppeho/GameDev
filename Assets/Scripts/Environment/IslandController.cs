@@ -5,8 +5,8 @@ public class IslandController : MonoBehaviour {
 
 	Transform t;
 
-	public float threshold = 20;
-	public float maxForce = 10;
+	public float threshold = 15;
+	public float maxForce = 15;
 
 	// Use this for initialization
 	void Start () {
@@ -48,7 +48,7 @@ public class IslandController : MonoBehaviour {
 
 		//vel.y += magnitude / 1200 / numCycles;
 
-		vel.y = Mathf.Sqrt (magnitude) / 2000 / numCycles * maxForce;
+		vel.y = Mathf.Sqrt (magnitude) / 1000 / numCycles * maxForce;
 
 
 		Debug.Log ("pos = " + t.position + " | vel = " + vel);

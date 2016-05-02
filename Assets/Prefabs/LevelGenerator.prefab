@@ -71,7 +71,7 @@ MonoBehaviour:
   beginningAreaLength: 50
   goalAreaLength: 40
   minRegularGroundPercentage: 0
-  minLavaPercentage: 25
+  minLavaPercentage: 20
   minCliffPercentage: 10
   minBridgePercentage: 15
   useWater: 1
@@ -95,7 +95,7 @@ MonoBehaviour:
   - {fileID: 100802, guid: bb33cae4d8ff647bcb52ca055e1bbbee, type: 2}
   - {fileID: 169652, guid: 6a99d49cbfd9c4d4ea525f85f007f940, type: 2}
   - {fileID: 195722, guid: 60724d7968d6f4dd0bf7faa2be2b0dd0, type: 2}
-  pillarSmallHex: {fileID: 0}
+  pillarSmallHex: {fileID: 107378, guid: 5c0829de9e76043d5bf8da8dfcd77ad7, type: 2}
   bridgeSteps:
   - {fileID: 138102, guid: c0cc571c35b134f1c90ad4e56b44048e, type: 2}
   sides:

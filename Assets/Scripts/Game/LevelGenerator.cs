@@ -44,6 +44,7 @@ public class LevelGenerator : MonoBehaviour {
 	public GameObject cliff;
 	public GameObject waterPrefab;
 	public GameObject boulderPrefab;
+	public GameObject pitFog;
 
 
 	private int prevLargeCrystalIndex = -1;
@@ -153,6 +154,8 @@ public class LevelGenerator : MonoBehaviour {
 		//Put in water, where needed
 		if(useWater)
 			CreateWater ();
+
+		//CreatePitFog ();
 
 		InsertBoulders ();
 
@@ -956,6 +959,40 @@ public class LevelGenerator : MonoBehaviour {
 		steppingStone.transform.localScale = new Vector3 (scale, scale, scale);
 
 		prevSteppingStoneIndex = index;
+	}
+
+
+	private void CreatePitFog(){
+
+		for (int sample = startingCell; sample < levelLength; sample++) {
+
+			if (levelAreas [sample - 1] != AreaType.bridge && levelAreas [sample] == AreaType.bridge) {
+
+				for (int g = sample; g < levelLength; g++) {
+
+					if (levelAreas [g + 1] != AreaType.bridge && levelAreas [g] == AreaType.bridge
+						|| g == levelLength - 1
+					) {
+
+						Debug.Log ("PIIIIIT FOOOOOOG");
+
+						//Create water prefab
+						int center = sample + (g - sample) / 2;
+						GameObject fog = Instantiate (pitFog, new Vector3(0, -5, center), Quaternion.identity) as GameObject;
+
+						//Set levelContainer as parent
+						SetContainerAsParent (fog);
+
+						//Stretch on the Z-axis
+						int length = (g - sample) / 3;
+						fog.transform.localScale = new Vector3 (4, 0,length);
+//
+						break;
+					}
+				}	
+			}
+		}
+
 	}
 
 

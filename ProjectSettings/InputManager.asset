@@ -276,7 +276,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 0
-    joyNum: 0
+    joyNum: 1
   - serializedVersion: 3
     m_Name: P1_Push
     descriptiveName: PS4 SQUARE button
@@ -362,7 +362,7 @@ InputManager:
     descriptiveName: PS4 Left stick analog
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: joystick button 0
+    positiveButton: 
     altNegativeButton: 
     altPositiveButton: 
     gravity: 3
@@ -378,7 +378,7 @@ InputManager:
     descriptiveName: PS4 Left stick analog
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: joystick button 0
+    positiveButton: joystick 3 button 0
     altNegativeButton: 
     altPositiveButton: 
     gravity: 3
@@ -566,7 +566,71 @@ InputManager:
     axis: 3
     joyNum: 2
   - serializedVersion: 3
-    m_Name: P2_Throw
+    m_Name: P3_Throw
+    descriptiveName: PS4 R2 trigger
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: joystick 3 button 7
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 5
+    joyNum: 3
+  - serializedVersion: 3
+    m_Name: P3_Horizontal2
+    descriptiveName: PS4 Right stick analog
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 2
+    joyNum: 3
+  - serializedVersion: 3
+    m_Name: P3_Vertical2
+    descriptiveName: PS4 Right stick analog
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
+    snap: 0
+    invert: 1
+    type: 2
+    axis: 3
+    joyNum: 3
+  - serializedVersion: 3
+    m_Name: P3_Explode
+    descriptiveName: PS4 R2 trigger
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: joystick 3 button 3
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 5
+    joyNum: 3
+  - serializedVersion: 3
+    m_Name: Nothing yet
     descriptiveName: PS4 R2 trigger
     descriptiveNegativeName: 
     negativeButton: 

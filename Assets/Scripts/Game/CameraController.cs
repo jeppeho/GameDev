@@ -15,6 +15,7 @@ public class CameraController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
 		cameraSpeed = cameraStartSpeed;
 		//Scale the cameraspeed
 		cameraSpeed *= LevelManager.SPEED;
@@ -32,11 +33,14 @@ public class CameraController : MonoBehaviour {
 
 	IEnumerator slowStart(){
 
-		while(Time.frameCount < slowStartNumFrames){
+		int i = 0;
 
-			SetCameraSpeed( Mathf.Lerp (cameraStartSpeed, cameraNormalSpeed, (float)Time.frameCount / (float)slowStartNumFrames) );
+		while(i < slowStartNumFrames){
 
-			yield return new WaitForSeconds(0.1f);
+			SetCameraSpeed( Mathf.Lerp (cameraStartSpeed, cameraNormalSpeed, (float)i / (float)slowStartNumFrames) );
+			i++;
+
+			yield return new WaitForSeconds(0.02f);
 		}
 
 	}
