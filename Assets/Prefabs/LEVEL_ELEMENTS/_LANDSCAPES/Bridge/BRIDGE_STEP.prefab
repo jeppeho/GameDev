@@ -14,7 +14,7 @@ GameObject:
   - 114: {fileID: 11482906}
   - 64: {fileID: 6447460}
   m_Layer: 13
-  m_Name: ISLAND
+  m_Name: BRIDGE_STEP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,8 +50,10 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -103,6 +105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b841d461aacb546beb30820b95e40831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  threshold: 15
+  maxForce: 15
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

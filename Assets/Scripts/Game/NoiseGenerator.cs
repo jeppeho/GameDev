@@ -28,14 +28,23 @@ public class NoiseGenerator : MonoBehaviour {
 	//Is being set from LevelGenerator
 	private int levelLength;
 
+
+
+
 	public void SetLevelLength(int ll){
 		this.levelLength = ll;
 	}
 
+
+
+	/**
+	 * Remaps the noise array of size X into an array of size Y.
+	 * It returns this remapped array
+	 */
 	public float[] ConvertSamplesToUnits(float[] noise){
 	
 		float[] remappedNoise = new float[levelLength];
-		float rate = GetNumSamples() / levelLength;
+		float rate = (float)noise.Length / (float)levelLength;
 
 		//Convert to float values
 		float s = GetNumSamples ();
@@ -46,19 +55,15 @@ public class NoiseGenerator : MonoBehaviour {
 
 		for (int i = 0; i < levelLength; i++) {
 
-			//Convert i to float
-			float newI = i;
-
 			//Find the index
-			int sampleIndex = Mathf.FloorToInt (newI * rate);
+			int sampleIndex = Mathf.FloorToInt ((float)i * rate);
 
 			//Dont go array out of bounds
-			if (i >= levelLength - 1)
-				i = levelLength - 1;
+//			if (sampleIndex > noise.Length - 1)
+//				sampleIndex = noise.Length - 1;
 
 			remappedNoise [i] = noise [sampleIndex];
 
-			//Debug.Log ("i = " + i + "; and gets value = " + remappedNoise[i] + " at original noise index = " + index);
 		}
 
 		return remappedNoise;

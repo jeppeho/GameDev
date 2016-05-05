@@ -3,62 +3,91 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour {
 
-
-	private float cameraStartSpeed = 0.2f;
-	private float cameraNormalSpeed = 1f;
-	private float cameraSpeed;
-
-	public int slowStartNumFrames = 200;
-
-	public bool freezeCameraForDebug = false;
-
+	LevelGenerator l;
 
 	// Use this for initialization
 	void Start () {
-
-		cameraSpeed = cameraStartSpeed;
-		//Scale the cameraspeed
-		cameraSpeed *= LevelManager.SPEED;
-
-		StartCoroutine (slowStart ());
+		l = GameObject.Find ("LevelGenerator").GetComponent<LevelGenerator> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (!freezeCameraForDebug) {
-			MoveForward ();
-		}
+			SetXPosition ();
+			SetLookAt ();
+	}
+		
+
+	private float GetNextLookAt(){
+	
+		int z = Mathf.FloorToInt( GetZPosition () );
+
+		float a = l.GetCameraPositionAtIndex ( GetAcceptedLevelIndex( z ) );
+
+		float b = l.GetCameraPositionAtIndex (GetAcceptedLevelIndex (z + 10) );
+
+		float t = GetZPosition () - Mathf.FloorToInt( GetZPosition() );
+
+		float x = Mathf.Lerp (a, b, t);
+
+		return x;
+
+	}
+
+	private void SetLookAt(){
+
+		Vector3 target = new Vector3 (0, 0, GetZPosition() + 2 );
+
+		target.y = 4.5f;//GetNextLookAt () * 3f;
+
+		this.transform.LookAt (target);
 	}
 
 
-	IEnumerator slowStart(){
+	private float GetNextXPosition(){
 
-		int i = 0;
+		Debug.Log ("/////////Finding the next position!");
 
-		while(i < slowStartNumFrames){
+		int z = Mathf.FloorToInt( GetZPosition () );
 
-			SetCameraSpeed( Mathf.Lerp (cameraStartSpeed, cameraNormalSpeed, (float)i / (float)slowStartNumFrames) );
-			i++;
+		float a = l.GetCameraPositionAtIndex ( GetAcceptedLevelIndex( z ) );
+		float b = l.GetCameraPositionAtIndex (GetAcceptedLevelIndex (z + 1));
 
-			yield return new WaitForSeconds(0.02f);
-		}
+		float t = GetZPosition () - Mathf.FloorToInt( GetZPosition() );
 
+		float x = Mathf.Lerp (a, b, t);
+
+		return x;
 	}
+
+
+	private void SetXPosition(){
+	
+		Vector3 currentPos = this.transform.position;
+
+		float nextX = GetNextXPosition ();
+
+		Debug.Log ("Next camera X = " + nextX);
+
+		currentPos.x = nextX;
+
+		this.transform.position = currentPos;
+	}
+
 
 	/**
-	 * Multiplies parameter speed with LevelManager.SPEED
+	 * Returns and index that is not out of bounds
 	 */
-	private void SetCameraSpeed(float speed){
-		cameraSpeed = speed * LevelManager.SPEED;
+	private int GetAcceptedLevelIndex(int z){
+
+		if (z < 0)
+			z = 0;
+		else if (z > l.levelLength)
+			z = l.levelLength;
+
+		return z;
 	}
 
-	private void MoveForward(){
-		Vector3 position = this.gameObject.transform.position;
 
-		position.z += cameraSpeed * Time.deltaTime; 
-
-		this.gameObject.transform.position = position;
-	}
 
 	public Vector3 GetPosition(){
 		return this.transform.position;

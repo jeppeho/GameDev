@@ -13,6 +13,8 @@ GameObject:
   - 92: {fileID: 9235610}
   - 81: {fileID: 8137938}
   - 114: {fileID: 11426190}
+  - 114: {fileID: 11428942}
+  - 114: {fileID: 11460334}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -45,6 +47,7 @@ GameObject:
   - 4: {fileID: 451810}
   - 114: {fileID: 11469044}
   - 114: {fileID: 11440558}
+  - 114: {fileID: 11447046}
   m_Layer: 0
   m_Name: LeapControllerBlockHand
   m_TagString: Untagged
@@ -82,7 +85,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 156732}
   m_LocalRotation: {x: 0.25881907, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 0, y: 5.85, z: -7.79}
+  m_LocalPosition: {x: 0, y: 5.8, z: -7.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 451810}
@@ -263,6 +266,35 @@ MonoBehaviour:
   m_GlowIntensity: 0.3
   m_BlurOffset: 0
   m_Samples: 2
+--- !u!114 &11428942
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 156732}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd70d448b18cfbc46af26466f752332c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualizeFocus: 0
+  focalLength: 5.27
+  focalSize: 1.68
+  aperture: 0.72
+  focalTransform: {fileID: 0}
+  maxBlurSize: 2
+  highResolution: 0
+  blurType: 0
+  blurSampleCount: 2
+  nearBlur: 0
+  foregroundOverlap: 1
+  dofHdrShader: {fileID: 4800000, guid: acd613035ff3e455e8abf23fdc8c8c24, type: 3}
+  dx11BokehShader: {fileID: 4800000, guid: d8e82664aa8686642a424c88ab10164a, type: 3}
+  dx11BokehThreshold: 0.5
+  dx11SpawnHeuristic: 0.0875
+  dx11BokehTexture: {fileID: 2800000, guid: a4cdca73d61814d33ac1587f6c163bca, type: 3}
+  dx11BokehScale: 1.2
+  dx11BokehIntensity: 2.5
 --- !u!114 &11440558
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -297,7 +329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38919993f04e96c498cdcd252cddbfd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11469044
+--- !u!114 &11447046
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -305,11 +337,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 183102}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97677197f6cce42f58969ca403b1c985, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b727bb1515d84bb6b91144c0b71856c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   slowStartNumFrames: 200
   freezeCameraForDebug: 0
+--- !u!114 &11460334
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 156732}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97677197f6cce42f58969ca403b1c985, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11469044
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183102}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97677197f6cce42f58969ca403b1c985, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11487098
 MonoBehaviour:
   m_ObjectHideFlags: 1

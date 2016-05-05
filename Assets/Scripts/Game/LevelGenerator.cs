@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class LevelGenerator : MonoBehaviour {
 
@@ -7,7 +9,8 @@ public class LevelGenerator : MonoBehaviour {
 	public int beginningAreaLength = 30;
 	public int goalAreaLength = 20;
 
-	public int minRegularGroundPercentage;
+	public int minLowGroundPercentage;
+	public int minHighGroundPercentage;
 	public int minLavaPercentage;
 	public int minCliffPercentage;
 	public int minBridgePercentage;
@@ -22,8 +25,6 @@ public class LevelGenerator : MonoBehaviour {
 	private int halfWidth = 6;
 
 
-
-	//Gameobjects
 	public GameObject planePrefab;
 	public GameObject waterSmallPrefab;
 	public GameObject stackCube;
@@ -71,8 +72,14 @@ public class LevelGenerator : MonoBehaviour {
 	private float[] lavaSteppingStonesNoise3;
 	private float[] cliffHeightNoise;
 
+	//Respawn
 	private Vector3[] respawnPoints;
 	private float respawnpointOffset;
+
+	//Camera
+	private float[] cameraPositionRoute;
+	private float[] cameraLookAtRoute;
+
 
 	//The parent object for all level elements
 	private GameObject levelContainer;
@@ -89,6 +96,8 @@ public class LevelGenerator : MonoBehaviour {
 		//Instantiate arrays
 		levelAreas = new AreaType[ levelLength ];
 		respawnPoints = new Vector3[levelLength * LevelManager.numPlayers];
+		cameraPositionRoute = new float[levelLength];
+		cameraLookAtRoute = new float[levelLength];
 
 		generateAcceptableLevel ();
 
@@ -128,9 +137,9 @@ public class LevelGenerator : MonoBehaviour {
 				CreateLavaSection (sample);
 
 			} else if (levelAreas [sample] == AreaType.bridge) {
-
-				//CreateBridges (sample);
-				CreateBridgeStep (sample);
+				
+				if(sample % 2 == 0)
+					CreateBridgeStep (sample);
 
 			} else if (levelAreas [sample] == AreaType.lowGround) {
 
@@ -148,6 +157,7 @@ public class LevelGenerator : MonoBehaviour {
 			}
 		}
 
+
 		//Create the last edge
 		CreateGroundEdge (levelLength - 7, false);
 
@@ -159,43 +169,39 @@ public class LevelGenerator : MonoBehaviour {
 
 		InsertBoulders ();
 
+		CreateCameraRoute ();
+
 		//Copy respawn points to the LevelManager
 		LevelManager.respawnPoints = respawnPoints;
-
-		NG.ConvertSamplesToUnits (levelAreaNoise);
 
 	}
 
 
-//	void Update(){
-//		//DisableStuffBehindCamera();
-//	}
-//
-//	private void DisableStuffBehindCamera(){
-//
-//		if(Time.frameCount % 200 == 0){
-//			Debug.Log ("Checking for disabling");
-//
-//			GameObject camera = GameObject.Find ("LeapControllerBlockHand");
-//			float cameraZ = camera.GetComponent<CameraController> ().GetZPosition ();
-//
-//			Debug.Log ("CameraZ = " + cameraZ);
-//
-//			foreach(Transform t in levelContainer.transform){
-//
-//				if (t.gameObject.activeSelf == true) {
-//
-//					float objectPos = t.GetComponent<Transform> ().position.z;
-//					Debug.Log ("objectPos = " + objectPos);
-//
-//					if (objectPos < cameraZ - 10) {
-//						Debug.Log ("Disabling object = " + t.gameObject.name);
-//						t.gameObject.SetActive (false);
-//					}
-//				}
-//			}
-//		}
-//	}
+
+	private void CreateCameraRoute(){
+
+		for (int i = 0; i < levelLength; i++) {
+		
+			if (levelAreas [i] == AreaType.cliff) {
+
+				cameraPositionRoute [i] = canyonNoise [i];
+
+			} else {
+
+				cameraPositionRoute [i] = 0;
+			
+			}
+		}
+	}
+
+	public float[] GetCameraPositionRoute(){
+		return cameraPositionRoute;
+	}
+
+	public float GetCameraPositionAtIndex(int index){
+		return cameraPositionRoute [index];
+	}
+
 
 
 	/**
@@ -238,7 +244,7 @@ public class LevelGenerator : MonoBehaviour {
 	private void generateAcceptableLevel(){
 
 		bool accepted = false;
-		int numTests = 10000;
+		int numTests = 20000;
 
 		//To keep score of how many tries it took to get an accepted
 		int acceptedNum = 0;
@@ -257,13 +263,16 @@ public class LevelGenerator : MonoBehaviour {
 			if (GetCountOfAreaType (AreaType.lava) < minLavaPercentage)
 				accepted = false;
 
-			if (GetCountOfAreaType (AreaType.cliff) < minCliffPercentage)
+			else if (GetCountOfAreaType (AreaType.cliff) < minCliffPercentage)
 				accepted = false;
 
-			if (GetCountOfAreaType (AreaType.bridge) < minBridgePercentage)
+			else if (GetCountOfAreaType (AreaType.bridge) < minBridgePercentage)
 				accepted = false;
 
-			if (GetCountOfAreaType (AreaType.lowGround) < minRegularGroundPercentage)
+			else if (GetCountOfAreaType (AreaType.lowGround) < minLowGroundPercentage)
+				accepted = false;
+
+			else if (GetCountOfAreaType (AreaType.highGround) < minHighGroundPercentage)
 				accepted = false;
 			
 				
@@ -281,12 +290,12 @@ public class LevelGenerator : MonoBehaviour {
 				acceptedNum++;
 		}
 
-
-
+		//Print percentages of area types for accepted level
 		Debug.Log ("WATER = " + GetCountOfAreaType (AreaType.lava));
+		Debug.Log ("LOW GROUND = " + GetCountOfAreaType (AreaType.lowGround));
 		Debug.Log ("CANYON = " + GetCountOfAreaType (AreaType.cliff));
+		Debug.Log ("HIGH GROUND = " + GetCountOfAreaType (AreaType.highGround));
 		Debug.Log ("GAP = " + GetCountOfAreaType (AreaType.bridge));
-		Debug.Log ("GRASS = " + GetCountOfAreaType (AreaType.lowGround));
 	}
 
 	/**
@@ -479,6 +488,8 @@ public class LevelGenerator : MonoBehaviour {
 	
 		//Instantiate middle part
 		GameObject ground = Instantiate (groundMiddle, position, Quaternion.identity) as GameObject;
+		//levelElements.Add (ground);
+
 
 		//Set levelContainer as parent
 		SetContainerAsParent (ground);
@@ -539,14 +550,22 @@ public class LevelGenerator : MonoBehaviour {
 	private void CreateLavaSection(int sample){
 
 
-		if (!useWater) {
-			Vector3 position = new Vector3 (0, -1, sample);
+//		if (!useWater) {
+//			Vector3 position = new Vector3 (0, -1, sample);
+//
+//			for (int i = -halfWidth - 10; i < halfWidth + 10; i++) {
+//				position.x = i + 0.5f;
+//				GameObject cube = Instantiate (lavaCube, position, Quaternion.identity) as GameObject;
+//			}
+//		}
 
-			for (int i = -halfWidth - 10; i < halfWidth + 10; i++) {
-				position.x = i + 0.5f;
-				GameObject cube = Instantiate (lavaCube, position, Quaternion.identity) as GameObject;
-			}
-		}
+		//Create floor
+		GameObject floor = Instantiate (lavaCube, new Vector3( 0, -1.5f, sample), Quaternion.identity) as GameObject;
+		floor.transform.localScale = new Vector3 (levelWidth * 4, 1, 1);
+
+		//Set levelContainer as parent
+		SetContainerAsParent (floor);
+
 
 		int distBetweenSteps = 6;
 		int numPaths = 2;
@@ -656,13 +675,13 @@ public class LevelGenerator : MonoBehaviour {
 						water.transform.localScale = new Vector3 (20, 0,length);
 
 						//Create floor
-						GameObject floor = Instantiate (lavaCube, new Vector3( 0, -1.5f, center), Quaternion.identity) as GameObject;
-
-						//Set levelContainer as parent
-						SetContainerAsParent (floor);
-
-						length *= 2; 
-						floor.transform.localScale = new Vector3 (20, 1,length);
+//						GameObject floor = Instantiate (lavaCube, new Vector3( 0, -1.5f, center), Quaternion.identity) as GameObject;
+//
+//						//Set levelContainer as parent
+//						SetContainerAsParent (floor);
+//
+//						length *= 2; 
+//						floor.transform.localScale = new Vector3 (20, 1,length);
 						break;
 					}
 				}	
@@ -950,12 +969,15 @@ public class LevelGenerator : MonoBehaviour {
 
 	private void CreateSteppingStone(float[] noise, int z){
 		int index = NG.GetRandomButNotPreviousValue (0, steppingStones.Length, prevSteppingStoneIndex);
-		GameObject steppingStone = Instantiate(steppingStones[index], new Vector3(noise[z], 0, z), Quaternion.identity) as GameObject;
+
+		Quaternion randomRotation = Quaternion.Euler (0, Random.Range (0, 360), 0);
+
+		GameObject steppingStone = Instantiate(steppingStones[index], new Vector3(noise[z], 0, z), randomRotation) as GameObject;
 
 		//Set levelContainer as parent
 		SetContainerAsParent (steppingStone);
 
-		int scale = Random.Range (30, 50);
+		int scale = Random.Range (50, 65);
 		steppingStone.transform.localScale = new Vector3 (scale, scale, scale);
 
 		prevSteppingStoneIndex = index;
@@ -1060,9 +1082,9 @@ public class LevelGenerator : MonoBehaviour {
 			step2.transform.RotateAround (position2, new Vector3 (0, 1, 0), Random.Range (0, 360));
 
 			//Set scale
-			float size = Random.Range (40, 50);
+			float size = Random.Range (45, 55);
 			step1.transform.localScale = new Vector3 (size, 1500, size);
-			size = Random.Range (40, 50);
+			size = Random.Range (45, 55);
 			step2.transform.localScale = new Vector3 (size, 1500, size);
 
 		if (z % 20 == 0 || (z > 0 && levelAreas[z - 1] != AreaType.bridge ) || (z > levelLength && levelAreas[z + 1] != AreaType.bridge ) ) {

@@ -9,6 +9,7 @@ public class NewController : MonoBehaviour {
 	//Prefix for producer of controller
 	public string producer;
 
+
 	//Buttons
 	private float moveHorizontal;
 	private float moveVertical;
@@ -36,6 +37,10 @@ public class NewController : MonoBehaviour {
 	private Vector3 direction;
 
 	private bool isJumping = false;
+	private bool isDashing = false;
+
+	//Right after dash movement speed is lowered
+	private bool dashPenalizesMovementSpeed = false;
 
 	public float accelerationRate = 10;
 	public float maxVelocity = 1;
@@ -43,13 +48,16 @@ public class NewController : MonoBehaviour {
 	public float jumpPower = 10f;
 	public float fallDownForce = 45f;
 	public float horizontalJumpScalar = 3f;
+	public int numDashFrames = 5;
+	public int dashPower = 700;
+	public float dashCoolDownForSeconds = 1.5f;
 
 	private int explosionCounter = 300;
 
 	int falldownCounter = 0;
 
-	public float dashWaitTime = 60;
-	float dashTime;
+//	public float dashWaitTime = 60;
+//	float dashTime;
 
 	string playerState;
 
@@ -72,8 +80,6 @@ public class NewController : MonoBehaviour {
 		nearWalkZone = LevelManager.MOVE_MINZ+LevelManager.MOVE_ZONEWIDTH;
 		farWalkZone = LevelManager.MOVE_MAXZ-LevelManager.MOVE_ZONEWIDTH;
 		walkZoneWidth = LevelManager.MOVE_ZONEWIDTH;
-
-		dashTime = dashWaitTime + 1;
 	}
 
 	
@@ -88,7 +94,6 @@ public class NewController : MonoBehaviour {
 			GetInputButtonValues ();
 			UpdateDirection ();
 			UpdateSurfaceTags ();
-			IncrementDashTime ();
 
 			//Check if player is jumping
 			if (pressJump && !isJumping) {
@@ -117,7 +122,7 @@ public class NewController : MonoBehaviour {
 			}
 
 			if (pressPush)
-				Dash ();
+				StartCoroutine (Dash ());
 				//Suicide ();
 
 
@@ -172,6 +177,12 @@ public class NewController : MonoBehaviour {
 		//LimitWalkingDistanceSoft();
 
 		LimitBoundariesOnXAxis ();
+
+
+		if(pressJump)
+			Debug.Log("Jumping!!!");
+		if(pressPush)
+			Debug.Log("Dashing!!!");
 	}
 
 
@@ -196,32 +207,56 @@ public class NewController : MonoBehaviour {
 	}
 
 
-	/**
-	 * Moves the player in the direction of the left stick quickly
-	 */
-	private void Dash(){
 
-		if (dashTime > dashWaitTime || dashTime < 7) {
+	/**
+	 * Dashes the player in the direction of the left stick quickly
+	 */
+	IEnumerator Dash(){
+
+		//If character isn't dashing
+		if (!isDashing) {
+			isDashing = true;
+			dashPenalizesMovementSpeed = true;
 
 			float hor = moveHorizontal * accelerationRate;
 			float ver = moveVertical * accelerationRate;
-			float y = 0;
 
-			//Add force to prevent player getting stuck in edge
-			if (GetSurfaceTag () == "water")
-				y = 0.1f;
-			
-			Vector3 force = new Vector3 (hor, y, ver);
+			//Only of moving somewhere, otherwise the dash won't move character
+			if (hor > 0f || ver > 0f) {
 
-			force = force.normalized;
+				float y = 0;
 
-			rb.AddForce (force * Time.deltaTime * 900);
+				//Add force to prevent player getting stuck in edge
+				if (GetSurfaceTag () == "water")
+					y = 0.1f;
+
+				Vector3 force = new Vector3 (hor, y, ver);
+
+				force = force.normalized;
+
+				int frame = 0;
+
+				//Add force
+				while (frame < numDashFrames) {
+					rb.AddForce (force * Time.deltaTime * dashPower);
+					frame++;
+					yield return new WaitForSeconds (0.01f);
+				}
+
+				//Wait for movement speed penalty
+				yield return new WaitForSeconds (0.3f);
+
+				dashPenalizesMovementSpeed = false;
+
+				//Wait for cool down
+				yield return new WaitForSeconds (dashCoolDownForSeconds);
+
+				//Reset dashing
+				isDashing = false;
+			}
 		}
-
-		//Reset dashTime
-		if (dashTime > dashWaitTime)
-			dashTime = 0;
 	}
+
 
 
 	/**
@@ -247,8 +282,8 @@ public class NewController : MonoBehaviour {
 			}
 		}
 
-		if (dashTime < 30)
-			force /= (11 - dashTime/3);
+		if (dashPenalizesMovementSpeed)
+			force /= 30f;
 
 		rb.AddForce (force * Time.deltaTime);
 
@@ -430,6 +465,7 @@ public class NewController : MonoBehaviour {
 		this.gameObject.GetComponent<PlayerManager> ().Suicide ();
 	}
 
+
 	/**
 	 * Sets a limit on how far a character can move on the Z-axis
 	 */
@@ -555,10 +591,6 @@ public class NewController : MonoBehaviour {
 		return lastSurfaceTag;
 	}
 
-	private void IncrementDashTime(){
-		if(dashTime <= dashWaitTime)
-			dashTime += 60 * Time.deltaTime; 
-	}
 
 	public Vector3 GetDirection(){
 		return direction;
