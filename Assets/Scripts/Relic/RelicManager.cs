@@ -21,7 +21,7 @@ public class RelicManager : MonoBehaviour {
 		this.transform.SetParent (parent, false);
 
 		this.transform.localPosition = new Vector3 (0, 0, 0);
-		UpdateScale (0.8f);
+		UpdateScale (0.6f);
 		UpdateFreezeRotation (true);
 		ResetRotation ();
 		SetKinematic (true);

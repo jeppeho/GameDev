@@ -43,7 +43,7 @@ public class RelicController : MonoBehaviour {
 		if (!manager.HasParent()) {
 
 			//Check if below ground
-			if (manager.GetPosition ().y < 2f) {
+			if (manager.GetPosition ().y < 1.5f) {
 			
 				rb.AddForce (new Vector3 (0, Random.Range (20, 40), 0));
 			
@@ -103,10 +103,10 @@ public class RelicController : MonoBehaviour {
 					vecTowardsPlayer -= (relativeVelocity * Time.deltaTime);
 
 					//Add downforce so it does not fly over player
-					vecTowardsPlayer.y = Mathf.Abs (vecTowardsPlayer.y) - 1.6f;
-					vecTowardsPlayer.y = 0;
+					//vecTowardsPlayer.y = Mathf.Abs (vecTowardsPlayer.y) - 1.6f;
+					//vecTowardsPlayer.y = 1;
 
-					vecTowardsPlayer *= Time.deltaTime * 2000f;
+					vecTowardsPlayer *= Time.deltaTime * 200f;
 
 					rb.AddForce (vecTowardsPlayer);
 				}

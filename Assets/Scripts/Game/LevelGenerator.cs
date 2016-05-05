@@ -768,7 +768,7 @@ public class LevelGenerator : MonoBehaviour {
 	private void InsertBoulders(){
 
 		int lastBoulderZ = 0;
-		int minBoulderDistance = 50;
+		int minBoulderDistance = 70;
 
 		for (int z = 0; z < levelLength; z++) {
 
@@ -787,9 +787,15 @@ public class LevelGenerator : MonoBehaviour {
 				if (lastBoulderDistance > minBoulderDistance || (numCliffs > 12 && lastBoulderDistance > 10)) {
 
 					float x = canyonNoise [z];
-					int rotation = 40 + Random.Range (-50, 50);
 
-					x += rotation / 15;
+					int rotation = 40 + Random.Range (-50, 50); //Unnecesary if no boulder bottom
+
+					if (Random.Range (0f, 1f) > 0.5f)
+						x += 7;
+					else
+						x -= 7;
+
+					//x += rotation / 15;
 
 					CreateBoulder (x, z, rotation);
 
@@ -932,7 +938,7 @@ public class LevelGenerator : MonoBehaviour {
 	private void CreateBoulder(float x, int z, int rotation){
 
 		//Set position
-		Vector3 position = new Vector3 (x, -0.5f, z);
+		Vector3 position = new Vector3 (x, 6f, z);
 
 		//Instantiate boulder
 		GameObject boulder = Instantiate (boulderPrefab, position, Quaternion.identity) as GameObject; 

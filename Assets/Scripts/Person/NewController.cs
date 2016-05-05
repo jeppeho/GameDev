@@ -104,17 +104,15 @@ public class NewController : MonoBehaviour {
 			}
 
 			//Move on X and Z axis
-			if (moveHorizontal != 0 || moveVertical != 0) {
+			if ( moveHorizontal != 0 || moveVertical != 0 /*&& IsGrounded ()*/ ) {
 				Move ();
-			} else {
-				//TODO only if active
-				//AutoRun ();
 			}
+
 			//Check if player should fall or land
 			if (!IsGrounded ()) {
 
 				//IF ELEVATION IS USED CHANGE ONE TO LEVELAREA NOISE
-				if (IsAboveHeight(1) == false) {
+				if (IsAboveHeight (1) == false) {
 					FallDown ();
 				}
 			} else {
@@ -123,7 +121,7 @@ public class NewController : MonoBehaviour {
 
 			if (pressPush)
 				StartCoroutine (Dash ());
-				//Suicide ();
+			//Suicide ();
 
 
 			//Check if player should throw relic
@@ -132,45 +130,46 @@ public class NewController : MonoBehaviour {
 				//Reverse if Xbox
 
 
-				if (producer.Equals("Xbox"))
-				{
-						throwBuffer += pressThrow;
-				}
-				else
-				{
-						throwBuffer += (pressThrow+1)/2;		
+				if (producer.Equals ("Xbox")) {
+					throwBuffer += pressThrow;
+				} else {
+					throwBuffer += (pressThrow + 1) / 2;		
 				}
 
 				throwCounter++;
 
-				if (throwCounter >= 5)
-				{
+				if (throwCounter >= 5) {
 					Throw ();
-					throwBuffer = 0; throwCounter = 0;
+					throwBuffer = 0;
+					throwCounter = 0;
 				}
-			}
-			else
-			{
-				if (throwCounter >= 1)
-				{
+			} else {
+				if (throwCounter >= 1) {
 					Throw ();
 				}
 
-				throwBuffer = 0; throwCounter = 0;
+				throwBuffer = 0;
+				throwCounter = 0;
 			}
 
 			//If explosionCounter is above target, then make explosion
-			if (pressExplode) {
-				if (explosionCounter > 200) {
-
-					Explode();
-					//reset counter
-					explosionCounter = 0;
-				}
-			}
+//			if (pressExplode) {
+//				if (explosionCounter > 200) {
+//
+//					Explode ();
+//					//reset counter
+//					explosionCounter = 0;
+//				}
+//			}
 
 			//Charge explosionCounter 
 			explosionCounter++;
+		} else {
+
+			//PLAYER IS NOT ALIVE
+			isDashing = false;
+			isJumping = false;
+		
 		}
 			
 		LimitWalkingDistance();
@@ -275,6 +274,11 @@ public class NewController : MonoBehaviour {
 			force /= 4;
 		}
 
+		if (isJumping) {
+			force.x *= 6;
+			force.z *= 6;
+		}
+
 		//If player is running towards camera, slow down velocity
 		if (rb.velocity.z < 0) {
 			if (force.z < 0) {
@@ -330,41 +334,41 @@ public class NewController : MonoBehaviour {
 	 * 
 	 * TODO If we use this function multiply by Time.deltaTime in the AddForce method!!!
 	 */
-	private void Explode(){
-
-		//Get the center of minion
-		Vector3 center = this.gameObject.transform.position;
-
-		//Radius to check for collision
-		float radius = 3;
-
-		//Get objects from collision
-		Collider[] hitColliders = Physics.OverlapSphere(center, radius);
-
-		//Set variables
-		int i = 0;
-	
-		while (i < hitColliders.Length) {
-
-			if (hitColliders [i].gameObject.tag == "Environment") {
-
-				Rigidbody rb = hitColliders [i].GetComponent<Rigidbody> ();
-
-				if (rb != null) {
-
-					Vector3 objectPosition = hitColliders [i].transform.position;
-					Vector3 vectorFromCenterToObject = objectPosition - center;
-
-					float distance = vectorFromCenterToObject.magnitude;
-
-					rb.AddForce (vectorFromCenterToObject * (2500 - distance * 250));
-					Debug.Log (i + "| " + hitColliders [i].name + " @" + objectPosition);
-
-				}
-			}
-			i++;
-		}
-	}
+//	private void Explode(){
+//
+//		//Get the center of minion
+//		Vector3 center = this.gameObject.transform.position;
+//
+//		//Radius to check for collision
+//		float radius = 3;
+//
+//		//Get objects from collision
+//		Collider[] hitColliders = Physics.OverlapSphere(center, radius);
+//
+//		//Set variables
+//		int i = 0;
+//	
+//		while (i < hitColliders.Length) {
+//
+//			if (hitColliders [i].gameObject.tag == "Environment") {
+//
+//				Rigidbody rb = hitColliders [i].GetComponent<Rigidbody> ();
+//
+//				if (rb != null) {
+//
+//					Vector3 objectPosition = hitColliders [i].transform.position;
+//					Vector3 vectorFromCenterToObject = objectPosition - center;
+//
+//					float distance = vectorFromCenterToObject.magnitude;
+//
+//					rb.AddForce (vectorFromCenterToObject * (2500 - distance * 250));
+//					Debug.Log (i + "| " + hitColliders [i].name + " @" + objectPosition);
+//
+//				}
+//			}
+//			i++;
+//		}
+//	}
 
 
 	/**
@@ -382,10 +386,13 @@ public class NewController : MonoBehaviour {
 //			rb.velocity.x /= 5;
 //			rb.velocity.z /= 5;
 		}else {
-			//Add speed on X and Z axis if jumping
-			x = moveHorizontal * accelerationRate * horizontalJumpScalar;
-			z = moveVertical * accelerationRate * horizontalJumpScalar;
+			
 		}
+
+		//Add speed on X and Z axis if jumping
+		x = moveHorizontal * accelerationRate * horizontalJumpScalar;
+		z = moveVertical * accelerationRate * horizontalJumpScalar;
+
 		rb.AddForce ( new Vector3(x, jumpPower, z) * Time.deltaTime );
 	}
 
@@ -395,32 +402,33 @@ public class NewController : MonoBehaviour {
 		float jumpPower = GetJumpPower();
 
 		float x = 0; float z = 0;
+		x = moveHorizontal * accelerationRate * horizontalJumpScalar;
+		z = moveVertical * accelerationRate * horizontalJumpScalar;
 
 		//Make smaller jump, if on water
-		if (GetSurfaceTag () == "Water") {
-			jumpPower /= 1.5f;
-		}else {
-			//Add speed on X and Z axis if jumping
-			x = moveHorizontal * accelerationRate * horizontalJumpScalar;
-			z = moveVertical * accelerationRate * horizontalJumpScalar;
-		}
+//		if (GetSurfaceTag () == "Water") {
+//			jumpPower /= 1.5f;
+//			x /= 3f;
+//			z /= 3f;
+//		}
+//		else {
+//			//Add speed on X and Z axis if jumping
+//			x = moveHorizontal * accelerationRate * horizontalJumpScalar;
+//			z = moveVertical * accelerationRate * horizontalJumpScalar;
+//		}
 			
 		int numFrames = 10;
 		int index = 0;
 
-		Vector3 force = new Vector3 (x, jumpPower, z);
-		force /= numFrames;
-
 		while (index < numFrames) {
 
-			isJumping = true;
+			Vector3 force = new Vector3 (x * index / numFrames, jumpPower * (numFrames - index), z * index / numFrames);
+
 			rb.AddForce ( force * Time.deltaTime );
 			index++;
 
 			yield return new WaitForSeconds (0.01f);
 		}
-		isJumping = false;
-
 	}
 
 

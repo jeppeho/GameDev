@@ -113,9 +113,9 @@ public class LevelBuilder : MonoBehaviour {
 			float z = levelElements [i].GetComponent<Transform> ().position.z;
 
 //			if (z < cameraZ) {
-//				StartCoroutine (moveDown(levelElements [i]));
+//				StartCoroutine (ReleaseGameObject(levelElements [i]));
 //			}
-			if (z + 4 < cameraZ) {
+			if (z + 8 < cameraZ) {
 				levelElements [i].SetActive (false);
 				Debug.Log ("Setting inactive @ " + i); 
 			} else {
