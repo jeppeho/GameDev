@@ -115,7 +115,7 @@ public class LevelBuilder : MonoBehaviour {
 //			if (z < cameraZ) {
 //				StartCoroutine (ReleaseGameObject(levelElements [i]));
 //			}
-			if (z + 8 < cameraZ) {
+			if (z + 15 < cameraZ) {
 				levelElements [i].SetActive (false);
 				Debug.Log ("Setting inactive @ " + i); 
 			} else {

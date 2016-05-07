@@ -112,9 +112,9 @@ public class NewController : MonoBehaviour {
 			if (!IsGrounded ()) {
 
 				//IF ELEVATION IS USED CHANGE ONE TO LEVELAREA NOISE
-				if (IsAboveHeight (1) == false) {
-					FallDown ();
-				}
+//				if (IsAboveHeight (1) == false) {
+//					FallDown ();
+//				}
 			} else {
 				Landing ();
 			}

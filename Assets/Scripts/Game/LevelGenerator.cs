@@ -188,8 +188,36 @@ public class LevelGenerator : MonoBehaviour {
 
 			} else {
 
-				cameraPositionRoute [i] = 0;
-			
+				//If prev area was cliff
+				if (i > 0 && levelAreas [i - 1] == AreaType.cliff) {
+					cameraPositionRoute [i] = cameraPositionRoute [i - 1] / 2f;
+				
+
+				} else {
+
+					//if prevprevarea was cliff, but not prev
+					if (i > 2 && levelAreas [i - 2] == AreaType.cliff && levelAreas [i - 1] != AreaType.cliff) {
+					
+						cameraPositionRoute [i] = (cameraPositionRoute [i - 1] * 2 + cameraPositionRoute [i - 2]) / 3f;
+					
+					} 
+				}
+				//If next area os cliff
+				if (i < levelLength && levelAreas [i + 1] == AreaType.cliff) {
+					
+					cameraPositionRoute [i] = cameraPositionRoute [i + 1] / 2f;
+				
+				} else {
+
+					//if nextNextarea is cliff, but not next
+					if (i < levelLength && levelAreas [i + 2] == AreaType.cliff && levelAreas [i + 1] != AreaType.cliff) {
+
+						cameraPositionRoute [i] = (cameraPositionRoute [i + 1] * 2 + cameraPositionRoute [i + 2]) / 3f;
+					
+					} else {
+						cameraPositionRoute [i] = 0;
+					}
+				}
 			}
 		}
 	}
