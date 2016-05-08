@@ -902,15 +902,15 @@ Prefab:
       objectReference: {fileID: 185698, guid: 4cbcbbbe1410f4765a2c159fe132cd6b, type: 2}
     - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
       propertyPath: minBridgePercentage
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
       propertyPath: minLavaPercentage
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
       propertyPath: minCliffPercentage
-      value: 30
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
       propertyPath: goalAreaLength
@@ -918,7 +918,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
       propertyPath: minHighGroundPercentage
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
       propertyPath: m_Enabled
@@ -939,6 +939,10 @@ Prefab:
     - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
       propertyPath: levelLength
       value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
+      propertyPath: minLowGroundPercentage
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
