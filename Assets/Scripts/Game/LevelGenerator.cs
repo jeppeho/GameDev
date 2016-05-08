@@ -239,6 +239,14 @@ public class LevelGenerator : MonoBehaviour {
 		return this.canyonNoise;
 	}
 
+	public float[] GetBridge1Noise(){
+		return this.bridgeNoise;
+	}
+
+	public float[] GetSteppingStone1Noise(){
+		return this.lavaSteppingStonesNoise1;
+	}
+
 	/**
 	 * Makes the provided gameObject a child of the levelContainer
 	 */

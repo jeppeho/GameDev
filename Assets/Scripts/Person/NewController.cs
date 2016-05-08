@@ -363,22 +363,26 @@ public class NewController : MonoBehaviour {
 
 		Vector3 force = Vector3.zero;
 
-		force = GetDirection () * 50;
+		//Add some min force
+		//force *= 50; /** GetDirection ()*/;
 
 		int numFrames = 10;
 		int index = 1;
 
 		while (pressThrow > 0.05f && index < numFrames) {
-		
-			
 
 			index++;
 			yield return new WaitForSeconds(0.1f);
 		}
 
+		//Wait until button is released
+		while (pressThrow > 0.05f) {
+			yield return new WaitForSeconds(0.01f);
+		}
+
+		force = GetDirection () * 50;
+
 		force *= index * 20;
-
-
 
 		StartCoroutine( player.GetComponentInChildren<RelicController> ().Throw( force ) );
 
@@ -540,11 +544,11 @@ public class NewController : MonoBehaviour {
 		Vector2 leftStickDirection = new Vector2 (moveHorizontal, moveVertical);
 
 		//Check if right stick is used
-		if (rightStickDirection.magnitude > 0.05f) {
+		if (rightStickDirection.magnitude > 0.01f) {
 			direction = new Vector3 (rightStickDirection.x, 0f, rightStickDirection.y).normalized;
 		
 		//Check if left stick is used
-		} else if (leftStickDirection.magnitude > 0.05f) {
+		} else if (leftStickDirection.magnitude > 0.01f) {
 			
 			direction = new Vector3 (leftStickDirection.x, 0f, leftStickDirection.y).normalized;
 		

@@ -3,11 +3,20 @@ using System.Collections;
 
 public class RelicManager : MonoBehaviour {
 
-	Rigidbody rb;
+	private Rigidbody rb;
+	private LevelGenerator l;
+	public float[] cameraPositionRoute;
+
+	private bool followRoute = true;
 
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
+		l = GameObject.Find ("LevelGenerator").GetComponent<LevelGenerator> ();
+
+		cameraPositionRoute = new float[l.levelLength];
+
+		CreateRelicRoute ();
 	}
 
 
@@ -37,6 +46,7 @@ public class RelicManager : MonoBehaviour {
 		UpdateScale (1f);
 		UpdateFreezeRotation (false);
 		SetKinematic (false);
+		StartCoroutine( coolDownFollowRoute () );
 	}
 
 	/**
@@ -113,5 +123,60 @@ public class RelicManager : MonoBehaviour {
 	public void SetKinematic(bool kinematic){
 		rb.isKinematic = kinematic;
 	}
+
+	public bool GetFollowRoute(){
+		return this.followRoute;
+	}
+
+	public IEnumerator coolDownFollowRoute(){
+
+		//Let relic not follow the route
+		followRoute = false;
+
+		//Wait
+		yield return new WaitForSeconds (2f);
+
+		//Let relic follow the route
+		followRoute = true;
+	}
+
+
+	private void CreateRelicRoute(){
+
+		for (int i = 0; i < l.levelLength; i++) {
+
+			if (l.levelAreas [i] == LevelGenerator.AreaType.cliff) {
+
+				cameraPositionRoute [i] = l.GetCanyonNoise () [i];
+
+			} else if (l.levelAreas [i] == LevelGenerator.AreaType.bridge) {
+			
+				cameraPositionRoute [i] = l.GetBridge1Noise () [i];
+
+			} else if (l.levelAreas [i] == LevelGenerator.AreaType.lava) {
+
+				cameraPositionRoute [i] = l.GetSteppingStone1Noise () [i];
+			
+			} else {
+				
+				cameraPositionRoute [i] = 0;
+			
+			}
+		}
+	}
+
+	/**
+	 * Returns and index that is not out of bounds
+	 */
+	public int GetAcceptedLevelIndex(int z){
+
+		if (z < 0)
+			z = 0;
+		else if (z >= l.levelLength)
+			z = l.levelLength - 1;
+
+		return z;
+	}
+
 	
 }

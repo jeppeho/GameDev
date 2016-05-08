@@ -22,6 +22,9 @@ public class RelicController : MonoBehaviour {
 	float prevX = 0;
 	float maxSpeed = 4f;
 
+	float wall;
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -42,6 +45,9 @@ public class RelicController : MonoBehaviour {
 
 		if (!manager.HasParent()) {
 
+			//If relic is about to go behind camera
+			wall = camera.GetComponent<CameraController> ().GetPosition ().z + cameraZOffsetBound;
+
 			//Check if below ground
 			if (manager.GetPosition ().y < 1.5f) {
 			
@@ -49,19 +55,22 @@ public class RelicController : MonoBehaviour {
 			
 			}
 
-			PushToCenter ();
+			//PushToCenter ();
 
-			//If relic is about to go behind camera
-			float wall = camera.GetComponent<CameraController> ().GetPosition ().z + cameraZOffsetBound;
+			//X-axis boundaries
+			if (transform.position.x < LevelManager.MIN_X || transform.position.x > LevelManager.MAX_X) {
+				
+				InvertOnXAxis();
 
-			if (manager.GetPosition ().z < wall ) {
-				PushForward ();
+			}
+				
+			if (manager.GetPosition ().z < wall - 1f ) {
+				PushForward (300);
 			}
 
 
-
-			if (manager.GetPosition ().z < wall - 1f) {
-				GetUnstuck (wall);
+			if (manager.GetPosition ().z < wall - 5f ) {
+				RepositionBehindCamera ();
 			}
 
 			//Make sure velocity doesn't go nuts
@@ -69,11 +78,62 @@ public class RelicController : MonoBehaviour {
 
 			CapVelocity ();
 
+			//Check if relic should follow route
+			if (manager.GetFollowRoute ()) {
+				FollowRoute ();
+
+				if(manager.GetPosition().z > LevelManager.MOVE_MAXZ){
+					PushBackward (10);
+				}
+			}
+
 		} else {
 			//Follow parent
 			FlyAboveParent ();
 		}
+
+		//SetBoundaries ();
 	}
+
+
+	private void InvertOnXAxis(){
+
+		Vector3 vel = rb.velocity;
+
+		vel.x *= -1;
+
+		rb.velocity = vel;
+	}
+
+
+//	private void SetBoundaries(){
+//	
+//		Vector3 vel = rb.velocity;
+//
+//		if (transform.position.z > LevelManager.MOVE_MAXZ || transform.position.z < LevelManager.MOVE_MINZ) {
+//			vel.z *= -1;
+//		}
+//		if (transform.position.y > 3f || transform.position.y < 1.5f) {
+//			vel.y *= -1;
+//		}
+//		if (transform.position.x < LevelManager.MIN_X || transform.position.x > LevelManager.MAX_X) {
+//			vel.x *= -1;
+//		}
+//
+//		rb.velocity = vel;
+//	}
+
+	private void FollowRoute(){
+
+		Vector3 vectorTowardsRoute = Vector3.zero;
+
+		int index = manager.GetAcceptedLevelIndex( Mathf.FloorToInt (transform.position.z ) );
+
+		vectorTowardsRoute.x = manager.cameraPositionRoute [index] - transform.position.x;
+
+		rb.AddForce (vectorTowardsRoute * Time.deltaTime * 200);
+	}
+		
 
 
 	/**
@@ -82,7 +142,7 @@ public class RelicController : MonoBehaviour {
 	 */
 	private void SnapToPlayer(){
 		
-		float radius = 3f;
+		float radius = 2f;
 
 		//Get all objects within radius
 		Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, radius);
@@ -104,7 +164,7 @@ public class RelicController : MonoBehaviour {
 
 					//Add downforce so it does not fly over player
 					//vecTowardsPlayer.y = Mathf.Abs (vecTowardsPlayer.y) - 1.6f;
-					vecTowardsPlayer.y = 0;
+					vecTowardsPlayer.y = -1f;
 
 					vecTowardsPlayer *= Time.deltaTime * 2000f;
 
@@ -115,80 +175,102 @@ public class RelicController : MonoBehaviour {
 		}
 	}
 
+
+	/**
+	 * Repositions the relic just behind the camera and adds forward velocity
+	 */ 
+	private void RepositionBehindCamera(){
+
+		int index = manager.GetAcceptedLevelIndex( Mathf.FloorToInt (transform.position.z ) );
+
+		float x = manager.cameraPositionRoute [ index ];
+
+		Vector3 resetPosition = new Vector3 (x, 2, wall - 4);
+
+		transform.position = resetPosition;
+
+		Vector3 vel = new Vector3 (0, 0, 1000);
+
+		rb.velocity = vel * Time.deltaTime;
+
+
+	}
+
 	/**
 	 * Whenever the relic is behind the camera, fx if it's stuck somewhere, 
 	 * this method will try to get in the camera FOV by pushing it forward and 
 	 * move it from side to side. If to far behind, it will change its position to 
 	 * right behind the camera.
 	 */
-	private void GetUnstuck(float wall){
-
-		//Get Current z position for camera
-		float cameraZ = camera.GetComponent<CameraController>().GetZPosition ();
-		float relicZ = rb.transform.position.z;
-
-		float relicX = rb.transform.position.x;
-
-		float distToCamera = cameraZ - relicZ;
-
-		int maxDist = 7;
-
-		//If relic is right behind camera, then push it forward
-		if (distToCamera < maxDist && distToCamera > 0) {
-
-			Vector3 force = new Vector3 (relicX * -1 + distToCamera, distToCamera, distToCamera);
-
-			force *= Time.deltaTime * 1000;
-
-			rb.AddForce (force);
-
-
-		} else if(distToCamera > maxDist){
-			//If relic is to far behind camera, move it and push forward
-			rb.transform.position = new Vector3 (relicX / 2, 5, cameraZ - maxDist);
-			rb.AddForce (0, 0, Time.deltaTime * 3000);
-		}
-
-	}
-
-
-	/**
-	 * Whenever the relic is behind the camera, fx if it's stuck somewhere, 
-	 * this method will try to get in the camera FOV by pushing it forward and 
-	 * move it from side to side
-	 */
-	private void GetUnstuckOLD(float wall){
-
-		float currentRelicX = rb.transform.position.x;
-
-		//If relic is out to the sides or at the same position at the prev position
-		if (currentRelicX > 4f || currentRelicX < -4f || prevX == currentRelicX)
-			escapeDirection = -1;
-
-		//Get Current z position for camera
-		float currentCameraZ = manager.GetPosition ().z;
-
-		//Get distance to camera wall
-		float distanceToView = wall - currentCameraZ;
-
-		float x = 100f * escapeDirection;
-
-		float y = 0;
-		if (currentCameraZ < wall - 1f) {
-			if (rb.transform.position.y < 20f) {
-				y =  200f;
-			}
-//			if (rb.transform.position.y < 4f) {
-//				y = (4f - rb.transform.position.y) * 2000f;
+//	private void GetUnstuckNewestOld(float wall){
+//
+//		//Get Current z position for camera
+//		float cameraZ = camera.GetComponent<CameraController>().GetZPosition ();
+//		float relicZ = rb.transform.position.z;
+//
+//		float relicX = rb.transform.position.x;
+//
+//		float distToCamera = cameraZ - relicZ;
+//
+//		int maxDist = 7;
+//
+//		//If relic is right behind camera, then push it forward
+//		if (distToCamera < maxDist && distToCamera > 0) {
+//
+//			Vector3 force = new Vector3 (relicX * -1 + distToCamera, distToCamera, distToCamera);
+//
+//			force *= Time.deltaTime * 1000;
+//
+//			rb.AddForce (force);
+//
+//
+//		} else if( distToCamera > maxDist ){
+//			
+//			//If relic is to far behind camera, move it and push forward
+//			rb.transform.position = new Vector3 (relicX / 2, 5, cameraZ - maxDist);
+//			rb.AddForce (0, 0, Time.deltaTime * 3000);
+//		}
+//
+//	}
+//
+//
+//	/**
+//	 * Whenever the relic is behind the camera, fx if it's stuck somewhere, 
+//	 * this method will try to get in the camera FOV by pushing it forward and 
+//	 * move it from side to side
+//	 */
+//	private void GetUnstuckOLD(float wall){
+//
+//		float currentRelicX = rb.transform.position.x;
+//
+//		//If relic is out to the sides or at the same position at the prev position
+//		if (currentRelicX > 4f || currentRelicX < -4f || prevX == currentRelicX)
+//			escapeDirection = -1;
+//
+//		//Get Current z position for camera
+//		float currentCameraZ = manager.GetPosition ().z;
+//
+//		//Get distance to camera wall
+//		float distanceToView = wall - currentCameraZ;
+//
+//		float x = 100f * escapeDirection;
+//
+//		float y = 0;
+//		if (currentCameraZ < wall - 1f) {
+//			if (rb.transform.position.y < 20f) {
+//				y =  200f;
 //			}
-		}
-
-		rb.AddForce (new Vector3 (x, y, 100f * distanceToView));
-
-		prevX = currentRelicX;
-
-	}
-
+////			if (rb.transform.position.y < 4f) {
+////				y = (4f - rb.transform.position.y) * 2000f;
+////			}
+//		}
+//
+//		rb.AddForce (new Vector3 (x, y, 100f * distanceToView));
+//
+//		prevX = currentRelicX;
+//
+//	}
+//
 
 	private void CapVelocity(){
 
@@ -209,8 +291,14 @@ public class RelicController : MonoBehaviour {
 		rb.AddForce ( force );
 	}
 
-	private void PushForward(){
-		rb.AddForce( new Vector3( 0, 0, 10 ) );
+	private void PushForward(int pushForce){
+
+		rb.AddForce( new Vector3( 0, 0, pushForce ) * Time.deltaTime * 50 );
+	}
+
+	private void PushBackward(int pushForce){
+
+		rb.AddForce( new Vector3( 0, 0, -pushForce ) * Time.deltaTime * 50 );
 	}
 
 

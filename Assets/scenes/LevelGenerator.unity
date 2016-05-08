@@ -291,6 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47fe6cc0ee5d54c37b2b157ca750ffe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraPositionRoute: []
 --- !u!54 &143477038
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -405,7 +406,7 @@ Prefab:
       objectReference: {fileID: 2100000, guid: 509cc79d8f96693489fe1169b363ab19, type: 2}
     - target: {fileID: 160758, guid: 90557a4cc1fd3474d92977d069876ad2, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 90557a4cc1fd3474d92977d069876ad2, type: 2}
@@ -904,6 +905,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 11477920, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
   m_IsPrefabParent: 0
@@ -1156,7 +1161,7 @@ Prefab:
       objectReference: {fileID: 2100000, guid: 1b657f7260af36c4e9f2704f17f4ff47, type: 2}
     - target: {fileID: 160758, guid: 90557a4cc1fd3474d92977d069876ad2, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 90557a4cc1fd3474d92977d069876ad2, type: 2}
