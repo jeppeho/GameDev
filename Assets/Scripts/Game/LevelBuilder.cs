@@ -117,10 +117,8 @@ public class LevelBuilder : MonoBehaviour {
 //			}
 			if (z + 15 < cameraZ) {
 				levelElements [i].SetActive (false);
-				Debug.Log ("Setting inactive @ " + i); 
 			} else {
 				lastDeactivatedElement = i;
-				Debug.Log ("Breaking out @ " + i); 
 				break;
 			}
 		}

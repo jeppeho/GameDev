@@ -76,10 +76,10 @@ public class RelicHealth : MonoBehaviour {
 //			}
 		} else {
 
-			if (relativeVelocity > 20) {
+			if (relativeVelocity > 30) {
 
 				//Remove from parent
-				manager.ReleaseFromParent ();
+				//manager.ReleaseFromParent ();
 			}
 		}
 	}

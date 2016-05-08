@@ -256,51 +256,66 @@ public class RelicController : MonoBehaviour {
 		}
 	}
 
+	public IEnumerator Throw(Vector3 force){
 
-	public IEnumerator ThrowRelic(float throwForce){
+		Debug.Log ("Start the Relic throw coroutine");
 
-		Debug.Log ("Starting coroutine");
-
-		Vector3 bodyVelocity = this.gameObject.GetComponentInParent<Rigidbody>().velocity;
-		Vector3 throwDirection = this.gameObject.GetComponentInParent<NewController> ().GetDirection ();
-
-		//Get throwDirection from player
-		Vector3 force = throwDirection;
-
-		//Make the throw a bit upwards
-		force.y += 0.3f;
-
-		throwForce = Mathf.Pow (throwForce, 2);
-
-		force *= throwForce; 
-
+		int numFrames = 10;
 		int index = 0;
-		int maxTime = 15;
 
-		maxSpeed = 20;
-
-		//Release relic from minion
-		manager.ReleaseFromParent ();
-
-		while (index < maxTime) {
-
-			maxSpeed = 4f + (float)(8f * (maxTime - index) / maxTime);
-
-			//Get source based on index in coroutine
-			Vector3 currentForce = force * ((float)maxTime - (float)index) / (float)maxTime * 2f;
-
-			//Add force
-			rb.AddForce (force * Time.deltaTime * 25000);
+		while (index < numFrames) {
+		
+			rb.AddForce ( force * Time.deltaTime * 30f );
 
 			index++;
-			yield return new WaitForSeconds(0.01f);
+			yield return new WaitForSeconds (0.01f);
 		}
-
-		maxSpeed = 4;
-
-
-
 	}
+
+
+
+//	public IEnumerator ThrowRelic(float throwForce){
+//
+//		Debug.Log ("Starting coroutine");
+//
+//		Vector3 bodyVelocity = this.gameObject.GetComponentInParent<Rigidbody>().velocity;
+//		Vector3 throwDirection = this.gameObject.GetComponentInParent<NewController> ().GetDirection ();
+//
+//		//Get throwDirection from player
+//		Vector3 force = throwDirection;
+//
+//		//Make the throw a bit upwards
+//		force.y += 0.3f;
+//
+//		throwForce = Mathf.Pow (throwForce, 2);
+//
+//		force *= throwForce; 
+//
+//		int index = 0;
+//		int maxTime = 15;
+//
+//		maxSpeed = 20;
+//
+//		//Release relic from minion
+//		manager.ReleaseFromParent ();
+//
+//		while (index < maxTime) {
+//
+//			maxSpeed = 4f + (float)(8f * (maxTime - index) / maxTime);
+//
+//			//Get source based on index in coroutine
+//			Vector3 currentForce = force * ((float)maxTime - (float)index) / (float)maxTime * 2f;
+//
+//			//Add force
+//			rb.AddForce (force * Time.deltaTime * 25000);
+//
+//			index++;
+//			yield return new WaitForSeconds(0.01f);
+//		}
+//
+//		maxSpeed = 4;
+//
+//	}
 
 		
 //

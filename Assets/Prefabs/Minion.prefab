@@ -170,8 +170,8 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 160758}
   serializedVersion: 2
-  m_Mass: 0.01
-  m_Drag: 3
+  m_Mass: 0.02
+  m_Drag: 0
   m_AngularDrag: 0.005
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -238,13 +238,13 @@ MonoBehaviour:
   prefix: P1
   producer: 
   accelerationRate: 10
-  maxVelocity: 3
-  jumpPower: 350
-  fallDownForce: 45
-  horizontalJumpScalar: 10
+  maxVelocity: 2
+  jumpPower: 0.75
+  horizontalJumpScalar: 1
   numDashFrames: 5
   dashPower: 700
   dashCoolDownForSeconds: 1.5
+  fallDownForce: 30
 --- !u!135 &13552636
 SphereCollider:
   m_ObjectHideFlags: 1

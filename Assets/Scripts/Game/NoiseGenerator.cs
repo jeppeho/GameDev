@@ -128,7 +128,7 @@ public class NoiseGenerator : MonoBehaviour {
 	 */
 	public float[] GetPerlinNoise1D(int _firstOctave, int _numOctaves, float persistence, float minMap, float maxMap){
 
-		SetRandomSeed(4);
+		//SetRandomSeed(4);
 
 		float[] noise = new float[numSamples];
 		float[] tempNoise = new float[numSamples + 1];

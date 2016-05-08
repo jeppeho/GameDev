@@ -9,6 +9,21 @@ public class NewController : MonoBehaviour {
 	//Prefix for producer of controller
 	public string producer;
 
+	//Speed
+	public float accelerationRate = 10;
+	public float maxVelocity = 1;
+
+	//Jump
+	public float jumpPower = 0.75f;
+	public float horizontalJumpScalar = 1f;
+
+	//Dash
+	public int numDashFrames = 5;
+	public int dashPower = 700;
+	public float dashCoolDownForSeconds = 1.5f;
+
+	public float fallDownForce = 30f;
+
 
 	//Buttons
 	private float moveHorizontal;
@@ -34,23 +49,15 @@ public class NewController : MonoBehaviour {
 	GameObject player;
 	Rigidbody rb;
 
+	//This is the throwDirection, reads right stick if used else the left stick
 	private Vector3 direction;
 
 	private bool isJumping = false;
 	private bool isDashing = false;
+	private bool isThrowing = false;
 
 	//Right after dash movement speed is lowered
 	private bool dashPenalizesMovementSpeed = false;
-
-	public float accelerationRate = 10;
-	public float maxVelocity = 1;
-	private float autoRunSpeed = 1.5f;
-	public float jumpPower = 10f;
-	public float fallDownForce = 45f;
-	public float horizontalJumpScalar = 3f;
-	public int numDashFrames = 5;
-	public int dashPower = 700;
-	public float dashCoolDownForSeconds = 1.5f;
 
 	private int explosionCounter = 300;
 
@@ -75,7 +82,6 @@ public class NewController : MonoBehaviour {
 		//Multiply with the game speed
 		maxVelocity *= LevelManager.SPEED;
 		accelerationRate *= LevelManager.SPEED;
-		autoRunSpeed *= LevelManager.SPEED;
 
 		nearWalkZone = LevelManager.MOVE_MINZ+LevelManager.MOVE_ZONEWIDTH;
 		farWalkZone = LevelManager.MOVE_MAXZ-LevelManager.MOVE_ZONEWIDTH;
@@ -84,73 +90,91 @@ public class NewController : MonoBehaviour {
 
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
 
 		//Get state of player, eg. dead, active etc.
 		playerState = this.gameObject.GetComponent<PlayerManager> ().GetState ();
 
 		if (playerState == "active" || playerState == "invulnerable") {
-
+	
 			GetInputButtonValues ();
 			UpdateDirection ();
 			UpdateSurfaceTags ();
 
 			//Check if player is jumping
-			if (pressJump && !isJumping) {
+			if (!isJumping && pressJump ) {
+				
 				isJumping = true;
-				Debug.Log ("IsJumping!!!");
-				Jump ();
-				//StartCoroutine (JumpMinion());
+				//Jump ();
+				StartCoroutine (Jump());
 			}
 
 			//Move on X and Z axis
-			if ( moveHorizontal != 0 || moveVertical != 0 /*&& IsGrounded ()*/ ) {
+			if ( (moveHorizontal != 0 || moveVertical != 0) /* && IsGrounded () */ ) {
 				Move ();
 			}
 
 			//Check if player should fall or land
-			if (!IsGrounded ()) {
-
-				//IF ELEVATION IS USED CHANGE ONE TO LEVELAREA NOISE
+//			if (!IsGrounded ()) {
+//
+//				//IF ELEVATION IS USED CHANGE ONE TO LEVELAREA NOISE
 //				if (IsAboveHeight (1) == false) {
 //					FallDown ();
 //				}
-			} else {
-				Landing ();
+//			} else {
+//				Landing ();
+//			}
+
+			if (!IsGrounded ()) {
+				//IF ELEVATION IS USED CHANGE ONE TO LEVELAREA NOISE
+				if (IsAboveHeight (1) == false) {
+					FallDown ();
+				}
 			}
 
-			if (pressPush)
-				StartCoroutine (Dash ());
-			//Suicide ();
 
+			//If not dashing, button is pressed, and the left stick is used to give direction to the dash
+			if (!isDashing && pressPush && (moveHorizontal > 0f || moveVertical > 0f)) {
+				isDashing = true;
+				dashPenalizesMovementSpeed = true;
+				StartCoroutine (Dash ());
+			}
+
+
+			if (!isThrowing && pressThrow > 0.05f && this.gameObject.GetComponent<PlayerRelicHandler> ().HasRelic () == true) {
+
+				isThrowing = true;
+				StartCoroutine(Throw ());
+			
+			}
 
 			//Check if player should throw relic
-			if (pressThrow > 0.05f && this.gameObject.GetComponent<PlayerRelicHandler> ().HasRelic () == true) {
-
-				//Reverse if Xbox
-
-
-				if (producer.Equals ("Xbox")) {
-					throwBuffer += pressThrow;
-				} else {
-					throwBuffer += (pressThrow + 1) / 2;		
-				}
-
-				throwCounter++;
-
-				if (throwCounter >= 5) {
-					Throw ();
-					throwBuffer = 0;
-					throwCounter = 0;
-				}
-			} else {
-				if (throwCounter >= 1) {
-					Throw ();
-				}
-
-				throwBuffer = 0;
-				throwCounter = 0;
-			}
+//			if (pressThrow > 0.05f && this.gameObject.GetComponent<PlayerRelicHandler> ().HasRelic () == true) {
+//
+//				//Reverse if Xbox
+//
+//
+//				if (producer.Equals ("Xbox")) {
+//					throwBuffer += pressThrow;
+//				} else {
+//					throwBuffer += (pressThrow + 1) / 2;		
+//				}
+//
+//				throwCounter++;
+//
+//				if (throwCounter >= 5) {
+//					Throw ();
+//					throwBuffer = 0;
+//					throwCounter = 0;
+//				}
+//			} else {
+//				if (throwCounter >= 1) {
+//					Throw ();
+//				}
+//
+//				throwBuffer = 0;
+//				throwCounter = 0;
+//			}
 
 			//If explosionCounter is above target, then make explosion
 //			if (pressExplode) {
@@ -166,22 +190,16 @@ public class NewController : MonoBehaviour {
 			explosionCounter++;
 		} else {
 
-			//PLAYER IS NOT ALIVE
+			//RESET IF PLAYER IS NOT ALIVE
 			isDashing = false;
 			isJumping = false;
 		
 		}
 			
 		LimitWalkingDistance();
-		//LimitWalkingDistanceSoft();
+		LimitWalkingDistanceSoft();
 
 		LimitBoundariesOnXAxis ();
-
-
-		if(pressJump)
-			Debug.Log("Jumping!!!");
-		if(pressPush)
-			Debug.Log("Dashing!!!");
 	}
 
 
@@ -207,56 +225,6 @@ public class NewController : MonoBehaviour {
 
 
 
-	/**
-	 * Dashes the player in the direction of the left stick quickly
-	 */
-	IEnumerator Dash(){
-
-		//If character isn't dashing
-		if (!isDashing) {
-			isDashing = true;
-			dashPenalizesMovementSpeed = true;
-
-			float hor = moveHorizontal * accelerationRate;
-			float ver = moveVertical * accelerationRate;
-
-			//Only of moving somewhere, otherwise the dash won't move character
-			if (hor > 0f || ver > 0f) {
-
-				float y = 0;
-
-				//Add force to prevent player getting stuck in edge
-				if (GetSurfaceTag () == "water")
-					y = 0.1f;
-
-				Vector3 force = new Vector3 (hor, y, ver);
-
-				force = force.normalized;
-
-				int frame = 0;
-
-				//Add force
-				while (frame < numDashFrames) {
-					rb.AddForce (force * Time.deltaTime * dashPower);
-					frame++;
-					yield return new WaitForSeconds (0.01f);
-				}
-
-				//Wait for movement speed penalty
-				yield return new WaitForSeconds (0.3f);
-
-				dashPenalizesMovementSpeed = false;
-
-				//Wait for cool down
-				yield return new WaitForSeconds (dashCoolDownForSeconds);
-
-				//Reset dashing
-				isDashing = false;
-			}
-		}
-	}
-
-
 
 	/**
 	 * Add force on X and Z axis based on controller input.
@@ -275,8 +243,8 @@ public class NewController : MonoBehaviour {
 		}
 
 		if (isJumping) {
-			force.x *= 6;
-			force.z *= 6;
+			force.x /= 2f;
+			force.z /= 2f;
 		}
 
 		//If player is running towards camera, slow down velocity
@@ -307,128 +275,117 @@ public class NewController : MonoBehaviour {
 	}
 
 
+	/**
+	 * Dashes the player in the direction of the left stick quickly
+	 */
+	IEnumerator Dash(){
 
-	private void AutoRun(){
+		float hor = moveHorizontal * accelerationRate;
+		float ver = moveVertical * accelerationRate;
 
-//		float bottomline = GameObject.Find ("LeapControllerBlockHand").GetComponent<Transform> ().transform.position.z;
-//		bottomline += 0;
-//
-//		Debug.Log ((rb.transform.position.z < bottomline) + " | " + rb.transform.position.z + " <  " + bottomline);
-//		if (rb.transform.position.z < bottomline) {
-//			Debug.Log ("Hello rb.transform.position.z = " +  rb.transform.position.z);
-//			rb.AddForce (new Vector3 (0, 0, LevelManager.SPEED));
-//		}
-//		else 
+		float y = 0;
 
-		if (GetSurfaceTag () == "Water") {
-			//rb.AddForce (new Vector3 (0, 0, 0.1f));
-			rb.AddForce (new Vector3 (0, 0, autoRunSpeed / 2f * Time.deltaTime));
-		} else {
-			//rb.AddForce (new Vector3 (0, 0, 0.15f));
-			rb.AddForce (new Vector3 (0, 0, autoRunSpeed * Time.deltaTime));
+		//Add force to prevent player getting stuck in edge
+		if (GetSurfaceTag () == "water")
+			y = 0.1f;
+
+		Vector3 force = new Vector3 (hor, y, ver);
+
+		force = force.normalized;
+
+		int frame = 0;
+
+		//Add force
+		while (frame < numDashFrames) {
+
+			rb.AddForce (force * Time.deltaTime * dashPower);
+			frame++;
+
+			yield return new WaitForSeconds (0.01f);
 		}
+
+		//Wait for movement speed penalty
+		yield return new WaitForSeconds (0.3f);
+
+		dashPenalizesMovementSpeed = false;
+
+		//Wait for cool down
+		yield return new WaitForSeconds (dashCoolDownForSeconds);
+
+		//Reset dashing
+		isDashing = false;
+
 	}
+		
 
+	IEnumerator Jump(){
 
-	/**
-	 * 
-	 * TODO If we use this function multiply by Time.deltaTime in the AddForce method!!!
-	 */
-//	private void Explode(){
-//
-//		//Get the center of minion
-//		Vector3 center = this.gameObject.transform.position;
-//
-//		//Radius to check for collision
-//		float radius = 3;
-//
-//		//Get objects from collision
-//		Collider[] hitColliders = Physics.OverlapSphere(center, radius);
-//
-//		//Set variables
-//		int i = 0;
-//	
-//		while (i < hitColliders.Length) {
-//
-//			if (hitColliders [i].gameObject.tag == "Environment") {
-//
-//				Rigidbody rb = hitColliders [i].GetComponent<Rigidbody> ();
-//
-//				if (rb != null) {
-//
-//					Vector3 objectPosition = hitColliders [i].transform.position;
-//					Vector3 vectorFromCenterToObject = objectPosition - center;
-//
-//					float distance = vectorFromCenterToObject.magnitude;
-//
-//					rb.AddForce (vectorFromCenterToObject * (2500 - distance * 250));
-//					Debug.Log (i + "| " + hitColliders [i].name + " @" + objectPosition);
-//
-//				}
-//			}
-//			i++;
-//		}
-//	}
-
-
-	/**
-	 * Add upwards force
-	 */
-	private void Jump(){
-
-		float jumpPower = GetJumpPower();
+		Debug.Log ("/////////Start Jump");
 
 		float x = 0; float z = 0;
-
-		//Make smaller jump, if on water
-		if (GetSurfaceTag () == "Water") {
-			jumpPower /= 1.5f;
-//			rb.velocity.x /= 5;
-//			rb.velocity.z /= 5;
-		}else {
 			
-		}
-
-		//Add speed on X and Z axis if jumping
 		x = moveHorizontal * accelerationRate * horizontalJumpScalar;
 		z = moveVertical * accelerationRate * horizontalJumpScalar;
 
-		rb.AddForce ( new Vector3(x, jumpPower, z) * Time.deltaTime );
-	}
 
-
-	IEnumerator JumpMinion(){
-
-		float jumpPower = GetJumpPower();
-
-		float x = 0; float z = 0;
-		x = moveHorizontal * accelerationRate * horizontalJumpScalar;
-		z = moveVertical * accelerationRate * horizontalJumpScalar;
-
-		//Make smaller jump, if on water
-//		if (GetSurfaceTag () == "Water") {
-//			jumpPower /= 1.5f;
-//			x /= 3f;
-//			z /= 3f;
-//		}
-//		else {
-//			//Add speed on X and Z axis if jumping
-//			x = moveHorizontal * accelerationRate * horizontalJumpScalar;
-//			z = moveVertical * accelerationRate * horizontalJumpScalar;
-//		}
-			
-		int numFrames = 10;
+		int numFrames = 7;
 		int index = 0;
 
-		while (index < numFrames) {
+		rb.velocity /= 3f;
 
-			Vector3 force = new Vector3 (x * index / numFrames, jumpPower * (numFrames - index), z * index / numFrames);
+		float jumpPower = GetJumpPower () / (float)numFrames;
+
+		while (pressJump && index < numFrames) {
+
+			Debug.Log("index = " + index);
+
+			Vector3 force = new Vector3 ( x, GetJumpPower(), z);
 
 			rb.AddForce ( force * Time.deltaTime );
 			index++;
 
 			yield return new WaitForSeconds (0.01f);
 		}
+
+		while (!IsGrounded () || pressJump) {
+			yield return new WaitForSeconds (0.01f);
+		}
+
+		isJumping = false;
+	}
+
+
+
+	/**
+	 * Builds up force, then throws the relic and removes it as child
+	 */ 
+	IEnumerator Throw(){
+	
+		Debug.Log ("Starting the player throw coroutine");
+
+		Vector3 force = Vector3.zero;
+
+		force = GetDirection () * 50;
+
+		int numFrames = 10;
+		int index = 1;
+
+		while (pressThrow > 0.05f && index < numFrames) {
+		
+		
+			index++;
+			yield return new WaitForSeconds(0.1f);
+		}
+
+		force *= index * 20;
+
+
+
+		StartCoroutine( player.GetComponentInChildren<RelicController> ().Throw( force ) );
+
+		this.gameObject.GetComponent<PlayerRelicHandler> ().ReleaseRelic ();
+
+		isThrowing = false;
 	}
 
 
@@ -445,33 +402,12 @@ public class NewController : MonoBehaviour {
 	 * When a player land, it sets jumping to false, when falldownCounter has decremented to zero
 	 */
 	private void Landing(){
-
 		if (falldownCounter == 0)
 			isJumping = false;
 		else
 			falldownCounter--;
 	}
 
-
-	/**
-	 * Throws the relic and removes it as child
-	 * TODO Check if gameObject is present
-	 */ 
-	private void Throw(){
-		float force = Mathf.Min (1, throwBuffer / 5);
-
-		//Throw relic and remove as child
-		if (this.gameObject.GetComponent<PlayerRelicHandler>().HasRelic()/*relic*/) {
-
-			StartCoroutine( player.GetComponentInChildren<RelicController> ().ThrowRelic( force ) );
-			//this.gameObject.GetComponent<PlayerRelicHandler>().ReleaseRelic ();
-		}
-	}
-
-
-	public void Suicide(){
-		this.gameObject.GetComponent<PlayerManager> ().Suicide ();
-	}
 
 
 	/**
@@ -533,22 +469,15 @@ public class NewController : MonoBehaviour {
 	 * Return the jumppower, multiplied if push button is pressed
 	 */
 	private float GetJumpPower(){
-//		if (pressPush)
-//			return jumpPower * 1.3f;
-//		else
-//			return jumpPower;
 
-		return jumpPower;
+		return jumpPower * 100f;
+
 	}
 
 	/**
 	 * Return the MaxVelocity, multiplied if push button is pressed
 	 */
 	private float GetMaxVelocity(){
-//		if (pressPush)
-//			return maxVelocity * 1.3f;
-//		else
-//			return maxVelocity;
 		return maxVelocity;
 	}
 
@@ -635,4 +564,46 @@ public class NewController : MonoBehaviour {
 		bool isGrounded = Physics.Raycast (player.transform.position, -Vector3.up, height);//distToGround);
 		return isGrounded;
 	}
+
+
+	/**
+	 * 
+	 * TODO If we use this function multiply by Time.deltaTime in the AddForce method!!!
+	 */
+	//	private void Explode(){
+	//
+	//		//Get the center of minion
+	//		Vector3 center = this.gameObject.transform.position;
+	//
+	//		//Radius to check for collision
+	//		float radius = 3;
+	//
+	//		//Get objects from collision
+	//		Collider[] hitColliders = Physics.OverlapSphere(center, radius);
+	//
+	//		//Set variables
+	//		int i = 0;
+	//	
+	//		while (i < hitColliders.Length) {
+	//
+	//			if (hitColliders [i].gameObject.tag == "Environment") {
+	//
+	//				Rigidbody rb = hitColliders [i].GetComponent<Rigidbody> ();
+	//
+	//				if (rb != null) {
+	//
+	//					Vector3 objectPosition = hitColliders [i].transform.position;
+	//					Vector3 vectorFromCenterToObject = objectPosition - center;
+	//
+	//					float distance = vectorFromCenterToObject.magnitude;
+	//
+	//					rb.AddForce (vectorFromCenterToObject * (2500 - distance * 250));
+	//					Debug.Log (i + "| " + hitColliders [i].name + " @" + objectPosition);
+	//
+	//				}
+	//			}
+	//			i++;
+	//		}
+	//	}
+
 }
