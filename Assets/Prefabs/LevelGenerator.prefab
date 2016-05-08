@@ -24,6 +24,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 497530}
   - 114: {fileID: 11461242}
+  - 114: {fileID: 11477920}
   m_Layer: 0
   m_Name: LevelGenerator
   m_TagString: Untagged
@@ -67,13 +68,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1458f938b0ee948e2aca5fec5b7ad8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelLength: 400
+  levelLength: 300
   beginningAreaLength: 50
-  goalAreaLength: 40
-  minRegularGroundPercentage: 0
-  minLavaPercentage: 20
+  goalAreaLength: 50
+  minLowGroundPercentage: 0
+  minHighGroundPercentage: 0
+  minLavaPercentage: 10
   minCliffPercentage: 10
-  minBridgePercentage: 15
+  minBridgePercentage: 10
   useWater: 1
   planePrefab: {fileID: 171214, guid: f8781240a8e3d487d8e4df00e5394e2b, type: 2}
   waterSmallPrefab: {fileID: 119884, guid: 2067c238b181942f6b5b016e2b73290f, type: 2}
@@ -97,7 +99,7 @@ MonoBehaviour:
   - {fileID: 195722, guid: 60724d7968d6f4dd0bf7faa2be2b0dd0, type: 2}
   pillarSmallHex: {fileID: 107378, guid: 5c0829de9e76043d5bf8da8dfcd77ad7, type: 2}
   bridgeSteps:
-  - {fileID: 138102, guid: c0cc571c35b134f1c90ad4e56b44048e, type: 2}
+  - {fileID: 112952, guid: b43f9b7f063004dabb4de0537bf04e0a, type: 2}
   sides:
   - {fileID: 190544, guid: 238d60e676e0c4eca97f291a6d49a3ae, type: 2}
   - {fileID: 167434, guid: 543f19b7d48174264ad56924074b573b, type: 2}
@@ -106,10 +108,24 @@ MonoBehaviour:
   - {fileID: 139248, guid: 4fac589f0acb44e21be69beeb7cb384a, type: 2}
   - {fileID: 185394, guid: 5950402d638b544a59d9c883d06f7735, type: 2}
   steppingStones:
-  - {fileID: 112952, guid: b43f9b7f063004dabb4de0537bf04e0a, type: 2}
+  - {fileID: 138102, guid: c0cc571c35b134f1c90ad4e56b44048e, type: 2}
   cliff: {fileID: 177974, guid: 0f795f361e5d44df2829518b99b3bd2c, type: 2}
   waterPrefab: {fileID: 100000, guid: 6b436d069d11415d1100ab9b44295342, type: 2}
-  boulderPrefab: {fileID: 154896, guid: ddbccce3d8a5f40c49c71a8181555db5, type: 2}
+  boulderPrefab: {fileID: 124712, guid: 137a3bc5959aa47cc9d2ceb0268be287, type: 2}
+  pitFog: {fileID: 185698, guid: 4cbcbbbe1410f4765a2c159fe132cd6b, type: 2}
+  goal: {fileID: 198700, guid: 9a76564fd8bc94c4eb5dd55746f70632, type: 2}
+  levelAreas: 
+--- !u!114 &11477920
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 159036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c25c175e38c4247acae59326235a517c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

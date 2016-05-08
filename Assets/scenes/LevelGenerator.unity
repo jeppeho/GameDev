@@ -493,7 +493,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 451810, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 11405306, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
       propertyPath: handObject
@@ -902,60 +902,8 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 497530, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: pitFog
-      value: 
-      objectReference: {fileID: 185698, guid: 4cbcbbbe1410f4765a2c159fe132cd6b, type: 2}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: minBridgePercentage
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: minLavaPercentage
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: minCliffPercentage
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: goalAreaLength
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: minHighGroundPercentage
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: bridgeSteps.Array.data[0]
-      value: 
-      objectReference: {fileID: 112952, guid: b43f9b7f063004dabb4de0537bf04e0a, type: 2}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: steppingStones.Array.data[0]
-      value: 
-      objectReference: {fileID: 138102, guid: c0cc571c35b134f1c90ad4e56b44048e, type: 2}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: boulderPrefab
-      value: 
-      objectReference: {fileID: 124712, guid: 137a3bc5959aa47cc9d2ceb0268be287, type: 2}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: levelLength
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: minLowGroundPercentage
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-      propertyPath: goal
-      value: 
-      objectReference: {fileID: 198700, guid: 9a76564fd8bc94c4eb5dd55746f70632, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
   m_IsPrefabParent: 0
@@ -996,7 +944,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 418348, guid: eb10abeadc2cc428c90fe493fbc64d6a, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: eb10abeadc2cc428c90fe493fbc64d6a, type: 2}
@@ -1063,21 +1011,6 @@ Transform:
 Transform:
   m_PrefabParentObject: {fileID: 408312, guid: 8fcb3798ea8f54d1bbad6b2b9fcede4b, type: 2}
   m_PrefabInternal: {fileID: 1759971508}
---- !u!1 &1722339288 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 159036, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
-  m_PrefabInternal: {fileID: 1346719348}
---- !u!114 &1722339289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1722339288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c25c175e38c4247acae59326235a517c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1759971508
 Prefab:
   m_ObjectHideFlags: 0
