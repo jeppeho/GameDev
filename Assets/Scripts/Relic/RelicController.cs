@@ -264,9 +264,11 @@ public class RelicController : MonoBehaviour {
 		int index = 0;
 
 		while (index < numFrames) {
-		
-			rb.AddForce ( force * Time.deltaTime * 30f );
 
+			//If not above some max valocity
+			if (rb.velocity.magnitude < 15f) {
+				rb.AddForce (force * Time.deltaTime * 30f);
+			}
 			index++;
 			yield return new WaitForSeconds (0.01f);
 		}

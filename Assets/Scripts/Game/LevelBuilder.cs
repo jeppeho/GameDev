@@ -23,7 +23,7 @@ public class LevelBuilder : MonoBehaviour {
 		List<GameObject> sortedLevelElements = levelElements.OrderBy(go => go.GetComponent<Transform>().position.z).ToList ();
 
 		//Get the farClipPlaneFromCamera 
-		farClip = GameObject.Find ("Camera").GetComponent<Camera>().farClipPlane;
+		farClip = 120; //GameObject.Find ("Camera").GetComponent<Camera>().farClipPlane;
 
 		//Get and add all level elements to the levelElements list
 		GetAllLevelElements ();
@@ -63,7 +63,7 @@ public class LevelBuilder : MonoBehaviour {
 
 			//Debug.Log ("t.gameObject.name = " + t.gameObject.name);
 
-			if(t.gameObject.name != "WaterBasicNightime(Clone)")
+			if(t.gameObject.name != "WaterBasicNightime(Clone)" /* && t.gameObject.name != "Light" */)
 				levelElements.Add (t.gameObject);
 		}
 	

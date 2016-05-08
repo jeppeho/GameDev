@@ -503,6 +503,14 @@ Prefab:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11469044, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2053436, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
+      propertyPath: far clip plane
+      value: 1000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
   m_IsPrefabParent: 0
@@ -902,15 +910,15 @@ Prefab:
       objectReference: {fileID: 185698, guid: 4cbcbbbe1410f4765a2c159fe132cd6b, type: 2}
     - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
       propertyPath: minBridgePercentage
-      value: 10
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
       propertyPath: minLavaPercentage
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
       propertyPath: minCliffPercentage
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
       propertyPath: goalAreaLength
@@ -918,7 +926,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
       propertyPath: minHighGroundPercentage
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
       propertyPath: m_Enabled
@@ -942,8 +950,12 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
       propertyPath: minLowGroundPercentage
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11461242, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
+      propertyPath: goal
+      value: 
+      objectReference: {fileID: 198700, guid: 9a76564fd8bc94c4eb5dd55746f70632, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6b6d12970cb054210b7d99b48c7c945e, type: 2}
   m_IsPrefabParent: 0
@@ -1145,7 +1157,7 @@ Transform:
   - {fileID: 1586845726}
   - {fileID: 1565989578}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 8
 --- !u!4 &1950500941 stripped
 Transform:
   m_PrefabParentObject: {fileID: 408312, guid: 8fcb3798ea8f54d1bbad6b2b9fcede4b, type: 2}

@@ -46,6 +46,7 @@ public class LevelGenerator : MonoBehaviour {
 	public GameObject waterPrefab;
 	public GameObject boulderPrefab;
 	public GameObject pitFog;
+	public GameObject goal;
 
 
 	private int prevLargeCrystalIndex = -1;
@@ -57,8 +58,8 @@ public class LevelGenerator : MonoBehaviour {
 	private int prevSteppingStoneIndex = -1;
 
 
-	private enum AreaType { lowGround, highGround, lava, cliff, bridge, start, goal }; 
-	private AreaType[] levelAreas; 
+	public enum AreaType { lowGround, highGround, lava, cliff, bridge, start, goal }; 
+	public AreaType[] levelAreas; 
 
 	private float[] levelAreaNoise;
 	private float[] canyonNoise;
@@ -77,8 +78,8 @@ public class LevelGenerator : MonoBehaviour {
 	private float respawnpointOffset;
 
 	//Camera
-	private float[] cameraPositionRoute;
-	private float[] cameraLookAtRoute;
+//	private float[] cameraPositionRoute;
+//	private float[] cameraLookAtRoute;
 
 
 	//The parent object for all level elements
@@ -96,8 +97,8 @@ public class LevelGenerator : MonoBehaviour {
 		//Instantiate arrays
 		levelAreas = new AreaType[ levelLength ];
 		respawnPoints = new Vector3[levelLength * LevelManager.numPlayers];
-		cameraPositionRoute = new float[levelLength];
-		cameraLookAtRoute = new float[levelLength];
+//		cameraPositionRoute = new float[levelLength];
+//		cameraLookAtRoute = new float[levelLength];
 
 		generateAcceptableLevel ();
 
@@ -159,7 +160,10 @@ public class LevelGenerator : MonoBehaviour {
 
 
 		//Create the last edge
-		CreateGroundEdge (levelLength - 7, false);
+		//CreateGroundEdge (levelLength - 7, false);
+
+		//Create goal
+		CreateGoalSection();
 
 		//Put in water, where needed
 		if(useWater)
@@ -169,7 +173,7 @@ public class LevelGenerator : MonoBehaviour {
 
 		InsertBoulders ();
 
-		CreateCameraRoute ();
+//		CreateCameraRoute ();
 
 		//Copy respawn points to the LevelManager
 		LevelManager.respawnPoints = respawnPoints;
@@ -178,59 +182,62 @@ public class LevelGenerator : MonoBehaviour {
 
 
 
-	private void CreateCameraRoute(){
+//	private void CreateCameraRoute(){
+//
+//		for (int i = 0; i < levelLength; i++) {
+//		
+//			if (levelAreas [i] == AreaType.cliff) {
+//
+//				cameraPositionRoute [i] = canyonNoise [i];
+//
+//			} 
+//			else {
+//
+//				//If prev area was cliff
+//				if (i > 0 && levelAreas [i - 1] == AreaType.cliff) {
+//					cameraPositionRoute [i] = cameraPositionRoute [i - 1] / 2f;
+//				
+//
+//				} else {
+//
+//					//if prevprevarea was cliff, but not prev
+//					if (i > 2 && levelAreas [i - 2] == AreaType.cliff && levelAreas [i - 1] != AreaType.cliff) {
+//					
+//						cameraPositionRoute [i] = (cameraPositionRoute [i - 1] * 2 + cameraPositionRoute [i - 2]) / 3f;
+//					
+//					} 
+//				}
+//				//If next area os cliff
+//				if (i < levelLength && levelAreas [i + 1] == AreaType.cliff) {
+//					
+//					cameraPositionRoute [i] = cameraPositionRoute [i + 1] / 2f;
+//				
+//				} else {
+//
+//					//if nextNextarea is cliff, but not next
+//					if (i < levelLength && levelAreas [i + 2] == AreaType.cliff && levelAreas [i + 1] != AreaType.cliff) {
+//
+//						cameraPositionRoute [i] = (cameraPositionRoute [i + 1] * 2 + cameraPositionRoute [i + 2]) / 3f;
+//					
+//					} else {
+//						cameraPositionRoute [i] = 0;
+//					}
+//				}
+//			}
+//		}
+//	}
+//
+//	public float[] GetCameraPositionRoute(){
+//		return cameraPositionRoute;
+//	}
+//
+//	public float GetCameraPositionAtIndex(int index){
+//		return cameraPositionRoute [index];
+//	}
 
-		for (int i = 0; i < levelLength; i++) {
-		
-			if (levelAreas [i] == AreaType.cliff) {
-
-				cameraPositionRoute [i] = canyonNoise [i];
-
-			} else {
-
-				//If prev area was cliff
-				if (i > 0 && levelAreas [i - 1] == AreaType.cliff) {
-					cameraPositionRoute [i] = cameraPositionRoute [i - 1] / 2f;
-				
-
-				} else {
-
-					//if prevprevarea was cliff, but not prev
-					if (i > 2 && levelAreas [i - 2] == AreaType.cliff && levelAreas [i - 1] != AreaType.cliff) {
-					
-						cameraPositionRoute [i] = (cameraPositionRoute [i - 1] * 2 + cameraPositionRoute [i - 2]) / 3f;
-					
-					} 
-				}
-				//If next area os cliff
-				if (i < levelLength && levelAreas [i + 1] == AreaType.cliff) {
-					
-					cameraPositionRoute [i] = cameraPositionRoute [i + 1] / 2f;
-				
-				} else {
-
-					//if nextNextarea is cliff, but not next
-					if (i < levelLength && levelAreas [i + 2] == AreaType.cliff && levelAreas [i + 1] != AreaType.cliff) {
-
-						cameraPositionRoute [i] = (cameraPositionRoute [i + 1] * 2 + cameraPositionRoute [i + 2]) / 3f;
-					
-					} else {
-						cameraPositionRoute [i] = 0;
-					}
-				}
-			}
-		}
+	public float[] GetCanyonNoise(){
+		return this.canyonNoise;
 	}
-
-	public float[] GetCameraPositionRoute(){
-		return cameraPositionRoute;
-	}
-
-	public float GetCameraPositionAtIndex(int index){
-		return cameraPositionRoute [index];
-	}
-
-
 
 	/**
 	 * Makes the provided gameObject a child of the levelContainer
@@ -435,11 +442,6 @@ public class LevelGenerator : MonoBehaviour {
 			} 
 		}
 
-		//SET GOAL AREA
-		for (int sample = levelLength - 6; sample < levelLength; sample++)
-			levelAreas[sample] = AreaType.goal;
-
-
 		//MODIFY AREAS OF LENGTH 1
 		RemoveIsolatedAreas ();
 	
@@ -547,7 +549,7 @@ public class LevelGenerator : MonoBehaviour {
 		}
 
 		//Insert small and large pillars
-		if (z > 0 && z < levelLength) {
+		if (z > 0 && z < levelLength - 1) {
 
 			if (levelAreas [z - 1] == AreaType.lowGround && levelAreas [z + 1] == AreaType.lowGround) {
 
@@ -789,6 +791,73 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 
+	private void CreateGoalSection(){
+
+		Vector3 position = new Vector3 (0, 0, levelLength + 18);
+
+		GameObject goal_ = Instantiate (goal, position, Quaternion.identity) as GameObject;
+
+
+		//Create Sides on left and right side
+		for (int i = 0; i <40; i += 10) {
+			//float scale = Random.Range(90, 110);
+			int min = 130;
+			int max = 150;
+
+			Vector3 scalar = new Vector3 (Random.Range (min, max), Random.Range (min, max), Random.Range (min, max));
+			int rotationVariator = 30;
+			float x = halfWidth + 10;
+
+			Vector3 positionLeft = new Vector3 (x * -1.5f, 0, levelLength + i);
+			Vector3 positionRight = new Vector3 (x * 1.5f, 0, levelLength + i);
+
+			//Get index for model
+			int index = NG.GetRandomButNotPreviousValue (0, sides.Length, prevSidesIndex);
+
+			GameObject leftSide = Instantiate (sides [index], positionLeft, Quaternion.identity) as GameObject;
+			leftSide.transform.RotateAround (positionLeft, new Vector3 (0, 1, 0), Random.Range (-rotationVariator, rotationVariator) + 180);
+			leftSide.transform.localScale = scalar;
+
+			//Set levelContainer as parent
+			SetContainerAsParent (leftSide);
+
+			//Get new index for model
+			index = NG.GetRandomButNotPreviousValue (0, sides.Length, index);
+
+			GameObject rightSide = Instantiate (sides [index], positionRight, Quaternion.identity) as GameObject;
+			rightSide.transform.RotateAround (positionRight, new Vector3 (0, 1, 0), Random.Range (-rotationVariator, rotationVariator));
+			rightSide.transform.localScale = scalar;
+
+			//Set levelContainer as parent
+			SetContainerAsParent (rightSide);
+
+			prevSidesIndex = index;
+		}
+
+
+		//Create Sides in the end
+		Vector3 posLeft = new Vector3 (-10, 0, levelLength + 40);
+		Vector3 posRight = new Vector3 (10, 0, levelLength + 40);
+		Vector3 scale = new Vector3 (150, 150, 150);
+
+		//Get index for model
+		int _index = NG.GetRandomButNotPreviousValue (0, sides.Length, prevSidesIndex);
+	
+		GameObject _leftSide = Instantiate (sides [_index], posLeft, Quaternion.identity) as GameObject;
+		_leftSide.transform.RotateAround (posLeft, new Vector3 (0, 1, 0), 90);
+		_leftSide.transform.localScale = scale;
+
+		GameObject _rightSide = Instantiate (sides [_index], posRight, Quaternion.identity) as GameObject;
+		_rightSide.transform.RotateAround (posRight, new Vector3 (0, 1, 0), 90);
+		_rightSide.transform.localScale = scale;
+
+		//Set levelContainer as parent
+		SetContainerAsParent (_leftSide);
+		SetContainerAsParent (_rightSide);
+
+	}
+
+
 	/**
 	 * Inserts boulders on the whole level, if the minimum distance to prev boulder is reached
 	 * or an area with lots of cliffs is approaching
@@ -869,14 +938,16 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 
-	private void CreateGapSideEdge(int z, bool invertOnZ){
+	private void CreateBridgeSideEdge(int z, bool invertOnZ){
 
-		Vector3 position = new Vector3 (-12, 0, z);
+
+
+		Vector3 position = new Vector3 (-22, 0, z);
 		int rotation = 90;
 		//Invert on z-axis
 		if (invertOnZ) {
 			rotation += 180;
-			position.x = 12;
+			position.x *= -1;
 		}
 
 		int index = NG.GetRandomButNotPreviousValue (0, groundEdges.Length, prevGroundEdgeIndex);
@@ -1017,40 +1088,40 @@ public class LevelGenerator : MonoBehaviour {
 		prevSteppingStoneIndex = index;
 	}
 
-
-	private void CreatePitFog(){
-
-		for (int sample = startingCell; sample < levelLength; sample++) {
-
-			if (levelAreas [sample - 1] != AreaType.bridge && levelAreas [sample] == AreaType.bridge) {
-
-				for (int g = sample; g < levelLength; g++) {
-
-					if (levelAreas [g + 1] != AreaType.bridge && levelAreas [g] == AreaType.bridge
-						|| g == levelLength - 1
-					) {
-
-
-						Debug.Log ("PIIIIIT FOOOOOOG");
-
-						//Create water prefab
-						int center = sample + (g - sample) / 2;
-						GameObject fog = Instantiate (pitFog, new Vector3(0, -15, center), Quaternion.identity) as GameObject;
-
-						//Set levelContainer as parent
-						SetContainerAsParent (fog);
-
-						//Stretch on the Z-axis
-//						int length = (g - sample) / 3;
-						fog.transform.localScale = new Vector3 (4, 0, 1 /*length*/);
 //
-						break;
-					}
-				}	
-			}
-		}
-
-	}
+//	private void CreatePitFog(){
+//
+//		for (int sample = startingCell; sample < levelLength; sample++) {
+//
+//			if (levelAreas [sample - 1] != AreaType.bridge && levelAreas [sample] == AreaType.bridge) {
+//
+//				for (int g = sample; g < levelLength; g++) {
+//
+//					if (levelAreas [g + 1] != AreaType.bridge && levelAreas [g] == AreaType.bridge
+//						|| g == levelLength - 1
+//					) {
+//
+//
+//						Debug.Log ("PIIIIIT FOOOOOOG");
+//
+//						//Create water prefab
+//						int center = sample + (g - sample) / 2;
+//						GameObject fog = Instantiate (pitFog, new Vector3(0, -15, center), Quaternion.identity) as GameObject;
+//
+//						//Set levelContainer as parent
+//						SetContainerAsParent (fog);
+//
+//						//Stretch on the Z-axis
+////						int length = (g - sample) / 3;
+//						fog.transform.localScale = new Vector3 (4, 0, 1 /*length*/);
+////
+//						break;
+//					}
+//				}	
+//			}
+//		}
+//
+//	}
 
 
 	private void CreateSides(int z){
@@ -1065,6 +1136,17 @@ public class LevelGenerator : MonoBehaviour {
 			Vector3 scalar = new Vector3 (Random.Range(min, max), Random.Range(min, max), Random.Range(min, max));
 			int rotationVariator = 30;
 			float x = halfWidth + 10;
+
+
+			//Move further out to the sides is bridge area
+			if (z > 3 && z < levelLength - 6) {
+				for (int i = -3; i < 3; i++) {
+					if (levelAreas [z + i] == AreaType.bridge) {
+						x *= 1.8f;
+						break;
+					}
+				}
+			}
 
 			Vector3 positionLeft = new Vector3 (-x, 0, z);
 			Vector3 positionRight = new Vector3 (x, 0, z);
@@ -1121,9 +1203,9 @@ public class LevelGenerator : MonoBehaviour {
 			size = Random.Range (45, 55);
 			step2.transform.localScale = new Vector3 (size, 1500, size);
 
-		if (z % 20 == 0 || (z > 0 && levelAreas[z - 1] != AreaType.bridge ) || (z > levelLength && levelAreas[z + 1] != AreaType.bridge ) ) {
-				CreateGapSideEdge (z, true);
-				CreateGapSideEdge (z, false);
+		if (z % 20 == 0 || (z > 0 && levelAreas[z - 1] != AreaType.bridge ) || (z < levelLength && levelAreas[z + 1] != AreaType.bridge ) ) {
+				CreateBridgeSideEdge (z, true);
+				CreateBridgeSideEdge (z, false);
 			}
 
 			SetRespawnPointOnBridge (z, position1.x);

@@ -320,8 +320,6 @@ public class NewController : MonoBehaviour {
 
 	IEnumerator Jump(){
 
-		Debug.Log ("/////////Start Jump");
-
 		float x = 0; float z = 0;
 			
 		x = moveHorizontal * accelerationRate * horizontalJumpScalar;
@@ -335,9 +333,11 @@ public class NewController : MonoBehaviour {
 
 		float jumpPower = GetJumpPower () / (float)numFrames;
 
-		while (pressJump && index < numFrames) {
+		if (GetSurfaceTag () == "Water" || GetLastSurfaceTag() == "Water" ) {
+			jumpPower /= 2f;
+		}
 
-			Debug.Log("index = " + index);
+		while (pressJump && index < numFrames) {
 
 			Vector3 force = new Vector3 ( x, GetJumpPower(), z);
 
@@ -360,8 +360,6 @@ public class NewController : MonoBehaviour {
 	 * Builds up force, then throws the relic and removes it as child
 	 */ 
 	IEnumerator Throw(){
-	
-		Debug.Log ("Starting the player throw coroutine");
 
 		Vector3 force = Vector3.zero;
 
@@ -372,7 +370,8 @@ public class NewController : MonoBehaviour {
 
 		while (pressThrow > 0.05f && index < numFrames) {
 		
-		
+			
+
 			index++;
 			yield return new WaitForSeconds(0.1f);
 		}
@@ -443,15 +442,15 @@ public class NewController : MonoBehaviour {
 			rb.velocity = oldVel + counterVel;
 		}
 
-		if (dis < nearWalkZone) {
-
-			Vector3 oldVel = rb.velocity;
-			float counterForce = maxVelocity * (dis-nearWalkZone)/walkZoneWidth;
-
-			Vector3 counterVel = new Vector3 (0, 0, -counterForce);
-
-			rb.velocity = oldVel + counterVel;
-		}
+//		if (dis < nearWalkZone) {
+//
+//			Vector3 oldVel = rb.velocity;
+//			float counterForce = maxVelocity * (dis-nearWalkZone)/walkZoneWidth;
+//
+//			Vector3 counterVel = new Vector3 (0, 0, -counterForce);
+//
+//			rb.velocity = oldVel + counterVel;
+//		}
 	}
 	
 	 // Returns the distance on the Z-axis from the player to the LEAP

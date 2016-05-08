@@ -5,8 +5,13 @@ public class CameraController : MonoBehaviour {
 
 	LevelGenerator l;
 
-	float[] cameraPositions;
-	float[] lookAts;
+	private float[] cameraPositions;
+	private float[] lookAts;
+
+	//Camera
+	private float[] cameraPositionRoute;
+	private float[] cameraLookAtRoute;
+
 
 	// Use this for initialization
 	void Start () {
@@ -14,7 +19,12 @@ public class CameraController : MonoBehaviour {
 
 		cameraPositions = new float[l.levelLength];
 		lookAts = new float[l.levelLength];
+		cameraPositionRoute = new float[l.levelLength];
 
+		//Set array with x values for the camera
+		CreateCameraRoute ();
+
+		//Set initial position and rotation
 		SetLookAtsArray ();
 		SetCameraPositionsArray ();
 	}
@@ -23,6 +33,8 @@ public class CameraController : MonoBehaviour {
 	void Update () {
 			
 		if (GetZPosition() > 0f) {
+
+			//Update position and rotation for the camera
 			UpdateCameraPosition ();
 			UpdateCameraRotation ();
 		}
@@ -56,7 +68,7 @@ public class CameraController : MonoBehaviour {
 
 		float t = GetZPosition () - floor_z;
 
-		float rotY = Mathf.Lerp (lookAts[floor_z], lookAts[floor_z + 1], t);
+		float rotY = Mathf.Lerp (lookAts[ GetAcceptedLevelIndex( floor_z )], lookAts[ GetAcceptedLevelIndex( floor_z + 1 ) ], t);
 
 		return rotY;
 	}
@@ -67,7 +79,7 @@ public class CameraController : MonoBehaviour {
 
 		float t = GetZPosition () - floor_z;
 
-		float rotY = Mathf.Lerp (cameraPositions[floor_z], cameraPositions[floor_z + 1], t);
+		float rotY = Mathf.Lerp (cameraPositions[ GetAcceptedLevelIndex( floor_z ) ], cameraPositions[ GetAcceptedLevelIndex( floor_z + 1 ) ], t);
 
 		return rotY;
 	}
@@ -86,13 +98,16 @@ public class CameraController : MonoBehaviour {
 	}
 
 
+	/**
+	 * Returns the average x position from param start to param end
+	 */ 
 	private float SetAveragedCameraPosition (int z, int start, int end){
 
 		float a = 0f;
 
 		for (int i = start; i < end; i++) {
 
-			a += l.GetCameraPositionAtIndex ( GetAcceptedLevelIndex ( z + i ) );
+			a += GetCameraPositionAtIndex ( GetAcceptedLevelIndex ( z + i ) );
 		}
 
 		//Divide by number of samples
@@ -125,7 +140,58 @@ public class CameraController : MonoBehaviour {
 		return this.transform.position.z;
 	}
 
+	private float[] GetCameraPositionRoute(){
+		return cameraPositionRoute;
+	}
 
+	private float GetCameraPositionAtIndex(int index){
+		return cameraPositionRoute [index];
+	}
+
+
+	private void CreateCameraRoute(){
+
+		for (int i = 0; i < l.levelLength; i++) {
+
+			if ( l.levelAreas [i] == LevelGenerator.AreaType.cliff) {
+				
+				cameraPositionRoute [i] = l.GetCanyonNoise() [i];
+
+			} 
+			else {
+
+				//If prev area was cliff
+				if (i > 0 && l.levelAreas [i - 1] == LevelGenerator.AreaType.cliff) {
+					cameraPositionRoute [i] = cameraPositionRoute [i - 1] / 2f;
+
+				} else {
+
+					//if prevprevarea was cliff, but not prev
+					if (i > 2 && l.levelAreas [i - 2] == LevelGenerator.AreaType.cliff && l.levelAreas [i - 1] != LevelGenerator.AreaType.cliff) {
+
+						cameraPositionRoute [i] = (cameraPositionRoute [i - 1] * 2 + cameraPositionRoute [i - 2]) / 3f;
+
+					} 
+				}
+				//If next area os cliff
+				if (i < l.levelLength && l.levelAreas [GetAcceptedLevelIndex(i + 1)] == LevelGenerator.AreaType.cliff) {
+
+					cameraPositionRoute [i] = cameraPositionRoute [GetAcceptedLevelIndex(i + 1)] / 2f;
+
+				} else {
+
+					//if nextNextarea is cliff, but not next
+					if (i < l.levelLength && l.levelAreas [GetAcceptedLevelIndex(i + 2)] == LevelGenerator.AreaType.cliff && l.levelAreas [GetAcceptedLevelIndex(i + 1)] != LevelGenerator.AreaType.cliff) {
+
+						cameraPositionRoute [i] = (cameraPositionRoute [GetAcceptedLevelIndex(i + 1)] * 2 + cameraPositionRoute [GetAcceptedLevelIndex(i + 2)]) / 3f;
+
+					} else {
+						cameraPositionRoute [i] = 0f;
+					}
+				}
+			}
+		}
+	}
 
 //
 //	private float GetAveragedInComingPositions(int start, int end){
