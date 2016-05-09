@@ -104,8 +104,8 @@ public class LevelGenerator : MonoBehaviour {
 
 		//Create noise array to use with level elements
 		canyonNoise = NG.GetPerlinNoise1D (4, 7, 0.6f, -halfWidth +1, halfWidth -1);
-		bridgeNoise = NG.GetPerlinNoise1D (5, 6, 0.5f, -halfWidth, (halfWidth / 2) );
-		bridgeNoise2 = NG.GetPerlinNoise1D (5, 6, 1f, (-halfWidth / 2), halfWidth);
+		bridgeNoise = NG.GetPerlinNoise1D (5, 6, 0.5f, -halfWidth * 1.5f, (halfWidth / 2) );
+		bridgeNoise2 = NG.GetPerlinNoise1D (5, 6, 1f, (-halfWidth / 2), halfWidth * 1.5f);
 		crystalNoise = NG.GetPerlinNoise1D (8, 10, 0.8f, -1, 1);
 		crystalPositionNoise = NG.GetPerlinNoise1D (8, 10, 0.8f, -1, 1);
 		smallCrystalPositionNoise = NG.GetPerlinNoise1D (6, 10, 0.5f, -halfWidth, halfWidth);
@@ -122,6 +122,8 @@ public class LevelGenerator : MonoBehaviour {
 			float y = levelAreaNoise [sample];
 
 			CreateSides (sample);
+
+			CreateBridgeBackwall (sample);
 
 			//TEMPORARY
 			if (levelAreas [sample] == AreaType.start){
@@ -946,31 +948,48 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 
-	private void CreateBridgeSideEdge(int z, bool invertOnZ){
 
-
-
-		Vector3 position = new Vector3 (-22, 0, z);
-		int rotation = 90;
-		//Invert on z-axis
-		if (invertOnZ) {
-			rotation += 180;
-			position.x *= -1;
-		}
-
+	private void CreateBridgeBackwallEdge(Vector3 position){
+	
 		int index = NG.GetRandomButNotPreviousValue (0, groundEdges.Length, prevGroundEdgeIndex);
 		GameObject edge = Instantiate (groundEdges [index], position, Quaternion.identity) as GameObject;
-		SetContainerAsParent (edge);
 
+
+		//Stretch down
 		Vector3 scale = edge.transform.localScale;
-		scale.y = 30;
+		scale.y = 100;
+		scale.z *= 1.5f;
 		edge.transform.localScale = scale;
 
-		edge.transform.RotateAround (position, new Vector3 (0, 1, 0), rotation);
+		edge.transform.RotateAround (position, new Vector3 (0, 1, 0), 180);
 
-		prevGroundEdgeIndex = index;
-
+		SetContainerAsParent (edge);
+	
 	}
+
+//	private void CreateBridgeSideEdge(int z, bool invertOnZ){
+//
+//		Vector3 position = new Vector3 (-22, 0, z);
+//		int rotation = 90;
+//		//Invert on z-axis
+//		if (invertOnZ) {
+//			rotation += 180;
+//			position.x *= -1;
+//		}
+//
+//		int index = NG.GetRandomButNotPreviousValue (0, groundEdges.Length, prevGroundEdgeIndex);
+//		GameObject edge = Instantiate (groundEdges [index], position, Quaternion.identity) as GameObject;
+//		SetContainerAsParent (edge);
+//
+//		Vector3 scale = edge.transform.localScale;
+//		scale.y = 30;
+//		edge.transform.localScale = scale;
+//
+//		edge.transform.RotateAround (position, new Vector3 (0, 1, 0), rotation);
+//
+//		prevGroundEdgeIndex = index;
+//
+//	}
 
 
 
@@ -1132,57 +1151,96 @@ public class LevelGenerator : MonoBehaviour {
 //	}
 
 
-	private void CreateSides(int z){
+	private void CreateBridgeBackwall(int z){
 
-		//Put in every 5th slice or add an edge
-		if (z % 10 == 0) {
+		if (levelAreas [z] == AreaType.bridge && levelAreas [z + 1] != AreaType.bridge) {
 
-			//float scale = Random.Range(90, 110);
-			int min = 130;
-			int max = 150;
+			int width = 80;
 
-			Vector3 scalar = new Vector3 (Random.Range(min, max), Random.Range(min, max), Random.Range(min, max));
-			int rotationVariator = 30;
-			float x = halfWidth + 10;
+			for (int i = -width; i < width; i += 10) {
 
+				//Avoid putting in sides on the center of the level
+				if (i == -20)
+					i = 20;
 
-			//Move further out to the sides is bridge area
-			if (z > 3 && z < levelLength - 6) {
-				for (int i = -3; i < 3; i++) {
-					if (levelAreas [z + i] == AreaType.bridge) {
-						x *= 1.8f;
-						break;
-					}
-				}
+				Vector3 sidePosition = new Vector3 (i, 0, z + 6);
+
+				CreateSideElement (sidePosition, -90f);
+
+				Vector3 edgePosition = new Vector3 (i, 0, z + 2);
+
+				CreateBridgeBackwallEdge (edgePosition);
 			}
-
-			Vector3 positionLeft = new Vector3 (-x, 0, z);
-			Vector3 positionRight = new Vector3 (x, 0, z);
-
-			//Get index for model
-			int index = NG.GetRandomButNotPreviousValue (0, sides.Length, prevSidesIndex);
-
-			GameObject leftSide = Instantiate (sides [index], positionLeft, Quaternion.identity) as GameObject;
-			leftSide.transform.RotateAround (positionLeft, new Vector3 (0, 1, 0), Random.Range(-rotationVariator, rotationVariator) + 180);
-			leftSide.transform.localScale = scalar;
-
-			//Set levelContainer as parent
-			SetContainerAsParent (leftSide);
-
-			//Get new index for model
-			index = NG.GetRandomButNotPreviousValue (0, sides.Length, index);
-
-			GameObject rightSide = Instantiate (sides [index], positionRight, Quaternion.identity) as GameObject;
-			rightSide.transform.RotateAround (positionRight, new Vector3 (0, 1, 0), Random.Range(-rotationVariator, rotationVariator));
-			rightSide.transform.localScale = scalar;
-
-			//Set levelContainer as parent
-			SetContainerAsParent (rightSide);
-
-			prevSidesIndex = index;
 		}
 	}
 
+
+
+
+	private void CreateSides(int z){
+
+		bool toCloseToGap = false;
+
+		//Put in every 10th slice or add an edge
+		if (z % 10 == 0) {
+
+			//Check if a gap is nearby
+			for (int i = 0; i < 7; i++) {
+				if (z - i > 0 && levelAreas [z - i] == AreaType.bridge) {
+					toCloseToGap = true;
+					break;
+				}
+			}
+
+			if (!toCloseToGap) {
+		
+				//float scale = Random.Range(90, 110);
+				int min = 130;
+				int max = 150;
+
+				Vector3 scalar = new Vector3 (Random.Range(min, max), Random.Range(min, max), Random.Range(min, max));
+				int rotationVariator = 30;
+				float x = halfWidth + 10;
+
+
+
+				Vector3 positionLeft = new Vector3 (-x, 0, z);
+				Vector3 positionRight = new Vector3 (x, 0, z);
+
+				float rotationLeft = Random.Range (-rotationVariator, rotationVariator) + 180;
+				float rotationRight = Random.Range (-rotationVariator, rotationVariator);
+
+				CreateSideElement (positionLeft, rotationLeft);
+				CreateSideElement (positionRight, rotationRight);
+			}
+		}
+	}
+
+
+	private void CreateSideElement(Vector3 position, float rotation){
+
+		int min = 130;
+		int max = 150;
+
+		Vector3 scalar = new Vector3 (Random.Range(min, max), Random.Range(min, max), Random.Range(min, max));
+
+		//Vector3 position = new Vector3 (i, 0, z);
+
+		//Get index for model
+		int index = NG.GetRandomButNotPreviousValue (0, sides.Length, prevSidesIndex);
+
+		//Instantiate side prefab
+		GameObject side = Instantiate (sides [index], position, Quaternion.identity) as GameObject;
+
+		//Rotate the side
+		side.transform.RotateAround (position, new Vector3 (0, 1, 0), rotation);
+
+		//Scale the side
+		side.transform.localScale = scalar;
+
+		//Set as child of the levelElement object 
+		SetContainerAsParent (side);	
+	}
 
 
 	private void CreateBridgeStep(int z){
@@ -1211,10 +1269,10 @@ public class LevelGenerator : MonoBehaviour {
 			size = Random.Range (45, 55);
 			step2.transform.localScale = new Vector3 (size, 1500, size);
 
-		if (z % 20 == 0 || (z > 0 && levelAreas[z - 1] != AreaType.bridge ) || (z < levelLength && levelAreas[z + 1] != AreaType.bridge ) ) {
-				CreateBridgeSideEdge (z, true);
-				CreateBridgeSideEdge (z, false);
-			}
+//		if (z % 20 == 0 || (z > 0 && levelAreas[z - 1] != AreaType.bridge ) || (z < levelLength && levelAreas[z + 1] != AreaType.bridge ) ) {
+//				CreateBridgeSideEdge (z, true);
+//				CreateBridgeSideEdge (z, false);
+//			}
 
 			SetRespawnPointOnBridge (z, position1.x);
 			SetRespawnPointOnBridge (z+1, position1.x);

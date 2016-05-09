@@ -28,7 +28,7 @@ public static class LevelManager {
 
 		LevelGenerator lg = GameObject.Find ("LevelGenerator").GetComponent<LevelGenerator>();
 
-		int offset = 10;
+		int offset = 5;
 		int index = 0;
 
 		//Try at z + offset, otherwise move closer to camera

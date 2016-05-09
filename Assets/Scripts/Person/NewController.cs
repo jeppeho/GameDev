@@ -366,13 +366,13 @@ public class NewController : MonoBehaviour {
 		//Add some min force
 		//force *= 50; /** GetDirection ()*/;
 
-		int numFrames = 10;
+		int numFrames = 100;
 		int index = 1;
 
 		while (pressThrow > 0.05f && index < numFrames) {
 
 			index++;
-			yield return new WaitForSeconds(0.1f);
+			yield return new WaitForSeconds(0.01f);
 		}
 
 		//Wait until button is released
@@ -380,7 +380,7 @@ public class NewController : MonoBehaviour {
 			yield return new WaitForSeconds(0.01f);
 		}
 
-		force = GetDirection () * 50;
+		force = GetDirection () * 25;
 
 		force *= index * 20;
 
