@@ -11,7 +11,10 @@ public class StoneHandManager : MonoBehaviour {
 	private GameObject core;
 
 	private GameObject audioplayerMovement;
+	[HideInInspector]
 	public GameObject audioplayerCasting;
+	[HideInInspector]
+	public GameObject audioplayerCastingSupporting;
 
 	//Object used, containing all bones
 	public GameObject handObject;
@@ -72,6 +75,7 @@ public class StoneHandManager : MonoBehaviour {
 		core = handObject.transform.FindChild ("ball").gameObject;
 		audioplayerMovement = core.transform.FindChild ("audioplayerMovement").gameObject;
 		audioplayerCasting = core.transform.FindChild ("audioplayerCasting").gameObject;
+		audioplayerCastingSupporting = core.transform.FindChild ("audioplayerCasting2").gameObject;
 
 		Debug.Log (core.ToString());
 		Debug.Log (core.GetComponent<AudioSource>().ToString());
