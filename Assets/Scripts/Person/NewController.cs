@@ -15,7 +15,8 @@ public class NewController : MonoBehaviour {
 
 	//Jump
 	public float jumpPower = 0.75f;
-	public float horizontalJumpScalar = 1f;
+	//public float horizontalJumpScalar = 1f;
+	public float jumpXZscalar = 1.3f;
 
 	//Dash
 	public int numDashFrames = 5;
@@ -90,7 +91,7 @@ public class NewController : MonoBehaviour {
 
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
 		//Get state of player, eg. dead, active etc.
 		playerState = this.gameObject.GetComponent<PlayerManager> ().GetState ();
@@ -224,8 +225,6 @@ public class NewController : MonoBehaviour {
 	}
 
 
-
-
 	/**
 	 * Add force on X and Z axis based on controller input.
 	 */
@@ -243,8 +242,8 @@ public class NewController : MonoBehaviour {
 		}
 
 		if (isJumping) {
-			force.x /= 2f;
-			force.z /= 2f;
+			force.x *= jumpXZscalar;
+			force.z *= jumpXZscalar;
 		}
 
 		//If player is running towards camera, slow down velocity
@@ -322,9 +321,9 @@ public class NewController : MonoBehaviour {
 
 		float x = 0; float z = 0;
 			
-		x = moveHorizontal * accelerationRate * horizontalJumpScalar;
-		z = moveVertical * accelerationRate * horizontalJumpScalar;
-
+//		x = moveHorizontal * accelerationRate * horizontalJumpScalar;
+//		z = moveVertical * accelerationRate * horizontalJumpScalar;
+//
 
 		int numFrames = 7;
 		int index = 0;
@@ -333,13 +332,17 @@ public class NewController : MonoBehaviour {
 
 		float jumpPower = GetJumpPower () / (float)numFrames;
 
-		if (GetSurfaceTag () == "Water" || GetLastSurfaceTag() == "Water" ) {
-			jumpPower /= 2f;
+		/* This could be made in the GetJumpPower() method */
+		if (GetSurfaceTag () == "Water" || GetLastSurfaceTag () == "Water") {
+			Debug.Log ("*****Water");
+			//jumpPower /= 1f;
+		} else {
+			Debug.Log ("-----FUCKING GROUND");
 		}
 
 		while (pressJump && index < numFrames) {
 
-			Vector3 force = new Vector3 ( x, GetJumpPower(), z);
+			Vector3 force = new Vector3 ( x, jumpPower, z);
 
 			rb.AddForce ( force * Time.deltaTime );
 			index++;

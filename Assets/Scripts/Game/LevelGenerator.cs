@@ -1042,7 +1042,7 @@ public class LevelGenerator : MonoBehaviour {
 
 		prevSteppingStoneIndex = index;
 	}
-		
+		 
 
 	private void CreateBridgeBackwall(int z){
 

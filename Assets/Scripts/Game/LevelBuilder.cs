@@ -86,7 +86,7 @@ public class LevelBuilder : MonoBehaviour {
 
 			//If water
 			else if (t.name == "WaterCube(Clone)")
-				y -= 1f;
+				y -= 1.5f;
 			//If stepping stone
 			else if (t.name == "STEPPING_STONE(Clone)")
 				y += 0f;//0.25f;

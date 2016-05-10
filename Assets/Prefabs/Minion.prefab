@@ -171,7 +171,7 @@ Rigidbody:
   m_GameObject: {fileID: 160758}
   serializedVersion: 2
   m_Mass: 0.02
-  m_Drag: 0
+  m_Drag: 5
   m_AngularDrag: 0.005
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -238,13 +238,13 @@ MonoBehaviour:
   prefix: P1
   producer: 
   accelerationRate: 10
-  maxVelocity: 2
-  jumpPower: 0.8
+  maxVelocity: 3
+  jumpPower: 10
   horizontalJumpScalar: 1
   numDashFrames: 5
   dashPower: 900
   dashCoolDownForSeconds: 1.5
-  fallDownForce: 30
+  fallDownForce: 50
 --- !u!135 &13552636
 SphereCollider:
   m_ObjectHideFlags: 1
