@@ -28,7 +28,7 @@ public class AvoidElevation : MonoBehaviour {
 				if (col.transform.position.y > rb.position.y - minionOffset) {
 
 					//rb.AddForce (new Vector3 (0, 2f, 0));// * Time.deltaTime);
-					rb.AddForce (new Vector3 (0, 30f, 0) * Time.deltaTime);
+					rb.AddForce (new Vector3 (0, 100f, 0) * Time.deltaTime);
 				}
 			}
 		}

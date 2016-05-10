@@ -630,6 +630,38 @@ InputManager:
     axis: 5
     joyNum: 3
   - serializedVersion: 3
+    m_Name: PauseGame
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: joystick button 9
+    altNegativeButton: 
+    altPositiveButton: space
+    gravity: 1000
+    dead: 1
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Nothing yet
+    descriptiveName: PS4 R2 trigger
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.05
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
     m_Name: Nothing yet
     descriptiveName: PS4 R2 trigger
     descriptiveNegativeName: 

@@ -128,8 +128,12 @@ public class RelicHealth : MonoBehaviour {
 
 		if (health < 0) {
 			manager.ReleaseFromParent ();
-			DeleteObject ();
+			DeleteVisualRelic ();
 		}
+	}
+
+	public float GetHealth(){
+		return this.health;
 	}
 
 
@@ -167,7 +171,18 @@ public class RelicHealth : MonoBehaviour {
 		return normalizedHealth;
 	}
 
-	private void DeleteObject(){
-		Destroy (this.gameObject);
+	private void DeleteVisualRelic(){
+
+		//Go through children
+		foreach (Transform t in this.transform) {
+
+			//Find name of relic
+			if (t.name == "RelicSphere") {
+
+				//Destroy the sphere
+				Destroy (t);
+			}
+		}
 	}
+
 }
