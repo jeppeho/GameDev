@@ -18,7 +18,8 @@ public class GrabManager : MonoBehaviour {
 	//Include only certain layers
 	private LayerMask allowedLayers;
 
-	private int releaseCounter = 5;
+	private int releaseCounter = 4;
+	private List<Vector3> releaseVectors;
 
 	private LeapManager leapManager;
 	protected GestureManager gestureManager;
@@ -28,6 +29,8 @@ public class GrabManager : MonoBehaviour {
 	{
 		leapManager = gameObject.GetComponent<LeapManager> ();
 		gestureManager = gameObject.GetComponent<GestureManager> ();
+
+		releaseVectors = new List<Vector3>();
 
 		//Construct layermask
 		LayerMask mask1 = 1 << 13;
@@ -52,10 +55,15 @@ public class GrabManager : MonoBehaviour {
 				//Find the vector towards the thumb
 				Vector3 directionToThumb = grabPosition - grabbedObject.transform.position;
 
-				//directionToThumb *= 0.002f; //Limit the speed
+				releaseVectors.Add(palmMovement);
+				if (releaseVectors.Count >= 8)
+				{
+					releaseVectors.RemoveAt (0);
+				}
 
 				grabbedObject.attachedRigidbody.useGravity = false;
 				grabbedObject.attachedRigidbody.MovePosition (grabPosition);
+
 				//DEBUGGING:
 				//grabbedObject.gameObject.GetComponent<Renderer> ().material.color = Color.magenta;
 			}
@@ -80,7 +88,7 @@ public class GrabManager : MonoBehaviour {
 		//if pinch strength is high enough
 		if (pinchStrength >= pinchThreshold)
 		{
-			releaseCounter = 5; //Reset counter
+			releaseCounter = 4; //Reset counter
 			pinchTriggered = true;
 		}
 		else
@@ -156,9 +164,31 @@ public class GrabManager : MonoBehaviour {
 		Debug.Log ("Releasing!");
 		if (grabbedObject != null)
 		{
+			grabbedObject.GetComponent<Rigidbody> ().velocity = getVectorAverage (releaseVectors) * 6f;
+			Debug.Log ("Throwing based on vectors " + releaseVectors [0].ToString () + ";" + releaseVectors [1].ToString () + ";" + releaseVectors [2].ToString () + ";" + releaseVectors [3].ToString () + ";" + releaseVectors [4].ToString ()+" = "+getVectorAverage (releaseVectors).ToString());
 			grabbedObject.gameObject.layer = grabbedObjectLayer;
 			grabbedObject.attachedRigidbody.useGravity = true;
 			grabbedObject = null;
 		}
+	}
+
+	private Vector3 getVectorAverage(List<Vector3> vectors)
+	{
+		float xx = 0;
+		float yy = 0;
+		float zz = 0;
+
+		foreach (Vector3 v in vectors)
+		{
+			xx += v.x;
+			yy += v.y;
+			zz += v.z;
+		}
+
+		xx /= vectors.Count;
+		yy /= vectors.Count;
+		zz /= vectors.Count;
+
+		return new Vector3 (xx, yy, zz);
 	}
 }
