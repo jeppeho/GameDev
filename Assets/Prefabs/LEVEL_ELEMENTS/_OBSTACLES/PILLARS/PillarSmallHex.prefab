@@ -48,7 +48,7 @@ GameObject:
   - 64: {fileID: 6474620}
   m_Layer: 14
   m_Name: intactObject
-  m_TagString: Environment
+  m_TagString: Shatterables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

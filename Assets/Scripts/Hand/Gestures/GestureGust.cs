@@ -78,8 +78,26 @@ public class GestureGust : Gesture {
 
 					GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
 					GameObject[] objects = GameObject.FindGameObjectsWithTag ("Interactables");
-					GameObject[] intactObjects = GameObject.FindGameObjectsWithTag ("Interactables");
+					GameObject[] intactObjects = GameObject.FindGameObjectsWithTag ("Shatterables");
 
+					foreach (GameObject o in intactObjects)
+					{
+						ShatterOnCollision scr = o.GetComponent<ShatterOnCollision> ();
+						if (scr == null)
+						{	scr = o.GetComponent<ShatterIndexOnCollision> ();	}
+
+						if (scr != null)
+						{
+							//get pull direction (and distance to hand)
+							Vector3 dir = tempGustCenter - o.transform.position;
+
+							if (dir.sqrMagnitude <= searchRadiusSqr-Random.Range(0f, 80f))
+							{
+								scr.ShatterObject ();
+							}
+						}
+					}
+						
 					foreach (GameObject o in objects)
 					{
 						Rigidbody rb = o.GetComponent<Rigidbody> ();
