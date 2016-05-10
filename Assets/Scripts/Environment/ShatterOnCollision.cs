@@ -58,9 +58,8 @@ public class ShatterOnCollision : MonoBehaviour {
 			}
 		}
 	}
-
-
-	private void ShatterObject(){
+		
+	public void ShatterObject(){
 
 		intactObject.SetActive (false);
 		shatteredObject.SetActive (true);

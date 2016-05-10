@@ -106,6 +106,11 @@ public class ShatterIndexOnCollision : MonoBehaviour {
 		}
 	}
 
+	public void ShatterObject()
+	{
+		ShatterObject (finalIndex);
+	}
+
 	private void ShatterObject(int n){
 		
 		intactObject[n].SetActive (false);

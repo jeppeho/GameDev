@@ -63,7 +63,7 @@ public class GestureGust : Gesture {
 			)
 			{
 				//Handle charge
-				charge = Mathf.Min(1, charge+ 0.006f);
+				charge = Mathf.Min(1, charge+ 0.0075f);
 				pulsebase = (pulsebase + (charge *50f * Time.deltaTime)) % (2 * Mathf.PI);
 				gestureManager.setHandColor (Color.Lerp (Color.grey, Color.magenta, Mathf.Sin(pulsebase)));
 
@@ -74,10 +74,11 @@ public class GestureGust : Gesture {
 					float pull = gustProgression - palmY;
 
 					//Create drag
-					float searchRadiusSqr = 250.0f;
+					float searchRadiusSqr = 280.0f;
 
 					GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
 					GameObject[] objects = GameObject.FindGameObjectsWithTag ("Interactables");
+					GameObject[] intactObjects = GameObject.FindGameObjectsWithTag ("Interactables");
 
 					foreach (GameObject o in objects)
 					{
@@ -95,6 +96,13 @@ public class GestureGust : Gesture {
 								dir = dir.normalized * force;
 								//Rotate pull, to create hurricane effect
 								dir = Quaternion.Euler (0f, 15f, 0f) * dir; 
+
+								//If force is great enough, shatter appropriate objects
+								ShatterOnCollision scr = o.GetComponent<ShatterOnCollision> ();
+								if (scr != null)
+								{
+									scr.ShatterObject();
+								}
 
 								//Apply
 								rb.AddForce (dir);
