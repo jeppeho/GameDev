@@ -17,6 +17,8 @@ public class RelicController : MonoBehaviour {
 	float minX, maxX, minY, minZ;
 
 	RelicManager manager;
+	LevelGenerator lg;
+
 
 	int escapeDirection = 1;
 	float prevX = 0;
@@ -30,6 +32,7 @@ public class RelicController : MonoBehaviour {
 	void Start () {
 		rb = this.gameObject.GetComponent<Rigidbody> ();
 		manager = this.GetComponent<RelicManager> ();
+		lg = GameObject.Find ("LevelGenerator").GetComponent<LevelGenerator>();
 		//	ATTENSION - from this line forth, nothing makes sense. The manager can be debugged, but no method within it can be called, without a null-point-exception. After 1,5 hours of trying to resolve this error, I give up. /Nils
 		manager.UpdateFreezeRotation (false);
 		movingToTarget = false;
@@ -48,8 +51,17 @@ public class RelicController : MonoBehaviour {
 			//If relic is about to go behind camera
 			wall = camera.GetComponent<CameraController> ().GetPosition ().z + cameraZOffsetBound;
 
+			int z = Mathf.FloorToInt (this.transform.position.z);
+			float RelicZ = 1.2f;
+
+			if (z >= 0 && z < lg.levelLength) {
+				RelicZ += lg.GetLevelAreaHeights () [ z ];
+			} else {
+				RelicZ += lg.GetLevelAreaHeights () [ 0 ];
+			
+			}
 			//Check if below ground
-			if (manager.GetPosition ().y < 1.5f) {
+			if (manager.GetPosition ().y < RelicZ) {
 			
 				rb.AddForce (new Vector3 (0, Random.Range (20, 40), 0));
 			

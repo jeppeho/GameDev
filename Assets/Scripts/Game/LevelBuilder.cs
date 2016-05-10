@@ -5,7 +5,10 @@ using System.Linq;
 
 public class LevelBuilder : MonoBehaviour {
 
+	public bool UseActivationAndDeactivation = true;
+
 	private List<GameObject> levelElements = new List<GameObject>();
+	private LevelGenerator levelGenerator;
 	private float farClip;
 
 	private int lastActivatedElement = 0;
@@ -18,6 +21,7 @@ public class LevelBuilder : MonoBehaviour {
 
 		//levelGenerator = GameObject.Find("LevelGenerator");
 		levelElementParent = GameObject.Find ("LevelElements").GetComponent<Transform>();
+		levelGenerator = this.gameObject.GetComponent<LevelGenerator> ();
 
 		//Sort the list based on position.z value
 		List<GameObject> sortedLevelElements = levelElements.OrderBy(go => go.GetComponent<Transform>().position.z).ToList ();
@@ -28,11 +32,16 @@ public class LevelBuilder : MonoBehaviour {
 		//Get and add all level elements to the levelElements list
 		GetAllLevelElements ();
 
-		//Deactive all elements
-		DeactivateAllLevelElements ();
+		if (UseActivationAndDeactivation) {
 
-		//Activate close elements from start
-		ActivateOncomingLevelElements (farClip);
+			//Deactive all elements
+			DeactivateAllLevelElements ();
+
+			//Activate close elements from start
+			ActivateOncomingLevelElements (farClip);
+		}
+
+		AddElevation ();
 	}
 	
 	// Update is called once per frame
@@ -43,8 +52,14 @@ public class LevelBuilder : MonoBehaviour {
 			GameObject camera = GameObject.Find ("LeapControllerBlockHand");
 			float cameraZ = camera.GetComponent<CameraController> ().GetZPosition ();
 
-			DeactivatePassedLevelElements (cameraZ);
-			ActivateOncomingLevelElements (cameraZ + farClip);
+			if (UseActivationAndDeactivation) {
+
+				//Deactive passed elements
+				DeactivatePassedLevelElements (cameraZ);
+
+				//Activate incoming elements
+				ActivateOncomingLevelElements (cameraZ + farClip);
+			}
 		}
 	}
 
@@ -55,6 +70,77 @@ public class LevelBuilder : MonoBehaviour {
 //			if(levelElements [i].name == "WaterBasicNightime(Clone)")
 //				levelElements [i].SetActive (false);
 //	}
+
+	private void AddElevation(){
+
+		float[] levelAreaNoise = levelGenerator.GetLevelAreaNoise ();
+
+		foreach (Transform t in levelElementParent) {
+
+			int index = Mathf.FloorToInt (t.position.z);
+
+			float y = levelGenerator.GetLevelAreaHeights()[ index ];
+
+			if (t.name == "WaterBasicNightime(Clone)")
+				y -= 0.5f;
+
+			//If water
+			else if (t.name == "WaterCube(Clone)")
+				y -= 1f;
+			//If stepping stone
+			else if (t.name == "STEPPING_STONE(Clone)")
+				y += 0f;//0.25f;
+
+			Vector3 elevatedPosition = new Vector3 (t.position.x, y, t.position.z);
+
+			t.position = elevatedPosition;
+
+
+			/*
+			int z = Mathf.FloorToInt (t.position.z);
+			LevelGenerator.AreaType type = levelGenerator.GetLevelAreas () [z];
+			switch (type) {
+
+			case LevelGenerator.AreaType.start:
+				y = levelAreaNoise [z] + 0.3f;
+				break;
+			case LevelGenerator.AreaType.lava:
+				//If water
+				if (t.name == "WaterCube(Clone)")
+					y = -0.2f;
+				//If stepping stone
+				else if (t.name == "STEPPING_STONE(Clone)")
+					y = 0.05f;
+				//all other elements
+				else
+					y = 0;
+				break;
+			case LevelGenerator.AreaType.lowGround:
+				y = levelAreaNoise [z] + 0.3f;
+				break;
+			case LevelGenerator.AreaType.cliff:
+				y = levelAreaNoise [z] + 0.3f;
+				break;
+			case LevelGenerator.AreaType.highGround:
+				y = levelAreaNoise [z] + 0.3f;
+				break;
+			case LevelGenerator.AreaType.bridge:
+				y = 1;
+				break;
+			default:
+				break;
+			}
+
+			y *= 5f;
+
+			Vector3 elevatedPosition = new Vector3 (t.position.x, y, t.position.z);
+
+			t.position = elevatedPosition;
+			*/
+		}
+
+
+	}
 
 
 	public void GetAllLevelElements(){

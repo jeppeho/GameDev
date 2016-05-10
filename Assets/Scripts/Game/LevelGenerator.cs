@@ -9,6 +9,9 @@ public class LevelGenerator : MonoBehaviour {
 	public int beginningAreaLength = 30;
 	public int goalAreaLength = 20;
 
+	public float numElevationSteps = 10f;
+	public float elevationHeight = 5f;
+
 	public int minLowGroundPercentage;
 	public int minHighGroundPercentage;
 	public int minLavaPercentage;
@@ -19,9 +22,7 @@ public class LevelGenerator : MonoBehaviour {
 	NoiseGenerator NG;
 
 	private int startingCell = 5;
-
 	private int levelWidth = 10;
-
 	private int halfWidth = 6;
 
 
@@ -62,6 +63,7 @@ public class LevelGenerator : MonoBehaviour {
 	public AreaType[] levelAreas; 
 
 	private float[] levelAreaNoise;
+	private float[] levelAreaHeightNoise;
 	private float[] canyonNoise;
 	private float[] bridgeNoise;
 	private float[] bridgeNoise2;
@@ -97,6 +99,7 @@ public class LevelGenerator : MonoBehaviour {
 		//Instantiate arrays
 		levelAreas = new AreaType[ levelLength ];
 		respawnPoints = new Vector3[levelLength * LevelManager.numPlayers];
+		levelAreaHeightNoise = new float[ levelLength ];
 //		cameraPositionRoute = new float[levelLength];
 //		cameraLookAtRoute = new float[levelLength];
 
@@ -116,6 +119,8 @@ public class LevelGenerator : MonoBehaviour {
 
 
 		//NG.CreateVisualRepresentationSingle (levelAreaNoise, 20f);
+
+		//CreateStartSection (1);
 
 		for (int sample = 0; sample < levelLength; sample++) {
 
@@ -180,62 +185,17 @@ public class LevelGenerator : MonoBehaviour {
 		//Copy respawn points to the LevelManager
 		LevelManager.respawnPoints = respawnPoints;
 
+		SetLevelAreaHeights ();
+
 	}
 
 
+	//----------------------------------
+	// PUBLIC METHODS FOR RETRIEVING 
+	// THE DIFFERENT NOISE ARRAYS
+	//----------------------------------
 
-//	private void CreateCameraRoute(){
-//
-//		for (int i = 0; i < levelLength; i++) {
-//		
-//			if (levelAreas [i] == AreaType.cliff) {
-//
-//				cameraPositionRoute [i] = canyonNoise [i];
-//
-//			} 
-//			else {
-//
-//				//If prev area was cliff
-//				if (i > 0 && levelAreas [i - 1] == AreaType.cliff) {
-//					cameraPositionRoute [i] = cameraPositionRoute [i - 1] / 2f;
-//				
-//
-//				} else {
-//
-//					//if prevprevarea was cliff, but not prev
-//					if (i > 2 && levelAreas [i - 2] == AreaType.cliff && levelAreas [i - 1] != AreaType.cliff) {
-//					
-//						cameraPositionRoute [i] = (cameraPositionRoute [i - 1] * 2 + cameraPositionRoute [i - 2]) / 3f;
-//					
-//					} 
-//				}
-//				//If next area os cliff
-//				if (i < levelLength && levelAreas [i + 1] == AreaType.cliff) {
-//					
-//					cameraPositionRoute [i] = cameraPositionRoute [i + 1] / 2f;
-//				
-//				} else {
-//
-//					//if nextNextarea is cliff, but not next
-//					if (i < levelLength && levelAreas [i + 2] == AreaType.cliff && levelAreas [i + 1] != AreaType.cliff) {
-//
-//						cameraPositionRoute [i] = (cameraPositionRoute [i + 1] * 2 + cameraPositionRoute [i + 2]) / 3f;
-//					
-//					} else {
-//						cameraPositionRoute [i] = 0;
-//					}
-//				}
-//			}
-//		}
-//	}
-//
-//	public float[] GetCameraPositionRoute(){
-//		return cameraPositionRoute;
-//	}
-//
-//	public float GetCameraPositionAtIndex(int index){
-//		return cameraPositionRoute [index];
-//	}
+
 
 	public float[] GetCanyonNoise(){
 		return this.canyonNoise;
@@ -248,6 +208,22 @@ public class LevelGenerator : MonoBehaviour {
 	public float[] GetSteppingStone1Noise(){
 		return this.lavaSteppingStonesNoise1;
 	}
+
+	public float[] GetLevelAreaNoise(){
+		return this.levelAreaNoise;
+	}
+
+	public AreaType[] GetLevelAreas(){
+		return this.levelAreas;
+	}
+
+
+
+
+	//----------------------------------
+	// PRIVATE METHODS USED TO BUILD, 
+	// CHANGE AND MODIFY THE LEVEL
+	//----------------------------------
 
 	/**
 	 * Makes the provided gameObject a child of the levelContainer
@@ -264,23 +240,23 @@ public class LevelGenerator : MonoBehaviour {
 	 */
 	private void RemoveIsolatedAreas(){
 	
-				for (int sample = startingCell + 1; sample < levelLength - 1; sample++) {
+		for (int sample = startingCell; sample < levelLength; sample++) {
 
 			//Remove areas of length 1
-			if (levelAreas[sample - 1] != levelAreas[sample] 
-				&& levelAreas [sample + 1] != levelAreas [sample]
-				&& levelAreas[sample - 1] == levelAreas [sample + 1])
+			if (levelAreas[ GetValidLevelIndex( sample - 1) ] != levelAreas[sample] 
+				&& levelAreas [ GetValidLevelIndex(sample + 1) ] != levelAreas [sample]
+				&& levelAreas[ GetValidLevelIndex( sample - 1) ] == levelAreas [ GetValidLevelIndex( sample + 1 ) ])
 			{
 				levelAreas [sample] = levelAreas [sample - 1]; 
 			}
 
 			//Remove areas of length 2
-			if (levelAreas [sample] == levelAreas [sample + 1]
-			   && levelAreas [sample - 1] != levelAreas [sample]
-			   && levelAreas [sample - 1] == levelAreas [sample + 2]) 
+			if (levelAreas [sample] == levelAreas [ GetValidLevelIndex( sample + 1) ]
+				&& levelAreas [ GetValidLevelIndex(sample - 1) ] != levelAreas [sample]
+				&& levelAreas [ GetValidLevelIndex(sample - 1) ] == levelAreas [ GetValidLevelIndex(sample + 2) ]) 
 			{
-				levelAreas[sample] = levelAreas [sample - 1]; 
-				levelAreas[sample + 1] = levelAreas [sample - 1]; 
+				levelAreas[sample] = levelAreas [ GetValidLevelIndex(sample - 1) ]; 
+				levelAreas[sample + 1] = levelAreas [ GetValidLevelIndex(sample - 1) ]; 
 			}
 		}
 	}
@@ -458,6 +434,50 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 
+	private void SetLevelAreaHeights(){
+
+		//float[] levelAreaHeightNoise = GetLevelAreaNoise ();
+
+		for(int z = 0; z < levelLength; z++){
+			
+			switch (levelAreas[z]) {
+
+			case AreaType.start:
+				levelAreaHeightNoise[z] = levelAreaNoise [z] + 0.3f;
+				break;
+			case AreaType.lava:
+				levelAreaHeightNoise[z] = 0;
+				break;
+			case AreaType.lowGround:
+				levelAreaHeightNoise[z] = levelAreaNoise [z] + 0.3f;
+				break;
+			case AreaType.cliff:
+				levelAreaHeightNoise[z] = levelAreaNoise [z] + 0.3f;
+				break;
+			case AreaType.highGround:
+				levelAreaHeightNoise[z] = levelAreaNoise [z] + 0.3f;
+				break;
+			case AreaType.bridge:
+				levelAreaHeightNoise[z] = 0.8f;
+				break;
+			default:
+				Debug.Log ("Noise not registered in SetLevelAreaHeights()");
+				break;
+			}
+
+			levelAreaHeightNoise[z] *= numElevationSteps;
+
+			levelAreaHeightNoise [z] = Mathf.FloorToInt (levelAreaHeightNoise [z]) * elevationHeight / 10f;
+		}
+	}
+
+
+
+	public float[] GetLevelAreaHeights(){
+		return this.levelAreaHeightNoise;
+	}
+
+
 
 	//----------------------------------
 	// METHODS FOR CREATING A SECTION OF THE LEVEL
@@ -465,6 +485,25 @@ public class LevelGenerator : MonoBehaviour {
 	//----------------------------------
 
 
+	/**
+	 * Creates the ground floor for the
+	 */
+	private void CreateStartSection(int firstZ){
+
+		for (int i = 0; i < 10; i++) {
+
+			int z = firstZ - i - 2;
+			Debug.Log ("start z = " + z);
+
+			CreateGround (z);
+		}
+	}
+
+
+	/**
+	 * Creates the high ground between canyons and bridges, where the smalls crystals grow. 
+	 * 
+	 */
 	private void CreateHighGroundSection(int z){
 
 
@@ -477,41 +516,36 @@ public class LevelGenerator : MonoBehaviour {
 		SetContainerAsParent (ground);
 
 		//If next area type is not grass
-		if (z < levelLength - 2) {
-			AreaType nextArea = levelAreas [z + 1];
-			AreaType nextNextArea = levelAreas [z + 2];
-			if ( (nextNextArea == AreaType.lava || nextNextArea == AreaType.bridge ) 
-				&& nextArea == AreaType.lowGround || nextArea == AreaType.highGround ) {
 
-				CreateGroundEdge (z, false);
+		AreaType nextArea = levelAreas [ GetValidLevelIndex(z + 1) ];
+		AreaType nextNextArea = levelAreas [ GetValidLevelIndex(z + 2) ];
+		if ( (nextNextArea == AreaType.lava || nextNextArea == AreaType.bridge ) 
+			&& nextArea == AreaType.lowGround || nextArea == AreaType.highGround ) {
 
-			}
+			CreateGroundEdge (z, false);
+
 		}
 
+
 		//If previous area type is not grass
-		if (z >= 2) {
-			AreaType prevArea = levelAreas [z - 1];
-			AreaType prevPrevArea = levelAreas [z - 2];
-			if ( (prevPrevArea == AreaType.lava || prevPrevArea == AreaType.bridge )
-				&& prevArea == AreaType.lowGround || prevArea == AreaType.highGround) {
+		AreaType prevArea = levelAreas [ GetValidLevelIndex(z - 1) ];
+		AreaType prevPrevArea = levelAreas [ GetValidLevelIndex(z - 2) ];
+		if ( (prevPrevArea == AreaType.lava || prevPrevArea == AreaType.bridge )
+			&& prevArea == AreaType.lowGround || prevArea == AreaType.highGround) {
 
-				CreateGroundEdge (z, true);
+			CreateGroundEdge (z, true);
 
-			}
 		}
 
 
 		//Insert small and large pillars
-		if (z > 0 && z < levelLength) {
+		if (levelAreas [ GetValidLevelIndex(z - 1) ] == AreaType.highGround && levelAreas [ GetValidLevelIndex(z + 1) ] == AreaType.highGround) {
 
-			if (levelAreas [z - 1] == AreaType.highGround && levelAreas [z + 1] == AreaType.highGround) {
+			if (levelAreaNoise [z] < 0.6f && levelAreaNoise[z] > 0.3f) {
+				if (z % 3 != 0 /*&& z % 10 != 0*/) {
 
-				if (levelAreaNoise [z] < 0.6f && levelAreaNoise[z] > 0.3f) {
-					if (z % 3 != 0 /*&& z % 10 != 0*/) {
+					CreateCrystalGroupSmall (z);
 
-						CreateCrystalGroupSmall (z);
-
-					}
 				}
 			}
 		}
@@ -522,63 +556,28 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 
+	/**
+	 * Creates two inversed random edges, used for ground
+	 */
+	private void CreateGround(int z){
+		CreateGroundEdge(z, false);
+		CreateGroundEdge (z, true);
+	}
+
+
 	private void CreateLowGroundSection(int z){
 
-		Vector3 position = new Vector3( 0, 0, z );
-	
-		//Instantiate middle part
-		GameObject ground = Instantiate (groundMiddle, position, Quaternion.identity) as GameObject;
-		//levelElements.Add (ground);
+		CreateGround (z);
 
+		//Insert small and large crystals
+		if (levelAreas [ GetValidLevelIndex(z - 1) ] == AreaType.lowGround && levelAreas [ GetValidLevelIndex(z + 1)] == AreaType.lowGround) {
 
-		//Set levelContainer as parent
-		SetContainerAsParent (ground);
+			if (levelAreaNoise [z] > -0.5f  && levelAreaNoise[z] < 0.3f) {
 
-		//If next area type is not grass
-		if (z < levelLength - 2) {
-			AreaType nextArea = levelAreas [z + 1];
-			AreaType nextNextArea = levelAreas [z + 2];
-			if ( (nextNextArea == AreaType.lava || nextNextArea == AreaType.bridge ) 
-				&& nextArea == AreaType.lowGround ) {
+				if (z % 10 == 0) {
 
-				CreateGroundEdge (z, false);
-
-			}
-		}
-
-		//If previous area type is not grass
-		if (z >= 2) {
-			AreaType prevArea = levelAreas [z - 1];
-			AreaType prevPrevArea = levelAreas [z - 2];
-			if ( (prevPrevArea == AreaType.lava || prevPrevArea == AreaType.bridge )
-				&& prevArea == AreaType.lowGround) {
-
-				CreateGroundEdge (z, true);
-
-			}
-		}
-
-		//Insert small and large pillars
-		if (z > 0 && z < levelLength - 1) {
-
-			if (levelAreas [z - 1] == AreaType.lowGround && levelAreas [z + 1] == AreaType.lowGround) {
-
-				if (levelAreaNoise [z] > -0.5f  && levelAreaNoise[z] < 0.3f) {
-
-					if (z % 10 == 0) {
-
-						CreateCrystalLarge (z, false);
-
-					}
+					CreateCrystalLarge (z, false);
 				}
-
-//				if (levelAreaNoise [z] < 0.6f && levelAreaNoise[z] > 0.3f) {
-//					if (z % 3 != 0 /*&& z % 10 != 0*/) {
-//		
-//						CreateCrystalGroupSmall (z);
-//
-//					}
-//				}
 			}
 		}
 			
@@ -588,16 +587,6 @@ public class LevelGenerator : MonoBehaviour {
 
 
 	private void CreateLavaSection(int sample){
-
-
-//		if (!useWater) {
-//			Vector3 position = new Vector3 (0, -1, sample);
-//
-//			for (int i = -halfWidth - 10; i < halfWidth + 10; i++) {
-//				position.x = i + 0.5f;
-//				GameObject cube = Instantiate (lavaCube, position, Quaternion.identity) as GameObject;
-//			}
-//		}
 
 		//Create floor
 		GameObject floor = Instantiate (lavaCube, new Vector3( 0, -1.5f, sample), Quaternion.identity) as GameObject;
@@ -611,80 +600,36 @@ public class LevelGenerator : MonoBehaviour {
 		int numPaths = 2;
 
 		//Don't check array out of bounds
-		if ( sample > 0 && sample < levelLength - distBetweenSteps ) {
+		//if ( sample > 0 && sample < levelLength - distBetweenSteps ) {
 
-			//Only if prev and next area is water
-			if (levelAreas [sample - 1] == AreaType.lava && levelAreas [sample + 1] == AreaType.lava) {
+		//Only if prev and next area is water
+		if (levelAreas [ GetValidLevelIndex(sample - 1) ] == AreaType.lava && levelAreas [ GetValidLevelIndex(sample + 1) ] == AreaType.lava) {
 
-				if (sample % distBetweenSteps == 0) {
+			if (sample % distBetweenSteps == 0) {
 
-					CreateSteppingStone(lavaSteppingStonesNoise1, sample);
+				CreateSteppingStone(lavaSteppingStonesNoise1, sample);
 
-					if (levelAreaNoise [sample] < 0.0f) {
+				if (levelAreaNoise [sample] < 0.0f) {
 
-						if (sample % 8 == 0) {
+					if (sample % 8 == 0) {
 
-							CreateCrystalLarge (sample, true);
+						CreateCrystalLarge (sample, true);
 
-						}
 					}
-						
-					for(int i = 0; i < distBetweenSteps; i++)
-						SetRespawnPointOnSteppingStone (sample + i, lavaSteppingStonesNoise1 [sample]);
-				} 
-
-				else if ((sample + distBetweenSteps / numPaths) % distBetweenSteps == 0) {
-
-					CreateSteppingStone(lavaSteppingStonesNoise2, sample);
-
-					for(int i = 0; i < distBetweenSteps; i++)
-						SetRespawnPointOnSteppingStone (sample + i, lavaSteppingStonesNoise2 [sample]);
 				}
+					
+				for(int i = 0; i < distBetweenSteps; i++)
+					SetRespawnPointOnSteppingStone (sample + i, lavaSteppingStonesNoise1 [sample]);
+			} 
 
-//				else if ((sample + distBetweenSteps/numNoise * 2) % distBetweenSteps == 0) {
-//
-//					CreateSteppingStone(lavaSteppingStonesNoise3, sample);
-//
-//					for(int i = 0; i < distBetweenSteps; i++)
-//						SetRespawnPointOnSteppingStone (sample + i, lavaSteppingStonesNoise3 [sample]);
-//				}
+			else if ((sample + distBetweenSteps / numPaths) % distBetweenSteps == 0) {
+
+				CreateSteppingStone(lavaSteppingStonesNoise2, sample);
+
+				for(int i = 0; i < distBetweenSteps; i++)
+					SetRespawnPointOnSteppingStone (sample + i, lavaSteppingStonesNoise2 [sample]);
 			}
 		}
-
-		//Don't check array out of bounds
-//		if ( sample > 0 && sample < levelLength - distBetweenSteps/2 ) {
-//
-//			//Only if prev and next area is water
-//			if (levelAreas [sample - 1] == AreaType.lava && levelAreas [sample + 1] == AreaType.lava) {
-//
-//				if (sample % distBetweenSteps == 0) {
-//
-//					CreateSteppingStone(lavaSteppingStonesNoise1, sample);
-//
-//					if (levelAreaNoise [sample] < 0.0f) {
-//
-//						if (sample % 8 == 0) {
-//
-//							CreateCrystalLarge (sample, true);
-//
-//						}
-//					}
-//
-//					SetRespawnPointOnSteppingStone (sample, lavaSteppingStonesNoise1 [sample]);
-//					SetRespawnPointOnSteppingStone (sample + 1, lavaSteppingStonesNoise1 [sample]);
-//				} 
-//
-//				else if ((sample + distBetweenSteps/2) % distBetweenSteps == 0) {
-//
-//					CreateSteppingStone(lavaSteppingStonesNoise2, sample);
-//
-//					SetRespawnPointOnSteppingStone (sample, lavaSteppingStonesNoise2 [sample]);
-//					SetRespawnPointOnSteppingStone (sample + 1 , lavaSteppingStonesNoise2 [sample]);
-//				}
-//			}
-//		}
-
-
 	}
 
 
@@ -705,7 +650,10 @@ public class LevelGenerator : MonoBehaviour {
 
 						//Create water prefab
 						int center = sample + (g - sample) / 2;
-						GameObject water = Instantiate (waterPrefab, new Vector3 (0, -0.7f, center), Quaternion.identity) as GameObject;
+
+						float y = -0.5f;//value without elevation = -0.7f;
+
+						GameObject water = Instantiate (waterPrefab, new Vector3 (0, y, center), Quaternion.identity) as GameObject;
 
 						//Set levelContainer as parent
 						SetContainerAsParent (water);
@@ -734,10 +682,11 @@ public class LevelGenerator : MonoBehaviour {
 
 		Vector3 position = new Vector3 ( 0, 0, z );
 
-		GameObject ground = Instantiate (groundMiddle, position, Quaternion.identity) as GameObject;
+		//GameObject ground = Instantiate (groundMiddle, position, Quaternion.identity) as GameObject;
+		CreateGround (z);
 
 		//Set levelContainer as parent
-		SetContainerAsParent (ground);
+		//SetContainerAsParent (ground);
 
 		if (z % 2 == 0) {
 
@@ -767,7 +716,7 @@ public class LevelGenerator : MonoBehaviour {
 					cliffy.transform.RotateAround (position, new Vector3 (0, 0, 1), -rotationZ);
 
 					//ADD NARROWING AREA IN FRONT OF CANYON
-					if (levelAreas [z-2] != AreaType.cliff) {
+					if (levelAreas [ GetValidLevelIndex(z - 2) ] != AreaType.cliff) {
 
 						for (int i = 1; i < Mathf.Abs(difference) - 4 && i < 5; i+=2) {
 
@@ -803,7 +752,7 @@ public class LevelGenerator : MonoBehaviour {
 
 	private void CreateGoalSection(){
 
-		Vector3 position = new Vector3 (0, 0, levelLength + 18);
+		Vector3 position = new Vector3 (0, 1, levelLength + 18);
 
 		GameObject goal_ = Instantiate (goal, position, Quaternion.identity) as GameObject;
 
@@ -879,7 +828,7 @@ public class LevelGenerator : MonoBehaviour {
 
 		for (int z = 0; z < levelLength; z++) {
 
-			if (levelAreas [z] == AreaType.cliff && levelAreas [z - 1] != AreaType.cliff) {
+			if (levelAreas [z] == AreaType.cliff && levelAreas [ GetValidLevelIndex(z - 1) ] != AreaType.cliff) {
 
 				//Count number of nearby oncoming cliffs
 				int numCliffs = 0;
@@ -1078,27 +1027,6 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 
-
-
-//	private void CreateCrystalGroupSmallOLD(int z){
-//
-//		float x = Random.Range (-halfWidth + 1f, halfWidth - 1f);
-//
-//		Vector3 position = new Vector3( x, 0, z );
-//
-//		for (int i = 0; i < pillars.Length; i++) {
-//			GameObject pillar = Instantiate (pillars [i], position, Quaternion.identity) as GameObject;
-//			float scale = Random.Range (35, 50);
-//			pillar.transform.localScale = new Vector3 (scale, scale, scale);
-//			//Rotate around Y-axis
-//			pillar.transform.RotateAround( new Vector3(x - 1f, 0, z), new Vector3(0,1,0), 120 * i);
-//			pillar.transform.RotateAround( position, new Vector3(0,1,0), Random.Range(0, 360));
-//		
-//		}
-//	}
-
-
-
 	private void CreateSteppingStone(float[] noise, int z){
 		int index = NG.GetRandomButNotPreviousValue (0, steppingStones.Length, prevSteppingStoneIndex);
 
@@ -1114,46 +1042,11 @@ public class LevelGenerator : MonoBehaviour {
 
 		prevSteppingStoneIndex = index;
 	}
-
-//
-//	private void CreatePitFog(){
-//
-//		for (int sample = startingCell; sample < levelLength; sample++) {
-//
-//			if (levelAreas [sample - 1] != AreaType.bridge && levelAreas [sample] == AreaType.bridge) {
-//
-//				for (int g = sample; g < levelLength; g++) {
-//
-//					if (levelAreas [g + 1] != AreaType.bridge && levelAreas [g] == AreaType.bridge
-//						|| g == levelLength - 1
-//					) {
-//
-//
-//						Debug.Log ("PIIIIIT FOOOOOOG");
-//
-//						//Create water prefab
-//						int center = sample + (g - sample) / 2;
-//						GameObject fog = Instantiate (pitFog, new Vector3(0, -15, center), Quaternion.identity) as GameObject;
-//
-//						//Set levelContainer as parent
-//						SetContainerAsParent (fog);
-//
-//						//Stretch on the Z-axis
-////						int length = (g - sample) / 3;
-//						fog.transform.localScale = new Vector3 (4, 0, 1 /*length*/);
-////
-//						break;
-//					}
-//				}	
-//			}
-//		}
-//
-//	}
-
+		
 
 	private void CreateBridgeBackwall(int z){
 
-		if (levelAreas [z] == AreaType.bridge && levelAreas [z + 1] != AreaType.bridge) {
+		if (levelAreas [z] == AreaType.bridge && levelAreas [ GetValidLevelIndex(z + 1) ] != AreaType.bridge) {
 
 			int width = 80;
 
@@ -1186,7 +1079,7 @@ public class LevelGenerator : MonoBehaviour {
 
 			//Check if a gap is nearby
 			for (int i = 0; i < 7; i++) {
-				if (z - i > 0 && levelAreas [z - i] == AreaType.bridge) {
+				if ( levelAreas [ GetValidLevelIndex(z - i) ] == AreaType.bridge ) {
 					toCloseToGap = true;
 					break;
 				}
@@ -1290,9 +1183,9 @@ public class LevelGenerator : MonoBehaviour {
 		if ( sample > 0 && sample < levelLength - 2 ) {
 
 			//Set positions for prev, current and next bridge step
-			Vector2 prevPos = new Vector2 ( -1f, noise[ sample - 1 ] );
+			Vector2 prevPos = new Vector2 ( -1f, noise[ GetValidLevelIndex( sample - 1 ) ] );
 			Vector2 thisPos = new Vector2 ( 0f, noise[ sample ] );
-			Vector2 nextPos = new Vector2 ( 1f, noise[ sample + 1 ] );
+			Vector2 nextPos = new Vector2 ( 1f, noise[ GetValidLevelIndex( sample + 1 ) ] );
 
 			float prevAngle = GetAngleBetweenTwoSteps(prevPos, thisPos); 
 			float nextAngle = GetAngleBetweenTwoSteps(thisPos, nextPos);
@@ -1320,6 +1213,17 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 
+	private int GetValidLevelIndex(int z){
+
+		if (z < 0)
+			z = 0;
+		else if (z >= levelLength)
+			z = levelLength - 1;
+
+		return z;
+	}
+
+
 	//----------------------------------
 	// RESPAWN METHODS
 	//----------------------------------
@@ -1330,8 +1234,8 @@ public class LevelGenerator : MonoBehaviour {
 		int index = 0;
 
 		for (int i = offset; i > 0; i--) {
-			if (z + i < levelLength) {
-				index = z + i;
+			if ( GetValidLevelIndex(z + i) < levelLength) {
+				index = GetValidLevelIndex(z + i);
 			}
 		
 		}
@@ -1345,7 +1249,7 @@ public class LevelGenerator : MonoBehaviour {
 
 		for (int i = 0; i < LevelManager.numPlayers; i++) {
 
-			respawnPoints [ GetRespawnIndex (z, i) ] = new Vector3(canyonNoise[z - i], 0.5f, z - i);
+			respawnPoints [ GetRespawnIndex (z, i) ] = new Vector3(canyonNoise[ GetValidLevelIndex(z - i) ], 0.5f, z - i);
 		}
 	}
 
@@ -1353,7 +1257,7 @@ public class LevelGenerator : MonoBehaviour {
 	
 		for (int i = 0; i < LevelManager.numPlayers; i++) {
 
-			respawnPoints [ GetRespawnIndex (z, i) ] = new Vector3(bridgeNoise[z - i], 0.5f, z - i);
+			respawnPoints [ GetRespawnIndex (z, i) ] = new Vector3(bridgeNoise[ GetValidLevelIndex(z - i) ], 0.5f, z - i);
 		}
 	}
 
@@ -1378,7 +1282,7 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private int GetRespawnIndex (int z, int player){
-		return z * (player + 1);
+		return GetValidLevelIndex( z * (player + 1) );
 	}
 
 	public Vector3[] GetRespawnPoints(){

@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour {
 	//Camera
 	private float[] cameraPositionRoute;
 	private float[] cameraLookAtRoute;
+	private float[] cameraHeight;
 
 
 	// Use this for initialization
@@ -20,6 +21,7 @@ public class CameraController : MonoBehaviour {
 		cameraPositions = new float[l.levelLength];
 		lookAts = new float[l.levelLength];
 		cameraPositionRoute = new float[l.levelLength];
+		cameraHeight = l.GetLevelAreaHeights();
 
 		//Set array with x values for the camera
 		CreateCameraRoute ();
@@ -37,10 +39,20 @@ public class CameraController : MonoBehaviour {
 			//Update position and rotation for the camera
 			UpdateCameraPosition ();
 			UpdateCameraRotation ();
+			UpdateCameraHeight ();
 		}
 	}
 
 
+	private void UpdateCameraHeight(){
+	
+		Vector3 currentPos = this.transform.parent.position;
+
+		currentPos.y = ( GetLerpedHeight () + 0.5f );
+
+		this.transform.parent.position = currentPos;
+	
+	}
 
 
 	private void UpdateCameraRotation(){
@@ -61,6 +73,18 @@ public class CameraController : MonoBehaviour {
 		this.transform.parent.position = currentPos;
 	}
 
+
+	private float GetLerpedHeight(){
+
+		int floor_z = Mathf.FloorToInt (GetZPosition ());
+
+		float t = GetZPosition () - floor_z;
+
+		float y = Mathf.Lerp (cameraHeight[ GetAcceptedLevelIndex( floor_z )], cameraHeight[ GetAcceptedLevelIndex( floor_z + 1 ) ], t);
+
+		return y;
+
+	}
 
 	private float GetLerpedRotation(){
 	
@@ -95,6 +119,28 @@ public class CameraController : MonoBehaviour {
 
 		for (int i = 0; i < l.levelLength; i++)
 			cameraPositions [i] = SetAveragedCameraPosition (i, 0, 5);
+	}
+
+	private void SetCameraY(){
+	
+		for (int i = 0; i < l.levelLength; i++)
+			cameraHeight [i] = SetAveragedCameraHeight (i, 0, 5);
+	}
+
+
+	private float SetAveragedCameraHeight (int z, int start, int end){
+
+		float a = 0f;
+
+		for (int i = start; i < end; i++) {
+
+			a += GetCameraPositionAtIndex ( GetAcceptedLevelIndex ( z + i ) );
+		}
+
+		//Divide by number of samples
+		a /= (end - start);
+
+		return a;
 	}
 
 
