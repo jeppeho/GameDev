@@ -7,6 +7,7 @@ public class GestureSummon : Gesture {
 	//Derived: leapManager
 	//Derived: gestureManager
 	//Derived: thisSpell
+	private LevelGenerator levelGenerator;
 	private Vector3 tempPalmWorldPosition;
 	private Vector3 tempPalmPosition;
 	public GameObject summonedObjectType;
@@ -14,17 +15,25 @@ public class GestureSummon : Gesture {
 	private GameObject[] subShard;
 	private int blockCounter;
 
+	float origoY;
+
 	// Use this for initialization
 	void Start () {
 		base.Init ();
+
+		levelGenerator = GameObject.Find ("LevelGenerator").GetComponent<LevelGenerator>();
 		thisSpell = "summon";
 		Debug.Log ("Set thisSpell: " + thisSpell.ToString());
 
 		subShard = new GameObject[7];
+
+		origoY = 0;
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+
+		origoY = levelGenerator.GetLevelAreaHeights()[Mathf.Clamp(Mathf.FloorToInt (leapManager.GetPalmWorldPosition().z), 0, 299)] * 1.25f;
 
 		//----------------------------------
 		// Initiate
@@ -34,7 +43,7 @@ public class GestureSummon : Gesture {
 			gestureManager.noSpellActive()
 			&& leapManager.PalmNormalNear (gestureManager.calibratedDown, 0.35f)
 			&& leapManager.GetPalmSmoothedVelocity() <= 1.0f
-			&& leapManager.PalmBetweenY (2f, -10f)
+			&& leapManager.PalmBetweenY (origoY + 2f, -10f)
 			&& leapManager.GetFingerIsExtendedPattern (true, true, true, true, true)
 			//&& manager.GetPalmVelocity().magnitude < 5f
 		)
@@ -60,7 +69,9 @@ public class GestureSummon : Gesture {
 			)
 			{
 				float palmY = leapManager.GetPalmPosition ().y;
-				float nextBlockY = 1.2f + blockCounter * 0.75f; //Insert something about relative height here!
+				float nextBlockY = origoY + 1.2f + blockCounter * 0.75f; //Insert something about relative height here!
+
+				Debug.Log (origoY);
 
 				if (palmY > nextBlockY && blockCounter < 7)
 				{
@@ -68,7 +79,7 @@ public class GestureSummon : Gesture {
 					if (blockCounter == 1)
 					{ 
 						tempPalmWorldPosition = leapManager.GetPalmWorldPosition ();
-						shard = Instantiate (summonedObjectType, new Vector3 (tempPalmWorldPosition.x, -0.6f, tempPalmWorldPosition.z + 1f), Quaternion.Euler (0, 0, 0)) as GameObject;
+						shard = Instantiate (summonedObjectType, new Vector3 (tempPalmWorldPosition.x, origoY -0.6f, tempPalmWorldPosition.z + 1f), Quaternion.Euler (0, 0, 0)) as GameObject;
 						ShatterIndexOnCollision shatterManager = shard.GetComponent<ShatterIndexOnCollision> ();
 
 						//Index subshards

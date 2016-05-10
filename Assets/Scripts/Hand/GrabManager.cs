@@ -18,7 +18,7 @@ public class GrabManager : MonoBehaviour {
 	//Include only certain layers
 	private LayerMask allowedLayers;
 
-	private int releaseCounter = 4;
+	private int releaseCounter = 3;
 	private List<Vector3> releaseVectors;
 
 	private LeapManager leapManager;
@@ -56,7 +56,7 @@ public class GrabManager : MonoBehaviour {
 				Vector3 directionToThumb = grabPosition - grabbedObject.transform.position;
 
 				releaseVectors.Add(palmMovement);
-				if (releaseVectors.Count >= 8)
+				if (releaseVectors.Count >= 6)
 				{
 					releaseVectors.RemoveAt (0);
 				}
@@ -88,7 +88,7 @@ public class GrabManager : MonoBehaviour {
 		//if pinch strength is high enough
 		if (pinchStrength >= pinchThreshold)
 		{
-			releaseCounter = 4; //Reset counter
+			releaseCounter = 3; //Reset counter
 			pinchTriggered = true;
 		}
 		else
@@ -164,8 +164,10 @@ public class GrabManager : MonoBehaviour {
 		Debug.Log ("Releasing!");
 		if (grabbedObject != null)
 		{
-			grabbedObject.GetComponent<Rigidbody> ().velocity = getVectorAverage (releaseVectors) * 6f;
-			Debug.Log ("Throwing based on vectors " + releaseVectors [0].ToString () + ";" + releaseVectors [1].ToString () + ";" + releaseVectors [2].ToString () + ";" + releaseVectors [3].ToString () + ";" + releaseVectors [4].ToString ()+" = "+getVectorAverage (releaseVectors).ToString());
+			Vector3 throwDir = getVectorAverage (releaseVectors);
+			throwDir = Vector3.Lerp (throwDir * 6f, throwDir.normalized, 0.5f);
+				
+			grabbedObject.GetComponent<Rigidbody> ().velocity = throwDir;
 			grabbedObject.gameObject.layer = grabbedObjectLayer;
 			grabbedObject.attachedRigidbody.useGravity = true;
 			grabbedObject = null;
