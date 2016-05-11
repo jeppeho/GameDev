@@ -37,18 +37,32 @@ public class RelicHealth : MonoBehaviour {
 		SetShaderSpecularColor (specularColor * GetNormalizedHealth());
 		SetShaderColor (GetBaseColorBasedOnHealth());
 
+
 		if (!manager.HasParent ()) {
-			if (GetDistanceToCore () < maxHandDistanceToTakeEnergy) {
-				
-				DrainEnergy (1);
+			
+			DrainEnergy (1);
 
-			} else {
-				
-				SetShaderSpecularColor (specularColor * GetNormalizedHealth());
-				SetShaderColor (GetBaseColorBasedOnHealth());
-
-			}
+		} else {
+			
+			SetShaderSpecularColor (specularColor * GetNormalizedHealth());
+			SetShaderColor (GetBaseColorBasedOnHealth());
+		
 		}
+
+
+//
+//		if (!manager.HasParent ()) {
+//			if (GetDistanceToCore () < maxHandDistanceToTakeEnergy) {
+//				
+//				DrainEnergy (1);
+//
+//			} else {
+//				
+//				SetShaderSpecularColor (specularColor * GetNormalizedHealth());
+//				SetShaderColor (GetBaseColorBasedOnHealth());
+//
+//			}
+//		}
 	}
 
 

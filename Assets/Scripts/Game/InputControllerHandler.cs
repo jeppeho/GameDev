@@ -5,7 +5,7 @@ public class InputControllerHandler : MonoBehaviour {
 
 	public GameObject minion;
 
-	GameObject[] minions;
+	private GameObject[] minions;
 
 	//Contains strings with names of supported controllers
 	string[] supportedControllers;
@@ -117,16 +117,30 @@ public class InputControllerHandler : MonoBehaviour {
 		//Space and width is for placing the characters on a single line
 		float space = 3;
 		float width = space * ((float)acceptedControllers.Length - 1f);
+		int numPlayers = acceptedControllers.Length;
 
-		for (int numPlayer = 0; numPlayer < acceptedControllers.Length; numPlayer++) {
+		for (int player = 0; player < numPlayers; player++) {
 
-			float x = 0 - width / 2 + numPlayer * space;
-			Vector3 position = new Vector3 (x, 1, -7);
+			float x = GetXPositionForMinion(player);
+			Vector3 position = new Vector3 (x, 1, 3);
 
-			int index = numPlayer + 1;
+			int index = player + 1;
 
-			CreateMinion( position, acceptedControllers[numPlayer] + index.ToString(), numPlayer, active);
+			CreateMinion( position, acceptedControllers[player] + index.ToString(), player, active);
 		}
+	}
+
+	/**
+	 * Returns an x-position for a player, based on how many players and it's placement in the lineup
+	 */
+	public float GetXPositionForMinion(int index){
+
+		float space = 3;
+		float width = space * ((float)acceptedControllers.Length - 1f);
+
+		float x = 0 - width / 2 + index * space;
+
+		return x;
 	}
 
 
@@ -149,5 +163,9 @@ public class InputControllerHandler : MonoBehaviour {
 		//	Debug.Log ("Set color now!!");
 		min.GetComponent<PlayerManager> ().SetMaterial (index);
 
+	}
+
+	public GameObject[] GetMinionsArray(){
+		return this.minions;
 	}
 }

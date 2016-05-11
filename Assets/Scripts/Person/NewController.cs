@@ -168,7 +168,7 @@ public class NewController : MonoBehaviour {
 			isJumping = false;
 		
 		}
-			
+
 		LimitWalkingDistance();
 		LimitWalkingDistanceSoft();
 

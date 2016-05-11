@@ -34,8 +34,11 @@ public class GestureSummon : Gesture {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		origoY = levelGenerator.GetLevelAreaHeights()[Mathf.Clamp(Mathf.FloorToInt (leapManager.GetPalmWorldPosition().z), 0, 299)] * 1.25f;
-
+		if (levelGenerator != null) {
+			origoY = levelGenerator.GetLevelAreaHeights () [Mathf.Clamp (Mathf.FloorToInt (leapManager.GetPalmWorldPosition ().z), 0, 299)] * 1.25f;
+		} else {
+			origoY = 0f;
+		}
 		//----------------------------------
 		// Initiate
 		//----------------------------------

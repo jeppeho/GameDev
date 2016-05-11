@@ -22,6 +22,8 @@ public class SystemManager : MonoBehaviour {
 		//Main menu
 		if (level == 1) {
 
+			SetMainMenuBoundaries ();
+
 			//Put in a minion for each connected controller
 			inputHandler.CreateMinionsForControllers (false);
 
@@ -30,15 +32,30 @@ public class SystemManager : MonoBehaviour {
 			Debug.Log ("numControllers = " + num );
 
 			//If less than three connected controllers
-			if (num < 2) {
-			
-				//Put in a keyboard minion
-				inputHandler.CreateMinion(new Vector3(3, 2, 0), "KEYBOARD", 3, false);
-			}
+//			if (num < 3) {
+//			
+//				//Put in a keyboard minion
+//				inputHandler.CreateMinion(new Vector3(3, 2, 0), "KEYBOARD", 3, false);
+//			}
 
 		//Levelgenerator
 		} else if (level == 2) {
 
+			SetLevelBoundaries ();
+
+			GameObject[] minions = inputHandler.GetMinionsArray ();
+
+			for (int i = 0; i < minions.Length; i++) {
+
+
+				if (minions [i].GetComponent<PlayerManager> ().GetState () == "inactive") {
+					minions [i].SetActive (false);
+				} else {
+					minions [i].SetActive (true);
+				}
+				minions [i].transform.position = new Vector3 (inputHandler.GetXPositionForMinion(i), 1, 0);
+
+			}
 
 			//Put in a minion for each activated controller
 
@@ -61,6 +78,19 @@ public class SystemManager : MonoBehaviour {
 		
 		}
 
+	}
+
+
+	private void SetMainMenuBoundaries(){
+
+		LevelManager.MOVE_MAXZ = 20f;
+		LevelManager.MOVE_MINZ = -20f;
+	}
+
+	private void SetLevelBoundaries(){
+
+		LevelManager.MOVE_MAXZ = 10f;
+		LevelManager.MOVE_MINZ = -9f;
 	}
 
 }

@@ -15,9 +15,14 @@ public class PlayerManager : MonoBehaviour {
 
 	void Awake() {
 		//Keep the system manager from destroying when changing scenes
-		if (GetState () == "active") {
-			DontDestroyOnLoad (transform.gameObject);
-		}
+		DontDestroyOnLoad (transform.gameObject);
+//		Debug.Log ("GetState = " + GetState()); 
+//		if (GetState () == "inactive") {
+//			
+//			this.gameObject.SetActive (false);
+//		} else {
+//			this.gameObject.SetActive (true);
+//		}
 	}
 
 	// Use this for initialization
@@ -31,6 +36,7 @@ public class PlayerManager : MonoBehaviour {
 	void FixedUpdate () {
 		//Track falling velocity, so we have something to compare to, when landing on environment
 		lastVel = rb.velocity;
+
 		//Check to see if player has fallen off grid
 		if (transform.position.y <= -1f)
 		{
@@ -62,16 +68,14 @@ public class PlayerManager : MonoBehaviour {
 
 
 	public void SetMaterial(int index){
-		//Debug.Log ("Running Setcolor for player @" + this.gameObject.GetComponent<Renderer> ().material);
-	
+
+		Material m = materials [index];
+		Debug.Log(index + "] setting matieral to " + m); 
+
 		foreach (Transform t in transform) {
 
-			t.gameObject.GetComponent<Renderer> ().material = materials [index];
+			t.gameObject.GetComponent<Renderer> ().material = m;
 		}
-		//rend.material =  materials [i];
-
-		//this.gameObject.GetComponent<Renderer> ().material = materials [i];
-		//Debug.Log ("And Setcolor for player @" + rend.material);
 	}
 
 
