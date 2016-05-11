@@ -37,19 +37,6 @@ public class RelicHealth : MonoBehaviour {
 		SetShaderSpecularColor (specularColor * GetNormalizedHealth());
 		SetShaderColor (GetBaseColorBasedOnHealth());
 
-
-		if (!manager.HasParent ()) {
-			
-			DrainEnergy (1);
-
-		} else {
-			
-			SetShaderSpecularColor (specularColor * GetNormalizedHealth());
-			SetShaderColor (GetBaseColorBasedOnHealth());
-		
-		}
-
-
 //
 //		if (!manager.HasParent ()) {
 //			if (GetDistanceToCore () < maxHandDistanceToTakeEnergy) {
@@ -78,21 +65,22 @@ public class RelicHealth : MonoBehaviour {
 		if (!manager.HasParent ()) {
 
 			//Only drain if above some threshold
-//			if (relativeVelocity > 5f) {
-//				float drain = Mathf.FloorToInt (relativeVelocity * 2);
-//
-//				//Limit max energy drain
-//				if (drain > 30f)
-//					drain = 30f;
-//
-//				DrainEnergy (drain);
-//			}
+			//if (relativeVelocity > 5f) {
+				float drain = Mathf.FloorToInt (relativeVelocity * 2);
+
+				//Limit max energy drain
+				if (drain > 30f)
+					drain = 30f;
+
+				DrainEnergy (drain);
+			//}
 		} else {
 
-			if (relativeVelocity > 30) {
+			if (relativeVelocity > 30f) {
 
 				//Remove from parent
-				//manager.ReleaseFromParent ();
+				DrainEnergy (30f);
+				manager.ReleaseFromParent ();
 			}
 		}
 	}
@@ -125,6 +113,8 @@ public class RelicHealth : MonoBehaviour {
 	 * Drain energy and update the color
 	 */
 	public void DrainEnergy(float drain){
+
+		Debug.Log ("Draining " + drain + " energy from relic");
 
 		//drain health
 		health -= drain;

@@ -125,7 +125,7 @@ public class LevelRunner : MonoBehaviour {
 
 	public void GoToMainMenu(){
 		Time.timeScale = 1f;
-		Debug.Log ("Going to main menu");
+		Debug.Log ("Going to main menu with time scale = " + Time.timeScale );
 		SceneManager.LoadScene("Tutorial Start");
 	}
 
@@ -139,21 +139,21 @@ public class LevelRunner : MonoBehaviour {
 	 * Coroutine running while game is paused, to register button inputs.
 	 * Update or FixedUpdate doesn't run while Time.timeScale == 0.
 	 */
-	IEnumerator PauseGameKeepRegisteringInput(){
-
-		pauseMenu.gameObject.SetActive (true);
-
-		while (gameState == GameState.paused) {
-
-			UpdateButtonInput ();
-
-			if(prevPauseGame < 0.01f && pauseGameButton > 0.01f){
-				gameState = GameState.running;
-			}
-
-			prevPauseGame = pauseGameButton;
-
-			yield return null;
-		}
-	}
+//	IEnumerator PauseGameKeepRegisteringInput(){
+//
+//		pauseMenu.gameObject.SetActive (true);
+//
+//		while (gameState == GameState.paused) {
+//
+//			UpdateButtonInput ();
+//
+//			if(prevPauseGame < 0.01f && pauseGameButton > 0.01f){
+//				gameState = GameState.running;
+//			}
+//
+//			prevPauseGame = pauseGameButton;
+//
+//			yield return null;
+//		}
+//	}
 }

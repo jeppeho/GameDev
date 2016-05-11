@@ -24,8 +24,6 @@ public class IslandController : MonoBehaviour {
 		//If collider layer is Hand
 		if (col.gameObject.layer == 8) {
 
-			Debug.Log ("col.force = " + col.relativeVelocity.magnitude);
-
 			//If threshold force is used
 			if (col.relativeVelocity.magnitude > threshold) {
 
