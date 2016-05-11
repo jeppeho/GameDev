@@ -6,14 +6,25 @@ public class PlayerManager : MonoBehaviour {
 	private Rigidbody rb;
 	private MeshCollider collider;
 	private Vector3 lastVel;
-	private enum state {active, inactive, dead, invulnerable};
-	private state playerState;
+	public enum state {active, inactive, dead, invulnerable};
+	public state playerState;
 	public float impactResistance = 3f;
+
+	public Material[] materials;
+
+
+	void Awake() {
+		//Keep the system manager from destroying when changing scenes
+		if (GetState () == "active") {
+			DontDestroyOnLoad (transform.gameObject);
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody>();
 		collider = GetComponentInChildren<MeshCollider>();
+	
 	}
 
 	// Update is called once per frame
@@ -31,6 +42,7 @@ public class PlayerManager : MonoBehaviour {
 		}
 	}
 
+
 	//Check for impacts with environment
 	void OnCollisionEnter(Collision col)
 	{
@@ -39,15 +51,29 @@ public class PlayerManager : MonoBehaviour {
 
 		if (/*col.gameObject.tag == "Environment"*/ col.gameObject.layer == 13 && impact.magnitude >= impactResistance) {
 			DeathSquished ();
-			Debug.Log (" impact = " + impact.magnitude);
+
 			//Remove energy from the relic
 			GameObject relic = GameObject.Find ("Relic");
 			if (relic) {
 				relic.GetComponent<RelicHealth> ().DrainEnergy (impact.magnitude * 10);
-				Debug.Log ("Just removed " + impact.magnitude + " from relic health");
 			}
 		}
 	}
+
+
+	public void SetMaterial(int index){
+		//Debug.Log ("Running Setcolor for player @" + this.gameObject.GetComponent<Renderer> ().material);
+	
+		foreach (Transform t in transform) {
+
+			t.gameObject.GetComponent<Renderer> ().material = materials [index];
+		}
+		//rend.material =  materials [i];
+
+		//this.gameObject.GetComponent<Renderer> ().material = materials [i];
+		//Debug.Log ("And Setcolor for player @" + rend.material);
+	}
+
 
 	//Death by squishing (i.e. high relative y-velicity)
 	private void DeathSquished()
@@ -66,7 +92,6 @@ public class PlayerManager : MonoBehaviour {
 	{
 		if (playerState == state.active)
 		{
-			Debug.Log ("Died!");
 			playerState = state.dead;
 			rb.freezeRotation = false;
 			rb.AddTorque(new Vector3(Random.Range(0.2f,1),0,Random.Range(0.2f,1)));

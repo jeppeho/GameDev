@@ -5,6 +5,8 @@ public class InputControllerHandler : MonoBehaviour {
 
 	public GameObject minion;
 
+	GameObject[] minions;
+
 	//Contains strings with names of supported controllers
 	string[] supportedControllers;
 
@@ -14,9 +16,15 @@ public class InputControllerHandler : MonoBehaviour {
 	//Contains the connected accepted controllers
 	string[] acceptedControllers;
 
+	//Contains the connected accepted and active controllers
+	string[] activeControllers;
+
 
 	// Use this for initialization
 	void Start () {
+
+		Debug.Log ("Starting up the InputControllerHANDLER()");
+
 		supportedControllers = new string[] { "Sony Computer Entertainment Wireless Controller", "Sony PLAYSTATION(R)3 Controller" };
 
 		connectedControllers = Input.GetJoystickNames ();
@@ -24,12 +32,14 @@ public class InputControllerHandler : MonoBehaviour {
 		acceptedControllers = new string[ GetNumAcceptedControllers () ];
 		Debug.Log ("Controllers.Length = " + acceptedControllers.Length);
 
+		minions = new GameObject[ GetNumAcceptedControllers () ];
+
 		RegisterAcceptedControllers ();
 
 		//Create minions
-		CreateMinionsForControllers ();
-		CreateMinion(new Vector3(3, 2, 0), "KEYBOARD");
-		Debug.Log ("Keyboard minion");
+//		CreateMinionsForControllers ();
+//		CreateMinion(new Vector3(3, 2, 0), "KEYBOARD");
+//		Debug.Log ("Keyboard minion");
 	}
 
 
@@ -54,7 +64,7 @@ public class InputControllerHandler : MonoBehaviour {
 	/**
 	 * Returns the number of connected supported controllers
 	 */
-	private int GetNumAcceptedControllers(){
+	public int GetNumAcceptedControllers(){
 
 		int matches = 0;
 
@@ -95,7 +105,6 @@ public class InputControllerHandler : MonoBehaviour {
 				}
 			}
 		}
-
 	}
 
 
@@ -103,23 +112,42 @@ public class InputControllerHandler : MonoBehaviour {
 	 * Creates a player for each connected and accepted controller
 	 * 
 	 */
-	private void CreateMinionsForControllers(){
-		Debug.Log ("Creating " + acceptedControllers.Length + "minionssss");
-		for (int player = 0; player < acceptedControllers.Length; player++) {
+	public void CreateMinionsForControllers(bool active){
 
-			int index = player + 1;
+		//Space and width is for placing the characters on a single line
+		float space = 3;
+		float width = space * ((float)acceptedControllers.Length - 1f);
 
-			CreateMinion(new Vector3 (0, -1, -3), acceptedControllers[player] + index.ToString());
+		for (int numPlayer = 0; numPlayer < acceptedControllers.Length; numPlayer++) {
+
+			float x = 0 - width / 2 + numPlayer * space;
+			Vector3 position = new Vector3 (x, 1, -7);
+
+			int index = numPlayer + 1;
+
+			CreateMinion( position, acceptedControllers[numPlayer] + index.ToString(), numPlayer, active);
 		}
 	}
 
-	private void CreateMinion(Vector3 position, string prefix){
+
+	public void CreateMinion(Vector3 position, string prefix, int index, bool active){
+
+		Debug.Log ("Create a minion for controller." + prefix + ", with index = " + index);
 
 		GameObject min = Instantiate (minion, position, Quaternion.identity) as GameObject;
 
 		//Set controller prefix on minion
 		min.GetComponent<NewController>().prefix = prefix;
 
-	}
+		//Set inactive as a start
+		min.GetComponent<PlayerManager> ().SetActive(active);
+		Debug.Log(prefix + " state = " + min.GetComponent<PlayerManager> ().GetState());
 
+		minions [index] = min;
+
+
+		//	Debug.Log ("Set color now!!");
+		min.GetComponent<PlayerManager> ().SetMaterial (index);
+
+	}
 }

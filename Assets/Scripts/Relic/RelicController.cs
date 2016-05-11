@@ -358,8 +358,6 @@ public class RelicController : MonoBehaviour {
 
 	public IEnumerator Throw(Vector3 force){
 
-		Debug.Log ("Start the Relic throw coroutine");
-
 		int numFrames = 10;
 		int index = 0;
 

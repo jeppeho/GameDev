@@ -12,12 +12,26 @@ public class LevelRunner : MonoBehaviour {
 	private float pauseGameButton;
 	private float prevPauseGame;
 
+	public Canvas pauseMenu;
+	public Canvas godWinMenu;
+	public Canvas minionWinMenu;
+
+	LevelGenerator lg;
+
 
 	// Use this for initialization
 	void Start () {
 
+		//Deactivate menus
+		pauseMenu.gameObject.SetActive (false);
+		godWinMenu.gameObject.SetActive (false);
+		minionWinMenu.gameObject.SetActive (false);
+
+		lg = GameObject.Find ("LevelGenerator").GetComponent<LevelGenerator>();
+
 		relic = GameObject.Find ("Relic");
-		Debug.Log (relic);
+
+		//Set initial gameState
 		gameState = GameState.running;
 
 	}
@@ -28,22 +42,36 @@ public class LevelRunner : MonoBehaviour {
 		UpdateState ();
 
 		if (gameState == GameState.paused) {
-			Time.timeScale = 0f;
-			StartCoroutine( PauseGame () );
+			PauseGame ();
+			//StartCoroutine( PauseGameKeepRegisteringInput () );
+		} 
+		if (gameState == GameState.running) {
+			Time.timeScale = 1f;
 		} 
 
-		else 
-			Time.timeScale = 1;
-
-			if (gameState == GameState.running) {
-
-			} 
-		else if (gameState == GameState.godWin) {
-			SceneManager.LoadScene("LevelGenerator");
+		if (gameState == GameState.godWin) {
+			Time.timeScale = 0.2f;
+			godWinMenu.gameObject.SetActive (true);
 		}
-		else if (gameState == GameState.minionWin) {
 
+		if (gameState == GameState.minionWin) {
+		
+			Time.timeScale = 0.2f;
+			minionWinMenu.gameObject.SetActive (true);
 		}
+
+//		else 
+//			Time.timeScale = 1;
+//
+//			if (gameState == GameState.running) {
+//
+//			} 
+//		else if (gameState == GameState.godWin) {
+//			SceneManager.LoadScene("LevelGenerator");
+//		}
+//		else if (gameState == GameState.minionWin) {
+//
+//		}
 
 	}
 
@@ -57,40 +85,69 @@ public class LevelRunner : MonoBehaviour {
 	
 			gameState = GameState.godWin;
 			
-		} else if (prevPauseGame < 0.05f && pauseGameButton > 0.05f /*|| Input.GetKeyUp ("k")*/ ) {
+		} 
+		else if( relic.gameObject.GetComponent<Transform>().position.z > lg.levelLength + 10f){
+			
+			gameState = GameState.minionWin;
+		}
+
+		else if (prevPauseGame < 0.05f && pauseGameButton > 0.05f /*|| Input.GetKeyUp ("k")*/ ) {
 
 			if(gameState == GameState.running)
 				gameState = GameState.paused;
-			else if(gameState == GameState.paused)
-				gameState = GameState.running;
+//			else if(gameState == GameState.paused)
+//				gameState = GameState.running;
 		
 		} 
 
 		prevPauseGame = pauseGameButton;
-				
 
-			//Check if minions win
-
-		//}
 	}
 
 	private void UpdateButtonInput(){
 		pauseGameButton = Input.GetAxisRaw ("PauseGame");
 	}
 
+	public void PauseGame(){
+		//StartCoroutine ( PauseGameKeepRegisteringInput() );
+		pauseMenu.gameObject.SetActive (true);
+		Time.timeScale = 0f;
+		//this.gameState = GameState.paused;
+	}
+
+	public void ResumeGame(){
+		this.gameState = GameState.running;
+		pauseMenu.gameObject.SetActive (false);
+		Time.timeScale = 1f;
+		Debug.Log ("Resuming game");
+
+	}
+
+	public void GoToMainMenu(){
+		Time.timeScale = 1f;
+		Debug.Log ("Going to main menu");
+		SceneManager.LoadScene("Tutorial Start");
+	}
+
+	public void RestartLevel(){
+		Time.timeScale = 1f;
+		SceneManager.LoadScene("LevelGenerator");
+	}
 
 
 	/**
 	 * Coroutine running while game is paused, to register button inputs.
 	 * Update or FixedUpdate doesn't run while Time.timeScale == 0.
 	 */
-	IEnumerator PauseGame(){
+	IEnumerator PauseGameKeepRegisteringInput(){
+
+		pauseMenu.gameObject.SetActive (true);
 
 		while (gameState == GameState.paused) {
 
 			UpdateButtonInput ();
 
-			if(prevPauseGame < 0.01f && pauseGameButton > 0.01){
+			if(prevPauseGame < 0.01f && pauseGameButton > 0.01f){
 				gameState = GameState.running;
 			}
 

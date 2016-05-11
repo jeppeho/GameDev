@@ -393,12 +393,12 @@ public class LevelGenerator : MonoBehaviour {
 		int startLength = 20;
 
 		//SET START LINE
-		for (int sample = 0; sample < startingCell; sample++)
-			levelAreas[sample] = AreaType.start;
+//		for (int sample = 0; sample < startingCell; sample++)
+//			levelAreas[sample] = AreaType.start;
 
 
 		//SET OBSTACLE COURSE
-		for (int sample = startingCell; sample < levelLength; sample++) {
+		for (int sample = 0/*startingCell*/; sample < levelLength; sample++) {
 
 			float n = levelAreaNoise [sample];
 
@@ -443,7 +443,7 @@ public class LevelGenerator : MonoBehaviour {
 			switch (levelAreas[z]) {
 
 			case AreaType.start:
-				levelAreaHeightNoise[z] = levelAreaNoise [z] + 0.3f;
+				levelAreaHeightNoise[z] = levelAreaNoise [z];
 				break;
 			case AreaType.lava:
 				levelAreaHeightNoise[z] = 0;

@@ -24,11 +24,15 @@ public class CameraController : MonoBehaviour {
 		cameraHeight = l.GetLevelAreaHeights();
 
 		//Set array with x values for the camera
-		CreateCameraRoute ();
+		LerpCameraPostionsArray ();
+		LerpCameraHeightsArray ();
+		LerpCameraLooksAtsArray ();
 
-		//Set initial position and rotation
+		//Set initial position, height and rotation
 		SetLookAtsArray ();
 		SetCameraPositionsArray ();
+		UpdateCameraHeight ();
+
 	}
 	
 	// Update is called once per frame
@@ -78,6 +82,9 @@ public class CameraController : MonoBehaviour {
 
 		int floor_z = Mathf.FloorToInt (GetZPosition ());
 
+		if (floor_z < 0)
+			floor_z = 0;
+
 		float t = GetZPosition () - floor_z;
 
 		float y = Mathf.Lerp (cameraHeight[ GetAcceptedLevelIndex( floor_z )], cameraHeight[ GetAcceptedLevelIndex( floor_z + 1 ) ], t);
@@ -90,6 +97,9 @@ public class CameraController : MonoBehaviour {
 	
 		int floor_z = Mathf.FloorToInt (GetZPosition ());
 
+		if (floor_z < 0)
+			floor_z = 0;
+
 		float t = GetZPosition () - floor_z;
 
 		float rotY = Mathf.Lerp (lookAts[ GetAcceptedLevelIndex( floor_z )], lookAts[ GetAcceptedLevelIndex( floor_z + 1 ) ], t);
@@ -100,6 +110,9 @@ public class CameraController : MonoBehaviour {
 	private float GetLerpedPosition(){
 	
 		int floor_z = Mathf.FloorToInt (GetZPosition ());
+
+		if (floor_z < 0)
+			floor_z = 0;
 
 		float t = GetZPosition () - floor_z;
 
@@ -195,7 +208,78 @@ public class CameraController : MonoBehaviour {
 	}
 
 
-	private void CreateCameraRoute(){
+	private void LerpCameraLooksAtsArray(){
+
+		int numSamples = 5;
+
+		float[] lerpedLooksAt = new float[l.levelLength];
+
+		for (int i = 0; i < l.levelLength; i++) {
+
+			for(int g = -numSamples; g <= numSamples; g++){
+
+				int index = i + g;
+				lerpedLooksAt [i] += cameraHeight[GetAcceptedLevelIndex(index)];
+
+			}
+
+			lerpedLooksAt [i] /= numSamples * 2;
+
+		}
+
+		lookAts = lerpedLooksAt;
+
+	}
+
+	private void LerpCameraHeightsArray(){
+
+		int numSamples = 15;
+
+		float[] lerpedHeights = new float[l.levelLength];
+
+		for (int i = 0; i < l.levelLength; i++) {
+
+			for(int g = -numSamples; g <= numSamples; g++){
+
+				int index = i + g;
+				lerpedHeights [i] += cameraHeight[GetAcceptedLevelIndex(index)];
+			
+			}
+
+			lerpedHeights [i] /= numSamples * 2;
+
+		}
+
+		cameraHeight = lerpedHeights;
+
+	}
+
+
+
+	private void LerpCameraPostionsArray(){
+		
+		int numSamples = 5;
+
+		for (int i = 0; i < l.levelLength; i++) {
+
+			for(int g = -numSamples; g <= numSamples; g++){
+
+				int index = i + g;
+
+				if (l.levelAreas [GetAcceptedLevelIndex(index)] == LevelGenerator.AreaType.cliff)
+					cameraPositionRoute [i] += l.GetCanyonNoise () [GetAcceptedLevelIndex (index)];
+				else
+					cameraPositionRoute [i] += 0f;
+			}
+
+			cameraPositionRoute [i] /= numSamples * 2;
+		
+		}
+	
+	}
+
+
+	private void CreateCameraRouteOLD(){
 
 		for (int i = 0; i < l.levelLength; i++) {
 

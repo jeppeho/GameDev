@@ -95,10 +95,20 @@ public class NewController : MonoBehaviour {
 
 		//Get state of player, eg. dead, active etc.
 		playerState = this.gameObject.GetComponent<PlayerManager> ().GetState ();
+		GetInputButtonValues ();
 
-		if (playerState == "active" || playerState == "invulnerable") {
+		//If player is inactive
+		if (playerState == "inactive") {
+			
+			if (pressJump) {
+
+				this.gameObject.GetComponent<PlayerManager> ().SetActive (true);
+			}
+		}
+			
+		//If player is active
+		else if (playerState == "active" || playerState == "invulnerable") {
 	
-			GetInputButtonValues ();
 			UpdateDirection ();
 			UpdateSurfaceTags ();
 
@@ -149,44 +159,6 @@ public class NewController : MonoBehaviour {
 			
 			}
 
-			//Check if player should throw relic
-//			if (pressThrow > 0.05f && this.gameObject.GetComponent<PlayerRelicHandler> ().HasRelic () == true) {
-//
-//				//Reverse if Xbox
-//
-//
-//				if (producer.Equals ("Xbox")) {
-//					throwBuffer += pressThrow;
-//				} else {
-//					throwBuffer += (pressThrow + 1) / 2;		
-//				}
-//
-//				throwCounter++;
-//
-//				if (throwCounter >= 5) {
-//					Throw ();
-//					throwBuffer = 0;
-//					throwCounter = 0;
-//				}
-//			} else {
-//				if (throwCounter >= 1) {
-//					Throw ();
-//				}
-//
-//				throwBuffer = 0;
-//				throwCounter = 0;
-//			}
-
-			//If explosionCounter is above target, then make explosion
-//			if (pressExplode) {
-//				if (explosionCounter > 200) {
-//
-//					Explode ();
-//					//reset counter
-//					explosionCounter = 0;
-//				}
-//			}
-
 			//Charge explosionCounter 
 			explosionCounter++;
 		} else {
@@ -201,6 +173,8 @@ public class NewController : MonoBehaviour {
 		LimitWalkingDistanceSoft();
 
 		LimitBoundariesOnXAxis ();
+		
+
 	}
 
 
@@ -323,7 +297,6 @@ public class NewController : MonoBehaviour {
 			
 //		x = moveHorizontal * accelerationRate * horizontalJumpScalar;
 //		z = moveVertical * accelerationRate * horizontalJumpScalar;
-//
 
 		int numFrames = 7;
 		int index = 0;
@@ -331,14 +304,6 @@ public class NewController : MonoBehaviour {
 		rb.velocity /= 3f;
 
 		float jumpPower = GetJumpPower () / (float)numFrames;
-
-		/* This could be made in the GetJumpPower() method */
-		if (GetSurfaceTag () == "Water" || GetLastSurfaceTag () == "Water") {
-			Debug.Log ("*****Water");
-			//jumpPower /= 1f;
-		} else {
-			Debug.Log ("-----FUCKING GROUND");
-		}
 
 		while (pressJump && index < numFrames) {
 

@@ -213,6 +213,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impactResistance: 1
+  rend: {fileID: 0}
+  materials:
+  - {fileID: 2100000, guid: 6a0393d14023191458f2763342124ecc, type: 2}
+  - {fileID: 2100000, guid: 1b657f7260af36c4e9f2704f17f4ff47, type: 2}
+  - {fileID: 2100000, guid: 17b26d63e355c4fd98116a4f5477c5d0, type: 2}
+  - {fileID: 2100000, guid: 509cc79d8f96693489fe1169b363ab19, type: 2}
 --- !u!114 &11479938
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -239,8 +245,8 @@ MonoBehaviour:
   producer: 
   accelerationRate: 10
   maxVelocity: 3
-  jumpPower: 10
-  horizontalJumpScalar: 1
+  jumpPower: 14
+  jumpXZscalar: 1.3
   numDashFrames: 5
   dashPower: 900
   dashCoolDownForSeconds: 1.5
