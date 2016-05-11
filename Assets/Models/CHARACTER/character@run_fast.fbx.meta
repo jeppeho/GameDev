@@ -1,0 +1,145 @@
+fileFormatVersion: 2
+guid: 401e6d09a2b0ac54286908e4406aa244
+timeCreated: 1462966189
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: character:body
+    100002: character:collar
+    100004: character:head
+    100006: character:l_ankle
+    100008: character:l_arm
+    100010: character:l_fingers
+    100012: character:l_forearm
+    100014: character:l_hand
+    100016: character:l_heel
+    100018: character:l_hip
+    100020: character:l_knee
+    100022: character:l_leg
+    100024: character:l_metacarpal
+    100026: character:l_shin
+    100028: character:l_shoulder
+    100030: character:l_thigh
+    100032: character:l_thumb
+    100034: character:l_toe
+    100036: character:neck
+    100038: character:r_ankle
+    100040: character:r_arm
+    100042: character:r_fingers
+    100044: character:r_forearm
+    100046: character:r_hand
+    100048: character:r_heel
+    100050: character:r_hip
+    100052: character:r_knee
+    100054: character:r_leg
+    100056: character:r_metacarpal
+    100058: character:r_shin
+    100060: character:r_shoulder
+    100062: character:r_thigh
+    100064: character:r_thumb
+    100066: character:r_toe
+    100068: character:rig
+    100070: //RootNode
+    400000: character:body
+    400002: character:collar
+    400004: character:head
+    400006: character:l_ankle
+    400008: character:l_arm
+    400010: character:l_fingers
+    400012: character:l_forearm
+    400014: character:l_hand
+    400016: character:l_heel
+    400018: character:l_hip
+    400020: character:l_knee
+    400022: character:l_leg
+    400024: character:l_metacarpal
+    400026: character:l_shin
+    400028: character:l_shoulder
+    400030: character:l_thigh
+    400032: character:l_thumb
+    400034: character:l_toe
+    400036: character:neck
+    400038: character:r_ankle
+    400040: character:r_arm
+    400042: character:r_fingers
+    400044: character:r_forearm
+    400046: character:r_hand
+    400048: character:r_heel
+    400050: character:r_hip
+    400052: character:r_knee
+    400054: character:r_leg
+    400056: character:r_metacarpal
+    400058: character:r_shin
+    400060: character:r_shoulder
+    400062: character:r_thigh
+    400064: character:r_thumb
+    400066: character:r_toe
+    400068: character:rig
+    400070: //RootNode
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

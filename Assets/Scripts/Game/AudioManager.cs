@@ -7,10 +7,12 @@ public class AudioManager : MonoBehaviour {
 	private static AudioClip handMoveLoop;
 	private static AudioClip summonInit;
 	private static AudioClip summonLoop;
-	private static AudioClip summonInstance;
+	private static AudioClip summonStop;
+	private static List<AudioClip> summonInstance = new List<AudioClip>();
 	private static List<AudioClip> rockImpact = new List<AudioClip>();
 	private static List<AudioClip> rockClick = new List<AudioClip>();
 
+	[HideInInspector]
 	public GameObject audioplayerCasting;
 
 	void Awake()
@@ -18,13 +20,14 @@ public class AudioManager : MonoBehaviour {
 		//Load all sounds from resources
 		string path = "Audio/Godhand/";
 		handMoveLoop = Resources.Load(path+"handMoveLoop") as AudioClip;
-		summonInit = Resources.Load(path+"summonInit") as AudioClip;
-		summonLoop = Resources.Load(path+"summonLoop") as AudioClip;
-		summonInstance = Resources.Load(path+"summonInstance") as AudioClip;
+		//summonInit = Resources.Load(path+"gestureLoop") as AudioClip;
+		summonLoop = Resources.Load(path+"gestureLoop") as AudioClip;
+		summonStop = Resources.Load(path+"gestureStop") as AudioClip;
+		summonInstance = LoadSet(path+"summonInstance", 7);
 		rockClick = LoadSet(path+"rockClick", 8);
 
 		path = "Audio/Environment/";
-		rockImpact = LoadSet(path+"rockImpact", 16);
+		rockImpact = LoadSet(path+"rockImpact", 12);
 	}
 
 	void Start()
@@ -36,6 +39,20 @@ public class AudioManager : MonoBehaviour {
 	{
 		AudioSource player = caller.GetComponent<AudioSource>();
 		AudioClip clip = FindClip (s);
+		try
+		{
+			player.clip = clip;
+			player.loop = false;
+			player.Play();
+		}
+		catch (Exception e)
+		{	Debug.Log("A sound was triggered, but the caller doesn't have an audiosource component.");	}
+	}
+
+	public void Play(string s, GameObject caller, int n, int targetSource)
+	{
+		AudioSource player = caller.GetComponents<AudioSource>()[targetSource];
+		AudioClip clip = FindClip (s, n);
 		try
 		{
 			player.clip = clip;
@@ -59,6 +76,17 @@ public class AudioManager : MonoBehaviour {
 		}
 		catch (Exception e)
 		{	Debug.Log("A sound was triggered, but the caller doesn't have an audiosource component.");	}
+	}
+
+	public void Stop(GameObject caller)
+	{
+		AudioSource player = caller.GetComponent<AudioSource>();
+		try
+		{
+			player.Stop();
+		}
+		catch (Exception e)
+		{	Debug.Log("A stop was triggered, but the caller doesn't have an audiosource component.");	}
 	}
 
 	public void PlayLoop(string s, GameObject caller)
@@ -88,14 +116,30 @@ public class AudioManager : MonoBehaviour {
 		case "rockClick":
 			return FindClipRandom (rockClick);
 			break;
-		case "summonInit":
-			return summonInit;
-			break;
+		//case "summonInit":
+			//return summonInit;
+			//break;
 		case "summonLoop":
 			return summonLoop;
 			break;
+		case "summonStop":
+			return summonStop;
+			break;
 		case "summonInstance":
-			return summonInstance;
+			return FindClipNumber(summonInstance, 0);
+			break;
+		default:
+			return null;
+			break;
+		}
+	}
+
+	private AudioClip FindClip(string s, int n)
+	{
+		switch (s)
+		{
+		case "summonInstance":
+			return FindClipNumber(summonInstance, n);
 			break;
 		default:
 			return null;
@@ -106,6 +150,11 @@ public class AudioManager : MonoBehaviour {
 	private AudioClip FindClipRandom(List<AudioClip> list)
 	{
 		return list[UnityEngine.Random.Range(0,list.Count)];
+	}
+
+	private AudioClip FindClipNumber(List<AudioClip> list, int n)
+	{
+		return list[n];
 	}
 
 	public void SetVolume(float v, GameObject caller)

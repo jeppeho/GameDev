@@ -8,8 +8,8 @@ public class GestureGust : Gesture {
 	//Derived: thisSpell
 	private float charge;
 	private float pulsebase;
-	private Vector3 tempGustCenter;
-	private Vector3 tempPalmWorldPosition;
+	private Vector3 gustCenter;
+	private Vector3 palmWorldPosition;
 	private float gustProgression;
 	public float yThreshold = 5.2f;
 
@@ -48,8 +48,8 @@ public class GestureGust : Gesture {
 
 		float palmY = leapManager.GetPalmPosition ().y;
 
-		tempPalmWorldPosition = leapManager.GetPalmWorldPosition ();
-		tempGustCenter = new Vector3 (tempPalmWorldPosition.x, 5f, tempPalmWorldPosition.z);
+		palmWorldPosition = leapManager.GetPalmWorldPosition ();
+		gustCenter = new Vector3 (palmWorldPosition.x, 5f, palmWorldPosition.z);
 
 		if (gestureManager.activeSpell.Equals(thisSpell))
 		{
@@ -78,15 +78,37 @@ public class GestureGust : Gesture {
 
 					GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
 					GameObject[] objects = GameObject.FindGameObjectsWithTag ("Interactables");
-					GameObject[] intactObjects = GameObject.FindGameObjectsWithTag ("Interactables");
+					GameObject[] intactObjects = GameObject.FindGameObjectsWithTag ("Shatterables");
 
+					foreach (GameObject o in intactObjects)
+					{
+						ShatterOnCollision scr = o.GetComponent<ShatterOnCollision> ();
+						//if (scr == null)
+						//{	scr = o.GetComponent<ShatterIndexOnCollision> ();	}
+
+						if (scr != null)
+						{
+							//get pull direction (and distance to hand)
+							Vector3 dir = gustCenter - o.transform.position;
+
+							if (dir.sqrMagnitude <= searchRadiusSqr-Random.Range(0f, 50f))
+							{
+								IntactObject scr2 = o.GetComponentInChildren<IntactObject> ();
+								if (scr2 != null)
+								{	scr2.SetHitvector (dir.normalized * 0.2f);		}
+
+								scr.ShatterObject ();
+							}
+						}
+					}
+						
 					foreach (GameObject o in objects)
 					{
 						Rigidbody rb = o.GetComponent<Rigidbody> ();
 						if (rb != null) {
 
 							//get pull direction (and distance to hand)
-							Vector3 dir = tempGustCenter - rb.position;
+							Vector3 dir = gustCenter - rb.position;
 
 							if (dir.sqrMagnitude <= searchRadiusSqr) { //Ignore if above threshold
 
@@ -96,13 +118,6 @@ public class GestureGust : Gesture {
 								dir = dir.normalized * force;
 								//Rotate pull, to create hurricane effect
 								dir = Quaternion.Euler (0f, 15f, 0f) * dir; 
-
-								//If force is great enough, shatter appropriate objects
-								ShatterOnCollision scr = o.GetComponent<ShatterOnCollision> ();
-								if (scr != null)
-								{
-									scr.ShatterObject();
-								}
 
 								//Apply
 								rb.AddForce (dir);
@@ -117,7 +132,7 @@ public class GestureGust : Gesture {
 						if (rb != null) 
 						{
 							//get pull direction (and distance to hand)
-							Vector3 dir = tempGustCenter - rb.position;
+							Vector3 dir = gustCenter - rb.position;
 							//Calculate drag, based on distance to hand (reverse proportional)
 							float force = Mathf.Clamp (searchRadiusSqr - dir.sqrMagnitude, 0, searchRadiusSqr) * pull * 0.001f;
 							//Set magnitude to force

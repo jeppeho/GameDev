@@ -6,6 +6,7 @@ public class GestureSummon : Gesture {
 
 	//Derived: leapManager
 	//Derived: gestureManager
+	//Derived: handManager
 	//Derived: thisSpell
 	private LevelGenerator levelGenerator;
 	private Vector3 tempPalmWorldPosition;
@@ -53,6 +54,8 @@ public class GestureSummon : Gesture {
 			tempPalmWorldPosition = leapManager.GetPalmWorldPosition ();
 			tempPalmPosition = leapManager.GetPalmPosition ();
 			gestureManager.setHandColor(Color.yellow);
+
+			audioManager.PlayLoop("summonLoop", handManager.audioplayerCasting);
 		}
 
 		//----------------------------------
@@ -137,6 +140,8 @@ public class GestureSummon : Gesture {
 						subShard [blockCounter].GetComponent<Rigidbody>().AddTorque(new Vector3(0,-50,0),ForceMode.Impulse);
 					}
 
+					//Either way, count the block, and play a sound
+					audioManager.Play("summonInstance", handManager.audioplayerCastingSupporting, blockCounter-1, blockCounter-1);
 
 					blockCounter++;
 				}
@@ -144,6 +149,7 @@ public class GestureSummon : Gesture {
 			else
 			{
 				gestureManager.clearActiveSpell ();
+				audioManager.Play("summonStop", handManager.audioplayerCasting);
 			}
 		}
 	}
