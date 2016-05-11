@@ -26,6 +26,10 @@ public class IntactObject : MonoBehaviour {
 		}
 	}
 
+	public void SetHitvector(Vector3 v){
+		hitVector = v;
+	}
+
 	public bool IsUntouched(){
 		return untouched;
 	}

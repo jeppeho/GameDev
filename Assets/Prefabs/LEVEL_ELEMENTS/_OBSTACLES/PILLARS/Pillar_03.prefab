@@ -87,7 +87,7 @@ GameObject:
   - 114: {fileID: 11479694}
   m_Layer: 13
   m_Name: Pillar_03
-  m_TagString: Environment
+  m_TagString: Shatterables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,7 +106,7 @@ GameObject:
   - 114: {fileID: 11444872}
   m_Layer: 14
   m_Name: intactObject
-  m_TagString: Shatterables
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

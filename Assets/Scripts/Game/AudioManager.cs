@@ -12,6 +12,7 @@ public class AudioManager : MonoBehaviour {
 	private static List<AudioClip> rockImpact = new List<AudioClip>();
 	private static List<AudioClip> rockClick = new List<AudioClip>();
 
+	[HideInInspector]
 	public GameObject audioplayerCasting;
 
 	void Awake()
