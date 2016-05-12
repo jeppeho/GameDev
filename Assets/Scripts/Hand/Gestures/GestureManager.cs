@@ -12,11 +12,16 @@ public class GestureManager : MonoBehaviour {
 
 	[HideInInspector]
 	public string activeSpell; //{ get; set; }
+    [HideInInspector]
+    public GlowControl glowController;
+
 	public bool calibrateOnStart;
 
 	// Use this for initialization
 	void Start () {
 		leapManager = this.gameObject.GetComponent<LeapManager> ();
+        glowController = GameObject.Find("StoneHandModel 1").GetComponentInChildren<GlowControl>();
+        Debug.Log("Found hand + glow");
 		activeSpell = "none";
 
 		calibratedDownFrame = new List<Vector3> ();
