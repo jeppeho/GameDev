@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
+using System.Collections;
+
 
 public class GestureSummon : Gesture {
 
@@ -21,10 +22,12 @@ public class GestureSummon : Gesture {
 	// Use this for initialization
 	void Start () {
 		base.Init ();
+        
+        try { levelGenerator = GameObject.Find("LevelGenerator").GetComponent<LevelGenerator>(); }
+        catch(Exception e)
+        { }
 
-		levelGenerator = GameObject.Find ("LevelGenerator").GetComponent<LevelGenerator>();
 		thisSpell = "summon";
-		Debug.Log ("Set thisSpell: " + thisSpell.ToString());
 
 		subShard = new GameObject[7];
 
@@ -59,8 +62,6 @@ public class GestureSummon : Gesture {
 			gestureManager.setHandColor(Color.yellow);
 
 			audioManager.PlayLoop("summonLoop", handManager.audioplayerCasting);
-
-            Debug.Log("succesfully summoned!");
 		}
 
 		//----------------------------------
@@ -69,7 +70,6 @@ public class GestureSummon : Gesture {
 
 		if (gestureManager.activeSpell.Equals(thisSpell))
 		{
-			Debug.Log ("Summon is active!");
 			if (
 				leapManager.PalmNormalNear (gestureManager.calibratedDown, 0.45f)
 			&& leapManager.GetFingerIsExtendedPattern (true, true, true, true, true)

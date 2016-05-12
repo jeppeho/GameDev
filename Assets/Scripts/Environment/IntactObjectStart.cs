@@ -14,7 +14,8 @@ public class IntactObjectStart : MonoBehaviour {
 		if (cooldown <= 0)
 		{
 			//If collider layer is not Hand
-			if (col.gameObject.layer == 8) {
+            if (col.gameObject.layer != 10 && col.gameObject.tag != "Relic")
+            {
 
 				//If threshold force is used
 				if (col.relativeVelocity.magnitude > breakForce) {

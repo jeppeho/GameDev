@@ -44,13 +44,14 @@ public class GestureManager : MonoBehaviour {
 
 	public void clearActiveSpell()
 	{
-		activeSpell = "none";
+        activeSpell = "none";
 		setHandColor(Color.grey);
 	}
 
 	public bool noSpellActive()
 	{
-		return (activeSpell.Equals("none"));
+        return (activeSpell.Equals("none") || activeSpell == null);
+
 	}
 
 	public string getActiveSpell()
