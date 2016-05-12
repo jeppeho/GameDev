@@ -10,6 +10,8 @@ public class RelicHealth : MonoBehaviour {
 	private Rigidbody rb;
 	private RelicManager manager;
 	private GameObject sphere;
+	private PlayerScore ps;
+
 
 	Color specularColor;
 	Color baseColor;
@@ -21,6 +23,7 @@ public class RelicHealth : MonoBehaviour {
 		health = startHealth;
 		rb = GetComponent<Rigidbody> ();
 		manager = GetComponent<RelicManager> ();
+		ps = this.gameObject.GetComponent<PlayerScore> ();
 
 		sphere = GameObject.Find ("RelicSphere");
 
@@ -62,25 +65,38 @@ public class RelicHealth : MonoBehaviour {
 
 		float relativeVelocity = col.relativeVelocity.magnitude;
 
-		if (!manager.HasParent ()) {
+		//Only if relic collides with crystals
+		if (col.gameObject.layer == 13) {
 
-			//Only drain if above some threshold
-			//if (relativeVelocity > 5f) {
-				float drain = Mathf.FloorToInt (relativeVelocity * 2);
+			//If relic is not carried
+			if (!manager.HasParent ()) {
 
-				//Limit max energy drain
-				if (drain > 30f)
-					drain = 30f;
+				//Only drain if above some threshold
+				if (relativeVelocity > 3f) {
 
-				DrainEnergy (drain);
-			//}
-		} else {
+					float drain = Mathf.FloorToInt (relativeVelocity * 2);
 
-			if (relativeVelocity > 30f) {
+					//Limit max energy drain
+					if (drain > 20f)
+						drain = 20f;
 
-				//Remove from parent
-				DrainEnergy (30f);
-				manager.ReleaseFromParent ();
+					DrainEnergy (drain);
+				
+				}
+
+			//If relic is being carried
+			} else {
+
+				//Increase damage score for player
+				ps.IncreaseDamage (Mathf.Clamp(0, 30, relativeVelocity));
+
+				//If collision is big enough
+				if (relativeVelocity > 30f) {
+
+					//Remove from parent
+					DrainEnergy (30f);
+					manager.ReleaseFromParent ();
+				}
 			}
 		}
 	}
