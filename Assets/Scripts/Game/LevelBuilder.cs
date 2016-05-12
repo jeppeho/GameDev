@@ -79,7 +79,7 @@ public class LevelBuilder : MonoBehaviour {
 
 			int index = Mathf.FloorToInt (t.position.z);
 
-			float y = levelGenerator.GetLevelAreaHeights()[ index ];
+			float y = levelGenerator.GetLevelAreaHeights()[ Mathf.Clamp(index, 0, levelGenerator.levelLength - 1) ];
 
 			if (t.name == "WaterBasicNightime(Clone)")
 				y -= 0.5f;

@@ -11,24 +11,23 @@ public class PlayerManager : MonoBehaviour {
 	public float impactResistance = 3f;
 
 	public Material[] materials;
+	private int currentMaterialIndex;
+
+	private PlayerScore ps;
+	private PlayerRelicHandler playerRelicHandler;
 
 
 	void Awake() {
 		//Keep the system manager from destroying when changing scenes
 		DontDestroyOnLoad (transform.gameObject);
-//		Debug.Log ("GetState = " + GetState()); 
-//		if (GetState () == "inactive") {
-//			
-//			this.gameObject.SetActive (false);
-//		} else {
-//			this.gameObject.SetActive (true);
-//		}
 	}
 
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody>();
 		collider = GetComponentInChildren<MeshCollider>();
+		ps = this.gameObject.GetComponent<PlayerScore> ();
+		playerRelicHandler = this.gameObject.GetComponent<PlayerRelicHandler> ();
 	
 	}
 
@@ -69,6 +68,8 @@ public class PlayerManager : MonoBehaviour {
 
 	public void SetMaterial(int index){
 
+		currentMaterialIndex = index;
+
 		Material m = materials [index];
 		Debug.Log(index + "] setting matieral to " + m); 
 
@@ -76,6 +77,14 @@ public class PlayerManager : MonoBehaviour {
 
 			t.gameObject.GetComponent<Renderer> ().material = m;
 		}
+	}
+
+	public int GetCurrentMaterialIndex(){
+		return this.currentMaterialIndex;
+	}
+
+	public PlayerScore GetPlayerScore(){
+		return this.ps;
 	}
 
 
@@ -96,6 +105,10 @@ public class PlayerManager : MonoBehaviour {
 	{
 		if (playerState == state.active)
 		{
+//			if (playerRelicHandler.HasRelic ()) {
+//				ps.IncreaseDamage (10);
+//			}
+
 			playerState = state.dead;
 			rb.freezeRotation = false;
 			rb.AddTorque(new Vector3(Random.Range(0.2f,1),0,Random.Range(0.2f,1)));

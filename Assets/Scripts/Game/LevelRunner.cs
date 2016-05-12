@@ -17,6 +17,9 @@ public class LevelRunner : MonoBehaviour {
 	public Canvas minionWinMenu;
 
 	LevelGenerator lg;
+	SystemManager sm;
+
+	private bool GameOver; 
 
 
 	// Use this for initialization
@@ -28,37 +31,43 @@ public class LevelRunner : MonoBehaviour {
 		minionWinMenu.gameObject.SetActive (false);
 
 		lg = GameObject.Find ("LevelGenerator").GetComponent<LevelGenerator>();
+		sm = GameObject.Find ("SystemRunner").GetComponent<SystemManager>();
 
 		relic = GameObject.Find ("Relic");
 
 		//Set initial gameState
 		gameState = GameState.running;
 
+		GameOver = false;
 	}
 
 	// Update is called once per frame
 	void Update () {
 
-		UpdateState ();
+		//if(!GameOver){
+			
+			UpdateState ();
 
-		if (gameState == GameState.paused) {
-			PauseGame ();
-			//StartCoroutine( PauseGameKeepRegisteringInput () );
-		} 
-		if (gameState == GameState.running) {
-			Time.timeScale = 1f;
-		} 
+			if (gameState == GameState.paused) {
+				PauseGame ();
+				//StartCoroutine( PauseGameKeepRegisteringInput () );
+			} 
+			if (gameState == GameState.running) {
+				Time.timeScale = 1f;
+			} 
 
-		if (gameState == GameState.godWin) {
-			Time.timeScale = 0.2f;
-			godWinMenu.gameObject.SetActive (true);
-		}
+			if (gameState == GameState.godWin) {
+				GameOver = true;
+				Time.timeScale = 0f;
+				godWinMenu.gameObject.SetActive (true);
+			}
 
-		if (gameState == GameState.minionWin) {
-		
-			Time.timeScale = 0.2f;
-			minionWinMenu.gameObject.SetActive (true);
-		}
+			if (gameState == GameState.minionWin) {
+				GameOver = true;
+				FindTheWinningMinion ();
+				Time.timeScale = 0f;
+				minionWinMenu.gameObject.SetActive (true);
+			}
 
 //		else 
 //			Time.timeScale = 1;
@@ -72,6 +81,7 @@ public class LevelRunner : MonoBehaviour {
 //		else if (gameState == GameState.minionWin) {
 //
 //		}
+		//}
 
 	}
 
@@ -103,6 +113,45 @@ public class LevelRunner : MonoBehaviour {
 		prevPauseGame = pauseGameButton;
 
 	}
+
+
+
+	private void FindTheWinningMinion(){
+
+		Debug.Log ("//////FINDING THE WINNER");
+		GameObject[] minions = sm.GetInputHandler ().GetMinionsArray ();
+		Debug.Log ("We have " + minions.Length +  " minions");
+
+		int winningMinionIndex = -1;
+		float highestScore = -1000; 
+
+		for (int i = 0; i < minions.Length; i++) {
+
+			float minionScore = minions [i].GetComponent<PlayerManager> ().GetPlayerScore ().GetFinalScore ();
+			Debug.Log ("minion #" + i + " score = " + minionScore + " and highscore = " + highestScore );
+
+			//If score is so far the highest then update the index of the winning minion
+			if (minionScore > highestScore) {
+				highestScore = minionScore;
+				winningMinionIndex = i;
+			} 
+			//If score is the same as the highest
+			else if (minionScore == highestScore) {
+
+				//Then there's 50/50 chance if we update it
+				if (Random.Range (0f, 1f) > 0.5f) {
+					winningMinionIndex = i;
+				}
+			}
+		}
+
+		Debug.Log ("Highscore is now = " + highestScore + " for minion #" + winningMinionIndex);
+
+		int materialIndex = minions [winningMinionIndex].GetComponent<PlayerManager> ().GetCurrentMaterialIndex ();
+
+		sm.SetMinionWinner (winningMinionIndex);
+	}
+
 
 	private void UpdateButtonInput(){
 		pauseGameButton = Input.GetAxisRaw ("PauseGame");

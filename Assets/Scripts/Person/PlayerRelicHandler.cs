@@ -5,9 +5,23 @@ public class PlayerRelicHandler : MonoBehaviour {
 
 	private Rigidbody rb;
 
-	private AudioManager audioManager;
+
+	private PlayerScore ps;
 
 	string playerState;
+
+
+	void OnLevelWasLoaded(){
+		Debug.Log ("LEVEL FOR PALYER WAS LOADED");
+		ps = this.gameObject.GetComponent<PlayerScore> ();
+
+		if (HasRelic ()) {
+			ReleaseRelic ();
+		}
+	}
+
+	private AudioManager audioManager;
+
 
 	void Start()
 	{
@@ -22,14 +36,22 @@ public class PlayerRelicHandler : MonoBehaviour {
 		playerState = this.gameObject.GetComponent<PlayerManager> ().GetState ();
 
 		//If player not active, release object
-		if (playerState != "active") {
-
-			if ( HasRelic() ) {
+		if ( HasRelic() ) {
+			
+			if (playerState != "active") {
 				
 				ReleaseRelic ();
 			
 			}
+
+			if (playerState == "active") {
+
+				ps.IncreaseTime (Time.deltaTime);
+
+			}
 		}
+
+
 	}
 
 	void OnCollisionEnter(Collision collision){
