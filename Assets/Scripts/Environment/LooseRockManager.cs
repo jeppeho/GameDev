@@ -13,7 +13,7 @@ public class LooseRockManager : MonoBehaviour {
 	{
 		if (col.impulse.magnitude > 10f)
 		{
-			audioManager.Play ("rockImpact", Mathf.Clamp((col.impulse.magnitude+8) / 350 + Random.Range(-0.05f, 0.05f),0,1), gameObject);
+			audioManager.Play ("rockImpact", Mathf.Clamp((col.impulse.magnitude+8) / 400 + Random.Range(-0.1f, 0.05f),0,1), gameObject);
 		}
 	}
 }
