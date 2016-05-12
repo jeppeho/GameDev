@@ -30,11 +30,11 @@ public class RelicController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		rb = this.gameObject.GetComponent<Rigidbody> ();
+        rb = this.gameObject.GetComponent<Rigidbody> ();
 		manager = this.GetComponent<RelicManager> ();
 		lg = GameObject.Find ("LevelGenerator").GetComponent<LevelGenerator>();
 		//	ATTENSION - from this line forth, nothing makes sense. The manager can be debugged, but no method within it can be called, without a null-point-exception. After 1,5 hours of trying to resolve this error, I give up. /Nils
-		manager.UpdateFreezeRotation (false);
+		//manager.UpdateFreezeRotation (false);
 		movingToTarget = false;
 
 		minX = 0; maxX = 10.5f; minY = 0; minZ = -150; //Bounds - should be put in a LevelManager script
@@ -49,8 +49,7 @@ public class RelicController : MonoBehaviour {
 		if (!manager.HasParent()) {
 
 			//If relic is about to go behind camera
-			wall = camera.GetComponent<CameraController> ().GetPosition ().z + cameraZOffsetBound;
-
+			wall = camera.GetComponent<LeapObjectController/*CameraController*/> ().GetPosition ().z + cameraZOffsetBound;
 			int z = Mathf.FloorToInt (this.transform.position.z);
 			float RelicZ = 1.2f;
 
