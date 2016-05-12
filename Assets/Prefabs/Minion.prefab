@@ -52,6 +52,7 @@ GameObject:
   - 65: {fileID: 6547090}
   - 135: {fileID: 13552636}
   - 114: {fileID: 11405134}
+  - 114: {fileID: 11436204}
   m_Layer: 10
   m_Name: Minion
   m_TagString: Player
@@ -212,13 +213,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a04aa5ca8305dd5409b9d3595dfd13f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerState: 0
   impactResistance: 1
-  rend: {fileID: 0}
   materials:
   - {fileID: 2100000, guid: 6a0393d14023191458f2763342124ecc, type: 2}
   - {fileID: 2100000, guid: 1b657f7260af36c4e9f2704f17f4ff47, type: 2}
   - {fileID: 2100000, guid: 17b26d63e355c4fd98116a4f5477c5d0, type: 2}
   - {fileID: 2100000, guid: 509cc79d8f96693489fe1169b363ab19, type: 2}
+--- !u!114 &11436204
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 160758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d405d6da43a064969bcaf249ba372153, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11479938
 MonoBehaviour:
   m_ObjectHideFlags: 1

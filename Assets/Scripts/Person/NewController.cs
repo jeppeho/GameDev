@@ -49,6 +49,7 @@ public class NewController : MonoBehaviour {
 
 	GameObject player;
 	Rigidbody rb;
+	private PlayerScore ps;
 
 	//This is the throwDirection, reads right stick if used else the left stick
 	private Vector3 direction;

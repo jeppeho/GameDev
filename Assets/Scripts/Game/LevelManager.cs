@@ -43,7 +43,7 @@ public static class LevelManager {
 //		Debug.Log ("index = " + index);
 //		Debug.Log ("respawnPoints[index] = " + lg.GetRespawnPoints() [index]);
 
-		Vector3 respawn = lg.GetRespawnPoints () [index /* * player */];
+		Vector3 respawn = lg.GetRespawnPoints () [ Mathf.Clamp(index, 0, lg.levelLength) /* * player */];
 		respawn.y += lg.GetLevelAreaHeights () [index];
 
 		//return lg.GetRespawnPoints()[index /* * player */];
