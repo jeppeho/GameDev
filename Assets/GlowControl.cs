@@ -9,6 +9,7 @@ public class GlowControl : MonoBehaviour {
     float intensity;
     float noise;
     float burst;
+    float flicker;
 
     Color col;
     float[] noiseArray;
@@ -32,16 +33,17 @@ public class GlowControl : MonoBehaviour {
         noise = Random.Range(0f, 1f) * intensity;
         //noise = noiseArray[Mathf.FloorToInt(Time.frameCount % noiseArray.Length)];
 
-        float n = Mathf.Clamp(intensity * 0.6f + noise * 0.4f + burst, 0f, 1f); //Ranging from 0.8 to 1
+        float n = Mathf.Clamp(intensity * 0.6f + noise * 0.4f - (noise * flicker) + burst, 0f, 1f); //Ranging from 0.8 to 1
         col = new Color(col.r, col.g, col.b, 0.2f + n * 0.25f); //Keep alpha low
 
         glowSystem.startSize = 1f + n * 6f;
         glowSystem.startColor = col;
 
         if (burst > 0.01f)
-        {
-            burst *= 0.75f;
-        }
+        {   burst *= 0.66f;     }
+
+        if (flicker > 0.01f)
+        {   flicker *= 0.9f;   }
 	}
 
     public void setIntensity(float n)
@@ -51,5 +53,10 @@ public class GlowControl : MonoBehaviour {
     public void Burst(float n)
     {
         burst = Mathf.Clamp(n, 0f, 1f);
+    }
+
+    public void Flicker(float n)
+    {
+        flicker = Mathf.Clamp(n, 0f, 1f);
     }
 }

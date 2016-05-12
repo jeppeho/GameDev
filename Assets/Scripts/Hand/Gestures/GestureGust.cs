@@ -69,10 +69,19 @@ public class GestureGust : Gesture {
 			&& palmY < gustProgression + 1.5f
 			)
 			{
+                if (charge < 0.1f)
+                {
+                    gestureManager.glowController.setIntensity(1f - charge*10f);
+                }
+                else
+                {
+                    gestureManager.glowController.setIntensity(charge);
+                }
+                gestureManager.glowController.Flicker(charge);
 
 				//Handle charge
 				charge = Mathf.Min(1, charge+ 0.0075f);
-				pulsebase = (pulsebase + (charge *50f * Time.deltaTime)) % (2 * Mathf.PI);
+				pulsebase = (pulsebase + (charge *20f * Time.deltaTime)) % (2 * Mathf.PI);
                 gestureManager.setHandColor(Color.Lerp(Color.white, Color.yellow, Mathf.Sin(pulsebase)));
 
 				//If the hand is actually moving downwards, make some wind
@@ -83,8 +92,8 @@ public class GestureGust : Gesture {
 						audioManager.Play("gustRelease", handManager.audioplayerCasting);
 						released = true;
 					}
-
-                    gestureManager.glowController.Burst(0.25f);
+                    gestureManager.glowController.setIntensity(0);
+                    gestureManager.glowController.Burst(0.5f);
 
 					//Determine charge for this particular fixed update (NOTE - a different use of 'charge' than in GestureHurricane!)
 					float pull = gustProgression - palmY;
