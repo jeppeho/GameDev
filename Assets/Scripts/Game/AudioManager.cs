@@ -8,9 +8,14 @@ public class AudioManager : MonoBehaviour {
 	private static AudioClip summonInit;
 	private static AudioClip summonLoop;
 	private static AudioClip summonStop;
+	private static AudioClip gustLoop;
+	private static AudioClip gustRelease;
+
 	private static List<AudioClip> summonInstance = new List<AudioClip>();
 	private static List<AudioClip> rockImpact = new List<AudioClip>();
 	private static List<AudioClip> rockClick = new List<AudioClip>();
+	private static List<AudioClip> relicCatch = new List<AudioClip>();
+	private static List<AudioClip> relicThrow = new List<AudioClip>();
 
 	[HideInInspector]
 	public GameObject audioplayerCasting;
@@ -20,14 +25,20 @@ public class AudioManager : MonoBehaviour {
 		//Load all sounds from resources
 		string path = "Audio/Godhand/";
 		handMoveLoop = Resources.Load(path+"handMoveLoop") as AudioClip;
-		//summonInit = Resources.Load(path+"gestureLoop") as AudioClip;
-		summonLoop = Resources.Load(path+"gestureLoop") as AudioClip;
+		summonLoop = Resources.Load(path+"summonLoop") as AudioClip;
 		summonStop = Resources.Load(path+"gestureStop") as AudioClip;
+		gustLoop = Resources.Load(path+"gustLoop") as AudioClip;
+		gustRelease = Resources.Load(path+"gustRelease") as AudioClip;
+
 		summonInstance = LoadSet(path+"summonInstance", 7);
 		rockClick = LoadSet(path+"rockClick", 8);
 
 		path = "Audio/Environment/";
 		rockImpact = LoadSet(path+"rockImpact", 12);
+
+		path = "Audio/Relic/";
+		relicCatch = LoadSet(path+"relicCatch", 8);
+		relicThrow = LoadSet(path+"relicThrow", 8);
 	}
 
 	void Start()
@@ -57,6 +68,7 @@ public class AudioManager : MonoBehaviour {
 		{
 			player.clip = clip;
 			player.loop = false;
+			player.volume = 1f;
 			player.Play();
 		}
 		catch (Exception e)
@@ -125,8 +137,20 @@ public class AudioManager : MonoBehaviour {
 		case "summonStop":
 			return summonStop;
 			break;
+		case "gustLoop":
+			return gustLoop;
+			break;
+		case "gustRelease":
+			return gustRelease;
+			break;
 		case "summonInstance":
 			return FindClipNumber(summonInstance, 0);
+			break;
+		case "relicCatch":
+			return FindClipRandom (relicCatch);
+			break;
+		case "relicThrow":
+			return FindClipRandom (relicThrow);
 			break;
 		default:
 			return null;

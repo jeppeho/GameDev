@@ -11,7 +11,7 @@ public class RelicManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		rb = GetComponent<Rigidbody> ();
+		rb = this.gameObject.GetComponent<Rigidbody> ();
 		l = GameObject.Find ("LevelGenerator").GetComponent<LevelGenerator> ();
 
 		cameraPositionRoute = new float[l.levelLength];
@@ -31,7 +31,7 @@ public class RelicManager : MonoBehaviour {
 
 		this.transform.localPosition = new Vector3 (0, 0, 0);
 		UpdateScale (0.6f);
-		UpdateFreezeRotation (true);
+		//UpdateFreezeRotation (true);
 		ResetRotation ();
 		SetKinematic (true);
 	}
@@ -44,7 +44,7 @@ public class RelicManager : MonoBehaviour {
 	public void ReleaseFromParent(){
 		this.transform.parent = null;
 		UpdateScale (1f);
-		UpdateFreezeRotation (false);
+		//UpdateFreezeRotation (false);
 		SetKinematic (false);
 		StartCoroutine( coolDownFollowRoute () );
 	}
@@ -86,10 +86,10 @@ public class RelicManager : MonoBehaviour {
 	/**
 	 * Updates the freezeRotation parameter, with the inputted bool value
 	 */
+     /*
 	public void UpdateFreezeRotation(bool rotate){
 		rb.freezeRotation = rotate;
-	}
-
+	}*/
 	/**
 	 * Set current rotation to zero
 	 */

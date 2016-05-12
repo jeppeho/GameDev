@@ -5,17 +5,20 @@ public class GestureGust : Gesture {
 
 	//Derived: leapManager
 	//Derived: gestureManager
+	//Derived: handManager
 	//Derived: thisSpell
 	private float charge;
 	private float pulsebase;
 	private Vector3 gustCenter;
 	private Vector3 palmWorldPosition;
 	private float gustProgression;
-	public float yThreshold = 5.2f;
+	public float yThreshold = 5.0f;
+	public bool released = false;
 
 	// Use this for initialization
 	void Start () {
 		base.Init ();
+
 		thisSpell = "gust";
 		Debug.Log ("Set thisSpell: " + thisSpell.ToString());
 	}
@@ -40,6 +43,9 @@ public class GestureGust : Gesture {
 			gestureManager.setHandColor(Color.magenta);
 
 			charge = 0;
+			released = false;
+
+			audioManager.PlayLoop("gustLoop", handManager.audioplayerCasting);
 		}
 
 		//----------------------------------
@@ -57,19 +63,26 @@ public class GestureGust : Gesture {
 			if (
 				leapManager.PalmNormalNear (gestureManager.calibratedDown, 0.95f)
 			&& leapManager.GetFingerIsExtendedPattern (false, false, false, false, false)
-			&& leapManager.GetHandGrabStrength () >= 0.8f
+			&& leapManager.GetHandGrabStrength () >= 0.6f
 			//&& leapManager.PalmNearIgnore (tempPalmWorldPosition, 7f, false, true, true)
-			&& palmY < gustProgression + 0.5f
+			&& palmY < gustProgression + 1.5f
 			)
 			{
+
 				//Handle charge
 				charge = Mathf.Min(1, charge+ 0.0075f);
 				pulsebase = (pulsebase + (charge *50f * Time.deltaTime)) % (2 * Mathf.PI);
 				gestureManager.setHandColor (Color.Lerp (Color.grey, Color.magenta, Mathf.Sin(pulsebase)));
 
 				//If the hand is actually moving downwards, make some wind
-				if (palmY < gustProgression)
+				if (palmY < gustProgression - 1.5f)
 				{
+					if (!released)
+					{
+						audioManager.Play("gustRelease", handManager.audioplayerCasting);
+						released = true;
+					}
+
 					//Determine charge for this particular fixed update (NOTE - a different use of 'charge' than in GestureHurricane!)
 					float pull = gustProgression - palmY;
 
@@ -82,11 +95,10 @@ public class GestureGust : Gesture {
 
 					foreach (GameObject o in intactObjects)
 					{
-						ShatterOnCollision scr = o.GetComponent<ShatterOnCollision> ();
-						//if (scr == null)
-						//{	scr = o.GetComponent<ShatterIndexOnCollision> ();	}
+						ShatterOnCollision scrA = o.GetComponent<ShatterOnCollision> ();
+						ShatterIndexOnCollision scrB = o.GetComponent<ShatterIndexOnCollision> ();
 
-						if (scr != null)
+						if (scrA != null || scrB != null)
 						{
 							//get pull direction (and distance to hand)
 							Vector3 dir = gustCenter - o.transform.position;
@@ -97,7 +109,10 @@ public class GestureGust : Gesture {
 								if (scr2 != null)
 								{	scr2.SetHitvector (dir.normalized * 0.2f);		}
 
-								scr.ShatterObject ();
+								if (scrA != null)
+								{	scrA.ShatterObject ();	}
+								else if (scrB != null)
+								{	scrB.ShatterObject ();	}
 							}
 						}
 					}
@@ -153,6 +168,8 @@ public class GestureGust : Gesture {
 			{
 				gustProgression = -10f; //Incapacitate gustProgression
 				gestureManager.clearActiveSpell ();
+				if (!released)
+				{	audioManager.Play ("summonStop", handManager.audioplayerCasting);	}
 			}
 		}
 	}

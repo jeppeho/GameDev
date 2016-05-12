@@ -72,7 +72,7 @@ GameObject:
   - 54: {fileID: 5410898}
   m_Layer: 14
   m_Name: intactObject1
-  m_TagString: Environment
+  m_TagString: Shatterables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,7 +130,7 @@ GameObject:
   - 54: {fileID: 5430682}
   m_Layer: 14
   m_Name: intactObject3
-  m_TagString: Environment
+  m_TagString: Shatterables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -201,7 +201,7 @@ GameObject:
   - 54: {fileID: 5466240}
   m_Layer: 14
   m_Name: intactObject2
-  m_TagString: Environment
+  m_TagString: Shatterables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -320,7 +320,7 @@ GameObject:
   - 54: {fileID: 5412472}
   m_Layer: 14
   m_Name: intactObject6
-  m_TagString: Environment
+  m_TagString: Shatterables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -382,7 +382,7 @@ GameObject:
   - 54: {fileID: 5458080}
   m_Layer: 14
   m_Name: intactObject5
-  m_TagString: Environment
+  m_TagString: Shatterables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -444,7 +444,7 @@ GameObject:
   - 54: {fileID: 5450834}
   m_Layer: 14
   m_Name: intactObject7
-  m_TagString: Environment
+  m_TagString: Shatterables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -845,7 +845,7 @@ GameObject:
   - 54: {fileID: 5482144}
   m_Layer: 14
   m_Name: intactObject4
-  m_TagString: Environment
+  m_TagString: Shatterables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

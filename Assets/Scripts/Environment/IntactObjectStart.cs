@@ -6,11 +6,12 @@ public class IntactObjectStart : MonoBehaviour {
 	private int breakForce = 0;
 
 
+
 	void Update(){
 
-		if (Input.GetKey ("l")) {
-			Invoke( "ChangeLevel", 3.0f );
-		}
+		//Use L key to go to level  
+		if (Input.GetKey ("l"))
+			Invoke( "ChangeLevel", 0.1f );
 
 	}
 
@@ -26,7 +27,6 @@ public class IntactObjectStart : MonoBehaviour {
 				Invoke( "ChangeLevel", 3.0f );
 			}
 		}
-
 	}
 		
 

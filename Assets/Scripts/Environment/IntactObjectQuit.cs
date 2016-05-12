@@ -5,7 +5,7 @@ public class IntactObjectQuit : MonoBehaviour
 {
 
     private bool untouched = true;
-    private int breakForce = 20;
+    private int breakForce = 0;
     private Vector3 hitVector;
     public int cooldown = 0;
 

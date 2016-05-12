@@ -5,6 +5,7 @@ public class PlayerRelicHandler : MonoBehaviour {
 
 	private Rigidbody rb;
 
+
 	private PlayerScore ps;
 
 	string playerState;
@@ -17,6 +18,14 @@ public class PlayerRelicHandler : MonoBehaviour {
 		if (HasRelic ()) {
 			ReleaseRelic ();
 		}
+	}
+
+	private AudioManager audioManager;
+
+
+	void Start()
+	{
+		audioManager = GameObject.Find ("AudioManager").GetComponent<AudioManager> ();
 	}
 
 	// Update is called once per frame
@@ -55,6 +64,8 @@ public class PlayerRelicHandler : MonoBehaviour {
 
 					//Set player as parent to Relic
 					collision.gameObject.GetComponent<RelicManager>().SetParent(this.gameObject.transform);
+					//Play catch sound
+					audioManager.Play("relicCatch", GameObject.Find("Relic"));
 				}
 			}
 		}
@@ -91,5 +102,7 @@ public class PlayerRelicHandler : MonoBehaviour {
 
 	public void ReleaseRelic(){
 		GameObject.Find ("Relic").GetComponent<RelicManager>().ReleaseFromParent();
+		//Play throw sound
+		audioManager.Play("relicThrow", 0.8f, GameObject.Find("Relic"));
 	}
 }

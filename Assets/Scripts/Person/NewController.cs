@@ -96,7 +96,7 @@ public class NewController : MonoBehaviour {
 
 		//Get state of player, eg. dead, active etc.
 		playerState = this.gameObject.GetComponent<PlayerManager> ().GetState ();
-		GetInputButtonValues ();
+		GetInputButtonValuesOLD ();
 
 		//If player is inactive
 		if (playerState == "inactive") {
@@ -156,6 +156,7 @@ public class NewController : MonoBehaviour {
 			if (!isThrowing && pressThrow > 0.05f && this.gameObject.GetComponent<PlayerRelicHandler> ().HasRelic () == true) {
 
 				isThrowing = true;
+				//audioManager.Play("relicThrow",relic);
 				StartCoroutine(Throw ());
 			
 			}
@@ -466,7 +467,7 @@ public class NewController : MonoBehaviour {
 	}
 
 	private void GetInputButtonValuesOLD(){
-		producer = "";
+		//producer = "";
 
 		moveHorizontal = Input.GetAxis( prefix + "_" + producer + "Horizontal" );
 		moveVertical = Input.GetAxis ( prefix + "_" + producer + "Vertical");
