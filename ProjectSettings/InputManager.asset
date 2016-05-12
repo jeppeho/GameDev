@@ -243,7 +243,7 @@ InputManager:
     snap: 0
     invert: 1
     type: 2
-    axis: 3
+    axis: 5
     joyNum: 1
   - serializedVersion: 3
     m_Name: P1_XboxVertical2
@@ -451,7 +451,7 @@ InputManager:
     snap: 0
     invert: 0
     type: 2
-    axis: 5
+    axis: 4
     joyNum: 1
   - serializedVersion: 3
     m_Name: P1_XboxThrow

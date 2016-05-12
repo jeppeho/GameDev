@@ -71,11 +71,13 @@ MonoBehaviour:
   levelLength: 300
   beginningAreaLength: 50
   goalAreaLength: 50
+  numElevationSteps: 8
+  elevationHeight: 4
   minLowGroundPercentage: 0
   minHighGroundPercentage: 0
-  minLavaPercentage: 10
-  minCliffPercentage: 10
-  minBridgePercentage: 10
+  minLavaPercentage: 0
+  minCliffPercentage: 25
+  minBridgePercentage: 0
   useWater: 1
   planePrefab: {fileID: 171214, guid: f8781240a8e3d487d8e4df00e5394e2b, type: 2}
   waterSmallPrefab: {fileID: 119884, guid: 2067c238b181942f6b5b016e2b73290f, type: 2}
@@ -126,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c25c175e38c4247acae59326235a517c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseActivationAndDeactivation: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

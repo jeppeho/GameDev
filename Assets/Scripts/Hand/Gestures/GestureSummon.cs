@@ -16,7 +16,7 @@ public class GestureSummon : Gesture {
 	private GameObject[] subShard;
 	private int blockCounter;
 
-	float origoY;
+	private float origoY = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -59,6 +59,8 @@ public class GestureSummon : Gesture {
 			gestureManager.setHandColor(Color.yellow);
 
 			audioManager.PlayLoop("summonLoop", handManager.audioplayerCasting);
+
+            Debug.Log("succesfully summoned!");
 		}
 
 		//----------------------------------
@@ -67,7 +69,7 @@ public class GestureSummon : Gesture {
 
 		if (gestureManager.activeSpell.Equals(thisSpell))
 		{
-			//Debug.Log ("Summon is active!");
+			Debug.Log ("Summon is active!");
 			if (
 				leapManager.PalmNormalNear (gestureManager.calibratedDown, 0.45f)
 			&& leapManager.GetFingerIsExtendedPattern (true, true, true, true, true)

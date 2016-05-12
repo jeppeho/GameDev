@@ -4,7 +4,7 @@ using System.Collections;
 public class IntactObjectStart : MonoBehaviour {
 
 	private bool untouched = true;
-	private int breakForce = 20;
+	private int breakForce = 0;
 	private Vector3 hitVector;
 	public int cooldown = 0;
 
@@ -14,7 +14,7 @@ public class IntactObjectStart : MonoBehaviour {
 		if (cooldown <= 0)
 		{
 			//If collider layer is not Hand
-			if (col.gameObject.layer != 10) {
+			if (col.gameObject.layer == 8) {
 
 				//If threshold force is used
 				if (col.relativeVelocity.magnitude > breakForce) {
