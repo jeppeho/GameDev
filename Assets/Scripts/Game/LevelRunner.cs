@@ -88,9 +88,6 @@ public class LevelRunner : MonoBehaviour {
 
 	private void UpdateState(){
 
-		if(Time.frameCount % 60 == 0)
-			Debug.Log ("Relic @" + relic.gameObject.GetComponent<Transform> ().position.z);
-
 		UpdateButtonInput ();
 
 		//Check if god win
@@ -99,7 +96,7 @@ public class LevelRunner : MonoBehaviour {
 			gameState = GameState.godWin;
 			
 		} 
-		else if( relic.gameObject.GetComponent<Transform>().position.z > /*lg.levelLength +*/ 10f){
+		else if( relic.gameObject.GetComponent<Transform>().position.z > lg.levelLength + 10f){
 			
 			gameState = GameState.minionWin;
 		}

@@ -19,11 +19,11 @@ public class PlayerScore : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (Time.frameCount % 60 == 0) {
-			Debug.Log ("//////////////////");
-			Debug.Log ("damage = " + damage + " | time = " + time);
-			Debug.Log ("Final Score = " + GetFinalScore());
-		}
+//		if (Time.frameCount % 60 == 0) {
+//			Debug.Log ("//////////////////");
+//			Debug.Log ("damage = " + damage + " | time = " + time);
+//			Debug.Log ("Final Score = " + GetFinalScore());
+//		}
 
 
 	}
