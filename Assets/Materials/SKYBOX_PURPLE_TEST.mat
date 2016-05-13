@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: SKYBOX_RED
+  m_Name: SKYBOX_PURPLE_TEST
   m_Shader: {fileID: 103, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
@@ -40,7 +40,7 @@ Material:
         first:
           name: _Tex
         second:
-          m_Texture: {fileID: 8900000, guid: 50ac1927bf78d4c5d97d79cee1fa3b8c, type: 3}
+          m_Texture: {fileID: 8900000, guid: 2a1ad03f1563eba4e82d669c83c4b9e5, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -141,7 +141,7 @@ Material:
       data:
         first:
           name: _Rotation
-        second: 0
+        second: 90
     m_Colors:
       data:
         first:
