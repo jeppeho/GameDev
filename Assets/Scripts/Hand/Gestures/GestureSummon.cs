@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
+using System.Collections;
+
 
 public class GestureSummon : Gesture {
 
@@ -21,10 +22,12 @@ public class GestureSummon : Gesture {
 	// Use this for initialization
 	void Start () {
 		base.Init ();
+        
+        try { levelGenerator = GameObject.Find("LevelGenerator").GetComponent<LevelGenerator>(); }
+        catch(Exception e)
+        { }
 
-		levelGenerator = GameObject.Find ("LevelGenerator").GetComponent<LevelGenerator>();
 		thisSpell = "summon";
-		Debug.Log ("Set thisSpell: " + thisSpell.ToString());
 
 		subShard = new GameObject[7];
 
@@ -56,11 +59,11 @@ public class GestureSummon : Gesture {
 			blockCounter = 1;
 			tempPalmWorldPosition = leapManager.GetPalmWorldPosition ();
 			tempPalmPosition = leapManager.GetPalmPosition ();
+
 			gestureManager.setHandColor(Color.yellow);
+            gestureManager.glowController.Burst(1f);
 
 			audioManager.PlayLoop("summonLoop", handManager.audioplayerCasting);
-
-            Debug.Log("succesfully summoned!");
 		}
 
 		//----------------------------------
@@ -69,17 +72,16 @@ public class GestureSummon : Gesture {
 
 		if (gestureManager.activeSpell.Equals(thisSpell))
 		{
-			Debug.Log ("Summon is active!");
 			if (
 				leapManager.PalmNormalNear (gestureManager.calibratedDown, 0.45f)
 			&& leapManager.GetFingerIsExtendedPattern (true, true, true, true, true)
 			&& leapManager.PalmNearIgnore (tempPalmPosition, 5f, false, true, true)
 			)
 			{
+                gestureManager.glowController.setIntensity(0.5f);
+
 				float palmY = leapManager.GetPalmPosition ().y;
 				float nextBlockY = origoY + 1.2f + blockCounter * 0.75f; //Insert something about relative height here!
-
-				Debug.Log (origoY);
 
 				if (palmY > nextBlockY && blockCounter < 7)
 				{
@@ -147,6 +149,7 @@ public class GestureSummon : Gesture {
 
 					//Either way, count the block, and play a sound
 					audioManager.Play("summonInstance", handManager.audioplayerCastingSupporting, blockCounter-1, blockCounter-1);
+                    gestureManager.glowController.Burst(0.5f);
 
 					blockCounter++;
 				}
@@ -154,6 +157,7 @@ public class GestureSummon : Gesture {
 			else
 			{
 				gestureManager.clearActiveSpell ();
+                gestureManager.glowController.setIntensity(0);
 				audioManager.Play("summonStop", handManager.audioplayerCasting);
 			}
 		}

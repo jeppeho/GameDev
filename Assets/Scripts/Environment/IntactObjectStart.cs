@@ -5,8 +5,6 @@ public class IntactObjectStart : MonoBehaviour {
 
 	private int breakForce = 0;
 
-
-
 	void Update(){
 
 		//Use L key to go to level  

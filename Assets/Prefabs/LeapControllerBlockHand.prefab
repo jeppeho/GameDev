@@ -18,6 +18,7 @@ GameObject:
   - 114: {fileID: 11478416}
   - 114: {fileID: 11440690}
   - 114: {fileID: 11451830}
+  - 114: {fileID: 11406842}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -51,6 +52,7 @@ GameObject:
   - 114: {fileID: 11469044}
   - 114: {fileID: 11440558}
   - 114: {fileID: 11447046}
+  - 114: {fileID: 11484190}
   m_Layer: 0
   m_Name: LeapControllerBlockHand
   m_TagString: Untagged
@@ -88,7 +90,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 156732}
   m_LocalRotation: {x: 0.25881907, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 0, y: 5.8, z: -7.79}
+  m_LocalPosition: {x: 0, y: 5.85, z: -7.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 451810}
@@ -100,7 +102,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 183102}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -2}
+  m_LocalPosition: {x: 0, y: 0, z: -7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 458448}
@@ -210,6 +212,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f293805d2c3b9d46b2bd4899b06941c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11406842
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 156732}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28333f5e4e36c4132b54028fff10f80b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
 --- !u!114 &11421016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -378,7 +392,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 183102}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b727bb1515d84bb6b91144c0b71856c, type: 3}
   m_Name: 
@@ -452,6 +466,18 @@ MonoBehaviour:
   heightDensity: 2
   startDistance: 0
   fogShader: {fileID: 4800000, guid: 70d8568987ac0499f952b54c7c13e265, type: 3}
+--- !u!114 &11484190
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28333f5e4e36c4132b54028fff10f80b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
 --- !u!114 &11487098
 MonoBehaviour:
   m_ObjectHideFlags: 1
