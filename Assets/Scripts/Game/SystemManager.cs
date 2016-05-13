@@ -13,10 +13,13 @@ public class SystemManager : MonoBehaviour {
 	int minionWinnerPlayerIndex = 0; //The minion to change color on
 	int minionWinnerMaterialIndex = 0; //to become world color
 
-	int prevLevel = -1;
+	int prevLevel = 0;
 
 	GameObject[] minions;
 	int[] minionColorIndexes;
+
+	//Temp var for playtest
+	public bool GodWon = false;
 
 
 	void Awake() {
@@ -44,6 +47,7 @@ public class SystemManager : MonoBehaviour {
 		minionColorIndexes = new int[ minions.Length ];
 
 		colorHandler.SetColorScheme (currentGodMaterialIndex);
+		//colorHandler.SetSkybox (currentGodMaterialIndex);
 
 		//Set initial colors for players
 		for (int i = 0; i < minions.Length; i++) {
@@ -51,23 +55,42 @@ public class SystemManager : MonoBehaviour {
 			minionColorIndexes[i] = i;
 		}
 
+
+
 	}
 		
 
 	void OnLevelWasLoaded(int level){
-		
-		Debug.Log ("OnLevelWasLoaded !!! @" + level);
-		//Main menu
-		if (level == 0) {
 
-			SetMainMenuBoundaries ();
+		//On level load set time scale to 1
+		Time.timeScale = 1f;
 
-			//Put in a minion for each connected controller
-//			inputHandler.CreateMinionsForControllers (false);
-//			minions = inputHandler.GetMinionsArray ();
+		Debug.Log ("OnLevelWasLoaded !!! @" + level + " prevLevel = " + prevLevel);
 
-		//If going from main menu to LevelGenerator
-		} 
+		if (level == 0 && prevLevel == 1) {
+
+			KillAllPlayers ();
+
+			minions = inputHandler.GetMinionsArray ();
+
+			colorHandler.SetColorScheme (currentGodMaterialIndex);
+
+			//colorHandler.SetSkybox (currentGodMaterialIndex);
+
+			//Set initial colors for players
+			for (int i = 0; i < minions.Length; i++) {
+				colorHandler.SetMinionColor (minions [i], i);
+				minionColorIndexes[i] = i;
+			}
+		}
+
+//		//Main menu
+//		if (level == 0) {
+//
+//			SetMainMenuBoundaries ();
+//
+//		//If going from main menu to LevelGenerator
+//		} 
 
 		if (level == 1 && prevLevel != 1) {
 
@@ -75,37 +98,93 @@ public class SystemManager : MonoBehaviour {
 
 		}
 
-		//Levelgenerator
-		if (level == 1) {
+		//Levelgenerator, right after main menu
+		if (level == 1 && prevLevel == 0) {
 
-			if (prevLevel == 0) {
+			colorHandler.SetSkybox (currentGodMaterialIndex);
 
-				//Update levelboundaries for relic and players
-				SetLevelBoundaries ();
+			//Update levelboundaries for relic and players
+			SetLevelBoundaries ();
 
-				//Remove unused players
-				ActivateActivatedMinions ();
-			
-			}
-			else if (prevLevel == 1) {
-//				Debug.Log ("//////////Reloading levelGenerator");
-//				Debug.Log ("winner color = " + minionWinnerMaterialIndex);
-//				Debug.Log ("currentGodMaterialIndex = " + currentGodMaterialIndex);
+			//Remove unused players
+			ResetActivatedMinions ();
+		}
 
-				//Update colors on game world and winning player
-				colorHandler.SetColorScheme ( minionColorIndexes[ minionWinnerPlayerIndex] );
-				colorHandler.SetMinionColor (minions [minionWinnerPlayerIndex], currentGodMaterialIndex);
+		//Levelgenerator again
+		if (level == 1 && prevLevel == 1) {
 
-				//Update values
-				int prevGod = currentGodMaterialIndex;
-				int prevWinner = minionColorIndexes [minionWinnerPlayerIndex];
-				minionColorIndexes [minionWinnerPlayerIndex] = prevGod;
-				currentGodMaterialIndex = prevWinner;
+			Debug.Log ("//////////Reloading levelGenerator");
+			Debug.Log ("winner color = " + minionWinnerMaterialIndex);
+			Debug.Log ("currentGodMaterialIndex = " + currentGodMaterialIndex);
 
-			}
+			ResetActivatedMinions ();
+
+			UpdateAllColors ();
+			Debug.Log ("GodWin = " + GodWon);
+			UpdateWinnersAndLosers ();
 		}
 
 		prevLevel = level;
+	}
+
+	//		//Levelgenerator
+	//		if (level == 1) {
+	//
+	//			if (prevLevel == 0) {
+	//
+	//				Debug.Log ("////Setting skybox from SystemManager");
+	//				//Set skybox
+	//				colorHandler.SetSkybox (currentGodMaterialIndex);
+	//
+	//				//Update levelboundaries for relic and players
+	//				SetLevelBoundaries ();
+	//
+	//				//Remove unused players
+	//				ResetActivatedMinions ();
+	//			
+	//			}
+	//			else if (prevLevel == 1) {
+	//				Debug.Log ("//////////Reloading levelGenerator");
+	////				Debug.Log ("winner color = " + minionWinnerMaterialIndex);
+	////				Debug.Log ("currentGodMaterialIndex = " + currentGodMaterialIndex);
+	//
+	//				ResetActivatedMinions ();
+	//
+	//				UpdateAllColors ();
+	//
+	//			}
+	//		}
+
+	public void UpdateWinnersAndLosers(){
+		
+		//Update values
+		int prevGod = currentGodMaterialIndex;
+		int prevWinner = minionColorIndexes [minionWinnerPlayerIndex];
+		minionColorIndexes [minionWinnerPlayerIndex] = prevGod;
+		currentGodMaterialIndex = prevWinner;
+
+	}
+
+	public void UpdateAllColors(){
+
+		colorHandler.SetColorScheme ( minionColorIndexes[ minionWinnerPlayerIndex] );
+		colorHandler.SetMinionColor (minions [minionWinnerPlayerIndex], currentGodMaterialIndex);
+		//colorHandler.SetSkybox (minionWinnerPlayerIndex);
+
+	}
+
+	public void UpdateAllColorsOLD(){
+
+		colorHandler.SetColorScheme ( minionColorIndexes[ minionWinnerPlayerIndex] );
+		colorHandler.SetMinionColor (minions [minionWinnerPlayerIndex], currentGodMaterialIndex);
+		//colorHandler.SetSkybox (minionWinnerPlayerIndex);
+
+		//Update values
+		int prevGod = currentGodMaterialIndex;
+		int prevWinner = minionColorIndexes [minionWinnerPlayerIndex];
+		minionColorIndexes [minionWinnerPlayerIndex] = prevGod;
+		currentGodMaterialIndex = prevWinner;
+
 	}
 
 
@@ -114,7 +193,7 @@ public class SystemManager : MonoBehaviour {
 	}
 		
 
-	private void ActivateActivatedMinions(){
+	private void ResetActivatedMinions(){
 
 		Debug.Log ("Running: ActivateActivatedMinions()");
 
@@ -122,7 +201,7 @@ public class SystemManager : MonoBehaviour {
 		for (int i = 0; i < minions.Length; i++) {
 
 			//Move to start position
-			minions [i].transform.position = new Vector3 (inputHandler.GetXPositionForMinion(i), 2, 0);
+			minions [i].transform.position = new Vector3 (inputHandler.GetXPositionForMinion(i), 3, 0);
 			minions [i].GetComponent<PlayerManager> ().SetState (PlayerManager.state.active);
 			//minions[i].GetComponent<PlayerManager
 		}
@@ -131,11 +210,7 @@ public class SystemManager : MonoBehaviour {
 
 	private void DeactivateUnusedPlayers(){
 
-		Debug.Log ("Running DeactivateUnusedPlayers() ");
-
 		for (int i = 0; i < minions.Length; i++) {
-
-			Debug.Log ("Check for deactivating players " + i);
 
 			string playerState = minions [i].GetComponent<PlayerManager> ().GetState ();
 
@@ -162,10 +237,15 @@ public class SystemManager : MonoBehaviour {
 		this.minionWinnerPlayerIndex = playerIndex;
 		this.minionWinnerMaterialIndex = materialIndex;
 
-		Debug.Log ("God #" + currentGodMaterialIndex + " has been defeated");
-		Debug.Log ("Minion #" + minionWinnerPlayerIndex + " is the winner");
-		Debug.Log ("With material #" + minionWinnerMaterialIndex);
+	}
 
+	public void KillAllPlayers(){
+
+		for (int i = 0; i < minions.Length; i++) {
+
+			Destroy (minions [i]);
+		
+		}
 	}
 		
 

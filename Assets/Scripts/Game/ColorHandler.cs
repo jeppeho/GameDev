@@ -4,12 +4,12 @@ using System.Collections;
 public class ColorHandler : MonoBehaviour {
 
 	public Material elementMaterial;
+	public Material[] skyboxes;
 
 	private enum ColorScheme { red, green, blue, purple };
 	private ColorScheme colorScheme;
 
 	private Color[] materialColor;
-	private Color fogColor;
 
 
 	// Use this for initialization
@@ -24,15 +24,42 @@ public class ColorHandler : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+		
 	}
 		
-	private void SetSkybox(){}
+	public void SetSkybox(int index){
+		Debug.Log ("********Setting skybox with color index = " + index);
+		RenderSettings.skybox = skyboxes [index];
+		RenderSettings.fogColor = GetFogColor (index);
+
+	}
 
 	public void SetColorScheme(int index){
 
 		SetColors( GetColorSchemeByIndex(index) );
+		SetSkybox (index);
 		UpdateMaterialColor();
 
+	}
+
+	private Color GetFogColor(int index){
+
+		Color color = new Color (0, 0, 0);
+
+		if (index == 0) {
+			color = new Color(148f/255f, 10f/255f, 0f/255f, 1f);
+		} 
+		else if (index == 1) {
+			color = new Color(31f/255f, 216f/255f, 131f/255f, 1f);
+		} 
+		else if (index == 2) {
+			color = new Color(50f/255f, 129f/255f, 211f/255f, 1f);
+		} 
+		else if (index == 3) {
+			color = new Color(186f/255f, 60f/255f, 247f/255f, 1f);
+		}
+
+		return color;
 	}
 
 

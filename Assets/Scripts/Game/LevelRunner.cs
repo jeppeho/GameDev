@@ -61,14 +61,17 @@ public class LevelRunner : MonoBehaviour {
 			} 
 
 			if (gameState == GameState.godWin) {
+				Debug.Log ("GOD WIN!!!!");
 				GameOver = true;
+				sm.GodWon = true;
 				Time.timeScale = 0f;
 				godWinMenu.gameObject.SetActive (true);
 			}
 
 			if (gameState == GameState.minionWin) {
 				GameOver = true;
-				FindTheWinningMinion ();
+				sm.GodWon = false;
+				//FindTheWinningMinion ();
 				Time.timeScale = 0f;
 				minionWinMenu.gameObject.SetActive (true);
 			}
@@ -100,7 +103,7 @@ public class LevelRunner : MonoBehaviour {
 			gameState = GameState.godWin;
 			
 		} 
-		else if( relic.gameObject.GetComponent<Transform>().position.z > /*lg.levelLength +*/ 10f){
+		else if( relic.gameObject.GetComponent<Transform>().position.z > lg.levelLength + 10f){
 			
 			gameState = GameState.minionWin;
 		}
@@ -146,7 +149,7 @@ public class LevelRunner : MonoBehaviour {
 			if (minions [i].activeSelf == true) {
 
 				float minionScore = minions [i].GetComponent<PlayerManager> ().GetPlayerScore ().GetFinalScore ();
-				Debug.Log ("minion #" + i + " score = " + minionScore + " and highscore = " + highestScore);
+				//Debug.Log ("minion #" + i + " score = " + minionScore + " and highscore = " + highestScore);
 
 				//If score is so far the highest then update the index of the winning minion
 				if (minionScore > highestScore) {
@@ -165,7 +168,7 @@ public class LevelRunner : MonoBehaviour {
 			}
 		}
 
-		Debug.Log ("Highscore is now = " + highestScore + " for minion #" + winningMinionIndex);
+		//Debug.Log ("Highscore is now = " + highestScore + " for minion #" + winningMinionIndex);
 
 		int materialIndex = minions [winningMinionIndex].GetComponent<PlayerManager> ().GetCurrentMaterialIndex ();
 
@@ -178,7 +181,6 @@ public class LevelRunner : MonoBehaviour {
 	}
 
 	public void PauseGame(){
-		//StartCoroutine ( PauseGameKeepRegisteringInput() );
 		pauseMenu.gameObject.SetActive (true);
 		Time.timeScale = 0f;
 		//this.gameState = GameState.paused;
@@ -193,38 +195,14 @@ public class LevelRunner : MonoBehaviour {
 	}
 
 	public void GoToMainMenu(){
-		Time.timeScale = 1f;
-		Debug.Log ("Going to main menu with time scale = " + Time.timeScale );
+		Debug.Log ("Going to main menu");
 		ReleaseRelicForAllPlayers ();
 		SceneManager.LoadScene("Tutorial Start");
 	}
 
 	public void RestartLevel(){
-		Time.timeScale = 1f;
+		FindTheWinningMinion ();
 		ReleaseRelicForAllPlayers ();
 		SceneManager.LoadScene("LevelGenerator");
 	}
-
-
-	/**
-	 * Coroutine running while game is paused, to register button inputs.
-	 * Update or FixedUpdate doesn't run while Time.timeScale == 0.
-	 */
-//	IEnumerator PauseGameKeepRegisteringInput(){
-//
-//		pauseMenu.gameObject.SetActive (true);
-//
-//		while (gameState == GameState.paused) {
-//
-//			UpdateButtonInput ();
-//
-//			if(prevPauseGame < 0.01f && pauseGameButton > 0.01f){
-//				gameState = GameState.running;
-//			}
-//
-//			prevPauseGame = pauseGameButton;
-//
-//			yield return null;
-//		}
-//	}
 }
