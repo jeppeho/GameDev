@@ -267,7 +267,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &66689694
 Transform:
   m_ObjectHideFlags: 0
@@ -590,7 +590,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11481994, guid: 09b54316904da4311ad77ab122610f45, type: 2}
       propertyPath: startHealth
-      value: -1
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 168476, guid: 09b54316904da4311ad77ab122610f45, type: 2}
       propertyPath: m_IsActive
@@ -1785,6 +1785,7 @@ GameObject:
   - 4: {fileID: 1320075958}
   - 114: {fileID: 1320075957}
   - 114: {fileID: 1320075959}
+  - 23: {fileID: 1320075960}
   m_Layer: 0
   m_Name: LevelRunner
   m_TagString: Untagged
@@ -1824,11 +1825,38 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1320075956}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dba21eca97bc247069c79b16ffbd4981, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementMaterial: {fileID: 0}
+--- !u!23 &1320075960
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1320075956}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!1 &1341890478
 GameObject:
   m_ObjectHideFlags: 0
@@ -2002,6 +2030,10 @@ Prefab:
     - target: {fileID: 418348, guid: eb10abeadc2cc428c90fe493fbc64d6a, type: 2}
       propertyPath: m_RootOrder
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 188714, guid: eb10abeadc2cc428c90fe493fbc64d6a, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: eb10abeadc2cc428c90fe493fbc64d6a, type: 2}

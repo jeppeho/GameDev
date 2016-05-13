@@ -160,7 +160,7 @@ public class InputControllerHandler : MonoBehaviour {
 		minions [index] = min;
 
 
-		//	Debug.Log ("Set color now!!");
+		Debug.Log ("Set color now!! @" + index);
 		min.GetComponent<PlayerManager> ().SetMaterial (index);
 
 	}

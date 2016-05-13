@@ -4,6 +4,7 @@ using System.Collections;
 public class SystemManager : MonoBehaviour {
 
 	private InputControllerHandler inputHandler;
+	private ColorHandler colorHandler;
 
 //	int godPlayerIndex = -1;
 //	public Material[] materials;
@@ -15,6 +16,13 @@ public class SystemManager : MonoBehaviour {
 	int prevLevel = -1;
 
 	GameObject[] minions;
+	int[] minionColorIndexes;
+
+
+	void Awake() {
+		//Keep the system manager from destroying when changing scenes
+		DontDestroyOnLoad(transform.gameObject);
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -22,7 +30,9 @@ public class SystemManager : MonoBehaviour {
 		Debug.Log ("SystemManager has started !!!");
 
 		//Get the input handler
-		inputHandler = this.gameObject.GetComponent<InputControllerHandler> ();
+		inputHandler = GetComponent<InputControllerHandler> ();
+		colorHandler = GetComponent<ColorHandler> ();
+
 
 		//Set boundaries for players to move within
 		SetMainMenuBoundaries ();
@@ -31,22 +41,30 @@ public class SystemManager : MonoBehaviour {
 		inputHandler.CreateMinionsForControllers (false);
 
 		minions = inputHandler.GetMinionsArray ();
+		minionColorIndexes = new int[ minions.Length ];
+
+		colorHandler.SetColorScheme (currentGodMaterialIndex);
+
+		//Set initial colors for players
+		for (int i = 0; i < minions.Length; i++) {
+			colorHandler.SetMinionColor (minions [i], i);
+			minionColorIndexes[i] = i;
+		}
+
 	}
 		
 
 	void OnLevelWasLoaded(int level){
 		
 		Debug.Log ("OnLevelWasLoaded !!! @" + level);
-
 		//Main menu
 		if (level == 0) {
 
 			SetMainMenuBoundaries ();
 
 			//Put in a minion for each connected controller
-			inputHandler.CreateMinionsForControllers (false);
-
-			minions = inputHandler.GetMinionsArray ();
+//			inputHandler.CreateMinionsForControllers (false);
+//			minions = inputHandler.GetMinionsArray ();
 
 		//If going from main menu to LevelGenerator
 		} 
@@ -60,44 +78,34 @@ public class SystemManager : MonoBehaviour {
 		//Levelgenerator
 		if (level == 1) {
 
-			SetLevelBoundaries ();
+			if (prevLevel == 0) {
 
-			ActivateActivatedMinions ();
+				//Update levelboundaries for relic and players
+				SetLevelBoundaries ();
 
-			if (prevLevel == 1)
-				UpdateColorScheme ();	
+				//Remove unused players
+				ActivateActivatedMinions ();
+			
+			}
+			else if (prevLevel == 1) {
+//				Debug.Log ("//////////Reloading levelGenerator");
+//				Debug.Log ("winner color = " + minionWinnerMaterialIndex);
+//				Debug.Log ("currentGodMaterialIndex = " + currentGodMaterialIndex);
+
+				//Update colors on game world and winning player
+				colorHandler.SetColorScheme ( minionColorIndexes[ minionWinnerPlayerIndex] );
+				colorHandler.SetMinionColor (minions [minionWinnerPlayerIndex], currentGodMaterialIndex);
+
+				//Update values
+				int prevGod = currentGodMaterialIndex;
+				int prevWinner = minionColorIndexes [minionWinnerPlayerIndex];
+				minionColorIndexes [minionWinnerPlayerIndex] = prevGod;
+				currentGodMaterialIndex = prevWinner;
+
+			}
 		}
 
 		prevLevel = level;
-	}
-
-
-
-	void Awake() {
-		//Keep the system manager from destroying when changing scenes
-		DontDestroyOnLoad(transform.gameObject);
-	}
-
-
-	private void UpdateColorScheme(){
-
-		Debug.Log ("Running: UpdateColorScheme()");
-
-		//Change color on winning minion
-		GameObject[] minions = inputHandler.GetMinionsArray ();
-
-
-		Debug.Log ("Setting material #"  + minionWinnerMaterialIndex+ " for player " + minionWinnerPlayerIndex);
-		minions[minionWinnerPlayerIndex].GetComponent<PlayerManager> ().SetMaterial (currentGodMaterialIndex);
-
-		//Update currentGodMaterial to that of the winner
-		currentGodMaterialIndex = minionWinnerMaterialIndex;
-
-		//SET SKYBOX AND DIRECTIONAL LIGHTING AND WHATEVS
-		//using:
-		//currentGodMaterialIndex
-
-		currentGodMaterialIndex = minionWinnerMaterialIndex;
 	}
 
 
@@ -197,4 +205,20 @@ public class SystemManager : MonoBehaviour {
 	//			}
 	//		}
 	//	}
+
+
+	//	private void UpdateColorScheme(){
+	//
+	//		Debug.Log ("Running: UpdateColorScheme()");
+	//
+	//		//Change color on winning minion
+	//		GameObject[] minions = inputHandler.GetMinionsArray ();
+	//
+	//		Debug.Log ("Setting material #"  + minionWinnerMaterialIndex+ " for player " + minionWinnerPlayerIndex);
+	//		//minions[minionWinnerPlayerIndex].GetComponent<PlayerManager> ().SetMaterial (currentGodMaterialIndex);
+	//
+	//		//Update currentGodMaterial to that of the winner
+	//		currentGodMaterialIndex = minionWinnerMaterialIndex;
+	//	}
+
 }
