@@ -77,7 +77,7 @@ ModelImporter:
     400066: character:r_toe
     400068: character:rig
     400070: //RootNode
-    7400000: Take 001
+    7400000: idle
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -99,7 +99,107 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: idle
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: character:rig
+        weight: 1
+      - path: character:rig/character:body
+        weight: 1
+      - path: character:rig/character:body/character:collar
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:l_shoulder
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:l_shoulder/character:l_arm
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:l_shoulder/character:l_arm/character:l_forearm
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:l_shoulder/character:l_arm/character:l_forearm/character:l_hand
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:l_shoulder/character:l_arm/character:l_forearm/character:l_hand/character:l_fingers
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:l_shoulder/character:l_arm/character:l_forearm/character:l_hand/character:l_metacarpal
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:l_shoulder/character:l_arm/character:l_forearm/character:l_hand/character:l_metacarpal/character:l_thumb
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:neck
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:neck/character:head
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:r_shoulder
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:r_shoulder/character:r_arm
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:r_shoulder/character:r_arm/character:r_forearm
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:r_shoulder/character:r_arm/character:r_forearm/character:r_hand
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:r_shoulder/character:r_arm/character:r_forearm/character:r_hand/character:r_fingers
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:r_shoulder/character:r_arm/character:r_forearm/character:r_hand/character:r_metacarpal
+        weight: 1
+      - path: character:rig/character:body/character:collar/character:r_shoulder/character:r_arm/character:r_forearm/character:r_hand/character:r_metacarpal/character:r_thumb
+        weight: 1
+      - path: character:rig/character:l_leg
+        weight: 1
+      - path: character:rig/character:l_leg/character:l_hip
+        weight: 1
+      - path: character:rig/character:l_leg/character:l_hip/character:l_thigh
+        weight: 1
+      - path: character:rig/character:l_leg/character:l_hip/character:l_thigh/character:l_knee
+        weight: 1
+      - path: character:rig/character:l_leg/character:l_hip/character:l_thigh/character:l_knee/character:l_shin
+        weight: 1
+      - path: character:rig/character:l_leg/character:l_hip/character:l_thigh/character:l_knee/character:l_shin/character:l_ankle
+        weight: 1
+      - path: character:rig/character:l_leg/character:l_hip/character:l_thigh/character:l_knee/character:l_shin/character:l_ankle/character:l_heel
+        weight: 1
+      - path: character:rig/character:l_leg/character:l_hip/character:l_thigh/character:l_knee/character:l_shin/character:l_ankle/character:l_toe
+        weight: 1
+      - path: character:rig/character:r_leg
+        weight: 1
+      - path: character:rig/character:r_leg/character:r_hip
+        weight: 1
+      - path: character:rig/character:r_leg/character:r_hip/character:r_thigh
+        weight: 1
+      - path: character:rig/character:r_leg/character:r_hip/character:r_thigh/character:r_knee
+        weight: 1
+      - path: character:rig/character:r_leg/character:r_hip/character:r_thigh/character:r_knee/character:r_shin
+        weight: 1
+      - path: character:rig/character:r_leg/character:r_hip/character:r_thigh/character:r_knee/character:r_shin/character:r_ankle
+        weight: 1
+      - path: character:rig/character:r_leg/character:r_hip/character:r_thigh/character:r_knee/character:r_shin/character:r_ankle/character:r_heel
+        weight: 1
+      - path: character:rig/character:r_leg/character:r_hip/character:r_thigh/character:r_knee/character:r_shin/character:r_ankle/character:r_toe
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
     isReadable: 1
   meshes:
     lODScreenPercentages: []
