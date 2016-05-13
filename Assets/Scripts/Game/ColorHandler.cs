@@ -40,7 +40,7 @@ public class ColorHandler : MonoBehaviour {
 		case ColorScheme.red:
 			Debug.Log ("Red");
 			materialColor = new Color (1, 0, 0);
-			fogColor = new Color (0.8f, 0, 0)
+			fogColor = new Color (0.8f, 0, 0);
 			break;
 		case ColorScheme.green:
 			break;
