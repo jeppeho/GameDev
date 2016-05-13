@@ -103,7 +103,7 @@ public class NewController : MonoBehaviour {
 			
 			if (pressJump) {
 
-				this.gameObject.GetComponent<PlayerManager> ().SetActive (true);
+				this.gameObject.GetComponent<PlayerManager> ().SetPlayerActive (true);
 			}
 		}
 			

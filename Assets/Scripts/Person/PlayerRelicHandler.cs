@@ -12,7 +12,6 @@ public class PlayerRelicHandler : MonoBehaviour {
 
 
 	void OnLevelWasLoaded(){
-		Debug.Log ("LEVEL FOR PALYER WAS LOADED");
 		ps = this.gameObject.GetComponent<PlayerScore> ();
 
 		if (HasRelic ()) {

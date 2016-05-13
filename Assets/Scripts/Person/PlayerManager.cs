@@ -197,8 +197,12 @@ public class PlayerManager : MonoBehaviour {
 		return playerState.ToString ();
 	}
 
+	public void SetState(state s){
+		this.playerState = s;
+	}
+
 	//Marks the player as active (true) or inactive (false)
-	public void SetActive(bool b)
+	public void SetPlayerActive(bool b)
 	{
 		if (b)
 		{

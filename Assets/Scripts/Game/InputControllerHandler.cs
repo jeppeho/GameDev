@@ -69,7 +69,7 @@ public class InputControllerHandler : MonoBehaviour {
 		int matches = 0;
 
 		for (int i = 0; i < connectedControllers.Length; i++) {
-			Debug.Log (Input.GetJoystickNames () [i]);
+			//Debug.Log (Input.GetJoystickNames () [i]);
 
 			for (int g = 0; g < supportedControllers.Length; g++) {
 
@@ -154,7 +154,7 @@ public class InputControllerHandler : MonoBehaviour {
 		min.GetComponent<NewController>().prefix = prefix;
 
 		//Set inactive as a start
-		min.GetComponent<PlayerManager> ().SetActive(active);
+		min.GetComponent<PlayerManager> ().SetPlayerActive(active);
 		Debug.Log(prefix + " state = " + min.GetComponent<PlayerManager> ().GetState());
 
 		minions [index] = min;

@@ -38,13 +38,6 @@ public class FadingScenes : MonoBehaviour
 		BeginFade(-1);      // call the fade in function
 	}
 
-	void OnCollisionEnter(Collision other)
-	{
-		if(other.gameObject.layer == 8)
-		{
-			
-		}
-	}
 
 	void ChangeLevel() {
 		Application.LoadLevel ("LevelGenerator");  

@@ -1772,6 +1772,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1320075958}
   - 114: {fileID: 1320075957}
+  - 114: {fileID: 1320075959}
   m_Layer: 0
   m_Name: LevelRunner
   m_TagString: Untagged
@@ -1805,6 +1806,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 11
+--- !u!114 &1320075959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1320075956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dba21eca97bc247069c79b16ffbd4981, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1341890478
 GameObject:
   m_ObjectHideFlags: 0

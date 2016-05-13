@@ -19,6 +19,8 @@ public class LevelRunner : MonoBehaviour {
 	LevelGenerator lg;
 	SystemManager sm;
 
+	GameObject[] minions;
+
 	private bool GameOver; 
 
 
@@ -32,6 +34,8 @@ public class LevelRunner : MonoBehaviour {
 
 		lg = GameObject.Find ("LevelGenerator").GetComponent<LevelGenerator>();
 		sm = GameObject.Find ("SystemRunner").GetComponent<SystemManager>();
+
+		minions = sm.GetInputHandler ().GetMinionsArray ();
 
 		relic = GameObject.Find ("Relic");
 
@@ -96,7 +100,7 @@ public class LevelRunner : MonoBehaviour {
 			gameState = GameState.godWin;
 			
 		} 
-		else if( relic.gameObject.GetComponent<Transform>().position.z > lg.levelLength + 10f){
+		else if( relic.gameObject.GetComponent<Transform>().position.z > /*lg.levelLength +*/ 10f){
 			
 			gameState = GameState.minionWin;
 		}
@@ -115,11 +119,23 @@ public class LevelRunner : MonoBehaviour {
 	}
 
 
+	private void ReleaseRelicForAllPlayers(){
+
+		for(int i = 0; i < minions.Length; i++){
+
+			PlayerRelicHandler h = minions [i].GetComponent<PlayerRelicHandler> ();
+
+			if (h.HasRelic ()) {
+				h.ReleaseRelic ();
+				break;
+			}
+		}
+	}
+
 
 	private void FindTheWinningMinion(){
 
 		Debug.Log ("//////FINDING THE WINNER");
-		GameObject[] minions = sm.GetInputHandler ().GetMinionsArray ();
 		Debug.Log ("We have " + minions.Length +  " minions");
 
 		int winningMinionIndex = -1;
@@ -127,20 +143,24 @@ public class LevelRunner : MonoBehaviour {
 
 		for (int i = 0; i < minions.Length; i++) {
 
-			float minionScore = minions [i].GetComponent<PlayerManager> ().GetPlayerScore ().GetFinalScore ();
-			Debug.Log ("minion #" + i + " score = " + minionScore + " and highscore = " + highestScore );
+			if (minions [i].activeSelf == true) {
 
-			//If score is so far the highest then update the index of the winning minion
-			if (minionScore > highestScore) {
-				highestScore = minionScore;
-				winningMinionIndex = i;
-			} 
-			//If score is the same as the highest
-			else if (minionScore == highestScore) {
+				float minionScore = minions [i].GetComponent<PlayerManager> ().GetPlayerScore ().GetFinalScore ();
+				Debug.Log ("minion #" + i + " score = " + minionScore + " and highscore = " + highestScore);
 
-				//Then there's 50/50 chance if we update it
-				if (Random.Range (0f, 1f) > 0.5f) {
+				//If score is so far the highest then update the index of the winning minion
+				if (minionScore > highestScore) {
+					highestScore = minionScore;
 					winningMinionIndex = i;
+				}
+
+				//If score is the same as the highest
+				else if (minionScore == highestScore) {
+
+					//Then there's 50/50 chance if we update it
+					if (Random.Range (0f, 1f) > 0.5f) {
+						winningMinionIndex = i;
+					}
 				}
 			}
 		}
@@ -149,7 +169,7 @@ public class LevelRunner : MonoBehaviour {
 
 		int materialIndex = minions [winningMinionIndex].GetComponent<PlayerManager> ().GetCurrentMaterialIndex ();
 
-		sm.SetMinionWinner (winningMinionIndex);
+		sm.SetMinionWinner (winningMinionIndex, materialIndex);
 	}
 
 
@@ -175,11 +195,13 @@ public class LevelRunner : MonoBehaviour {
 	public void GoToMainMenu(){
 		Time.timeScale = 1f;
 		Debug.Log ("Going to main menu with time scale = " + Time.timeScale );
+		ReleaseRelicForAllPlayers ();
 		SceneManager.LoadScene("Tutorial Start");
 	}
 
 	public void RestartLevel(){
 		Time.timeScale = 1f;
+		ReleaseRelicForAllPlayers ();
 		SceneManager.LoadScene("LevelGenerator");
 	}
 
