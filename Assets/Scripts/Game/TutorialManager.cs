@@ -1,23 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraScrollingTutorial : MonoBehaviour {
+public class TutorialManager : MonoBehaviour {
 
 	private float cameraSpeed = 2f;
 
 	public GameObject text;
+    public GameObject calibrationText;
+
+    private bool calibrationDone;
 
 	// Use this for initialization
 	void Start () {
 		text.SetActive(false);
-	}
+        
+        calibrationDone = true; // set true for testing
+        StartCalibration();
+        calibrationText.SetActive(false); // set false for testing
+    }
 	
 	// Update is called once per frame
 	void Update () {
 
-		MoveForward ();
-	
-	}
+       if(calibrationDone == true) { 
+        MoveForward();
+        }
+
+    }
+
+    private void StartCalibration()
+    {
+        
+
+
+    }
 
 	private void MoveForward(){
 
@@ -34,4 +50,5 @@ public class CameraScrollingTutorial : MonoBehaviour {
 			text.SetActive(true);
 		}
 	}
+
 }
