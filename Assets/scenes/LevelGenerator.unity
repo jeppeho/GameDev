@@ -14,7 +14,7 @@ SceneSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 6
-  m_Fog: 1
+  m_Fog: 0
   m_FogColor: {r: 0.5808823, g: 0.041072484, b: 0, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.03
@@ -715,6 +715,10 @@ Prefab:
       propertyPath: handObject
       value: 
       objectReference: {fileID: 372002851}
+    - target: {fileID: 11478416, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
   m_IsPrefabParent: 0
@@ -2544,7 +2548,29 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+<<<<<<< HEAD
   m_RootOrder: 2
+=======
+  m_RootOrder: 3
+--- !u!1 &455029136 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 156732, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
+  m_PrefabInternal: {fileID: 263094029}
+--- !u!114 &455029149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 455029136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51294604eecc744aaaeed867abbe4722, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _useRadialDistance: 0
+  _startDistance: 0
+  _fogShader: {fileID: 4800000, guid: 376b37dc54c6f4482a3f4147e23fedb6, type: 3}
+>>>>>>> b648a186339a5e53729bf4a05816971d6ba406cd
 --- !u!1001 &464248687
 Prefab:
   m_ObjectHideFlags: 0
