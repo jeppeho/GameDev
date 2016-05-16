@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TutorialStart : MonoBehaviour {
+public class InvokeGodReady : MonoBehaviour {
 
     void OnCollisionEnter(Collision col)
     {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class IntactObjectStart : MonoBehaviour {
+public class InvokeLevelStart : MonoBehaviour {
 
 	private int breakForce = 0;
 

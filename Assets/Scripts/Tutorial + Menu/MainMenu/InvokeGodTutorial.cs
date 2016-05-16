@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class IntactObjectTutorial : MonoBehaviour
+public class InvokeGodTutorial : MonoBehaviour
 {
 
     private int breakForce = 0;

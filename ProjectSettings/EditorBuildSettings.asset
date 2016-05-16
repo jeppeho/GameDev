@@ -12,6 +12,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/scenes/TutorialGod.unity
   - enabled: 1
+    path: Assets/scenes/TutorialGodBasics.unity
+  - enabled: 0
+    path: Assets/scenes/TutorialGodEarthquake.unity
+  - enabled: 1
+    path: Assets/scenes/TutorialGodEarthquake.unity
+  - enabled: 1
+    path: Assets/scenes/TutorialGodSummon.unity
+  - enabled: 1
     path: Assets/scenes/LevelGenerator.unity
   - enabled: 0
     path: Assets/scenes/_OLD/SplashScreen.unity
