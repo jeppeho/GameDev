@@ -41,7 +41,8 @@ public class SystemManager : MonoBehaviour {
 		SetMainMenuBoundaries ();
 
 		//Put in a minion for each connected controller
-		inputHandler.CreateMinionsForControllers (false);
+		//inputHandler.CreateMinionsForControllers (false);
+		inputHandler.PutInThreeMinions (false);
 
 		minions = inputHandler.GetMinionsArray ();
 		minionColorIndexes = new int[ minions.Length ];
@@ -67,7 +68,7 @@ public class SystemManager : MonoBehaviour {
 
 		Debug.Log ("OnLevelWasLoaded !!! @" + level + " prevLevel = " + prevLevel);
 
-		if (level == 0 && prevLevel == 1) {
+		if (level == 0 && prevLevel == 2) {
 
 			KillAllPlayers ();
 
@@ -92,14 +93,14 @@ public class SystemManager : MonoBehaviour {
 //		//If going from main menu to LevelGenerator
 //		} 
 
-		if (level == 1 && prevLevel != 1) {
+		if (level == 2 && prevLevel != 2) {
 
 			DeactivateUnusedPlayers();
 
 		}
 
 		//Levelgenerator, right after main menu
-		if (level == 1 && prevLevel == 0) {
+		if (level == 2 && prevLevel == 0) {
 
 			colorHandler.SetSkybox (currentGodMaterialIndex);
 
@@ -107,17 +108,17 @@ public class SystemManager : MonoBehaviour {
 			SetLevelBoundaries ();
 
 			//Remove unused players
-			ResetActivatedMinions ();
+			ResetActivatedMinionsToStartOfLevel ();
 		}
 
 		//Levelgenerator again
-		if (level == 1 && prevLevel == 1) {
+		if (level == 2 && prevLevel == 2) {
 
 			Debug.Log ("//////////Reloading levelGenerator");
 			Debug.Log ("winner color = " + minionWinnerMaterialIndex);
 			Debug.Log ("currentGodMaterialIndex = " + currentGodMaterialIndex);
 
-			ResetActivatedMinions ();
+			ResetActivatedMinionsToStartOfLevel ();
 
 			UpdateAllColors ();
 			Debug.Log ("GodWin = " + GodWon);
@@ -193,7 +194,7 @@ public class SystemManager : MonoBehaviour {
 	}
 		
 
-	private void ResetActivatedMinions(){
+	private void ResetActivatedMinionsToStartOfLevel(){
 
 		Debug.Log ("Running: ActivateActivatedMinions()");
 
@@ -203,7 +204,7 @@ public class SystemManager : MonoBehaviour {
 			//Move to start position
 			minions [i].transform.position = new Vector3 (inputHandler.GetXPositionForMinion(i), 3, 0);
 			minions [i].GetComponent<PlayerManager> ().SetState (PlayerManager.state.active);
-			//minions[i].GetComponent<PlayerManager
+
 		}
 	}
 
@@ -225,12 +226,6 @@ public class SystemManager : MonoBehaviour {
 	}
 
 
-	private void CreateMinions(){
-
-		//Put in a minion for each connected controller
-		inputHandler.CreateMinionsForControllers (false);
-
-	}
 
 	public void SetMinionWinner(int playerIndex, int materialIndex){
 		

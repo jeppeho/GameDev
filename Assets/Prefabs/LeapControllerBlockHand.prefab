@@ -101,8 +101,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 183102}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -7}
+  m_LocalRotation: {x: 0, y: 0.013613149, z: 0, w: 0.9999074}
+  m_LocalPosition: {x: 0, y: 2, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 458448}
@@ -155,15 +155,15 @@ Camera:
   field of view: 75
   orthographic: 0
   orthographic size: 5
-  m_Depth: 0
+  m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_RenderingPath: -1
+  m_RenderingPath: 3
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 0
+  m_HDR: 1
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
@@ -223,7 +223,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28333f5e4e36c4132b54028fff10f80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 0}
+  UItext: {fileID: 0}
+  calibrationText: {fileID: 0}
+  calibrationDone: 0
 --- !u!114 &11421016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -235,9 +237,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccd9d98d62cb2584bb7e4e347561007c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  calibrationManager: {fileID: 0}
   calibratedDown: {x: 0, y: 0, z: 0}
   activeSpell: 
+  glowController: {fileID: 0}
   calibrateOnStart: 1
+  calibrationTriggered: 0
 --- !u!114 &11422026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -392,11 +397,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 183102}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b727bb1515d84bb6b91144c0b71856c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraNormalSpeed: 0.7
   slowStartNumFrames: 200
   freezeCameraForDebug: 0
 --- !u!114 &11451830
@@ -472,12 +478,14 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 183102}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28333f5e4e36c4132b54028fff10f80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 0}
+  UItext: {fileID: 0}
+  calibrationText: {fileID: 0}
+  calibrationDone: 0
 --- !u!114 &11487098
 MonoBehaviour:
   m_ObjectHideFlags: 1

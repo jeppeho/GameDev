@@ -37,8 +37,6 @@ public class RelicHealth : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		Debug.Log ("Relic health = " + health);
-
 		SetShaderSpecularColor (specularColor * GetNormalizedHealth());
 		SetShaderColor (GetBaseColorBasedOnHealth());
 

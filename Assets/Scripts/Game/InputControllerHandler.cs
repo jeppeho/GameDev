@@ -29,17 +29,15 @@ public class InputControllerHandler : MonoBehaviour {
 
 		connectedControllers = Input.GetJoystickNames ();
 
+		//For using the controllers connected via cables
 		acceptedControllers = new string[ GetNumAcceptedControllers () ];
-		Debug.Log ("Controllers.Length = " + acceptedControllers.Length);
+		//minions = new GameObject[ GetNumAcceptedControllers () ];
 
-		minions = new GameObject[ GetNumAcceptedControllers () ];
+		Debug.Log ("Controllers.Length = " + acceptedControllers.Length);
+		minions = new GameObject[3];
 
 		RegisterAcceptedControllers ();
 
-		//Create minions
-//		CreateMinionsForControllers ();
-//		CreateMinion(new Vector3(3, 2, 0), "KEYBOARD");
-//		Debug.Log ("Keyboard minion");
 	}
 
 
@@ -108,6 +106,37 @@ public class InputControllerHandler : MonoBehaviour {
 	}
 
 
+	public void SetAbbreviation(){
+	}
+
+
+	/**
+	 * Run this method to create three players, so bluetooth connected controllers can join
+	 */
+	public void PutInThreeMinions(bool active){
+
+		//Space and width is for placing the characters on a single line
+		float space = 3f;
+		int numPlayers = 3;
+		float width = space * (numPlayers - 1f);
+
+		for (int playerIndex = 0; playerIndex < numPlayers; playerIndex++) {
+			
+			float x = -space + playerIndex * space;
+			Vector3 position = new Vector3 (x, 1, -7);
+
+			int controllerNameIndex = playerIndex + 1;
+
+			string prefix = "P" + controllerNameIndex.ToString ();
+
+			Debug.Log ("Creating player: " + prefix);
+
+			CreateMinion( position, prefix, playerIndex, active);
+		}
+	
+	}
+
+
 	/**
 	 * Creates a player for each connected and accepted controller
 	 * 
@@ -119,14 +148,14 @@ public class InputControllerHandler : MonoBehaviour {
 		float width = space * ((float)acceptedControllers.Length - 1f);
 		int numPlayers = acceptedControllers.Length;
 
-		for (int player = 0; player < numPlayers; player++) {
+		for (int playerIndex = 0; playerIndex < numPlayers; playerIndex++) {
 
-			float x = GetXPositionForMinion(player);
+			float x = GetXPositionForMinion(playerIndex);
 			Vector3 position = new Vector3 (x, 1, 3);
 
-			int index = player + 1;
+			int controllerNameIndex = playerIndex + 1;
 
-			CreateMinion( position, acceptedControllers[player] + index.ToString(), player, active);
+			CreateMinion( position, acceptedControllers[playerIndex] + controllerNameIndex.ToString(), playerIndex, active);
 		}
 	}
 

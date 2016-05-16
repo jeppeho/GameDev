@@ -164,8 +164,14 @@ public class RelicController : MonoBehaviour {
 			if (hitColliders [col].tag == "Player") {
 
 				if (hitColliders [col].GetComponent<PlayerManager> ().GetState () == "active") {
+
 					//Get vector towards player
 					Vector3 vecTowardsPlayer = hitColliders [col].transform.position - rb.transform.position;
+
+					Debug.Log ("Dist to player = " + vecTowardsPlayer.magnitude);
+					float multiplier = 1f;
+					if (vecTowardsPlayer.magnitude > 2)
+						multiplier = 2f;
 
 					//Negate the relative velocity between player and relic
 					Vector3 playerVelocity = hitColliders [col].GetComponent<Rigidbody> ().velocity;
@@ -179,7 +185,7 @@ public class RelicController : MonoBehaviour {
 
 					vecTowardsPlayer *= Time.deltaTime * 2000f;
 
-					rb.AddForce (vecTowardsPlayer);
+					rb.AddForce (vecTowardsPlayer * multiplier);
 				}
 				break;
 			}
