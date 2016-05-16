@@ -95,14 +95,14 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _MKGlowTex
+          name: _DetailTex
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _DetailTex
+          name: _MKGlowTex
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
@@ -193,6 +193,10 @@ Material:
         second: 1
       data:
         first:
+          name: _Cull
+        second: 2
+      data:
+        first:
           name: _EdgeLength
         second: 10
       data:
@@ -213,10 +217,6 @@ Material:
         second: 0
       data:
         first:
-          name: _Cull
-        second: 2
-      data:
-        first:
           name: _SquashAmount
         second: 1
     m_Colors:
@@ -227,18 +227,22 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0, g: 0, b: 0, a: 0.15686275}
+        second: {r: 0, g: 0, b: 0, a: 0.5882353}
       data:
         first:
           name: _SpecColor
-        second: {r: 0.54901963, g: 0.54901963, b: 0.54901963, a: 1}
-      data:
-        first:
-          name: _TintColor
-        second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+        second: {r: 0.6691177, g: 0.45453858, b: 0.41819856, a: 1}
       data:
         first:
           name: _Tint
+        second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+      data:
+        first:
+          name: _HueVariation
+        second: {r: 1, g: 0.5, b: 0, a: 0.1}
+      data:
+        first:
+          name: _TintColor
         second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
       data:
         first:
@@ -248,10 +252,6 @@ Material:
         first:
           name: _MKGlowTexColor
         second: {r: 1, g: 1, b: 1, a: 1}
-      data:
-        first:
-          name: _HueVariation
-        second: {r: 1, g: 0.5, b: 0, a: 0.1}
       data:
         first:
           name: _TreeInstanceColor

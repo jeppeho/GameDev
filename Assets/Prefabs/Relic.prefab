@@ -34,7 +34,7 @@ GameObject:
   - 198: {fileID: 19869926}
   - 199: {fileID: 19956176}
   m_Layer: 0
-  m_Name: trailRed
+  m_Name: trailRelic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,7 +70,7 @@ GameObject:
   - 198: {fileID: 19818514}
   - 199: {fileID: 19921830}
   m_Layer: 0
-  m_Name: glowRed
+  m_Name: glowRelic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,7 +94,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 170766}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -133,7 +133,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168476}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
@@ -311,7 +311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47fe6cc0ee5d54c37b2b157ca750ffe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraPositionRoute: []
+  relicRoute: []
 --- !u!114 &11481994
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -576,10 +576,10 @@ ParticleSystem:
         rgba: 4294967295
       maxColor:
         serializedVersion: 2
-        rgba: 758664647
+        rgba: 758678215
       minMaxState: 0
     startSize:
-      scalar: 1.5
+      scalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -720,7 +720,7 @@ ParticleSystem:
       minMaxState: 0
     randomizeRotationDirection: 0
     gravityModifier: 0
-    maxNumParticles: 20
+    maxNumParticles: 100
     rotation3D: 0
   ShapeModule:
     serializedVersion: 2
@@ -747,7 +747,7 @@ ParticleSystem:
     serializedVersion: 2
     m_Type: 0
     rate:
-      scalar: 20
+      scalar: 100
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -2075,7 +2075,7 @@ ParticleSystem:
         rgba: 4294967295
       maxColor:
         serializedVersion: 2
-        rgba: 758664647
+        rgba: 758483901
       minMaxState: 0
     startSize:
       scalar: 1
@@ -2447,10 +2447,10 @@ ParticleSystem:
           rgba: 4294967295
         key1:
           serializedVersion: 2
-          rgba: 4281880007
+          rgba: 4281899719
         key2:
           serializedVersion: 2
-          rgba: 1450339
+          rgba: 15218
         key3:
           serializedVersion: 2
           rgba: 0
