@@ -72,7 +72,7 @@ public class ShatterOnCollision : MonoBehaviour {
 		//For each shard
 		foreach (Transform t in shatteredObject.transform) {
 
-			t.GetComponent<Rigidbody> ().mass = 15f;
+			t.GetComponent<Rigidbody> ().mass = 10;//15f;
 			t.GetComponent<Rigidbody> ().drag = 0.25f;
 			t.GetComponent<Rigidbody> ().angularDrag = 0.8f;
 

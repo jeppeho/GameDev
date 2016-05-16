@@ -3,9 +3,8 @@ using System.Collections;
 
 public class LeapObjectController : MonoBehaviour {
 
-
-	private float cameraStartSpeed = 0.2f;
-	private float cameraNormalSpeed = 1f;
+	public float cameraNormalSpeed = 0.7f;
+	private float cameraStartSpeed = 0f;
 	private float cameraSpeed;
 
 	public int slowStartNumFrames = 200;

@@ -11,8 +11,8 @@ GameObject:
   - 33: {fileID: 3372866}
   - 23: {fileID: 2327984}
   - 54: {fileID: 5483462}
-  - 114: {fileID: 11489854}
   - 135: {fileID: 13519740}
+  - 114: {fileID: 11489854}
   - 114: {fileID: 11481994}
   - 114: {fileID: 11436070}
   - 82: {fileID: 8291566}
@@ -336,6 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad92d1fa872e14e4faeb710213659f1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  snapRadius: 4
 --- !u!135 &13519740
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -344,9 +345,9 @@ SphereCollider:
   m_GameObject: {fileID: 152758}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 0.31
+  m_Radius: 0.8
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &13552142
 SphereCollider:
@@ -358,8 +359,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.008684969
-  m_Center: {x: 0, y: 0, z: 9.313226e-10}
+  m_Radius: 0.015
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!198 &19818514
 ParticleSystem:
   m_ObjectHideFlags: 1

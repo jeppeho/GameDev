@@ -198,12 +198,15 @@ public class LevelBuilder : MonoBehaviour {
 
 			float z = levelElements [i].GetComponent<Transform> ().position.z;
 
-//			if (z < cameraZ) {
-//				StartCoroutine (ReleaseGameObject(levelElements [i]));
-//			}
-			if (z + 15 < cameraZ) {
-				levelElements [i].SetActive (false);
-			} else {
+
+			if (z < cameraZ - 0.5f) {
+
+				StartCoroutine (ReleaseGameObject(levelElements [i]));
+			}
+//			if (z + 15 < cameraZ) {
+//				levelElements [i].SetActive (false);
+//			} 
+			else {
 				lastDeactivatedElement = i;
 				break;
 			}
@@ -216,16 +219,52 @@ public class LevelBuilder : MonoBehaviour {
 	 */
 	IEnumerator ReleaseGameObject (GameObject g){
 
+		float fallSpeed = 0.01f;
 		int frame = 0;
-		while (frame < 150) {
-			Vector3 position = g.transform.position;
-			position.y -= 0.01f;
-			g.transform.position = position;
-			frame++;
-			yield return new WaitForSeconds (0.01f);
+
+		if(g.name.Contains("Pillar"))
+			yield return new WaitForSeconds (1.5f);
+
+		if( g.name.Contains("cliff") )
+			yield return new WaitForSeconds (1f);
+
+		int z = Mathf.FloorToInt( g.transform.position.z );
+
+		bool isNextToWater = false;
+
+		//If current area is lowGround
+		if (levelGenerator.GetLevelAreas () [z] == LevelGenerator.AreaType.lowGround) {
+			//If one of following areas is lava
+			for (int i = 0; i < 2; i++) {
+
+				if (levelGenerator.GetLevelAreas () [z + i] == LevelGenerator.AreaType.lava) {
+					isNextToWater = true;
+				}
+			}
 		}
-		g.SetActive (false);
-		Debug.Log ("Setting inactive @ " + g); 
+			
+
+		//Don't lower the floor to the water
+		if( !isNextToWater && !g.name.Contains("WaterCube") && !g.name.Contains("canyon") && !g.name.Contains("STEPPING") ){
+		
+			while (frame < 150) {
+				Vector3 position = g.transform.position;
+				//position.y -= 0.02f;
+				position.y -= fallSpeed * Time.deltaTime;
+				fallSpeed += 0.02f;
+				g.transform.position = position;
+				frame++;
+				yield return new WaitForSeconds (0.01f);
+			}
+		
+			g.SetActive (false);
+
+		} else {
+
+			yield return new WaitForSeconds (8f);
+			g.SetActive (false);
+		
+		}
 	}
 
 }

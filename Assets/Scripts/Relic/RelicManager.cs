@@ -5,16 +5,16 @@ public class RelicManager : MonoBehaviour {
 
 	private Rigidbody rb;
 	private LevelGenerator l;
-	public float[] cameraPositionRoute;
+	public float[] relicRoute;
 
-	private bool followRoute = true;
+	private bool isFollowingRoute = true;
 
 	// Use this for initialization
 	void Start () {
 		rb = this.gameObject.GetComponent<Rigidbody> ();
 		l = GameObject.Find ("LevelGenerator").GetComponent<LevelGenerator> ();
 
-		cameraPositionRoute = new float[l.levelLength];
+		relicRoute = new float[l.levelLength];
 
 		CreateRelicRoute ();
 	}
@@ -46,7 +46,7 @@ public class RelicManager : MonoBehaviour {
 		UpdateScale (1f);
 		//UpdateFreezeRotation (false);
 		SetKinematic (false);
-		StartCoroutine( coolDownFollowRoute () );
+		StartCoroutine( waitBeforeFollowingRoute () );
 	}
 
 	/**
@@ -124,20 +124,21 @@ public class RelicManager : MonoBehaviour {
 		rb.isKinematic = kinematic;
 	}
 
-	public bool GetFollowRoute(){
-		return this.followRoute;
+	public bool GetIsFollowingRoute(){
+		return this.isFollowingRoute;
 	}
 
-	public IEnumerator coolDownFollowRoute(){
+	//A cool down, so relic will wait after release from parent before going to route
+	public IEnumerator waitBeforeFollowingRoute(){
 
 		//Let relic not follow the route
-		followRoute = false;
+		isFollowingRoute = false;
 
 		//Wait
 		yield return new WaitForSeconds (2f);
 
 		//Let relic follow the route
-		followRoute = true;
+		isFollowingRoute = true;
 	}
 
 
@@ -147,19 +148,19 @@ public class RelicManager : MonoBehaviour {
 
 			if (l.levelAreas [i] == LevelGenerator.AreaType.cliff) {
 
-				cameraPositionRoute [i] = l.GetCanyonNoise () [i];
+				relicRoute [i] = l.GetCanyonNoise () [i];
 
 			} else if (l.levelAreas [i] == LevelGenerator.AreaType.bridge) {
 			
-				cameraPositionRoute [i] = l.GetBridge1Noise () [i];
+				relicRoute [i] = l.GetBridge1Noise () [i];
 
 			} else if (l.levelAreas [i] == LevelGenerator.AreaType.lava) {
 
-				cameraPositionRoute [i] = l.GetSteppingStone1Noise () [i];
+				relicRoute [i] = l.GetSteppingStone1Noise () [i];
 			
 			} else {
 				
-				cameraPositionRoute [i] = 0;
+				relicRoute [i] = 0;
 			
 			}
 		}

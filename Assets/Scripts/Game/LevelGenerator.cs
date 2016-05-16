@@ -506,36 +506,38 @@ public class LevelGenerator : MonoBehaviour {
 	 */
 	private void CreateHighGroundSection(int z){
 
-
-		Vector3 position = new Vector3( 0, 0, z );
-
-		//Instantiate middle part
-		GameObject ground = Instantiate (groundMiddle, position, Quaternion.identity) as GameObject;
-
-		//Set levelContainer as parent
-		SetContainerAsParent (ground);
-
-		//If next area type is not grass
-
-		AreaType nextArea = levelAreas [ GetValidLevelIndex(z + 1) ];
-		AreaType nextNextArea = levelAreas [ GetValidLevelIndex(z + 2) ];
-		if ( (nextNextArea == AreaType.lava || nextNextArea == AreaType.bridge ) 
-			&& nextArea == AreaType.lowGround || nextArea == AreaType.highGround ) {
-
-			CreateGroundEdge (z, false);
-
-		}
+		CreateGround (z);
 
 
-		//If previous area type is not grass
-		AreaType prevArea = levelAreas [ GetValidLevelIndex(z - 1) ];
-		AreaType prevPrevArea = levelAreas [ GetValidLevelIndex(z - 2) ];
-		if ( (prevPrevArea == AreaType.lava || prevPrevArea == AreaType.bridge )
-			&& prevArea == AreaType.lowGround || prevArea == AreaType.highGround) {
-
-			CreateGroundEdge (z, true);
-
-		}
+//		Vector3 position = new Vector3( 0, 0, z );
+//
+//		//Instantiate middle part
+//		GameObject ground = Instantiate (groundMiddle, position, Quaternion.identity) as GameObject;
+//
+//		//Set levelContainer as parent
+//		SetContainerAsParent (ground);
+//
+//		//If next area type is not grass
+//
+//		AreaType nextArea = levelAreas [ GetValidLevelIndex(z + 1) ];
+//		AreaType nextNextArea = levelAreas [ GetValidLevelIndex(z + 2) ];
+//		if ( (nextNextArea == AreaType.lava || nextNextArea == AreaType.bridge ) 
+//			&& nextArea == AreaType.lowGround || nextArea == AreaType.highGround ) {
+//
+//			CreateGroundEdge (z, false);
+//
+//		}
+//
+//
+//		//If previous area type is not grass
+//		AreaType prevArea = levelAreas [ GetValidLevelIndex(z - 1) ];
+//		AreaType prevPrevArea = levelAreas [ GetValidLevelIndex(z - 2) ];
+//		if ( (prevPrevArea == AreaType.lava || prevPrevArea == AreaType.bridge )
+//			&& prevArea == AreaType.lowGround || prevArea == AreaType.highGround) {
+//
+//			CreateGroundEdge (z, true);
+//
+//		}
 
 
 		//Insert small and large pillars
@@ -569,16 +571,20 @@ public class LevelGenerator : MonoBehaviour {
 
 		CreateGround (z);
 
-		//Insert small and large crystals
+		//If prev and next area is lowGround
 		if (levelAreas [ GetValidLevelIndex(z - 1) ] == AreaType.lowGround && levelAreas [ GetValidLevelIndex(z + 1)] == AreaType.lowGround) {
 
-			if (levelAreaNoise [z] > -0.5f  && levelAreaNoise[z] < 0.3f) {
+			//if (levelAreaNoise [z] > -0.5f  && levelAreaNoise[z] < 0.3f) {
 
-				if (z % 10 == 0) {
+			int probablity = Mathf.FloorToInt( 10 - levelLength / (levelLength - z + 30) );
+			//probablity = 10;
+			Debug.Log("probability = " + probablity + " @ z = " + z); 
+			if (z % probablity == 0) {
 
-					CreateCrystalLarge (z, false);
-				}
+				//Insert a large crystal
+				CreateCrystalLarge (z, false);
 			}
+			//}
 		}
 			
 		//Set respawn point
@@ -659,8 +665,8 @@ public class LevelGenerator : MonoBehaviour {
 						SetContainerAsParent (water);
 
 						//Stretch on the Z-axis
-						int length = (g - sample) * 2 / 3;
-						water.transform.localScale = new Vector3 (20, 0,length);
+						float length = (g - sample) / 2f;// * 2 / 3.7f;
+						water.transform.localScale = new Vector3 (100, 0,length);
 
 						//Create floor
 //						GameObject floor = Instantiate (lavaCube, new Vector3( 0, -1.5f, center), Quaternion.identity) as GameObject;
@@ -682,7 +688,6 @@ public class LevelGenerator : MonoBehaviour {
 
 		Vector3 position = new Vector3 ( 0, 0, z );
 
-		//GameObject ground = Instantiate (groundMiddle, position, Quaternion.identity) as GameObject;
 		CreateGround (z);
 
 		//Set levelContainer as parent
@@ -846,10 +851,11 @@ public class LevelGenerator : MonoBehaviour {
 
 					int rotation = 40 + Random.Range (-50, 50); //Unnecesary if no boulder bottom
 
-					if (Random.Range (0f, 1f) > 0.5f)
-						x += 7;
-					else
-						x -= 7;
+					//Put boulders on the sides
+//					if (Random.Range (0f, 1f) > 0.5f)
+//						x += 7;
+//					else
+//						x -= 7;
 
 					//x += rotation / 15;
 

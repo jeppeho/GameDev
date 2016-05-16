@@ -52,7 +52,7 @@ public class NewController : MonoBehaviour {
 	private PlayerScore ps;
 
 	//This is the throwDirection, reads right stick if used else the left stick
-	private Vector3 direction;
+	private Vector3 throwDirection;
 
 	private bool isJumping = false;
 	private bool isDashing = false;
@@ -110,7 +110,7 @@ public class NewController : MonoBehaviour {
 		//If player is active
 		else if (playerState == "active" || playerState == "invulnerable") {
 	
-			UpdateDirection ();
+			UpdateThrowDirection ();
 			UpdateSurfaceTags ();
 
 			//Check if player is jumping
@@ -336,7 +336,7 @@ public class NewController : MonoBehaviour {
 		//Add some min force
 		//force *= 50; /** GetDirection ()*/;
 
-		int numFrames = 100;
+		int numFrames = 15;
 		int index = 1;
 
 		while (pressThrow > 0.05f && index < numFrames) {
@@ -350,9 +350,9 @@ public class NewController : MonoBehaviour {
 			yield return new WaitForSeconds(0.01f);
 		}
 
-		force = GetDirection () * 25;
+		force = GetThrowDirection ();// * 25;
 
-		force *= index * 20;
+		force *= index * 750;// * 30;
 
 		StartCoroutine( player.GetComponentInChildren<RelicController> ().Throw( force ) );
 
@@ -406,7 +406,7 @@ public class NewController : MonoBehaviour {
 		float dis = GetDistanceFromCamera ();
 	
 		//In farzone
-		if (dis > farWalkZone) {
+		if (dis > farWalkZone ) {
 			
 			Vector3 oldVel = rb.velocity;
 			float counterForce = maxVelocity * (dis-farWalkZone)/walkZoneWidth;
@@ -502,11 +502,45 @@ public class NewController : MonoBehaviour {
 	}
 
 
-	public Vector3 GetDirection(){
-		return direction;
+	public Vector3 GetThrowDirection(){
+		return throwDirection;
 	}
+
+	private int throwResetCounter = 60;
+	private int throwResetCounterStartValue = 60;
+
+	private void UpdateThrowDirection (){
+
+		//Use right stick
+		Vector2 rightStickDirection = new Vector2 (throwHorizontal, throwVertical);
+		//Use left stick
+		Vector2 leftStickDirection = new Vector2 (moveHorizontal, moveVertical);
+
+		//Reset throw counter if right stick is in use
+		if (rightStickDirection.magnitude > 0.01f){
+			throwResetCounter = throwResetCounterStartValue;
+		} else {
+			throwResetCounter--;
+		}
+
+		//Update throw direction if right stick is in use OR throwCounter is still counting down
+		if ( rightStickDirection.magnitude > 0.01f ) {
+
+			throwDirection = new Vector3 (rightStickDirection.x, 0f, rightStickDirection.y).normalized;
+
+		} else if (leftStickDirection.magnitude > 0.01f && throwResetCounter < 0) {
 		
-	private void UpdateDirection (){
+			throwDirection = new Vector3 (leftStickDirection.x, 0f, leftStickDirection.y).normalized;
+		
+		} else if(throwResetCounter < 0){
+			
+			throwDirection = new Vector3 (0f, 0f, 1f);
+	
+		}
+	}
+
+		
+	private void UpdateThrowDirectionOLD (){
 		
 		//Use right stick
 		Vector2 rightStickDirection = new Vector2 (throwHorizontal, throwVertical);
@@ -515,16 +549,16 @@ public class NewController : MonoBehaviour {
 
 		//Check if right stick is used
 		if (rightStickDirection.magnitude > 0.01f) {
-			direction = new Vector3 (rightStickDirection.x, 0f, rightStickDirection.y).normalized;
+			throwDirection = new Vector3 (rightStickDirection.x, 0f, rightStickDirection.y).normalized;
 		
 		//Check if left stick is used
 		} else if (leftStickDirection.magnitude > 0.01f) {
 			
-			direction = new Vector3 (leftStickDirection.x, 0f, leftStickDirection.y).normalized;
+			throwDirection = new Vector3 (leftStickDirection.x, 0f, leftStickDirection.y).normalized;
 		
 			//Else throw straight ahead
 		} else {
-			direction = new Vector3 (0f, 0f, 1f);
+			throwDirection = new Vector3 (0f, 0f, 1f);
 		} 
 	}
 		

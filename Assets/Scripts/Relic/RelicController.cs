@@ -3,6 +3,8 @@ using System.Collections;
 
 public class RelicController : MonoBehaviour {
 
+	public float snapRadius = 4f;
+
 	private float cameraZOffsetBound = -3.5f;
 
 	//private Vector3 targetPosition;
@@ -90,11 +92,11 @@ public class RelicController : MonoBehaviour {
 			CapVelocity ();
 
 			//Check if relic should follow route
-			if (manager.GetFollowRoute ()) {
+			if (manager.GetIsFollowingRoute ()) {
 				FollowRoute ();
 
 				if(manager.GetPosition().z > LevelManager.MOVE_MAXZ){
-					PushBackward (10);
+					PushBackward (20);
 				}
 			}
 
@@ -140,7 +142,7 @@ public class RelicController : MonoBehaviour {
 
 		int index = manager.GetAcceptedLevelIndex( Mathf.FloorToInt (transform.position.z ) );
 
-		vectorTowardsRoute.x = manager.cameraPositionRoute [index] - transform.position.x;
+		vectorTowardsRoute.x = manager.relicRoute [index] - transform.position.x;
 
 		rb.AddForce (vectorTowardsRoute * Time.deltaTime * 200);
 	}
@@ -152,11 +154,9 @@ public class RelicController : MonoBehaviour {
 	 * it will addforce towards the position of the player
 	 */
 	private void SnapToPlayer(){
-		
-		float radius = 2f;
 
 		//Get all objects within radius
-		Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, radius);
+		Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, snapRadius);
 
 		//Go through objects
 		for (int col = 0; col < hitColliders.Length; col++) {
@@ -194,7 +194,7 @@ public class RelicController : MonoBehaviour {
 
 		int index = manager.GetAcceptedLevelIndex( Mathf.FloorToInt (transform.position.z ) );
 
-		float x = manager.cameraPositionRoute [ index ];
+		float x = manager.relicRoute [ index ];
 
 		Vector3 resetPosition = new Vector3 (x, 2, wall - 4);
 
@@ -357,14 +357,15 @@ public class RelicController : MonoBehaviour {
 
 	public IEnumerator Throw(Vector3 force){
 
+		Debug.Log ("Force.magnitude = " + force.magnitude);
 		int numFrames = 10;
 		int index = 0;
 
 		while (index < numFrames) {
 
 			//If not above some max valocity
-			if (rb.velocity.magnitude < 15f) {
-				rb.AddForce (force * Time.deltaTime * 30f);
+			if (rb.velocity.magnitude < 10f) {
+				rb.AddForce (force * Time.deltaTime * 15f);
 			}
 			index++;
 			yield return new WaitForSeconds (0.01f);
