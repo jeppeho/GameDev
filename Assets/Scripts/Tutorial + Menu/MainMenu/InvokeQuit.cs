@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class IntactObjectQuit : MonoBehaviour
+public class InvokeQuit : MonoBehaviour
 {
 
     private bool untouched = true;
