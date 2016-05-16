@@ -63,6 +63,7 @@ public class PlayerRelicHandler : MonoBehaviour {
 
 					//Set player as parent to Relic
 					collision.gameObject.GetComponent<RelicManager>().SetParent(this.gameObject.transform);
+
 					//Play catch sound
 					audioManager.Play("relicCatch", GameObject.Find("Relic"));
 				}

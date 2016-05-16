@@ -101,6 +101,8 @@ public class RelicController : MonoBehaviour {
 			}
 
 		} else {
+
+			Debug.Log ("Will fly above parent");
 			//Follow parent
 			FlyAboveParent ();
 		}
@@ -168,7 +170,6 @@ public class RelicController : MonoBehaviour {
 					//Get vector towards player
 					Vector3 vecTowardsPlayer = hitColliders [col].transform.position - rb.transform.position;
 
-					Debug.Log ("Dist to player = " + vecTowardsPlayer.magnitude);
 					float multiplier = 1f;
 					if (vecTowardsPlayer.magnitude > 2)
 						multiplier = 2f;
@@ -327,7 +328,7 @@ public class RelicController : MonoBehaviour {
 		Vector3 slotPosition = manager.GetParent().position;
 
 		//Lift relic above head
-		slotPosition.y += 1.5f;
+		slotPosition.y += 2f;
 
 		//Set velocity to zero
 		rb.velocity = new Vector3 (0, 0, 0);

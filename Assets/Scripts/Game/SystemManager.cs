@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+/**
+ * the system manager class has information about
+ * 
+ */
+
 public class SystemManager : MonoBehaviour {
 
 	private InputControllerHandler inputHandler;
