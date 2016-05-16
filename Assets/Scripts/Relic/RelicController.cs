@@ -102,7 +102,6 @@ public class RelicController : MonoBehaviour {
 
 		} else {
 
-			Debug.Log ("Will fly above parent");
 			//Follow parent
 			FlyAboveParent ();
 		}

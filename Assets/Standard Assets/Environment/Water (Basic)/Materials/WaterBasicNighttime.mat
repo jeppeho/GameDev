@@ -54,7 +54,7 @@ Material:
         first:
           name: _ColorControl
         second:
-          m_Texture: {fileID: 2800000, guid: a00e0742af4041e4cbd0e85f8fdea7fd, type: 3}
+          m_Texture: {fileID: 2800000, guid: 881ef5c262bed06479b119546ccda9fd, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -176,7 +176,7 @@ Material:
       data:
         first:
           name: _horizonColor
-        second: {r: 0.9333334, g: 0.34117648, b: 0.22352943, a: 1}
+        second: {r: 0.79215693, g: 0.2509804, b: 0.82745105, a: 1}
       data:
         first:
           name: _ColorControl_ST

@@ -56,6 +56,7 @@ public class NewController : MonoBehaviour {
 
 	private bool isJumping = false;
 	private bool isDashing = false;
+	private bool coolDownDash = false;
 	private bool isThrowing = false;
 
 	//Right after dash movement speed is lowered
@@ -111,6 +112,7 @@ public class NewController : MonoBehaviour {
 		else if (playerState == "active" || playerState == "invulnerable") {
 	
 			UpdateThrowDirection ();
+			UpdateLookDirection ();
 			UpdateSurfaceTags ();
 
 			//Check if player is jumping
@@ -146,7 +148,7 @@ public class NewController : MonoBehaviour {
 
 
 			//If not dashing, button is pressed, and the left stick is used to give direction to the dash
-			if (!isDashing && pressPush && (moveHorizontal > 0f || moveVertical > 0f)) {
+			if (!isDashing && !coolDownDash && pressPush && (moveHorizontal > 0f || moveVertical > 0f)) {
 				isDashing = true;
 				dashPenalizesMovementSpeed = true;
 				StartCoroutine (Dash ());
@@ -167,6 +169,7 @@ public class NewController : MonoBehaviour {
 
 			//RESET IF PLAYER IS NOT ALIVE
 			isDashing = false;
+			coolDownDash = false;
 			isJumping = false;
 		
 		}
@@ -279,6 +282,9 @@ public class NewController : MonoBehaviour {
 			yield return new WaitForSeconds (0.01f);
 		}
 
+		isDashing = false;
+		coolDownDash = true;
+
 		//Wait for movement speed penalty
 		yield return new WaitForSeconds (0.3f);
 
@@ -288,7 +294,7 @@ public class NewController : MonoBehaviour {
 		yield return new WaitForSeconds (dashCoolDownForSeconds);
 
 		//Reset dashing
-		isDashing = false;
+		coolDownDash = false;
 
 	}
 		
@@ -501,6 +507,37 @@ public class NewController : MonoBehaviour {
 		return lastSurfaceTag;
 	}
 
+	public void UpdateLookDirection(){
+	
+		Debug.Log ("///////Updating LOOK");
+
+		//The direction of the left stick
+		Vector2 direction = new Vector2 (moveHorizontal, moveVertical);
+
+		Debug.Log (moveHorizontal + ", " + moveVertical);
+
+		if (direction.magnitude > 0) {
+		
+			float rad = Mathf.Atan2 (direction.y, direction.x) - Mathf.Atan2 (0, 1);
+			float degrees = rad * Mathf.Rad2Deg;
+			degrees -= 90f;
+			Debug.Log ("Degrees = " + degrees);
+
+			SetLookDirection (degrees);
+		}
+	}
+
+	private void SetLookDirection(float degrees){
+
+		Quaternion rot = transform.rotation;
+		Debug.Log ("Org rotation = " + transform.rotation); 
+		rot.y = degrees / 360;
+		Debug.Log ("Rot = " + rot); 
+
+		transform.rotation = rot;
+
+	}
+
 
 	public Vector3 GetThrowDirection(){
 		return throwDirection;
@@ -562,7 +599,7 @@ public class NewController : MonoBehaviour {
 		} 
 	}
 		
-	private bool IsGrounded(){
+	public bool IsGrounded(){
 		bool isGrounded = Physics.Raycast (player.transform.position, -Vector3.up, 0.4f);//distToGround);
 		return isGrounded;
 	}
@@ -571,6 +608,21 @@ public class NewController : MonoBehaviour {
 		bool isGrounded = Physics.Raycast (player.transform.position, -Vector3.up, height);//distToGround);
 		return isGrounded;
 	}
+
+	public bool IsDashing(){ return isDashing; }
+	public bool IsJumping(){ return isJumping; }
+
+	public bool IsRunning(){ 
+
+		if (moveHorizontal != 0 || moveVertical != 0) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+
 
 
 	/**
