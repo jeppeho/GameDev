@@ -15,9 +15,9 @@ public class SystemManager : MonoBehaviour {
 //	int godPlayerIndex = -1;
 //	public Material[] materials;
 
-	int currentGodMaterialIndex = 3; //to become minion color
-	int minionWinnerPlayerIndex = 0; //The minion to change color on
-	int minionWinnerMaterialIndex = 0; //to become world color
+	int currentGodMaterialIndex = 0; //to become minion color
+	int minionWinnerPlayerIndex = 3; //The minion to change color on
+	int minionWinnerMaterialIndex = 3; //to become world color
 
 	int prevLevel = 0;
 
@@ -58,8 +58,20 @@ public class SystemManager : MonoBehaviour {
 
 		//Set initial colors for players
 		for (int i = 0; i < minions.Length; i++) {
+
 			colorHandler.SetMinionColor (minions [i], i);
 			minionColorIndexes[i] = i;
+		}
+
+		for (int i = 0; i < 4; i++) {
+
+			int colorIndex = i;
+
+			if (i >= currentGodMaterialIndex)
+				colorIndex++;
+			
+			colorHandler.SetMinionColor (minions [i], colorIndex);
+			minionColorIndexes[i] = colorIndex;
 		}
 
 
@@ -120,9 +132,9 @@ public class SystemManager : MonoBehaviour {
 		//Levelgenerator again
 		if (level == 2 && prevLevel == 2) {
 
-			Debug.Log ("//////////Reloading levelGenerator");
-			Debug.Log ("winner color = " + minionWinnerMaterialIndex);
-			Debug.Log ("currentGodMaterialIndex = " + currentGodMaterialIndex);
+//			Debug.Log ("//////////Reloading levelGenerator");
+//			Debug.Log ("winner color = " + minionWinnerMaterialIndex);
+//			Debug.Log ("currentGodMaterialIndex = " + currentGodMaterialIndex);
 
 			ResetActivatedMinionsToStartOfLevel ();
 
@@ -174,10 +186,12 @@ public class SystemManager : MonoBehaviour {
 
 	public void UpdateAllColors(){
 
+		//Set colors on obstacles, update skybox and update the elementsMaterial color
 		colorHandler.SetColorScheme ( minionColorIndexes[ minionWinnerPlayerIndex] );
-		colorHandler.SetMinionColor (minions [minionWinnerPlayerIndex], currentGodMaterialIndex);
-		//colorHandler.SetSkybox (minionWinnerPlayerIndex);
 
+		//Set the winning minions material to that of the losing god
+		colorHandler.SetMinionColor (minions [minionWinnerPlayerIndex], currentGodMaterialIndex);
+	
 	}
 
 	public void UpdateAllColorsOLD(){
@@ -223,10 +237,10 @@ public class SystemManager : MonoBehaviour {
 
 			if (playerState == "inactive" ) {
 				minions [i].SetActive (false);
-				Debug.Log ("Removing player " + i);
+//				Debug.Log ("Removing player " + i);
 			} else {
 				minions [i].SetActive (true);
-				Debug.Log ("Keeping player " + i);
+//				Debug.Log ("Keeping player " + i);
 			}
 		}
 	}

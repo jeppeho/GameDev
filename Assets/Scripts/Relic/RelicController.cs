@@ -325,7 +325,7 @@ public class RelicController : MonoBehaviour {
 		Vector3 slotPosition = manager.GetParent().position;
 
 		//Lift relic above head
-		slotPosition.y += 2f;
+		slotPosition.y += 4f;
 
 		//Set velocity to zero
 		rb.velocity = new Vector3 (0, 0, 0);
@@ -361,7 +361,6 @@ public class RelicController : MonoBehaviour {
 
 	public IEnumerator Throw(Vector3 force){
 
-		Debug.Log ("Force.magnitude = " + force.magnitude);
 		int numFrames = 10;
 		int index = 0;
 

@@ -63,7 +63,34 @@ public class ColorHandler : MonoBehaviour {
 	}
 
 
-	public void SetMinionColor(GameObject minion, int godIndex){
+
+	public void SetMinionColor(GameObject minion, int index){
+		
+		Color[] colors = GetColorMaterialArray ( GetColorSchemeByIndex(index) );
+
+		foreach (Transform t in minion.transform) {
+
+			foreach (Transform tt in t.transform) {
+
+				if (tt.name.Contains ("character:minion")) {
+
+					//Get renderer material
+					Material m = tt.GetComponent<Renderer> ().material;
+
+					//Set colors
+					m.SetColor ("_Color", colors [0]);
+					m.SetColor ("_SpecColor", colors [1]);
+					m.SetColor ("_EmissionColor", colors [2]);
+
+					//Apply changes to material on Renderer 
+					tt.GetComponent<Renderer> ().material = m;
+				}
+			}
+		}
+	}
+
+
+	public void SetMinionColorOLD(GameObject minion, int godIndex){
 
 		Color[] colors = GetColorMaterialArray ( GetColorSchemeByIndex(godIndex) );
 
@@ -76,8 +103,6 @@ public class ColorHandler : MonoBehaviour {
 			m.SetColor("_SpecColor", colors [1]);
 			m.SetColor("_EmissionColor", colors [2]);
 		}
-
-
 	}
 		
 

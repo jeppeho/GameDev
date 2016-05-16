@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9ea33b53fc0a4ac6bc13eaccca0abb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minion: {fileID: 160758, guid: 90557a4cc1fd3474d92977d069876ad2, type: 2}
+  minion: {fileID: 102222, guid: 64b777a2248f94bdcba70a0a825375cd, type: 2}
 --- !u!114 &11484528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -70,6 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a25643f7196d481a9a186f30c03379b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GodWon: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

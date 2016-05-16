@@ -73,9 +73,14 @@ public class PlayerManager : MonoBehaviour {
 		Material m = materials [index];
 		Debug.Log(index + "] setting matieral to " + m); 
 
+		GetComponent<MeshRenderer> ().material = m;//GetComponent<MeshRenderer> ().materials [index];
+
 		foreach (Transform t in transform) {
 
-			t.gameObject.GetComponent<Renderer> ().material = m;
+			//t.GetComponent<Renderer> ().material = m;
+
+
+			//t.GetComponent<MeshRenderer> ().material = t.GetComponent<MeshRenderer> ().materials [2];
 		}
 	}
 

@@ -336,7 +336,7 @@ public class NewController : MonoBehaviour {
 	 * Builds up force, then throws the relic and removes it as child
 	 */ 
 	IEnumerator Throw(){
-		Debug.Log ("Throwing! START");
+
 		Vector3 force = Vector3.zero;
 
 		//Add some min force
@@ -356,9 +356,9 @@ public class NewController : MonoBehaviour {
 			yield return new WaitForSeconds(0.01f);
 		}
 
-		force = GetThrowDirection ();// * 25;
+		force = GetThrowDirection ();
 
-		force *= index * 750;// * 30;
+		force *= index * 2000; //750;
 
 		StartCoroutine( player.GetComponentInChildren<RelicController> ().Throw( force ) );
 
