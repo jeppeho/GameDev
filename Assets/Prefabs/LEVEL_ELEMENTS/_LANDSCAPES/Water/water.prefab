@@ -12,7 +12,7 @@ GameObject:
   - 23: {fileID: 2300000}
   - 114: {fileID: 11400000}
   m_Layer: 4
-  m_Name: WaterBasicNightime
+  m_Name: water
   m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
