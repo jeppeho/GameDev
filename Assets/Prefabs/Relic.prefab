@@ -34,7 +34,7 @@ GameObject:
   - 198: {fileID: 19869926}
   - 199: {fileID: 19956176}
   m_Layer: 0
-  m_Name: trailRed
+  m_Name: trailRelic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,7 +70,7 @@ GameObject:
   - 198: {fileID: 19818514}
   - 199: {fileID: 19921830}
   m_Layer: 0
-  m_Name: glowRed
+  m_Name: glowRelic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
