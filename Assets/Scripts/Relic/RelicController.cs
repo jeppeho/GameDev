@@ -4,6 +4,7 @@ using System.Collections;
 public class RelicController : MonoBehaviour {
 
 	public float snapRadius = 4f;
+	private bool snapToPlayers = true;
 
 	private float cameraZOffsetBound = -3.5f;
 
@@ -87,7 +88,8 @@ public class RelicController : MonoBehaviour {
 			}
 
 			//Make sure velocity doesn't go nuts
-			SnapToPlayer();
+			if(snapToPlayers)
+				SnapToPlayer();
 
 			CapVelocity ();
 
@@ -169,10 +171,6 @@ public class RelicController : MonoBehaviour {
 					//Get vector towards player
 					Vector3 vecTowardsPlayer = hitColliders [col].transform.position - rb.transform.position;
 
-					float multiplier = 1f;
-					if (vecTowardsPlayer.magnitude > 2)
-						multiplier = 2f;
-
 					//Negate the relative velocity between player and relic
 					Vector3 playerVelocity = hitColliders [col].GetComponent<Rigidbody> ().velocity;
 					Vector3 relativeVelocity = rb.velocity - playerVelocity;
@@ -185,7 +183,7 @@ public class RelicController : MonoBehaviour {
 
 					vecTowardsPlayer *= Time.deltaTime * 2000f;
 
-					rb.AddForce (vecTowardsPlayer * multiplier);
+					rb.AddForce (vecTowardsPlayer);
 				}
 				break;
 			}
@@ -367,6 +365,8 @@ public class RelicController : MonoBehaviour {
 		int numFrames = 10;
 		int index = 0;
 
+		snapToPlayers = false;
+
 		while (index < numFrames) {
 
 			//If not above some max valocity
@@ -376,6 +376,10 @@ public class RelicController : MonoBehaviour {
 			index++;
 			yield return new WaitForSeconds (0.01f);
 		}
+
+		yield return new WaitForSeconds (0.3f);
+
+		snapToPlayers = true;
 	}
 
 

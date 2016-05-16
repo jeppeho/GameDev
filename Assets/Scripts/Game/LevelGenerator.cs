@@ -576,9 +576,9 @@ public class LevelGenerator : MonoBehaviour {
 
 			//if (levelAreaNoise [z] > -0.5f  && levelAreaNoise[z] < 0.3f) {
 
+			//Vary probability on distance to goal - the closer the more crystals
 			int probablity = Mathf.FloorToInt( 10 - levelLength / (levelLength - z + 30) );
-			//probablity = 10;
-			Debug.Log("probability = " + probablity + " @ z = " + z); 
+
 			if (z % probablity == 0) {
 
 				//Insert a large crystal
@@ -655,18 +655,19 @@ public class LevelGenerator : MonoBehaviour {
 					) {
 
 						//Create water prefab
-						int center = sample + (g - sample) / 2;
+						float center = sample + (g - sample) / 2f;
 
-						float y = -0.5f;//value without elevation = -0.7f;
+						float y = -0.8f;//value without elevation = -0.7f;
 
 						GameObject water = Instantiate (waterPrefab, new Vector3 (0, y, center), Quaternion.identity) as GameObject;
-
+					
 						//Set levelContainer as parent
 						SetContainerAsParent (water);
 
 						//Stretch on the Z-axis
-						float length = (g - sample) / 2f;// * 2 / 3.7f;
-						water.transform.localScale = new Vector3 (100, 0,length);
+						float length = (g - sample) / 10f;// * 2 / 3.7f;
+						//water.transform.localScale = new Vector3 (100, 0,length);
+						water.transform.localScale = new Vector3 (6, 0,length);
 
 						//Create floor
 //						GameObject floor = Instantiate (lavaCube, new Vector3( 0, -1.5f, center), Quaternion.identity) as GameObject;

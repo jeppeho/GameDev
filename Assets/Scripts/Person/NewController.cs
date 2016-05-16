@@ -175,7 +175,7 @@ public class NewController : MonoBehaviour {
 		}
 
 		LimitWalkingDistance();
-		LimitWalkingDistanceSoft();
+		//LimitWalkingDistanceSoft();
 
 		LimitBoundariesOnXAxis ();
 		
@@ -336,7 +336,7 @@ public class NewController : MonoBehaviour {
 	 * Builds up force, then throws the relic and removes it as child
 	 */ 
 	IEnumerator Throw(){
-
+		Debug.Log ("Throwing! START");
 		Vector3 force = Vector3.zero;
 
 		//Add some min force
@@ -508,40 +508,27 @@ public class NewController : MonoBehaviour {
 	}
 
 	public void UpdateLookDirection(){
-	
-		Debug.Log ("///////Updating LOOK");
 
 		//The direction of the left stick
 		Vector2 direction = new Vector2 (moveHorizontal, moveVertical);
-
-		Debug.Log (moveHorizontal + ", " + moveVertical);
+		direction.Normalize();
 
 		if (direction.magnitude > 0) {
 		
 			float rad = Mathf.Atan2 (direction.y, direction.x) - Mathf.Atan2 (0, 1);
 			float degrees = rad * Mathf.Rad2Deg;
-			degrees -= 90f;
-			Debug.Log ("Degrees = " + degrees);
 
-			SetLookDirection (degrees);
+			float y = -degrees + 90f;
+
+			transform.rotation = Quaternion.Euler(0, y, 0);
 		}
-	}
-
-	private void SetLookDirection(float degrees){
-
-		Quaternion rot = transform.rotation;
-		Debug.Log ("Org rotation = " + transform.rotation); 
-		rot.y = degrees / 360;
-		Debug.Log ("Rot = " + rot); 
-
-		transform.rotation = rot;
-
 	}
 
 
 	public Vector3 GetThrowDirection(){
 		return throwDirection;
 	}
+
 
 	private int throwResetCounter = 60;
 	private int throwResetCounterStartValue = 60;

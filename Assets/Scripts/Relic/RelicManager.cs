@@ -28,13 +28,26 @@ public class RelicManager : MonoBehaviour {
 	 */
 	public void SetParent(Transform parent){
 		this.transform.SetParent (parent, false);
-
 		this.transform.localPosition = new Vector3 (0, 0, 0);
 		UpdateScale (1f);
 		//UpdateFreezeRotation (true);
 		ResetRotation ();
 		SetKinematic (true);
+		SetCollider (false);
+
 	}
+
+	/**
+	 * Activates or deactivates the collider of the child object
+	 */
+	public void SetCollider(bool active){
+		foreach (Transform t in transform) {
+			if (t.name == "RelicSphere") {
+				t.GetComponent<SphereCollider> ().enabled = active;
+			}
+		}
+	}
+
 
 	/**
 	 * Sets the parent variable to null,
@@ -46,7 +59,9 @@ public class RelicManager : MonoBehaviour {
 		UpdateScale (1f);
 		//UpdateFreezeRotation (false);
 		SetKinematic (false);
+		SetCollider (true);
 		StartCoroutine( waitBeforeFollowingRoute () );
+
 	}
 
 	/**

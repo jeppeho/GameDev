@@ -1,0 +1,162 @@
+fileFormatVersion: 2
+guid: 9c1cdac19d3e54b789da632ba1176a2e
+timeCreated: 1463415818
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: angle_left
+    100002: angle_right
+    100004: arm_left
+    100006: arm_right
+    100008: body
+    100010: //RootNode
+    100012: foot_left
+    100014: foot_right
+    100016: hand_left
+    100018: hand_right
+    100020: head
+    100022: left_arm
+    100024: left_leg
+    100026: right_arm
+    100028: right_leg
+    100030: shin_left
+    100032: shin_right
+    100034: thigh_left
+    100036: thigh_right
+    100038: thumb_left
+    100040: thumb_right
+    400000: angle_left
+    400002: angle_right
+    400004: arm_left
+    400006: arm_right
+    400008: body
+    400010: //RootNode
+    400012: foot_left
+    400014: foot_right
+    400016: hand_left
+    400018: hand_right
+    400020: head
+    400022: left_arm
+    400024: left_leg
+    400026: right_arm
+    400028: right_leg
+    400030: shin_left
+    400032: shin_right
+    400034: thigh_left
+    400036: thigh_right
+    400038: thumb_left
+    400040: thumb_right
+    2300000: angle_left
+    2300002: angle_right
+    2300004: arm_left
+    2300006: arm_right
+    2300008: body
+    2300010: foot_left
+    2300012: foot_right
+    2300014: hand_left
+    2300016: hand_right
+    2300018: head
+    2300020: shin_left
+    2300022: shin_right
+    2300024: thigh_left
+    2300026: thigh_right
+    2300028: thumb_left
+    2300030: thumb_right
+    3300000: angle_left
+    3300002: angle_right
+    3300004: arm_left
+    3300006: arm_right
+    3300008: body
+    3300010: foot_left
+    3300012: foot_right
+    3300014: hand_left
+    3300016: hand_right
+    3300018: head
+    3300020: shin_left
+    3300022: shin_right
+    3300024: thigh_left
+    3300026: thigh_right
+    3300028: thumb_left
+    3300030: thumb_right
+    4300000: head
+    4300002: thigh_right
+    4300004: shin_right
+    4300006: angle_right
+    4300008: foot_right
+    4300010: thigh_left
+    4300012: shin_left
+    4300014: angle_left
+    4300016: foot_left
+    4300018: arm_right
+    4300020: hand_right
+    4300022: thumb_right
+    4300024: arm_left
+    4300026: hand_left
+    4300028: thumb_left
+    4300030: body
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

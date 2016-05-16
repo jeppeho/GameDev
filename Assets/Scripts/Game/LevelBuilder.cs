@@ -81,11 +81,11 @@ public class LevelBuilder : MonoBehaviour {
 
 			float y = levelGenerator.GetLevelAreaHeights()[ Mathf.Clamp(index, 0, levelGenerator.levelLength - 1) ];
 
-			if (t.name == "WaterBasicNightime(Clone)")
-				y -= 0.5f;
-
+			if (t.name.Contains ("WaterPlane"))
+				y -= 0.8f;
+			else
 			//If water
-			else if (t.name == "WaterCube(Clone)")
+				if (t.name == "WaterCube(Clone)")
 				y -= 1.5f;
 			//If stepping stone
 			else if (t.name == "STEPPING_STONE(Clone)")
@@ -149,7 +149,7 @@ public class LevelBuilder : MonoBehaviour {
 
 			//Debug.Log ("t.gameObject.name = " + t.gameObject.name);
 
-			if(t.gameObject.name != "WaterBasicNightime(Clone)" /* && t.gameObject.name != "Light" */)
+			if(!t.gameObject.name.Contains("Water") /* && t.gameObject.name != "Light" */)
 				levelElements.Add (t.gameObject);
 		}
 	
@@ -239,6 +239,10 @@ public class LevelBuilder : MonoBehaviour {
 
 				if (levelGenerator.GetLevelAreas () [z + i] == LevelGenerator.AreaType.lava) {
 					isNextToWater = true;
+					break;
+				} else if (levelGenerator.GetLevelAreas () [z - i] == LevelGenerator.AreaType.lava) {
+					isNextToWater = true;
+					break;
 				}
 			}
 		}

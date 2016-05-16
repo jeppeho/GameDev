@@ -37,7 +37,7 @@ public class PlayerManager : MonoBehaviour {
 		lastVel = rb.velocity;
 
 		//Check to see if player has fallen off grid
-		if (transform.position.y <= -1f)
+		if (transform.position.y <= -5f)
 		{
 			DeathFall ();
 		}

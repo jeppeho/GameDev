@@ -101,7 +101,9 @@ public class PlayerRelicHandler : MonoBehaviour {
 
 
 	public void ReleaseRelic(){
+
 		GameObject.Find ("Relic").GetComponent<RelicManager>().ReleaseFromParent();
+
 		//Play throw sound
 		audioManager.Play("relicThrow", 0.8f, GameObject.Find("Relic"));
 	}
