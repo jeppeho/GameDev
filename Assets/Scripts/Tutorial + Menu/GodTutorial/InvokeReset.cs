@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InvokeGodReady : MonoBehaviour {
+public class InvokeReset : MonoBehaviour {
 
     public Material mat2;
 
@@ -19,9 +19,8 @@ public class InvokeGodReady : MonoBehaviour {
 
 
     void ChangeLevel()
-
     {
-        Application.LoadLevel("LevelGenerator");
-
+        
+        Application.LoadLevel("TutorialGod");
     }
 }

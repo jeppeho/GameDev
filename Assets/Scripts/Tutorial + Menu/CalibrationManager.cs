@@ -7,12 +7,14 @@ public class CalibrationManager : MonoBehaviour {
 
 	public GameObject UItext;
     public GameObject calibrationText;
+    public GameObject UIMinions;
 
     public bool calibrationDone;
 
 	// Use this for initialization
 	void Start () {
 		UItext.SetActive(false);
+        UIMinions.SetActive(false);
         
         calibrationDone = false; // set true for testing
         calibrationText.SetActive(true); // set false for testing
@@ -40,6 +42,7 @@ public class CalibrationManager : MonoBehaviour {
 		else
 		{	
 			UItext.SetActive(true);
+            UIMinions.SetActive(true);
 		}
 	}
 
