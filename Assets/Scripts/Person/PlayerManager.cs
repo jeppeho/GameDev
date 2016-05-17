@@ -3,6 +3,9 @@ using System.Collections;
 
 public class PlayerManager : MonoBehaviour {
 
+	private AudioManager audioManager;
+	private GameObject audioplayerEffects;
+
 	private Rigidbody rb;
 	private MeshCollider collider;
 	private Vector3 lastVel;
@@ -24,6 +27,10 @@ public class PlayerManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		audioManager = GameObject.Find ("AudioManager").GetComponent<AudioManager> ();
+		audioplayerEffects = this.transform.transform.FindChild ("audioplayerEffects").gameObject;
+
 		rb = GetComponent<Rigidbody>();
 		collider = GetComponentInChildren<MeshCollider>();
 		ps = this.gameObject.GetComponent<PlayerScore> ();
@@ -108,6 +115,10 @@ public class PlayerManager : MonoBehaviour {
 	//Death
 	private void Death()
 	{
+		//~~SOUND~~
+
+		audioManager.Play ("deathM", audioplayerEffects);
+
 		if (playerState == state.active)
 		{
 //			if (playerRelicHandler.HasRelic ()) {

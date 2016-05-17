@@ -17,10 +17,12 @@ public class AudioManager : MonoBehaviour {
 	private static List<AudioClip> rockClick = new List<AudioClip>();
 	private static List<AudioClip> relicCatch = new List<AudioClip>();
 	private static List<AudioClip> relicThrow = new List<AudioClip> ();
+	private static List<AudioClip> relicDamage = new List<AudioClip> ();
 	private static List<AudioClip> footstepsFast = new List<AudioClip>();
 	private static List<AudioClip> footstepsSlow = new List<AudioClip>();
 	private static List<AudioClip> jumpM = new List<AudioClip>();
 	private static List<AudioClip> landM = new List<AudioClip>();
+	private static List<AudioClip> deathM = new List<AudioClip>();
 
 	[HideInInspector]
 	public GameObject audioplayerCasting;
@@ -45,12 +47,14 @@ public class AudioManager : MonoBehaviour {
 		path = "Audio/Relic/";
 		relicCatch = LoadSet(path+"relicCatch", 8);
 		relicThrow = LoadSet(path+"relicThrow", 8);
+		relicDamage = LoadSet(path+"relicDamage", 8);
 
 		path = "Audio/Players/";
 		footstepsFast = LoadSet(path+"footstepsFast", 4);
 		footstepsSlow = LoadSet(path+"footstepsSlow", 4);
-		jumpM = LoadSet(path+"jumpM", 2);
-		landM = LoadSet(path+"landM", 2);
+		jumpM = LoadSet(path+"jumpM", 6);
+		landM = LoadSet(path+"landM", 6);
+		deathM = LoadSet(path+"deathM", 5);
 	}
 
 	void Start()
@@ -170,6 +174,9 @@ public class AudioManager : MonoBehaviour {
 		case "relicThrow":
 			return FindClipRandom (relicThrow);
 			break;
+		case "relicDamage":
+			return FindClipRandom (relicDamage);
+			break;
 		case "footstepsFast":
 			return FindClipRandom (footstepsFast);
 			break;
@@ -181,6 +188,9 @@ public class AudioManager : MonoBehaviour {
 			break;
 		case "landM":
 			return FindClipRandom (landM);
+			break;
+		case "deathM":
+			return FindClipRandom (deathM);
 			break;
 
 		default:
