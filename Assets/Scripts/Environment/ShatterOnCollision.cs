@@ -3,6 +3,8 @@ using System.Collections;
 
 public class ShatterOnCollision : MonoBehaviour {
 
+	AudioManager audioManager;
+
 	private GameObject intactObject;
 	private GameObject shatteredObject;
 	private bool isUntouched = true;
@@ -11,6 +13,8 @@ public class ShatterOnCollision : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		audioManager = GameObject.Find ("AudioManager").GetComponent<AudioManager> ();
 
 		//Go through all child objects
 		foreach (Transform t in transform) {
@@ -71,7 +75,7 @@ public class ShatterOnCollision : MonoBehaviour {
 
 		//For each shard
 		foreach (Transform t in shatteredObject.transform) {
-
+			
 			t.GetComponent<Rigidbody> ().mass = 10;//15f;
 			t.GetComponent<Rigidbody> ().drag = 0.25f;
 			t.GetComponent<Rigidbody> ().angularDrag = 0.8f;
@@ -82,6 +86,8 @@ public class ShatterOnCollision : MonoBehaviour {
 			t.gameObject.layer = 17; //Set to CollisionfreeObject and wait for 5 frames
 			cooldown = 5;
 		}
+
+		audioManager.Play ("rockShatter", Random.Range(0.75f, 1f), this.gameObject);
 	}
 
 	private void resetLayers()

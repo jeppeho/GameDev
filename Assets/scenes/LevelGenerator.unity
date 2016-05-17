@@ -576,7 +576,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 451810, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
       propertyPath: m_RootOrder
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 11405306, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
       propertyPath: handObject
@@ -2415,7 +2415,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 4
 --- !u!1 &728350076
 GameObject:
   m_ObjectHideFlags: 0
@@ -2759,7 +2759,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cfdeac7e73e8f4c2187a8e009fd807d3, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cfdeac7e73e8f4c2187a8e009fd807d3, type: 3}
       propertyPath: m_LocalScale.x
@@ -3079,7 +3079,7 @@ Transform:
   - {fileID: 391223392}
   - {fileID: 1341890479}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
 --- !u!1001 &1250760380
 Prefab:
   m_ObjectHideFlags: 0
@@ -3241,7 +3241,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 7
 --- !u!114 &1320075959
 MonoBehaviour:
   m_ObjectHideFlags: 0
