@@ -23,6 +23,11 @@ public class GestureGust : Gesture {
 		Debug.Log ("Set thisSpell: " + thisSpell.ToString());
 	}
 
+    public float GetCharge()
+    {
+        return charge;
+    }
+
 	// Update is called once per frame
 	void FixedUpdate () {
 
