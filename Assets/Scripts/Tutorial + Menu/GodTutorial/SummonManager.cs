@@ -6,6 +6,13 @@ public class SummonManager : MonoBehaviour
 {
 
     private float cameraSpeed = 2f;
+    private float handSpeed = 2f;
+
+    public GameObject GhostHand;
+    public GameObject GhostCrystal;
+
+    private Vector3 currentGhostPos;
+    private Vector3 ghostEndPos;
 
     public GameObject UI;
     public GameObject Instructions;
@@ -30,11 +37,14 @@ public class SummonManager : MonoBehaviour
         duration = 4f;
         waitingDone = false;;
         StartCoroutine(Wait());
+
+        ghostEndPos = new Vector3(currentGhostPos.x, 7, currentGhostPos.z);
     }
 
     // Update is called once per frame
     void Update()
     {
+        moveHand();
 
         if (waitingDone == true)
         {
@@ -46,10 +56,6 @@ public class SummonManager : MonoBehaviour
             float fadeTime = GameObject.Find("FadingScenes").GetComponent<FadingScenes>().BeginFade(1);
             Invoke("ChangeLevel", 3.0f);
         }
-
-        
-
-
 
     }
 
@@ -73,7 +79,6 @@ public class SummonManager : MonoBehaviour
 
     private void MoveCameraForward()
     {
-
         Vector3 currentPosition = this.gameObject.transform.position;
 
         if (currentPosition.z < -0)
@@ -96,5 +101,36 @@ public class SummonManager : MonoBehaviour
         yield return new WaitForSeconds(4f);
         waitingDone = true;
         TextCoroutine = StartCoroutine(ShowText());
+    }
+
+
+    private void moveHand()
+    {
+        currentGhostPos = GhostHand.transform.position;
+
+        if (currentGhostPos.y < ghostEndPos.y)
+        { 
+            currentGhostPos.y += handSpeed * Time.deltaTime;
+            GhostCrystal.SetActive(false);
+        }
+
+        
+        else if (currentGhostPos.y > ghostEndPos.y)
+        {
+            currentGhostPos.y = 0;
+            GhostCrystal.SetActive(false);
+        }
+        else
+        {
+
+        }
+
+        if (currentGhostPos.y > ghostEndPos.y - 2)
+        {
+            //currentGhostPos.y = 0;
+            GhostCrystal.SetActive(true);
+        }
+        GhostHand.transform.position = currentGhostPos;
+
     }
 }
