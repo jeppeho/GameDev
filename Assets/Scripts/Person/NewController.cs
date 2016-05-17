@@ -83,8 +83,8 @@ public class NewController : MonoBehaviour {
 	void Start () {
 
 		audioManager = GameObject.Find ("AudioManager").GetComponent<AudioManager> ();
-		//audioplayerEffects = this.transform.transform.FindChild ("audioplayerEffects").gameObject;
-		//audioplayerRun = this.transform.transform.FindChild ("audioplayerRun").gameObject;
+		audioplayerEffects = this.transform.transform.FindChild ("audioplayerEffects").gameObject;
+		audioplayerRun = this.transform.transform.FindChild ("audioplayerRun").gameObject;
 
 		rb = GetComponent<Rigidbody> ();
 		Debug.Log ("RB = " + rb);
