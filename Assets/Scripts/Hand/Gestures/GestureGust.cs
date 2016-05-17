@@ -7,6 +7,9 @@ public class GestureGust : Gesture {
 	//Derived: gestureManager
 	//Derived: handManager
 	//Derived: thisSpell
+	Light levelLight;
+	float levelLightBaseIntensity;
+	float lightflicker;
 	private float charge;
 	private float pulsebase;
 	private Vector3 gustCenter;
@@ -18,6 +21,9 @@ public class GestureGust : Gesture {
 	// Use this for initialization
 	void Start () {
 		base.Init ();
+
+		levelLight = GameObject.Find ("LevelLight").GetComponent<Light> ();
+		levelLightBaseIntensity = levelLight.intensity;
 
 		thisSpell = "gust";
 		Debug.Log ("Set thisSpell: " + thisSpell.ToString());
@@ -92,14 +98,19 @@ public class GestureGust : Gesture {
 				//If the hand is actually moving downwards, make some wind
 				if (palmY < gustProgression - 1.5f)
 				{
+					//Flash lights
+					FlashLights(charge);
+
 					if (!released)
 					{
 						audioManager.Stop(handManager.audioplayerCasting);
 						audioManager.Play("gustRelease", handManager.audioplayerCastingGust);
 						released = true;
 					}
+
                     gestureManager.glowController.setIntensity(0);
                     gestureManager.glowController.Burst(0.5f);
+
 
 					//Determine charge for this particular fixed update (NOTE - a different use of 'charge' than in GestureHurricane!)
 					float pull = gustProgression - palmY;
@@ -186,10 +197,33 @@ public class GestureGust : Gesture {
 			{
 				gustProgression = -10f; //Incapacitate gustProgression
 				gestureManager.clearActiveSpell ();
+
+				levelLight.intensity = levelLightBaseIntensity;
                 gestureManager.glowController.setIntensity(0);
+
 				if (!released)
 				{	audioManager.Play ("summonStop", handManager.audioplayerCasting);	}
 			}
 		}
+
+
+		//Handle flickering
+
+		if (lightflicker > 0)
+		{
+			lightflicker -= 0.05f;
+
+			//Flash the lights!
+			levelLight.intensity = levelLightBaseIntensity + Random.Range (-0.4f, 2f) * lightflicker;
+		}
+		else
+		{
+			levelLight.intensity = levelLightBaseIntensity;
+		}
+	}
+
+	private void FlashLights(float n)
+	{
+		lightflicker = n;
 	}
 }

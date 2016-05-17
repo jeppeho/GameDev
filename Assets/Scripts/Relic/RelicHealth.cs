@@ -3,6 +3,8 @@ using System.Collections;
 
 public class RelicHealth : MonoBehaviour {
 
+	private AudioManager audioManager;
+
 	public float startHealth = 1000;
 	public float maxHandDistanceToTakeEnergy = 2f;
 	private float health;
@@ -23,6 +25,9 @@ public class RelicHealth : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		audioManager = GameObject.Find ("AudioManager").GetComponent<AudioManager> ();
+
 		health = startHealth;
 		rb = GetComponent<Rigidbody> ();
 		manager = GetComponent<RelicManager> ();
@@ -110,7 +115,6 @@ public class RelicHealth : MonoBehaviour {
 						drain = 20f;
 
 					DrainEnergy (drain);
-				
 				}
 
 			//If relic is being carried
@@ -170,6 +174,11 @@ public class RelicHealth : MonoBehaviour {
 		if (drain > 1){
 			SetShaderSpecularColor (new Color (1, 1, 1));
 			SetShaderColor (new Color (1, 1, 1));
+
+			//~~SOUND~~
+
+			//Play hit-sound
+			audioManager.Play("relicDamage", Mathf.Clamp(drain/2f, 0f, 1f), this.gameObject);
 
 		//If god hand takes health, then blink occasionally
 		} else if (Time.frameCount % 5 == 0 || Time.frameCount + 1 % 5 == 0 || Time.frameCount + 2 % 5 == 0 || Time.frameCount + 1 % 5 == 0) {
