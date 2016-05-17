@@ -89,7 +89,8 @@ public class GestureGust : Gesture {
 				{
 					if (!released)
 					{
-						audioManager.Play("gustRelease", handManager.audioplayerCasting);
+						audioManager.Stop(handManager.audioplayerCasting);
+						audioManager.Play("gustRelease", handManager.audioplayerCastingGust);
 						released = true;
 					}
                     gestureManager.glowController.setIntensity(0);

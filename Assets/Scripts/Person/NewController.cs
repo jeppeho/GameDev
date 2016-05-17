@@ -3,6 +3,14 @@ using System.Collections;
 
 public class NewController : MonoBehaviour {
 
+	private AudioManager audioManager;
+	private GameObject audioplayerEffects;
+	private GameObject audioplayerRun;
+	private int landBuffer = 10;
+
+	private int lastRunSound;
+	private int soundBuffer = 10;
+
 	//Prefix for controller type
 	public string prefix;
 
@@ -10,7 +18,7 @@ public class NewController : MonoBehaviour {
 	public string producer;
 
 	//Speed
-	public float accelerationRate = 10;
+	public float accelerationRate = 6;
 	public float maxVelocity = 1;
 
 	//Jump
@@ -73,6 +81,11 @@ public class NewController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		audioManager = GameObject.Find ("AudioManager").GetComponent<AudioManager> ();
+		audioplayerEffects = this.transform.transform.FindChild ("audioplayerEffects").gameObject;
+		audioplayerRun = this.transform.transform.FindChild ("audioplayerRun").gameObject;
+
 		rb = this.gameObject.GetComponent<Rigidbody> ();
 		player = this.gameObject;
 
@@ -121,6 +134,11 @@ public class NewController : MonoBehaviour {
 				isJumping = true;
 				//Jump ();
 				StartCoroutine (Jump());
+
+				//~~SOUND~~
+				//audioManager.Stop(this.gameObject);
+				audioManager.Play ("jumpM", 1f, audioplayerEffects);
+				landBuffer = 10;
 			}
 
 			//Move on X and Z axis
@@ -143,9 +161,19 @@ public class NewController : MonoBehaviour {
 				//IF ELEVATION IS USED CHANGE ONE TO LEVELAREA NOISE
 				if (IsAboveHeight (1) == false) {
 					FallDown ();
+					//~~SOUND~~
+					landBuffer = Mathf.Max (landBuffer-1, 0);
 				}
 			}
 
+			//~~SOUND~~
+
+			else if (landBuffer == 0)
+			{
+				landBuffer = -1;
+				//REAL BUGGY AT THE MOMENT - will implement asap
+				//audioManager.Play ("landM", 1f, audioplayerEffects);
+			}
 
 			//If not dashing, button is pressed, and the left stick is used to give direction to the dash
 			if (!isDashing && !coolDownDash && pressPush && (moveHorizontal > 0f || moveVertical > 0f)) {
@@ -158,7 +186,6 @@ public class NewController : MonoBehaviour {
 			if (!isThrowing && pressThrow > 0.05f && this.gameObject.GetComponent<PlayerRelicHandler> ().HasRelic () == true) {
 
 				isThrowing = true;
-				//audioManager.Play("relicThrow",relic);
 				StartCoroutine(Throw ());
 			
 			}
@@ -250,6 +277,49 @@ public class NewController : MonoBehaviour {
 			Vector3 updatedVel = new Vector3 (ground_speed.x, rb.velocity.y, ground_speed.y);
 			rb.velocity = updatedVel;
 		}
+
+		//~~SOUND~~
+
+		//In the end, play sound accordingly
+		float runspeed = ground_speed.magnitude / GetMaxVelocity();
+		soundBuffer--;
+
+		if (!isJumping)
+		{
+			if (runspeed >= 0.66f) {
+				
+				if (lastRunSound != 2 && soundBuffer <= 0) {
+					Debug.Log ("Fast run!!");
+					audioManager.PlayLoop ("footstepsFast", audioplayerRun);
+					lastRunSound = 2;
+					soundBuffer = 6;
+				}
+
+			}
+			else if (runspeed >= 0.33f && runspeed < 0.66f) {
+					
+				if (lastRunSound != 1 && soundBuffer <= 0) {
+					Debug.Log ("Slow run!!");
+					audioManager.PlayLoop ("footstepsSlow", audioplayerRun);
+
+					lastRunSound = 1;
+					soundBuffer = 6;
+				}
+
+			} 
+			else
+			{
+				audioManager.Stop (audioplayerRun);
+				lastRunSound = 0;
+			}
+		}
+
+		else
+		{
+			audioManager.Stop (audioplayerRun);
+		}
+
+		audioManager.SetVolume (1f-soundBuffer/1f,audioplayerRun);
 	}
 
 
@@ -382,7 +452,10 @@ public class NewController : MonoBehaviour {
 	 */
 	private void Landing(){
 		if (falldownCounter == 0)
+		{
 			isJumping = false;
+		}
+
 		else
 			falldownCounter--;
 	}

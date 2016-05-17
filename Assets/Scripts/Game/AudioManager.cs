@@ -13,9 +13,14 @@ public class AudioManager : MonoBehaviour {
 
 	private static List<AudioClip> summonInstance = new List<AudioClip>();
 	private static List<AudioClip> rockImpact = new List<AudioClip>();
+	private static List<AudioClip> rockShatter = new List<AudioClip>();
 	private static List<AudioClip> rockClick = new List<AudioClip>();
 	private static List<AudioClip> relicCatch = new List<AudioClip>();
-	private static List<AudioClip> relicThrow = new List<AudioClip>();
+	private static List<AudioClip> relicThrow = new List<AudioClip> ();
+	private static List<AudioClip> footstepsFast = new List<AudioClip>();
+	private static List<AudioClip> footstepsSlow = new List<AudioClip>();
+	private static List<AudioClip> jumpM = new List<AudioClip>();
+	private static List<AudioClip> landM = new List<AudioClip>();
 
 	[HideInInspector]
 	public GameObject audioplayerCasting;
@@ -35,10 +40,17 @@ public class AudioManager : MonoBehaviour {
 
 		path = "Audio/Environment/";
 		rockImpact = LoadSet(path+"rockImpact", 12);
+		rockShatter = LoadSet(path+"rockShatter", 6);
 
 		path = "Audio/Relic/";
 		relicCatch = LoadSet(path+"relicCatch", 8);
 		relicThrow = LoadSet(path+"relicThrow", 8);
+
+		path = "Audio/Players/";
+		footstepsFast = LoadSet(path+"footstepsFast", 4);
+		footstepsSlow = LoadSet(path+"footstepsSlow", 4);
+		jumpM = LoadSet(path+"jumpM", 2);
+		landM = LoadSet(path+"landM", 2);
 	}
 
 	void Start()
@@ -105,14 +117,17 @@ public class AudioManager : MonoBehaviour {
 	{
 		AudioSource player = caller.GetComponent<AudioSource>();
 		AudioClip clip = FindClip (s);
-		try
+
+		//if (!player.isPlaying)
 		{
-			player.clip = clip;
-			player.loop = true;
-			player.Play();
+			try {
+				player.clip = clip;
+				player.loop = true;
+				player.Play ();
+			} catch (Exception e) {
+				Debug.Log ("A sound was triggered, but the caller doesn't have an audiosource component.");
+			}
 		}
-		catch (Exception e)
-		{	Debug.Log("A sound was triggered, but the caller doesn't have an audiosource component.");	}
 	}
 
 	private AudioClip FindClip(string s)
@@ -124,6 +139,9 @@ public class AudioManager : MonoBehaviour {
 			break;
 		case "rockImpact":
 			return FindClipRandom (rockImpact);
+			break;
+		case "rockShatter":
+			return FindClipRandom (rockShatter);
 			break;
 		case "rockClick":
 			return FindClipRandom (rockClick);
@@ -152,6 +170,19 @@ public class AudioManager : MonoBehaviour {
 		case "relicThrow":
 			return FindClipRandom (relicThrow);
 			break;
+		case "footstepsFast":
+			return FindClipRandom (footstepsFast);
+			break;
+		case "footstepsSlow":
+			return FindClipRandom (footstepsSlow);
+			break;
+		case "jumpM":
+			return FindClipRandom (jumpM);
+			break;
+		case "landM":
+			return FindClipRandom (landM);
+			break;
+
 		default:
 			return null;
 			break;
