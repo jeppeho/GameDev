@@ -463,6 +463,7 @@ public class NewController : MonoBehaviour {
 		}
 
 		isJumping = false;
+		audioManager.Play ("landM", 1f, audioplayerEffects);
 	}
 
 

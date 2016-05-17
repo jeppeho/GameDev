@@ -71,6 +71,7 @@ public class SystemManager : MonoBehaviour {
 				colorIndex++;
 			
 			colorHandler.SetMinionColor (minions [i], colorIndex);
+
 			minionColorIndexes[i] = colorIndex;
 		}
 
