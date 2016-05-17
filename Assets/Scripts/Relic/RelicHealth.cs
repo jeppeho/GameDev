@@ -17,6 +17,9 @@ public class RelicHealth : MonoBehaviour {
 	Color baseColor;
 
 	private GameObject handCore;
+	private ParticleSystem trail;
+	private ParticleSystem glow;
+	private GameObject impactSparks;
 
 	// Use this for initialization
 	void Start () {
@@ -32,6 +35,10 @@ public class RelicHealth : MonoBehaviour {
 
 		//Get the core ball of the hand 
 		handCore = GameObject.Find ("ball");
+		trail = GameObject.Find ("trailRelic").GetComponent<ParticleSystem>();
+		glow = GameObject.Find ("glowRelic").GetComponent<ParticleSystem>();
+		impactSparks = GameObject.Find ("impactSparks");
+		impactSparks.SetActive (false);
 	}
 	
 	// Update is called once per frame
@@ -40,20 +47,42 @@ public class RelicHealth : MonoBehaviour {
 		SetShaderSpecularColor (specularColor * GetNormalizedHealth());
 		SetShaderColor (GetBaseColorBasedOnHealth());
 
-//
-//		if (!manager.HasParent ()) {
-//			if (GetDistanceToCore () < maxHandDistanceToTakeEnergy) {
-//				
-//				DrainEnergy (1);
-//
-//			} else {
-//				
-//				SetShaderSpecularColor (specularColor * GetNormalizedHealth());
-//				SetShaderColor (GetBaseColorBasedOnHealth());
-//
-//			}
-//		}
+		SetTrail ();
 	}
+
+	/**
+	 * Maps the trail and glow of the relic to the health
+	 */
+	private void SetTrail(){
+
+		float rate = GetNormalizedHealth () * 100f;
+
+		if (rate < 10f)
+			rate = 10f;
+		
+		SetParticleSystemEmissionRate (trail, rate);
+		SetParticleSystemEmissionRate (glow, rate);
+
+		//Set max particles for the glow particle system
+		glow.maxParticles = (int)rate;
+
+	}
+
+	/**
+	 * Sets the emission rate of the parameter particleSystem, to the provided rate
+	 */
+	private void SetParticleSystemEmissionRate(ParticleSystem ps, float newRate){
+
+		ParticleSystem.EmissionModule em = ps.emission;
+
+		var rate = em.rate;
+
+		rate.constantMax = newRate;
+		rate.constantMin = newRate;
+
+		em.rate = rate;
+	}
+
 
 
 
@@ -132,6 +161,8 @@ public class RelicHealth : MonoBehaviour {
 
 		Debug.Log ("Draining " + drain + " energy from relic");
 
+		StartCoroutine (RunImpactSparks ());
+
 		//drain health
 		health -= drain;
 
@@ -150,6 +181,17 @@ public class RelicHealth : MonoBehaviour {
 			manager.ReleaseFromParent ();
 			DeleteVisualRelic ();
 		}
+	}
+
+
+	IEnumerator RunImpactSparks(){
+
+		impactSparks.SetActive (true);
+
+		yield return new WaitForSeconds (1f);
+
+		impactSparks.SetActive (false);
+
 	}
 
 	public float GetHealth(){
@@ -199,8 +241,8 @@ public class RelicHealth : MonoBehaviour {
 			//Find name of relic
 			if (t.name == "RelicSphere") {
 
-				//Destroy the sphere
-				Destroy (t);
+				//Set the visual relic to inactive 
+				t.gameObject.SetActive(false);
 			}
 		}
 	}

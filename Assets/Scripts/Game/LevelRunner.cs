@@ -61,7 +61,6 @@ public class LevelRunner : MonoBehaviour {
 			} 
 
 			if (gameState == GameState.godWin) {
-				Debug.Log ("GOD WIN!!!!");
 				GameOver = true;
 				sm.GodWon = true;
 				Time.timeScale = 0f;
