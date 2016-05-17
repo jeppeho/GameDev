@@ -20,7 +20,7 @@ public class InvokeReset : MonoBehaviour {
 
     void ChangeLevel()
     {
-        
-        Application.LoadLevel("TutorialGod");
+
+        Application.LoadLevel(Application.loadedLevel);
     }
 }
