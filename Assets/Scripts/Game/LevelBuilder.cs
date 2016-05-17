@@ -41,6 +41,8 @@ public class LevelBuilder : MonoBehaviour {
 			ActivateOncomingLevelElements (farClip);
 		}
 
+		ActivateGoalArea ();
+
 		AddElevation ();
 	}
 	
@@ -52,7 +54,11 @@ public class LevelBuilder : MonoBehaviour {
 			GameObject camera = GameObject.Find ("LeapControllerBlockHand");
 			float cameraZ = camera.GetComponent<CameraController> ().GetZPosition ();
 
-			if (UseActivationAndDeactivation) {
+			if (cameraZ > levelGenerator.levelLength) {
+				EndState ();
+			}
+
+			else if (UseActivationAndDeactivation) {
 
 				//Deactive passed elements
 				DeactivatePassedLevelElements (cameraZ);
@@ -60,6 +66,16 @@ public class LevelBuilder : MonoBehaviour {
 				//Activate incoming elements
 				ActivateOncomingLevelElements (cameraZ + farClip);
 			}
+		}
+	}
+
+
+	private void EndState(){
+
+		for (int i = lastDeactivatedElement; i < levelElements.Count; i++) {
+
+			StartCoroutine (ReleaseEndGameObjects (levelElements [i]));
+		
 		}
 	}
 
@@ -86,7 +102,7 @@ public class LevelBuilder : MonoBehaviour {
 			else
 			//If water
 				if (t.name == "WaterCube(Clone)")
-				y -= 1.5f;
+				y -= 2f;
 			//If stepping stone
 			else if (t.name == "STEPPING_STONE(Clone)")
 				y += 0f;//0.25f;
@@ -170,8 +186,19 @@ public class LevelBuilder : MonoBehaviour {
 	}
 
 
+	private void ActivateGoalArea(){
+	
+		for (int i = 0; i < levelElements.Count; i++) {
+
+			if (levelElements [i].name.Contains ("Goal")) {
+				levelElements [i].SetActive (true);
+			}
+		}
+	}
+
+
 	/**
-	 * Activate all elemetns that is closer than the activation point
+	 * Activate all elements that are closer than the activation point
 	 */
 	private void ActivateOncomingLevelElements(float activationPoint){
 
@@ -211,6 +238,45 @@ public class LevelBuilder : MonoBehaviour {
 				break;
 			}
 		}
+	}
+
+	IEnumerator MakeObjectFlyUp (GameObject g){
+		Debug.Log ("Starting up MakeObjectFlyUp");
+
+		Vector3 pos = g.transform.position;
+
+		float initY = pos.y;
+
+		pos.y -= 5;
+
+		g.transform.position = pos;
+
+		while (pos.y < initY) {
+			
+			pos.y += Time.deltaTime;
+			g.transform.position = pos;
+
+
+			yield return new WaitForEndOfFrame ();
+		}
+	}
+
+
+	IEnumerator ReleaseEndGameObjects(GameObject g){
+
+		float fallSpeed = 0.01f;
+		int frame = 0;
+
+		while (frame < 150) {
+			Vector3 position = g.transform.position;
+			//position.y -= 0.02f;
+			position.y -= fallSpeed * Time.deltaTime;
+			fallSpeed += 0.02f;
+			g.transform.position = position;
+			frame++;
+			yield return new WaitForSeconds (0.01f);
+		}
+
 	}
 
 

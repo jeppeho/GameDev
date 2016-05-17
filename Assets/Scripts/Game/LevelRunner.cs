@@ -18,8 +18,10 @@ public class LevelRunner : MonoBehaviour {
 
 	LevelGenerator lg;
 	SystemManager sm;
+	GameObject leap;
 
 	GameObject[] minions;
+	int winningMinion = -1;
 
 	private bool GameOver; 
 
@@ -34,6 +36,7 @@ public class LevelRunner : MonoBehaviour {
 
 		lg = GameObject.Find ("LevelGenerator").GetComponent<LevelGenerator>();
 		sm = GameObject.Find ("SystemRunner").GetComponent<SystemManager>();
+		leap = GameObject.Find ("LeapControllerBlockHand");
 
 		minions = sm.GetInputHandler ().GetMinionsArray ();
 
@@ -50,30 +53,42 @@ public class LevelRunner : MonoBehaviour {
 
 		//if(!GameOver){
 			
-			UpdateState ();
+		UpdateState ();
 
-			if (gameState == GameState.paused) {
-				PauseGame ();
-				//StartCoroutine( PauseGameKeepRegisteringInput () );
-			} 
-			if (gameState == GameState.running) {
-				Time.timeScale = 1f;
-			} 
+		if (gameState == GameState.paused) {
+			PauseGame ();
+			//StartCoroutine( PauseGameKeepRegisteringInput () );
+		} 
+		if (gameState == GameState.running) {
+			Time.timeScale = 1f;
+		} 
 
-			if (gameState == GameState.godWin) {
-				GameOver = true;
-				sm.GodWon = true;
-				Time.timeScale = 0f;
-				godWinMenu.gameObject.SetActive (true);
+		if (gameState == GameState.godWin) {
+			GameOver = true;
+			sm.GodWon = true;
+			Time.timeScale = 0f;
+			godWinMenu.gameObject.SetActive (true);
+		}
+
+		if (gameState == GameState.minionWin) {
+			GameOver = true;
+			sm.GodWon = false;
+			if (winningMinion == -1) {
+				FindTheWinningMinion ();
 			}
+			//DeactiveLosingMinions (winningMinion);
+			KeepWinningMinion (winningMinion);
+			Time.timeScale = 1f;
+			minionWinMenu.gameObject.SetActive (true);
+		}
 
-			if (gameState == GameState.minionWin) {
-				GameOver = true;
-				sm.GodWon = false;
-				//FindTheWinningMinion ();
-				Time.timeScale = 0f;
-				minionWinMenu.gameObject.SetActive (true);
-			}
+		//Stop camera when level end is reached
+		if (leap.GetComponent<Transform> ().position.z > lg.levelLength + 10f) {
+
+
+			leap.GetComponent<LeapObjectController> ().enabled = false;
+			
+		}
 
 //		else 
 //			Time.timeScale = 1;
@@ -89,6 +104,38 @@ public class LevelRunner : MonoBehaviour {
 //		}
 		//}
 
+	}
+
+
+	private void DeactiveLosingMinions(int winningIndex){
+
+		//Go through all minions
+		for (int i = 0; i < minions.Length; i++) {
+
+			//If it's not the winning minion
+			if (i != winningIndex) {
+
+				//If position is low (in the hole)
+				if (minions [i].GetComponent<Transform> ().position.y < -3) {
+
+					//Deactivate the minion
+					minions [i].SetActive (false);
+				}
+			}
+		
+		}
+	}
+
+	private void KeepWinningMinion(int index){
+	
+		Vector3 pos = minions [index].GetComponent<Transform>().position;
+	
+		pos.y = 1;
+
+
+		minions [index].GetComponent<PlayerManager> ().SetState (PlayerManager.state.invulnerable);
+
+		minions [index].GetComponent<Transform> ().position = pos;
 	}
 
 
@@ -171,6 +218,9 @@ public class LevelRunner : MonoBehaviour {
 
 		int materialIndex = minions [winningMinionIndex].GetComponent<PlayerManager> ().GetCurrentMaterialIndex ();
 
+		//Update local variable
+		winningMinion = winningMinionIndex;
+
 		sm.SetMinionWinner (winningMinionIndex, materialIndex);
 	}
 
@@ -200,7 +250,7 @@ public class LevelRunner : MonoBehaviour {
 	}
 
 	public void RestartLevel(){
-		FindTheWinningMinion ();
+		//FindTheWinningMinion ();
 		ReleaseRelicForAllPlayers ();
 		SceneManager.LoadScene("LevelGenerator");
 	}

@@ -86,7 +86,7 @@ public class SystemManager : MonoBehaviour {
 
 		Debug.Log ("OnLevelWasLoaded !!! @" + level + " prevLevel = " + prevLevel);
 
-		if (level == 0 && prevLevel == 2) {
+		if (level == 0 && prevLevel == 5) {
 
 			KillAllPlayers ();
 
@@ -111,14 +111,14 @@ public class SystemManager : MonoBehaviour {
 //		//If going from main menu to LevelGenerator
 //		} 
 
-		if (level == 2 && prevLevel != 2) {
+		if (level == 5 && prevLevel != 5) {
 
 			DeactivateUnusedPlayers();
 
 		}
 
 		//Levelgenerator, right after main menu
-		if (level == 2 && prevLevel == 0) {
+		if (level == 5 && prevLevel == 0) {
 
 			colorHandler.SetSkybox (currentGodMaterialIndex);
 
@@ -130,7 +130,7 @@ public class SystemManager : MonoBehaviour {
 		}
 
 		//Levelgenerator again
-		if (level == 2 && prevLevel == 2) {
+		if (level == 5 && prevLevel == 5) {
 
 //			Debug.Log ("//////////Reloading levelGenerator");
 //			Debug.Log ("winner color = " + minionWinnerMaterialIndex);
@@ -222,7 +222,7 @@ public class SystemManager : MonoBehaviour {
 		for (int i = 0; i < minions.Length; i++) {
 
 			//Move to start position
-			minions [i].transform.position = new Vector3 (inputHandler.GetXPositionForMinion(i), 3, 0);
+			minions [i].transform.position = new Vector3 (inputHandler.GetXPositionForMinion(i), 3, 5);
 			minions [i].GetComponent<PlayerManager> ().SetState (PlayerManager.state.active);
 
 		}
@@ -272,7 +272,7 @@ public class SystemManager : MonoBehaviour {
 
 	private void SetLevelBoundaries(){
 
-		LevelManager.MOVE_MAXZ = 10f;
+		LevelManager.MOVE_MAXZ = 18f;
 		LevelManager.MOVE_MINZ = -9f;
 	}
 

@@ -11,7 +11,7 @@ public static class LevelManager {
 
 	//NEW VALUES WITH AT ZERO AND START AT ZERO
 	//It shouldn't be necessary with both min and max x, as they are centered around 0
-	public static float MIN_X = -15, MAX_X = 15, MIN_Y = 0, MAX_Y = 30, RELIC_MINZ = -150, MOVE_MINZ = -9, MOVE_MAXZ = 10, MOVE_ZONEWIDTH = 5;
+	public static float MIN_X = -12, MAX_X = 12, MIN_Y = 0, MAX_Y = 30, RELIC_MINZ = -150, MOVE_MINZ = -9, MOVE_MAXZ = 18, MOVE_ZONEWIDTH = 4;
 
 	public static int numPlayers = 4;
 

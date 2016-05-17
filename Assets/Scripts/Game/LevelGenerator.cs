@@ -762,6 +762,7 @@ public class LevelGenerator : MonoBehaviour {
 
 		GameObject goal_ = Instantiate (goal, position, Quaternion.identity) as GameObject;
 
+		SetContainerAsParent (goal_);
 
 		//Create Sides on left and right side
 		for (int i = 0; i <40; i += 10) {

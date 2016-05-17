@@ -86,8 +86,8 @@ public class NewController : MonoBehaviour {
 		maxVelocity *= LevelManager.SPEED;
 		accelerationRate *= LevelManager.SPEED;
 
-		nearWalkZone = LevelManager.MOVE_MINZ+LevelManager.MOVE_ZONEWIDTH;
-		farWalkZone = LevelManager.MOVE_MAXZ-LevelManager.MOVE_ZONEWIDTH;
+		nearWalkZone = LevelManager.MOVE_MINZ + LevelManager.MOVE_ZONEWIDTH;
+		farWalkZone = LevelManager.MOVE_MAXZ - LevelManager.MOVE_ZONEWIDTH;
 		walkZoneWidth = LevelManager.MOVE_ZONEWIDTH;
 	}
 
@@ -102,7 +102,7 @@ public class NewController : MonoBehaviour {
 		//If player is inactive
 		if (playerState == "inactive") {
 			
-			if (pressJump) {
+			if (pressJump || moveVertical > 0f || moveHorizontal > 0f) {
 
 				this.gameObject.GetComponent<PlayerManager> ().SetPlayerActive (true);
 			}
@@ -174,8 +174,8 @@ public class NewController : MonoBehaviour {
 		
 		}
 
-		LimitWalkingDistance();
-		//LimitWalkingDistanceSoft();
+		//LimitWalkingDistance(); //Probably going to be deprecated
+		LimitWalkingDistanceSoft();
 
 		LimitBoundariesOnXAxis ();
 		
@@ -184,24 +184,86 @@ public class NewController : MonoBehaviour {
 
 
 	/**
-	 * Inverts the velocity on the X axis, 
-	 * if player is trying to go on to sides of the level.
-	 * This script should be changed, when we start using the PCG levels 
-	 * (because of placement of boundaries)
+	 * Sets a limit on how far a character can move on the Z-axis
 	 */
+//	private void LimitWalkingDistance(){
+//		if (GetDistanceFromCamera () > 0) {
+//			Vector3 vel = rb.velocity;
+//
+//			if (vel.z > 0) {
+//
+//				int divisor = 20;
+//
+//				//vel.z /= (GetDistanceFromCamera () / 20 + 0.95f);
+//				vel.z /= (GetDistanceFromCamera () / divisor + 1);
+//				rb.velocity = vel;
+//			}
+//		}
+//	}
+
+	private void LimitWalkingDistanceSoft(){
+
+		float dis = GetDistanceFromCamera ();
+
+		//In farzone
+		if (dis > farWalkZone ) {
+
+			Vector3 oldVel = rb.velocity;
+			float counterForce = maxVelocity * (dis-farWalkZone)/walkZoneWidth;
+
+			Vector3 counterVel = new Vector3 (0, 0, -counterForce);
+
+			rb.velocity = oldVel + counterVel;
+		}
+
+		//		if (dis < nearWalkZone) {
+		//
+		//			Vector3 oldVel = rb.velocity;
+		//			float counterForce = maxVelocity * (dis-nearWalkZone)/walkZoneWidth;
+		//
+		//			Vector3 counterVel = new Vector3 (0, 0, -counterForce);
+		//
+		//			rb.velocity = oldVel + counterVel;
+		//		}
+	}
+
+
 	private void LimitBoundariesOnXAxis(){
 
-		if (rb.transform.position.x < LevelManager.MIN_X) {
-			Vector3 vel = rb.velocity;
-			vel.x *= -1f;
-			rb.velocity = vel;
-		} else if (rb.transform.position.x > LevelManager.MAX_X) {
-			Vector3 vel = rb.velocity;
-			vel.x *= -1f;
-			rb.velocity = vel;
+		float xBound = 0;
+
+		float minBound = 12f;
+
+		xBound = minBound + GetDistanceFromCamera () / 3;
+
+
+		if (rb.transform.position.x < -xBound || rb.transform.position.x > xBound) {
+
+			GetComponent<PlayerManager> ().Suicide();
+		
 		}
-	
 	}
+
+
+	/**
+//	 * Inverts the velocity on the X axis, 
+//	 * if player is trying to go on to sides of the level.
+//	 * This script should be changed, when we start using the PCG levels 
+//	 * (because of placement of boundaries)
+//	 */
+//	private void LimitBoundariesOnXAxisOLD(){
+//
+//		if (rb.transform.position.x < LevelManager.MIN_X) {
+//			Vector3 vel = rb.velocity;
+//			vel.x *= -1f;
+//			rb.velocity = vel;
+//		} else if (rb.transform.position.x > LevelManager.MAX_X) {
+//			Vector3 vel = rb.velocity;
+//			vel.x *= -1f;
+//			rb.velocity = vel;
+//		}
+//	
+//	}
 
 
 	/**
@@ -226,11 +288,11 @@ public class NewController : MonoBehaviour {
 		}
 
 		//If player is running towards camera, slow down velocity
-		if (rb.velocity.z < 0) {
-			if (force.z < 0) {
-				force.z /= 2;
-			}
-		}
+//		if (rb.velocity.z < 0) {
+//			if (force.z < 0) {
+//				force.z /= 2;
+//			}
+//		}
 
 		if (dashPenalizesMovementSpeed)
 			force /= 30f;
@@ -358,7 +420,7 @@ public class NewController : MonoBehaviour {
 
 		force = GetThrowDirection ();
 
-		force *= index * 2000; //750;
+		force *= index * 1500; //750;
 
 		StartCoroutine( player.GetComponentInChildren<RelicController> ().Throw( force ) );
 
@@ -386,52 +448,7 @@ public class NewController : MonoBehaviour {
 		else
 			falldownCounter--;
 	}
-
-
-
-	/**
-	 * Sets a limit on how far a character can move on the Z-axis
-	 */
-	private void LimitWalkingDistance(){
-		if (GetDistanceFromCamera () > 0) {
-			Vector3 vel = rb.velocity;
-
-			if (vel.z > 0) {
-
-				int divisor = 20;
-
-				//vel.z /= (GetDistanceFromCamera () / 20 + 0.95f);
-				vel.z /= (GetDistanceFromCamera () / divisor + 1);
-				rb.velocity = vel;
-			}
-		}
-	}
-
-	private void LimitWalkingDistanceSoft(){
-
-		float dis = GetDistanceFromCamera ();
-	
-		//In farzone
-		if (dis > farWalkZone ) {
-			
-			Vector3 oldVel = rb.velocity;
-			float counterForce = maxVelocity * (dis-farWalkZone)/walkZoneWidth;
-
-			Vector3 counterVel = new Vector3 (0, 0, -counterForce);
-
-			rb.velocity = oldVel + counterVel;
-		}
-
-//		if (dis < nearWalkZone) {
-//
-//			Vector3 oldVel = rb.velocity;
-//			float counterForce = maxVelocity * (dis-nearWalkZone)/walkZoneWidth;
-//
-//			Vector3 counterVel = new Vector3 (0, 0, -counterForce);
-//
-//			rb.velocity = oldVel + counterVel;
-//		}
-	}
+		
 	
 	 // Returns the distance on the Z-axis from the player to the LEAP
 	private float GetDistanceFromCamera(){
@@ -445,12 +462,20 @@ public class NewController : MonoBehaviour {
 	}
 		
 	/**
-	 * Return the jumppower, multiplied if push button is pressed
+	 * Return the jumpPower. The returned value is lowered if jumping from water
 	 */
 	private float GetJumpPower(){
 
-		return jumpPower * 100f;
+		float power = jumpPower * 100f;
 
+		if (GetSurfaceTag () == "Water" || GetLastSurfaceTag() == "Water" ) {
+			power /= 1.3f;
+		}
+
+		return power;
+
+		//OLD WAY
+		//return jumpPower * 100f;
 	}
 
 	/**

@@ -47,6 +47,11 @@ MonoBehaviour:
   - {fileID: 2100000, guid: c4f728ef30a11ca4bb3a6953fc5f75ad, type: 2}
   - {fileID: 2100000, guid: 4a710ad8ae728544db82b9c9342bb6d6, type: 2}
   - {fileID: 2100000, guid: 934a0bde3ab70a948aca315717a60b82, type: 2}
+  sparkTextures:
+  - {fileID: 2800000, guid: d8231fa42f380bb4e92e18dd380f304c, type: 3}
+  - {fileID: 2800000, guid: 761c6f122ae68544f80dc55851b6e273, type: 3}
+  - {fileID: 2800000, guid: 0646516707cb2aa41bb393ad739f6163, type: 3}
+  - {fileID: 2800000, guid: bc63a89b14e00a24b8414b43811589c6, type: 3}
 --- !u!114 &11430348
 MonoBehaviour:
   m_ObjectHideFlags: 1

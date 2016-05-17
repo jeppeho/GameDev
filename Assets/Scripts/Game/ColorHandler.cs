@@ -10,6 +10,7 @@ public class ColorHandler : MonoBehaviour {
 	private ColorScheme colorScheme;
 
 	private Color[] materialColor;
+	public Texture[] sparkTextures;
 
 
 	// Use this for initialization
@@ -42,6 +43,23 @@ public class ColorHandler : MonoBehaviour {
 
 	}
 
+
+	private void SetMinionSparkTexture(GameObject minion, int index){
+
+		GameObject impactSparks = null;// = minion.gameObject.Find ("impactSparks");
+
+		foreach (Transform t in minion.transform) {
+
+			if(t.name.Contains("impactSparks")){
+				impactSparks = t.gameObject;
+				break;
+			}
+		
+		}
+
+		impactSparks.GetComponent<Renderer> ().material.SetTexture("_MainTex", sparkTextures[ index ]);
+	}
+
 	private Color GetFogColor(int index){
 
 		Color color = new Color (0, 0, 0);
@@ -68,6 +86,7 @@ public class ColorHandler : MonoBehaviour {
 		
 		Color[] colors = GetColorMaterialArray ( GetColorSchemeByIndex(index) );
 
+		//Set the material color
 		foreach (Transform t in minion.transform) {
 
 			foreach (Transform tt in t.transform) {
@@ -87,6 +106,9 @@ public class ColorHandler : MonoBehaviour {
 				}
 			}
 		}
+
+		//Set the color of the impactSparks
+		SetMinionSparkTexture(minion, index);
 	}
 
 

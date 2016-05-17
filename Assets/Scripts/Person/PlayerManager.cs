@@ -15,6 +15,9 @@ public class PlayerManager : MonoBehaviour {
 
 	private PlayerScore ps;
 	private PlayerRelicHandler playerRelicHandler;
+	private GameObject impactSparks;
+
+
 
 
 	void Awake() {
@@ -28,6 +31,10 @@ public class PlayerManager : MonoBehaviour {
 		collider = GetComponentInChildren<MeshCollider>();
 		ps = this.gameObject.GetComponent<PlayerScore> ();
 		playerRelicHandler = this.gameObject.GetComponent<PlayerRelicHandler> ();
+
+		//Find the impactSparks and set to inactive
+		impactSparks = GameObject.Find ("impactSparks");
+		impactSparks.SetActive (false);
 	
 	}
 
@@ -57,12 +64,25 @@ public class PlayerManager : MonoBehaviour {
 		if (/*col.gameObject.tag == "Environment"*/ col.gameObject.layer == 13 && impact.magnitude >= impactResistance) {
 			DeathSquished ();
 
+			StartCoroutine (FlashImpactSparks ());
+
 			//Remove energy from the relic
 			GameObject relic = GameObject.Find ("Relic");
 			if (relic) {
 				relic.GetComponent<RelicHealth> ().DrainEnergy (impact.magnitude * 10);
 			}
 		}
+	}
+
+
+	IEnumerator FlashImpactSparks(){
+	
+		impactSparks.SetActive (true);
+
+		yield return new WaitForSeconds (1f);
+
+		impactSparks.SetActive (false);
+
 	}
 
 

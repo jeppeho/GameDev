@@ -189,9 +189,9 @@ public class InputControllerHandler : MonoBehaviour {
 		minions [index] = min;
 
 
-		foreach (Transform t in min.transform) {
-			t.GetComponent<PlayerManager> ().SetMaterial (index);
-		}
+//		foreach (Transform t in min.transform) {
+//			t.GetComponent<PlayerManager> ().SetMaterial (index);
+//		}
 
 //		Debug.Log ("Set color now!! @" + index);
 //		min.GetComponent<PlayerManager> ().SetMaterial (index);
