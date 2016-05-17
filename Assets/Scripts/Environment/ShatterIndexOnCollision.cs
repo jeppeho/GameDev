@@ -3,6 +3,8 @@ using System.Collections;
 
 public class ShatterIndexOnCollision : MonoBehaviour {
 
+	AudioManager audioManager;
+
 	private GameObject[] intactObject;
 	private GameObject[] shatteredObject;
 
@@ -16,6 +18,8 @@ public class ShatterIndexOnCollision : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		audioManager = GameObject.Find ("AudioManager").GetComponent<AudioManager> ();
 
 		intactObject = new GameObject[instances];
 		shatteredObject = new GameObject[instances];
@@ -137,6 +141,8 @@ public class ShatterIndexOnCollision : MonoBehaviour {
 			cooldown = 5;
 			Debug.Log ("Shattering pillar!");
 		}
+
+		audioManager.Play ("rockShatter", Random.Range(0.75f, 1f), this.gameObject);
 	}
 
 	private void resetLayers(int n)

@@ -23,6 +23,11 @@ public class GestureGust : Gesture {
 		Debug.Log ("Set thisSpell: " + thisSpell.ToString());
 	}
 
+    public float GetCharge()
+    {
+        return charge;
+    }
+
 	// Update is called once per frame
 	void FixedUpdate () {
 
@@ -89,7 +94,8 @@ public class GestureGust : Gesture {
 				{
 					if (!released)
 					{
-						audioManager.Play("gustRelease", handManager.audioplayerCasting);
+						audioManager.Stop(handManager.audioplayerCasting);
+						audioManager.Play("gustRelease", handManager.audioplayerCastingGust);
 						released = true;
 					}
                     gestureManager.glowController.setIntensity(0);

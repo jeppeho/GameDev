@@ -5,6 +5,12 @@ using System.Collections;
 public class EarthquakeManager : MonoBehaviour {
 
     private float cameraSpeed = 2f;
+    private float handSpeed = 6f;
+    private bool handWaited;
+
+    public GameObject GhostHand;
+    private Vector3 currentGhostPos;
+    private Vector3 ghostEndPos;
 
     public GameObject UI;
     public GameObject Instructions;
@@ -31,20 +37,31 @@ public class EarthquakeManager : MonoBehaviour {
         textEndPosition = new Vector2(textStartPosition.x, -210);
         duration = 4f;
         waitingDone = false;
+        handWaited = false;
         StartCoroutine(Wait());
         earthquakeCounter = 0;
         UICounter.text = "Count: " + earthquakeCounter.ToString();
         GameObject g = GameObject.Find("HandController");
         gestureGust = g.GetComponent<GestureGust>();
-        
-        
+
+        ghostEndPos = new Vector3(currentGhostPos.x, 0, currentGhostPos.z);
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("charge = " + gestureGust.GetCharge());
+        
+        if(gestureGust.GetCharge() > 0f && gestureGust.released == false)
+            moveHand();
+        
+        if(gestureGust.released == true)
+        {
+            resetHand();
+        }
+
         UICounter.text = earthquakeCounter.ToString();
-         Debug.Log(earthquakeCounter);
+       
         if (waitingDone == true)
         {
             MoveCameraForward();
@@ -109,5 +126,40 @@ public class EarthquakeManager : MonoBehaviour {
         yield return new WaitForSeconds(4f);
         waitingDone = true;
         TextCoroutine = StartCoroutine(ShowText());
+    }
+
+    IEnumerator waitHand()
+    {
+        Debug.Log("handwaiting?");
+        yield return new WaitForSeconds(1f);
+        GhostHand.transform.position = currentGhostPos;
+        handWaited = true;
+    }
+
+    private void moveHand()
+    {
+        
+        currentGhostPos = GhostHand.transform.position;
+
+        if (currentGhostPos.y > ghostEndPos.y)
+        {
+            StartCoroutine(waitHand());
+            currentGhostPos.y -= handSpeed * Time.deltaTime;
+        }
+
+
+        else if (currentGhostPos.y < ghostEndPos.y)
+        {
+            currentGhostPos.y = 5;
+            handWaited = false;
+        }
+
+    }
+
+
+    private void resetHand()
+    {
+        currentGhostPos.y = 5;
+
     }
 }
