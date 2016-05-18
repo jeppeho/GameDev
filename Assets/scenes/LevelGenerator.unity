@@ -2376,9 +2376,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e300e1da0c38840f99789f9a28b420bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseMenu: {fileID: 0}
-  godWinMenu: {fileID: 0}
-  minionWinMenu: {fileID: 0}
+  pauseMenu: {fileID: 1532940400}
+  godWinMenu: {fileID: 1532940399}
+  minionWinMenu: {fileID: 1532940398}
 --- !u!4 &1320075958
 Transform:
   m_ObjectHideFlags: 0
@@ -2589,6 +2589,21 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0b11c6798225c45a892135e5a22bfe29, type: 2}
   m_IsPrefabParent: 0
+--- !u!223 &1532940398 stripped
+Canvas:
+  m_PrefabParentObject: {fileID: 22307928, guid: 0b11c6798225c45a892135e5a22bfe29,
+    type: 2}
+  m_PrefabInternal: {fileID: 1532940397}
+--- !u!223 &1532940399 stripped
+Canvas:
+  m_PrefabParentObject: {fileID: 22386036, guid: 0b11c6798225c45a892135e5a22bfe29,
+    type: 2}
+  m_PrefabInternal: {fileID: 1532940397}
+--- !u!223 &1532940400 stripped
+Canvas:
+  m_PrefabParentObject: {fileID: 22389302, guid: 0b11c6798225c45a892135e5a22bfe29,
+    type: 2}
+  m_PrefabInternal: {fileID: 1532940397}
 --- !u!1001 &1534379640
 Prefab:
   m_ObjectHideFlags: 0

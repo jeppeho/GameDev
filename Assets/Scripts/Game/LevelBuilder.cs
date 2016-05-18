@@ -13,8 +13,11 @@ public class LevelBuilder : MonoBehaviour {
 
 	private int lastActivatedElement = 0;
 	private int lastDeactivatedElement = 0;
+	private int lastRenderingModeChangeIndex = 0;
 
 	Transform levelElementParent;
+
+	GameObject camera;
 
 	// Use this for initialization
 	void Start () {
@@ -22,7 +25,7 @@ public class LevelBuilder : MonoBehaviour {
 		//levelGenerator = GameObject.Find("LevelGenerator");
 		levelElementParent = GameObject.Find ("LevelElements").GetComponent<Transform>();
 		levelGenerator = this.gameObject.GetComponent<LevelGenerator> ();
-
+		camera = GameObject.Find ("LeapControllerBlockHand");
 		//Sort the list based on position.z value
 		List<GameObject> sortedLevelElements = levelElements.OrderBy(go => go.GetComponent<Transform>().position.z).ToList ();
 
@@ -44,6 +47,12 @@ public class LevelBuilder : MonoBehaviour {
 		ActivateGoalArea ();
 
 		AddElevation ();
+
+		//Set all crystals to opaque rendering mode
+		SetAllCrystalsRenderingModeOpaque ();
+		//Set the nearest crystals to transparent rendering mode
+		SetTransparencyBasedOnDistance (camera.transform.position.z);
+
 	}
 	
 	// Update is called once per frame
@@ -51,8 +60,10 @@ public class LevelBuilder : MonoBehaviour {
 
 		if (Time.frameCount % 40 == 0) {
 			
-			GameObject camera = GameObject.Find ("LeapControllerBlockHand");
+			//GameObject camera = GameObject.Find ("LeapControllerBlockHand");
 			float cameraZ = camera.GetComponent<CameraController> ().GetZPosition ();
+
+			SetTransparencyBasedOnDistance (cameraZ);
 
 			if (cameraZ > levelGenerator.levelLength) {
 				EndState ();
@@ -79,13 +90,6 @@ public class LevelBuilder : MonoBehaviour {
 		}
 	}
 
-
-//	private void PreactivateElements(){
-//
-//		for (int i = 0; i < levelElements.Count; i++)
-//			if(levelElements [i].name == "WaterBasicNightime(Clone)")
-//				levelElements [i].SetActive (false);
-//	}
 
 	private void AddElevation(){
 
@@ -214,6 +218,160 @@ public class LevelBuilder : MonoBehaviour {
 			}
 		}
 	}
+
+	private void SetTransparencyBasedOnDistance(float cameraZ){
+
+
+		for (int i = lastRenderingModeChangeIndex; i < levelElements.Count; i++) {
+
+			float z = levelElements [i].GetComponent<Transform> ().position.z;
+
+			if (z < cameraZ + 27f) {
+				if (levelElements [i].name.Contains ("Pillar")) {
+
+					foreach (Transform intact in levelElements [i].transform) {
+
+						if (intact.name.Contains ("intactObject")) {
+							Debug.Log ("Changing alpha for " + intact.name);
+							SetTransparent (intact.gameObject);
+						}
+					}
+				}
+			} else {
+				lastRenderingModeChangeIndex = i;
+				break;
+			}
+		}
+	}
+
+
+	private void SetTransparencyBasedOnDistanceOLD(float cameraZ){
+	
+		foreach (Transform t in levelElementParent) {
+
+			if (t.transform.position.z < cameraZ + 27f) {
+
+				if (t.name.Contains ("Pillar")) {
+
+					foreach (Transform intact in t) {
+
+						if (intact.name.Contains ("intactObject")) {
+							Debug.Log ("Changing alpha for " + intact.name);
+							SetTransparent (intact.gameObject);
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	private void SetAllCrystalsRenderingModeOpaque(){
+
+		foreach (Transform t in levelElementParent) {
+			//Debug.Log ("testing " + t.name);
+
+			if(t.name.Contains("Pillar")){
+
+				if (t.name.Contains( "PillarSmall") ) {
+					Debug.Log ("Small pillar = " + t.name);
+				}
+				
+				foreach (Transform intact in t) {
+					
+					if (intact.name.Contains ("intactObject")) {
+						Debug.Log ("Changing alpha for " + intact.name);
+						SetOpaque (intact.gameObject);
+					}
+				}
+
+			}
+		}
+	}
+
+	/**
+	 * Sets the rendering mode of the inputted GameObject to opaque rendering mode
+	 * and it updates some parameters so it can be done at runtime
+	 */
+	private void SetOpaque(GameObject g){
+
+		Material material = g.gameObject.GetComponent<Renderer> ().material;
+
+		//OPAQUE
+		material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+		material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+		material.SetInt("_ZWrite", 1);
+		material.DisableKeyword("_ALPHATEST_ON");
+		material.DisableKeyword("_ALPHABLEND_ON");
+		material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+		material.renderQueue = -1;
+
+		g.gameObject.GetComponent<Renderer> ().material = material;
+	}
+
+	/**
+	 * Sets the rendering mode of the inputted GameObject to transparent rendering mode
+	 * and it updates some parameters so it can be done at runtime
+	 */
+	private void SetTransparent(GameObject g){
+
+		Material material = g.gameObject.GetComponent<Renderer> ().material;
+
+		//TRANSPARENT
+		material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+		material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+		material.SetInt("_ZWrite", 0);
+		material.DisableKeyword("_ALPHATEST_ON");
+		material.DisableKeyword("_ALPHABLEND_ON");
+		material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+		material.renderQueue = 3000;
+
+		g.gameObject.GetComponent<Renderer> ().material = material;
+	}
+
+//	private void SetAlphaChannel(GameObject g, float alpha){
+//	
+//		Material material = g.gameObject.GetComponent<Renderer> ().material;
+//
+//
+//
+////		Color c = material.GetColor ("_Color");
+////		Color sc = material.GetColor ("_SpecColor");
+////		Color e = material.GetColor ("_EmissionColor");
+////
+////		material.SetFloat("_Mode", 0f);
+////
+////		c.a = alpha;
+////		sc.a = alpha;
+////		e.a = alpha;
+////
+////		material.SetColor ("_Color", c);
+////		material.SetColor ("_SpecColor", sc);
+////		material.SetColor ("_EmissionColor", e);
+//
+//
+//		//OPAQUE
+//		material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+//		material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+//		material.SetInt("_ZWrite", 1);
+//		material.DisableKeyword("_ALPHATEST_ON");
+//		material.DisableKeyword("_ALPHABLEND_ON");
+//		material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+//		material.renderQueue = -1;
+//
+//		//TRANSPARENT
+//		material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+//		material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+//		material.SetInt("_ZWrite", 0);
+//		material.DisableKeyword("_ALPHATEST_ON");
+//		material.DisableKeyword("_ALPHABLEND_ON");
+//		material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+//		material.renderQueue = 3000;
+//
+//
+//		g.gameObject.GetComponent<Renderer> ().material = material;
+//	}
+
 
 
 	/**
