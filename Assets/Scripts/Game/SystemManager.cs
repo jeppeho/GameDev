@@ -30,6 +30,8 @@ public class SystemManager : MonoBehaviour {
 
 	void Awake() {
 		//Keep the system manager from destroying when changing scenes
+
+
 		DontDestroyOnLoad(transform.gameObject);
 	}
 

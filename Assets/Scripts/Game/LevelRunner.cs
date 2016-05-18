@@ -247,7 +247,7 @@ public class LevelRunner : MonoBehaviour {
 	public void GoToMainMenu(){
 		Debug.Log ("Going to main menu");
 		ReleaseRelicForAllPlayers ();
-		SceneManager.LoadScene("Tutorial Start");
+		SceneManager.LoadScene("MainMenu");
 	}
 
 	public void RestartLevel(){
