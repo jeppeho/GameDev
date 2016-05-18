@@ -11,6 +11,7 @@ public class ColorHandler : MonoBehaviour {
 
 	private Color[] materialColor;
 	public Texture[] sparkTextures;
+	public Cubemap[] cubemaps;
 
 
 	// Use this for initialization
@@ -31,6 +32,8 @@ public class ColorHandler : MonoBehaviour {
 	public void SetSkybox(int index){
 		Debug.Log ("********Setting skybox with color index = " + index);
 		RenderSettings.skybox = skyboxes [index];
+
+		RenderSettings.customReflection = cubemaps [index];
 		RenderSettings.fogColor = GetFogColor (index);
 
 	}

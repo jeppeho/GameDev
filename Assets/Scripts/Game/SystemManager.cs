@@ -87,6 +87,8 @@ public class SystemManager : MonoBehaviour {
 
 		Debug.Log ("OnLevelWasLoaded !!! @" + level + " prevLevel = " + prevLevel);
 
+		colorHandler.SetColorScheme (currentGodMaterialIndex);
+
 		if (level == 0 && prevLevel == 5) {
 
 			KillAllPlayers ();

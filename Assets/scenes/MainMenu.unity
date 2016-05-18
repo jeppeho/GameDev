@@ -31,7 +31,7 @@ RenderSettings:
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
-  m_DefaultReflectionMode: 0
+  m_DefaultReflectionMode: 1
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
@@ -1059,6 +1059,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 11409138, guid: 44337ddeee11a4e9281f8b5992cee23a, type: 2}
+      propertyPath: cubemaps.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 418476, guid: 44337ddeee11a4e9281f8b5992cee23a, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1091,6 +1095,22 @@ Prefab:
       propertyPath: m_RootOrder
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 11409138, guid: 44337ddeee11a4e9281f8b5992cee23a, type: 2}
+      propertyPath: cubemaps.Array.data[0]
+      value: 
+      objectReference: {fileID: 8900000, guid: a785211106400d7479a70e5a4056c044, type: 3}
+    - target: {fileID: 11409138, guid: 44337ddeee11a4e9281f8b5992cee23a, type: 2}
+      propertyPath: cubemaps.Array.data[1]
+      value: 
+      objectReference: {fileID: 8900000, guid: c55cd4afeeaefe5478a99654729f5615, type: 3}
+    - target: {fileID: 11409138, guid: 44337ddeee11a4e9281f8b5992cee23a, type: 2}
+      propertyPath: cubemaps.Array.data[2]
+      value: 
+      objectReference: {fileID: 8900000, guid: ed38c0177c86cc24aaab3a42f010a117, type: 3}
+    - target: {fileID: 11409138, guid: 44337ddeee11a4e9281f8b5992cee23a, type: 2}
+      propertyPath: cubemaps.Array.data[3]
+      value: 
+      objectReference: {fileID: 8900000, guid: 2a1ad03f1563eba4e82d669c83c4b9e5, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 44337ddeee11a4e9281f8b5992cee23a, type: 2}
   m_IsPrefabParent: 0

@@ -31,7 +31,7 @@ RenderSettings:
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
-  m_DefaultReflectionMode: 0
+  m_DefaultReflectionMode: 1
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
@@ -2405,6 +2405,7 @@ MonoBehaviour:
   elementMaterial: {fileID: 0}
   skyboxes: []
   sparkTextures: []
+  cubemaps: []
 --- !u!23 &1320075960
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2586,6 +2587,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 143494, guid: 0b11c6798225c45a892135e5a22bfe29, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 124360, guid: 0b11c6798225c45a892135e5a22bfe29, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0b11c6798225c45a892135e5a22bfe29, type: 2}
   m_IsPrefabParent: 0
@@ -2707,7 +2716,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 102222, guid: 64b777a2248f94bdcba70a0a825375cd, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 64b777a2248f94bdcba70a0a825375cd, type: 2}
