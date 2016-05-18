@@ -325,7 +325,7 @@ public class RelicController : MonoBehaviour {
 		Vector3 slotPosition = manager.GetParent().position;
 
 		//Lift relic above head
-		slotPosition.y += 4f;
+		slotPosition.y += 2f;
 
 		//Set velocity to zero
 		rb.velocity = new Vector3 (0, 0, 0);

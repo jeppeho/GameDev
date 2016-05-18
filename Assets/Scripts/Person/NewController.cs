@@ -6,10 +6,6 @@ public class NewController : MonoBehaviour {
 	private AudioManager audioManager;
 	private GameObject audioplayerEffects;
 	private GameObject audioplayerRun;
-
-	[HideInInspector]
-	public bool female;
-
 	private int landBuffer = 10;
 
 	private int lastRunSound;
@@ -107,8 +103,6 @@ public class NewController : MonoBehaviour {
 		nearWalkZone = LevelManager.MOVE_MINZ + LevelManager.MOVE_ZONEWIDTH;
 		farWalkZone = LevelManager.MOVE_MAXZ - LevelManager.MOVE_ZONEWIDTH;
 		walkZoneWidth = LevelManager.MOVE_ZONEWIDTH;
-
-		Init ();
 	}
 
 	
@@ -144,11 +138,7 @@ public class NewController : MonoBehaviour {
 
 				//~~SOUND~~
 				//audioManager.Stop(this.gameObject);
-				if (female)
-				{	audioManager.Play ("jumpF", 1f, audioplayerEffects);	}
-				else
-				{	audioManager.Play ("jumpM", 1f, audioplayerEffects);	}
-
+				audioManager.Play ("jumpM", 1f, audioplayerEffects);
 				landBuffer = 10;
 			}
 
@@ -473,11 +463,7 @@ public class NewController : MonoBehaviour {
 		}
 
 		isJumping = false;
-
-		if (female)
-		{	audioManager.Play ("landF", 1f, audioplayerEffects);	}
-		else
-		{	audioManager.Play ("landM", 1f, audioplayerEffects);	}
+		audioManager.Play ("landM", 1f, audioplayerEffects);
 	}
 
 
@@ -725,33 +711,8 @@ public class NewController : MonoBehaviour {
 
 	}
 
-	//Attempts to determine gender, based on material color (green/purple = females; red/blue = males)
-	private bool IsFemale()
-	{
-		//Get renderer material
-		Material m = this.transform.FindChild("character").FindChild("character:minion").GetComponent<Renderer>().material;
 
-		Debug.Log ("Got this far :)");
-		//Check color
-		Color myColor = m.GetColor ("_Color");
 
-		Debug.Log ("Determining color: " + myColor.ToString ());
-
-		bool r = false;
-
-		if (myColor.Equals (new Color (59f / 255f, 113f / 255f, 21f / 255f, 80f / 255f)) //Green
-			|| myColor.Equals (new Color (101f / 255f, 2f / 255f, 113f / 255f, 80f / 255f))) //or Purple
-		{
-			r = true;
-		}
-
-		return r;
-	}
-
-	public void Init()
-	{
-		female = IsFemale ();
-	}
 
 	/**
 	 * 

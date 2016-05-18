@@ -106,51 +106,18 @@ public class LevelRunner : MonoBehaviour {
 
 	}
 
-
-	private void DeactiveLosingMinions(int winningIndex){
-
-		//Go through all minions
-		for (int i = 0; i < minions.Length; i++) {
-
-			//If it's not the winning minion
-			if (i != winningIndex) {
-
-				//If position is low (in the hole)
-				if (minions [i].GetComponent<Transform> ().position.y < -3) {
-
-					//Deactivate the minion
-					minions [i].SetActive (false);
-				}
-			}
-		
-		}
-	}
-
-	private void KeepWinningMinion(int index){
-	
-		Vector3 pos = minions [index].GetComponent<Transform>().position;
-	
-		pos.y = 1;
-
-
-		minions [index].GetComponent<PlayerManager> ().SetState (PlayerManager.state.invulnerable);
-
-		minions [index].GetComponent<Transform> ().position = pos;
-	}
-
-
 	private void UpdateState(){
 
 		UpdateButtonInput ();
 
 		//Check if god win
 		if (relic.GetComponent<RelicHealth> ().GetHealth () < 0f) {
-	
+
 			gameState = GameState.godWin;
-			
+
 		} 
-		else if( relic.gameObject.GetComponent<Transform>().position.z > lg.levelLength + 10f){
-			
+		else if( relic.gameObject.GetComponent<Transform>().position.z > lg.levelLength + 5f){
+
 			gameState = GameState.minionWin;
 		}
 
@@ -158,27 +125,13 @@ public class LevelRunner : MonoBehaviour {
 
 			if(gameState == GameState.running)
 				gameState = GameState.paused;
-//			else if(gameState == GameState.paused)
-//				gameState = GameState.running;
-		
+			//			else if(gameState == GameState.paused)
+			//				gameState = GameState.running;
+
 		} 
 
 		prevPauseGame = pauseGameButton;
 
-	}
-
-
-	private void ReleaseRelicForAllPlayers(){
-
-		for(int i = 0; i < minions.Length; i++){
-
-			PlayerRelicHandler h = minions [i].GetComponent<PlayerRelicHandler> ();
-
-			if (h.HasRelic ()) {
-				h.ReleaseRelic ();
-				break;
-			}
-		}
 	}
 
 
@@ -222,6 +175,54 @@ public class LevelRunner : MonoBehaviour {
 		winningMinion = winningMinionIndex;
 
 		sm.SetMinionWinner (winningMinionIndex, materialIndex);
+	}
+
+
+
+	private void KeepWinningMinion(int index){
+	
+		Vector3 pos = minions [index].GetComponent<Transform>().position;
+	
+		pos.y = 1;
+
+
+		minions [index].GetComponent<PlayerManager> ().SetState (PlayerManager.state.invulnerable);
+
+		minions [index].GetComponent<Transform> ().position = pos;
+	}
+
+
+	private void ReleaseRelicForAllPlayers(){
+
+		for(int i = 0; i < minions.Length; i++){
+
+			PlayerRelicHandler h = minions [i].GetComponent<PlayerRelicHandler> ();
+
+			if (h.HasRelic ()) {
+				h.ReleaseRelic ();
+				break;
+			}
+		}
+	}
+
+
+	private void DeactiveLosingMinions(int winningIndex){
+
+		//Go through all minions
+		for (int i = 0; i < minions.Length; i++) {
+
+			//If it's not the winning minion
+			if (i != winningIndex) {
+
+				//If position is low (in the hole)
+				if (minions [i].GetComponent<Transform> ().position.y < -3) {
+
+					//Deactivate the minion
+					minions [i].SetActive (false);
+				}
+			}
+
+		}
 	}
 
 
