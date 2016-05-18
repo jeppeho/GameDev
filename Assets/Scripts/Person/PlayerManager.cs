@@ -137,8 +137,17 @@ public class PlayerManager : MonoBehaviour {
 	{
 		//~~SOUND~~
 
-		audioManager.Play ("deathM", audioplayerEffects);
-
+		if (Random.Range (0f, 1f) <= 0.4f)
+		{
+			if (this.GetComponent<NewController> ().female)
+			{	audioManager.Play ("deathF", audioplayerEffects);	}
+			else
+			{	audioManager.Play ("deathM", audioplayerEffects);	}
+		}
+		else
+		{
+			audioManager.Play ("deathN", audioplayerEffects); //Neutral death, 60% of the time
+		}
 		if (playerState == state.active)
 		{
 //			if (playerRelicHandler.HasRelic ()) {

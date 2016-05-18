@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour {
 	private static AudioClip summonStop;
 	private static AudioClip gustLoop;
 	private static AudioClip gustRelease;
+	private static AudioClip deathN;
 
 	private static List<AudioClip> summonInstance = new List<AudioClip>();
 	private static List<AudioClip> rockImpact = new List<AudioClip>();
@@ -20,9 +21,14 @@ public class AudioManager : MonoBehaviour {
 	private static List<AudioClip> relicDamage = new List<AudioClip> ();
 	private static List<AudioClip> footstepsFast = new List<AudioClip>();
 	private static List<AudioClip> footstepsSlow = new List<AudioClip>();
+
 	private static List<AudioClip> jumpM = new List<AudioClip>();
 	private static List<AudioClip> landM = new List<AudioClip>();
 	private static List<AudioClip> deathM = new List<AudioClip>();
+
+	private static List<AudioClip> jumpF = new List<AudioClip>();
+	private static List<AudioClip> landF = new List<AudioClip>();
+	private static List<AudioClip> deathF = new List<AudioClip>();
 
 	[HideInInspector]
 	public GameObject audioplayerCasting;
@@ -55,6 +61,10 @@ public class AudioManager : MonoBehaviour {
 		jumpM = LoadSet(path+"jumpM", 6);
 		landM = LoadSet(path+"landM", 6);
 		deathM = LoadSet(path+"deathM", 5);
+		jumpF = LoadSet(path+"jumpF", 6);
+		landF = LoadSet(path+"landF", 6);
+		deathF = LoadSet(path+"deathF", 5);
+		deathN = Resources.Load(path+"deathN") as AudioClip;
 	}
 
 	void Start()
@@ -191,6 +201,18 @@ public class AudioManager : MonoBehaviour {
 			break;
 		case "deathM":
 			return FindClipRandom (deathM);
+			break;
+		case "jumpF":
+			return FindClipRandom (jumpF);
+			break;
+		case "landF":
+			return FindClipRandom (landF);
+			break;
+		case "deathF":
+			return FindClipRandom (deathF);
+			break;
+		case "deathN":
+			return deathN;
 			break;
 
 		default:
