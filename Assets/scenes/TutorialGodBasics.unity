@@ -235,6 +235,12 @@ Prefab:
     - {fileID: 11478416, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &280401427 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11481994, guid: 09b54316904da4311ad77ab122610f45,
+    type: 2}
+  m_PrefabInternal: {fileID: 677349921}
+  m_Script: {fileID: 11500000, guid: baf2a1b4219ed4db1a6f412e8745dea4, type: 3}
 --- !u!4 &325767903 stripped
 Transform:
   m_PrefabParentObject: {fileID: 408312, guid: 8fcb3798ea8f54d1bbad6b2b9fcede4b, type: 2}
@@ -427,7 +433,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 446100547}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.9268389, y: 1.4033216, z: -2.0007932}
+  m_LocalPosition: {x: 0, y: 1.4033216, z: -2.0007932}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1460229431}
@@ -978,7 +984,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UI: {fileID: 1814011935}
   Instructions: {fileID: 1128922632}
-  relicHealth: {fileID: 0}
+  relicHealth: {fileID: 280401427}
 --- !u!4 &1460229431 stripped
 Transform:
   m_PrefabParentObject: {fileID: 422162, guid: 4fac589f0acb44e21be69beeb7cb384a, type: 2}
@@ -1087,7 +1093,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22467812, guid: 6098bc8566083034d8907ccff5f3d267, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -5
+      value: 6.95
       objectReference: {fileID: 0}
     - target: {fileID: 22467812, guid: 6098bc8566083034d8907ccff5f3d267, type: 2}
       propertyPath: m_AnchoredPosition.y
@@ -1148,6 +1154,14 @@ Prefab:
     - target: {fileID: 182522, guid: 6098bc8566083034d8907ccff5f3d267, type: 2}
       propertyPath: m_TagString
       value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 463504, guid: 6098bc8566083034d8907ccff5f3d267, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 463504, guid: 6098bc8566083034d8907ccff5f3d267, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6098bc8566083034d8907ccff5f3d267, type: 2}
