@@ -54,6 +54,8 @@ GameObject:
   - 114: {fileID: 11440558}
   - 114: {fileID: 11447046}
   - 114: {fileID: 11484190}
+  - 114: {fileID: 11428866}
+  - 114: {fileID: 11468354}
   m_Layer: 0
   m_Name: LeapControllerBlockHand
   m_TagString: Untagged
@@ -240,6 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   calibrationManager: {fileID: 0}
+  calibrationManagerNew: {fileID: 0}
   calibratedDown: {x: 0, y: 0, z: 0}
   activeSpell: 
   glowController: {fileID: 0}
@@ -291,6 +294,19 @@ MonoBehaviour:
   m_GlowIntensity: 0.3
   m_BlurOffset: 0
   m_Samples: 2
+--- !u!114 &11428866
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183102}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25ce9422fcf494e2786947ab784376cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  calibrationText: {fileID: 0}
+  calibrationDone: 0
 --- !u!114 &11428942
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -439,7 +455,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 156732}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51294604eecc744aaaeed867abbe4722, type: 3}
   m_Name: 
@@ -458,6 +474,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97677197f6cce42f58969ca403b1c985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11468354
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef444d0c1696a4524aacd25baba4e9c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  calibrationDone: 0
 --- !u!114 &11469044
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1801,24 +1801,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   summonManager: {fileID: 0}
   mat2: {fileID: 2100000, guid: 6a0393d14023191458f2763342124ecc, type: 2}
---- !u!1 &2035363689 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 156732, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
-  m_PrefabInternal: {fileID: 263094029}
---- !u!114 &2035363693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2035363689}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51294604eecc744aaaeed867abbe4722, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _useRadialDistance: 1
-  _startDistance: 10
-  _fogShader: {fileID: 4800000, guid: 376b37dc54c6f4482a3f4147e23fedb6, type: 3}
 --- !u!1001 &2037301275
 Prefab:
   m_ObjectHideFlags: 0

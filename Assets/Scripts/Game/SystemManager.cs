@@ -40,7 +40,7 @@ public class SystemManager : MonoBehaviour {
 
 		prevLevel = 0;
 
-		//new WaitForSeconds (2f);
+		minionColorIndexes = new int[ 3 ];
 
 		SceneManager.LoadScene("MainMenu");
 	}
@@ -82,13 +82,14 @@ public class SystemManager : MonoBehaviour {
 
 		Time.timeScale = 1f;
 
+		colorHandler.SetColorScheme (currentGodMaterialIndex);
+
 		//First time in the main menu after game start
 		if (level == 1 && prevLevel == 0) {
 
 			inputHandler.CreateThreeMinions (2f);
 
 			minions = inputHandler.GetMinionsArray ();
-			minionColorIndexes = new int[ minions.Length ];
 
 			colorHandler.SetColorScheme (currentGodMaterialIndex);
 			UpdateMinionColors ();
@@ -124,13 +125,16 @@ public class SystemManager : MonoBehaviour {
 			UpdateWinnersAndLosers ();
 
 			colorHandler.SetColorScheme (currentGodMaterialIndex);
-
 			UpdateMinionColors ();
 		}
+
+
 
 		//Everytime you go to the level
 		if (level == 6) {
 			Debug.Log ("level == 6");
+
+
 
 			SetLevelBoundaries ();
 			PositionMinionsInRow (5f);
