@@ -45,7 +45,11 @@ public class RelicHealth : MonoBehaviour {
 		impactSparks = GameObject.Find ("impactSparks");
 		impactSparks.SetActive (false);
 	}
-	
+
+	void Awake(){
+		health = startHealth; 
+	}
+
 	// Update is called once per frame
 	void FixedUpdate () {
 
@@ -108,7 +112,7 @@ public class RelicHealth : MonoBehaviour {
 				//Only drain if above some threshold
 				if (relativeVelocity > 3f) {
 
-					float drain = Mathf.FloorToInt (relativeVelocity * 2);
+					float drain = Mathf.FloorToInt (relativeVelocity);
 
 					//Limit max energy drain
 					if (drain > 20f)

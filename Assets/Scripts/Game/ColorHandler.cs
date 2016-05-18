@@ -169,10 +169,16 @@ public class ColorHandler : MonoBehaviour {
 			//fogColor = new Color (0.8f, 0, 0);
 			break;
 
+			//OLD GREEN
+//		case ColorScheme.green:
+//			colors [0] = new Color(59f/255f, 113f/255f, 21f/255f, 80f/255f);
+//			colors [1] = new Color(71f/255f, 172f/255f, 40f/255f, 255f / 255f);
+//			colors [2] = new Color(0.108f, 0.3f, 0.03200001f, 0.2f);
+//			break;
 		case ColorScheme.green:
-			colors [0] = new Color(59f/255f, 113f/255f, 21f/255f, 80f/255f);
-			colors [1] = new Color(71f/255f, 172f/255f, 40f/255f, 255f / 255f);
-			colors [2] = new Color(0.108f, 0.3f, 0.03200001f, 0.2f);
+			colors [0] = new Color(0.082f, 0.443f, 0.278f, 0.313f);
+			colors [1] = new Color(0.156f, 0.674f, 0.439f, 255f / 255f);
+			colors [2] = new Color(0.032f, 0.3f, 0.1447448f, 0.3f);
 			break;
 
 		case ColorScheme.blue:
