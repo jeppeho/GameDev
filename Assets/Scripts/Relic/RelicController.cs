@@ -78,7 +78,7 @@ public class RelicController : MonoBehaviour {
 
 			}
 				
-			if (manager.GetPosition ().z < wall - 1f ) {
+			if (manager.GetPosition ().z < wall + 5f ) {
 				PushForward (300);
 			}
 
@@ -325,7 +325,7 @@ public class RelicController : MonoBehaviour {
 		Vector3 slotPosition = manager.GetParent().position;
 
 		//Lift relic above head
-		slotPosition.y += 2f;
+		slotPosition.y += 2.5f;
 
 		//Set velocity to zero
 		rb.velocity = new Vector3 (0, 0, 0);

@@ -13,7 +13,7 @@ GameObject:
   - 95: {fileID: 9547604}
   - 114: {fileID: 11482906}
   - 64: {fileID: 6447460}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BRIDGE_STEP
   m_TagString: Untagged
   m_Icon: {fileID: 0}

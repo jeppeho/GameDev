@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class GestureManager : MonoBehaviour {
 
 	private LeapManager leapManager;
-    public CalibrationManager calibrationManager;
+	public CalibrationManager calibrationManager;
+    public CalibrationManagerNew calibrationManagerNew;
     private int calibrationFrames = 60;
 	private List<Vector3> calibratedDownFrame;
 	[HideInInspector]
@@ -23,7 +24,8 @@ public class GestureManager : MonoBehaviour {
 	void Start () {
 		leapManager = this.gameObject.GetComponent<LeapManager> ();
         GameObject g = GameObject.Find("LeapControllerBlockHand");
-        calibrationManager = g.GetComponent<CalibrationManager>();
+        calibrationManagerNew = g.GetComponent<CalibrationManagerNew>();
+		calibrationManager = g.GetComponent<CalibrationManager>();
         glowController = GameObject.Find("StoneHandModel 1").GetComponentInChildren<GlowControl>();
         Debug.Log("Found hand + glow");
 		activeSpell = "none";
@@ -114,7 +116,8 @@ public class GestureManager : MonoBehaviour {
 				if (calibrationFrames <= 0) {
 					Debug.Log ("Calibration done! Down-vector is " + calibratedDown.ToString ());
                     // tell tutorial manager that calibration is done, and only than move forward to menu
-                    calibrationManager.calibrationDone = true;
+                    calibrationManagerNew.calibrationDone = true;
+					calibrationManager.calibrationDone = true;
                     setHandColor(Color.grey);
 				}
 			}

@@ -11,10 +11,13 @@ public class LeapObjectController : MonoBehaviour {
 
 	public bool freezeCameraForDebug = false;
 
+	private CalibrationManagerNew calibrationManager;
 
 
 	// Use this for initialization
 	void Start () {
+
+		calibrationManager = GetComponent<CalibrationManagerNew> ();
 
 		cameraSpeed = cameraStartSpeed;
 		//Scale the cameraspeed
@@ -25,8 +28,11 @@ public class LeapObjectController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (!freezeCameraForDebug) {
-			MoveForward ();
+
+		if (calibrationManager.calibrationDone) {
+			if (!freezeCameraForDebug) {
+				MoveForward ();
+			}
 		}
 	}
 

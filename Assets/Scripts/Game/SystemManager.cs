@@ -40,6 +40,8 @@ public class SystemManager : MonoBehaviour {
 
 		prevLevel = 0;
 
+		//new WaitForSeconds (2f);
+
 		SceneManager.LoadScene("MainMenu");
 	}
 		
