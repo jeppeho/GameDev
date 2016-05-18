@@ -108,7 +108,7 @@ public class NewController : MonoBehaviour {
 		farWalkZone = LevelManager.MOVE_MAXZ - LevelManager.MOVE_ZONEWIDTH;
 		walkZoneWidth = LevelManager.MOVE_ZONEWIDTH;
 
-		female = IsFemale();
+		Init ();
 	}
 
 	
@@ -748,6 +748,10 @@ public class NewController : MonoBehaviour {
 		return r;
 	}
 
+	public void Init()
+	{
+		female = IsFemale ();
+	}
 
 	/**
 	 * 
