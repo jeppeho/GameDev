@@ -34,6 +34,8 @@ public class BasicsManager : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
+        Debug.Log(relicHealth); 
+
                 if (waitingDone == true)
         {
             MoveCameraForward();
