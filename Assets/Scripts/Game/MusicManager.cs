@@ -8,15 +8,18 @@ public class MusicManager : MonoBehaviour {
 	private static AudioClip music_green;
 	private static AudioClip music_blue;
 	private static AudioClip music_purple;
+	private static AudioClip music_menu;
 
 	// Use this for initialization
 	void Start () {
 		Init ();
 
 		string path = "Audio/Music/";
-		music_red = Resources.Load(path+"Runtheme_01") as AudioClip;
-		music_blue = Resources.Load(path+"Runtheme_02") as AudioClip;
-		music_purple = Resources.Load(path+"Runtheme_03") as AudioClip;
+		music_red = Resources.Load(path+"Runtheme_red") as AudioClip;
+		music_green = Resources.Load(path+"Runtheme_green") as AudioClip;
+		music_blue = Resources.Load(path+"Runtheme_blue") as AudioClip;
+		music_purple = Resources.Load(path+"Runtheme_purple") as AudioClip;
+		music_menu = Resources.Load(path+"Runtheme_menu") as AudioClip;
 	}
 	
 	// Update is called once per frame
@@ -41,13 +44,13 @@ public class MusicManager : MonoBehaviour {
 					m = music_blue; //Blue
 					break;
 					case 2:
-					m = music_blue; //Green FIX THIS, WHEN DONE!!
+					m = music_green; //Green
 					break;
 					case 3:
 					m = music_purple; //Purple
 					break;
 					default:
-					m = music_red; //Menu-theme FIX THIS, WHEN DONE!!
+					m = music_red; //Menu-theme
 					break;
 				}
 
@@ -56,12 +59,11 @@ public class MusicManager : MonoBehaviour {
 
 			else
 			{
-				m = music_red; //Menu-theme FIX THIS, WHEN DONE!!
+				m = music_menu; //Menu-theme
 			}
 
 		this.GetComponent<AudioSource> ().clip = m;
 		this.GetComponent<AudioSource> ().Play ();
-
 	}
 
 	private int GetGodColor ()
