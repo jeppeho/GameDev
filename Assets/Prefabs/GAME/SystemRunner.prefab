@@ -52,6 +52,11 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 761c6f122ae68544f80dc55851b6e273, type: 3}
   - {fileID: 2800000, guid: 0646516707cb2aa41bb393ad739f6163, type: 3}
   - {fileID: 2800000, guid: bc63a89b14e00a24b8414b43811589c6, type: 3}
+  cubemaps:
+  - {fileID: 8900000, guid: a785211106400d7479a70e5a4056c044, type: 3}
+  - {fileID: 8900000, guid: c55cd4afeeaefe5478a99654729f5615, type: 3}
+  - {fileID: 8900000, guid: ed38c0177c86cc24aaab3a42f010a117, type: 3}
+  - {fileID: 8900000, guid: 2a1ad03f1563eba4e82d669c83c4b9e5, type: 3}
 --- !u!114 &11430348
 MonoBehaviour:
   m_ObjectHideFlags: 1

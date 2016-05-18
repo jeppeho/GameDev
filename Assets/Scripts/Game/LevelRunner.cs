@@ -65,14 +65,12 @@ public class LevelRunner : MonoBehaviour {
 
 		if (gameState == GameState.godWin) {
 			GameOver = true;
-			sm.GodWon = true;
 			Time.timeScale = 0f;
 			godWinMenu.gameObject.SetActive (true);
 		}
 
 		if (gameState == GameState.minionWin) {
 			GameOver = true;
-			sm.GodWon = false;
 			if (winningMinion == -1) {
 				FindTheWinningMinion ();
 			}
@@ -145,15 +143,18 @@ public class LevelRunner : MonoBehaviour {
 
 		for (int i = 0; i < minions.Length; i++) {
 
-			if (minions [i].activeSelf == true) {
+			Debug.Log ("Testing minion #" + i);
 
+			if (minions [i].activeSelf == true) {
+				Debug.Log ("Minion #" + i + " is active");
 				float minionScore = minions [i].GetComponent<PlayerManager> ().GetPlayerScore ().GetFinalScore ();
-				//Debug.Log ("minion #" + i + " score = " + minionScore + " and highscore = " + highestScore);
+				Debug.Log ("minion #" + i + " score = " + minionScore + " and highscore = " + highestScore);
 
 				//If score is so far the highest then update the index of the winning minion
 				if (minionScore > highestScore) {
 					highestScore = minionScore;
 					winningMinionIndex = i;
+					Debug.Log ("Setting the new winner to idnex " + winningMinionIndex);
 				}
 
 				//If score is the same as the highest

@@ -123,7 +123,7 @@ public class InputControllerHandler : MonoBehaviour {
 		for (int playerIndex = 0; playerIndex < numPlayers; playerIndex++) {
 			
 			float x = -space + playerIndex * space;
-			Vector3 position = new Vector3 (x, 1, -7);
+			Vector3 position = new Vector3 (x, 0, 1);
 
 			int controllerNameIndex = playerIndex + 1;
 
@@ -133,7 +133,29 @@ public class InputControllerHandler : MonoBehaviour {
 
 			CreateMinion( position, prefix, playerIndex, active);
 		}
-	
+	}
+
+
+	public void CreateThreeMinions(float z){
+
+		//Space and width is for placing the characters on a single line
+		float space = 3f;
+		int numPlayers = 3;
+		float width = space * (numPlayers - 1f);
+
+		for (int playerIndex = 0; playerIndex < numPlayers; playerIndex++) {
+
+			float x = -space + playerIndex * space;
+			Vector3 position = new Vector3 (x, 0, z);
+
+			int controllerNameIndex = playerIndex + 1;
+
+			string prefix = "P" + controllerNameIndex.ToString ();
+
+			Debug.Log ("Creating player: " + prefix);
+
+			CreateMinion( position, prefix, playerIndex, false);
+		}
 	}
 
 

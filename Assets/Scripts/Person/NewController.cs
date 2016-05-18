@@ -87,7 +87,7 @@ public class NewController : MonoBehaviour {
 		audioplayerRun = this.transform.transform.FindChild ("audioplayerRun").gameObject;
 
 		rb = GetComponent<Rigidbody> ();
-		Debug.Log ("RB = " + rb);
+
 		player = this.gameObject;
 
 		//So the number doesn't have to be that big in the editor
@@ -162,7 +162,6 @@ public class NewController : MonoBehaviour {
 			if (!IsGrounded ()) {
 				//IF ELEVATION IS USED CHANGE ONE TO LEVELAREA NOISE
 				if (IsAboveHeight (1) == false) {
-					Debug.Log ("Falling");
 					FallDown ();
 					//~~SOUND~~
 					landBuffer = Mathf.Max (landBuffer-1, 0);
@@ -354,7 +353,6 @@ public class NewController : MonoBehaviour {
 			if (runspeed >= 0.66f) {
 				
 				if (lastRunSound != 2 && soundBuffer <= 0) {
-					Debug.Log ("Fast run!!");
 					audioManager.PlayLoop ("footstepsFast", audioplayerRun);
 					lastRunSound = 2;
 					soundBuffer = 6;
@@ -364,7 +362,6 @@ public class NewController : MonoBehaviour {
 			else if (runspeed >= 0.33f && runspeed < 0.66f) {
 					
 				if (lastRunSound != 1 && soundBuffer <= 0) {
-					Debug.Log ("Slow run!!");
 					audioManager.PlayLoop ("footstepsSlow", audioplayerRun);
 
 					lastRunSound = 1;

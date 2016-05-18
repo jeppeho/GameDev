@@ -163,8 +163,6 @@ public class RelicHealth : MonoBehaviour {
 	 */
 	public void DrainEnergy(float drain){
 
-		Debug.Log ("Draining " + drain + " energy from relic");
-
 		StartCoroutine (RunImpactSparks ());
 
 		//drain health

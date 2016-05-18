@@ -232,7 +232,6 @@ public class LevelBuilder : MonoBehaviour {
 					foreach (Transform intact in levelElements [i].transform) {
 
 						if (intact.name.Contains ("intactObject")) {
-							Debug.Log ("Changing alpha for " + intact.name);
 							SetTransparent (intact.gameObject);
 						}
 					}
@@ -272,15 +271,10 @@ public class LevelBuilder : MonoBehaviour {
 			//Debug.Log ("testing " + t.name);
 
 			if(t.name.Contains("Pillar")){
-
-				if (t.name.Contains( "PillarSmall") ) {
-					Debug.Log ("Small pillar = " + t.name);
-				}
 				
 				foreach (Transform intact in t) {
 					
 					if (intact.name.Contains ("intactObject")) {
-						Debug.Log ("Changing alpha for " + intact.name);
 						SetOpaque (intact.gameObject);
 					}
 				}
