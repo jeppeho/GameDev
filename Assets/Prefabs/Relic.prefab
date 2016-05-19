@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf2a1b4219ed4db1a6f412e8745dea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startHealth: 1000
+  startHealth: 500
   maxHandDistanceToTakeEnergy: 2
 --- !u!114 &11489854
 MonoBehaviour:
