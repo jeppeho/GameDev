@@ -27,6 +27,8 @@ public class GlowControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		col = glowSystem.startColor;
+
         glowSystem.GetParticles(particles);
 
         //Debug.Log("NOISE ARRAY "+noiseArray.Length.ToString());

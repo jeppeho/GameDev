@@ -52,6 +52,12 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 761c6f122ae68544f80dc55851b6e273, type: 3}
   - {fileID: 2800000, guid: 0646516707cb2aa41bb393ad739f6163, type: 3}
   - {fileID: 2800000, guid: bc63a89b14e00a24b8414b43811589c6, type: 3}
+  waterMaterial: {fileID: 2100000, guid: c55afdc4a8a3b4890b07cc7d176510bb, type: 2}
+  waterTextures:
+  - {fileID: 2800000, guid: a00e0742af4041e4cbd0e85f8fdea7fd, type: 3}
+  - {fileID: 2800000, guid: c31a173f8d705984e8e61fd90bef7e42, type: 3}
+  - {fileID: 2800000, guid: ed61e4a657a7eb149b902c53f52e2f45, type: 3}
+  - {fileID: 2800000, guid: 881ef5c262bed06479b119546ccda9fd, type: 3}
   cubemaps:
   - {fileID: 8900000, guid: a785211106400d7479a70e5a4056c044, type: 3}
   - {fileID: 8900000, guid: c55cd4afeeaefe5478a99654729f5615, type: 3}
@@ -80,7 +86,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a25643f7196d481a9a186f30c03379b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GodWon: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
