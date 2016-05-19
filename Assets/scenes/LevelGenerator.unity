@@ -2036,7 +2036,8 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5483354, guid: 1f35b50f45a734de08a36b867ab41ebb, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 1f35b50f45a734de08a36b867ab41ebb, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1260470582 stripped
@@ -2169,6 +2170,8 @@ MonoBehaviour:
   elementMaterial: {fileID: 0}
   skyboxes: []
   sparkTextures: []
+  waterMaterial: {fileID: 0}
+  waterTextures: []
   cubemaps: []
 --- !u!23 &1320075960
 MeshRenderer:
