@@ -2545,7 +2545,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11481994, guid: 09b54316904da4311ad77ab122610f45, type: 2}
       propertyPath: startHealth
-      value: 450
+      value: 3000
       objectReference: {fileID: 0}
     - target: {fileID: 5483462, guid: 09b54316904da4311ad77ab122610f45, type: 2}
       propertyPath: m_Constraints
