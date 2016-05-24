@@ -16,8 +16,8 @@ public class SystemManager : MonoBehaviour {
 //	public Material[] materials;
 
 	int currentGodMaterialIndex = 0; //to become minion color
-	int minionWinnerPlayerIndex = 3; //The minion to change color on
-	int minionWinnerMaterialIndex = 3; //to become world color
+	int minionWinnerPlayerIndex = 2; //The minion to change color on
+	int minionWinnerMaterialIndex = 2; //to become world color
 
 	int prevLevel = 0;
 
@@ -82,11 +82,13 @@ public class SystemManager : MonoBehaviour {
 	 * 6) The Level!!!
 	 * 
 	 */
+	int testIndex = 0;
 
 	void OnLevelWasLoaded(int level){
-		Debug.Log ("OnLevelWasLoaded | level = " + level + " | prevLevel = " + prevLevel);
+		
+		Debug.Log (testIndex + "]*****OnLevelWasLoaded | level = " + level + " | prevLevel = " + prevLevel);
 		Debug.Log ("God: " + currentGodMaterialIndex + ", winMinion: " + minionWinnerPlayerIndex + ", minionMaterial: " + minionWinnerMaterialIndex);
-
+		testIndex++;
 		Time.timeScale = 1f;
 
 		colorHandler.SetColorScheme (currentGodMaterialIndex);
@@ -129,19 +131,18 @@ public class SystemManager : MonoBehaviour {
 		if (prevLevel == 6) {
 			Debug.Log ("prevLevel == 6");
 		
-			UpdateWinnersAndLosers ();
+			//UpdateWinnersAndLosers ();
 
 			colorHandler.SetColorScheme (currentGodMaterialIndex);
 			UpdateMinionColors ();
 		}
 
 
-
 		//Everytime you go to the level
 		if (level == 6) {
 			Debug.Log ("level == 6");
 
-
+			DeactivateUnusedPlayers ();
 
 			SetLevelBoundaries ();
 			PositionMinionsInRow (5f);
@@ -152,7 +153,16 @@ public class SystemManager : MonoBehaviour {
 	}
 
 
+	public void UpdateWinnersAndLosersForLevelRunner(int playerIndex, int materialIndex){
 
+		//Update values
+		int prevGod = currentGodMaterialIndex;
+		int prevWinner = minionColorIndexes [playerIndex];
+		minionColorIndexes [playerIndex] = prevGod;
+		currentGodMaterialIndex = prevWinner;
+		minionWinnerMaterialIndex = materialIndex;
+
+	}
 
 	public void UpdateWinnersAndLosers(){
 		

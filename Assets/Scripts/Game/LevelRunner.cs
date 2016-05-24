@@ -23,9 +23,6 @@ public class LevelRunner : MonoBehaviour {
 	GameObject[] minions;
 	int winningMinion = -1;
 
-	private bool GameOver; 
-
-
 	// Use this for initialization
 	void Start () {
 
@@ -44,15 +41,11 @@ public class LevelRunner : MonoBehaviour {
 
 		//Set initial gameState
 		gameState = GameState.running;
-
-		GameOver = false;
 	}
 
 	// Update is called once per frame
 	void Update () {
 
-		//if(!GameOver){
-			
 		UpdateState ();
 
 		if (gameState == GameState.paused) {
@@ -64,13 +57,11 @@ public class LevelRunner : MonoBehaviour {
 		} 
 
 		if (gameState == GameState.godWin) {
-			GameOver = true;
 			Time.timeScale = 0f;
 			godWinMenu.gameObject.SetActive (true);
 		}
 
 		if (gameState == GameState.minionWin) {
-			GameOver = true;
 			if (winningMinion == -1) {
 				FindTheWinningMinion ();
 			}
@@ -83,9 +74,7 @@ public class LevelRunner : MonoBehaviour {
 		//Stop camera when level end is reached
 		if (leap.GetComponent<Transform> ().position.z > lg.levelLength + 10f) {
 
-
-			leap.GetComponent<LeapObjectController> ().enabled = false;
-			
+			leap.GetComponent<LeapObjectController> ().enabled = false;			
 		}
 
 //		else 
@@ -114,7 +103,7 @@ public class LevelRunner : MonoBehaviour {
 			gameState = GameState.godWin;
 
 		} 
-		else if( relic.gameObject.GetComponent<Transform>().position.z > lg.levelLength + 5f){
+		else if( relic.gameObject.GetComponent<Transform>().position.z > /*lg.levelLength +*/ 15f){
 
 			gameState = GameState.minionWin;
 		}
@@ -154,7 +143,7 @@ public class LevelRunner : MonoBehaviour {
 				if (minionScore > highestScore) {
 					highestScore = minionScore;
 					winningMinionIndex = i;
-					Debug.Log ("Setting the new winner to idnex " + winningMinionIndex);
+					Debug.Log ("Setting the new winner to index " + winningMinionIndex);
 				}
 
 				//If score is the same as the highest
@@ -176,6 +165,8 @@ public class LevelRunner : MonoBehaviour {
 		winningMinion = winningMinionIndex;
 
 		sm.SetMinionWinner (winningMinionIndex, materialIndex);
+
+		sm.UpdateWinnersAndLosersForLevelRunner (winningMinionIndex, materialIndex);
 	}
 
 
