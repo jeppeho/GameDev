@@ -270,7 +270,7 @@ public class LevelGenerator : MonoBehaviour {
 		//To keep score of how many tries it took to get an accepted
 		int acceptedNum = 0;
 
-		Debug.Log ("Generating acceptable level with " + numTests + " tries");
+		//Debug.Log ("Generating acceptable level with " + numTests + " tries");
 
 		while (!accepted) {
 
@@ -305,18 +305,19 @@ public class LevelGenerator : MonoBehaviour {
 			}
 
 
-			if (accepted == true)
-				Debug.Log (acceptedNum + " tries to generate accepted level!");
-			else
+			//if (accepted == true)
+				//Debug.Log (acceptedNum + " tries to generate accepted level!");
+			//else
+            if (accepted != true)
 				acceptedNum++;
 		}
 
 		//Print percentages of area types for accepted level
-		Debug.Log ("WATER = " + GetCountOfAreaType (AreaType.lava));
-		Debug.Log ("LOW GROUND = " + GetCountOfAreaType (AreaType.lowGround));
-		Debug.Log ("CANYON = " + GetCountOfAreaType (AreaType.cliff));
-		Debug.Log ("HIGH GROUND = " + GetCountOfAreaType (AreaType.highGround));
-		Debug.Log ("GAP = " + GetCountOfAreaType (AreaType.bridge));
+		//Debug.Log ("WATER = " + GetCountOfAreaType (AreaType.lava));
+		//Debug.Log ("LOW GROUND = " + GetCountOfAreaType (AreaType.lowGround));
+		//Debug.Log ("CANYON = " + GetCountOfAreaType (AreaType.cliff));
+		//Debug.Log ("HIGH GROUND = " + GetCountOfAreaType (AreaType.highGround));
+		//Debug.Log ("GAP = " + GetCountOfAreaType (AreaType.bridge));
 	}
 
 	/**

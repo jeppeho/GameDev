@@ -26,7 +26,7 @@ public class GestureGust : Gesture {
 		levelLightBaseIntensity = levelLight.intensity;
 
 		thisSpell = "gust";
-		Debug.Log ("Set thisSpell: " + thisSpell.ToString());
+		//Debug.Log ("Set thisSpell: " + thisSpell.ToString());
 	}
 
     public float GetCharge()

@@ -33,10 +33,10 @@ public class MusicManager : MonoBehaviour {
 	{
 		AudioClip m;
 
-		Debug.Log ("MM: Checking scene..");
+		//Debug.Log ("MM: Checking scene..");
 			if (SceneManager.GetActiveScene().Equals(SceneManager.GetSceneByName("LevelGenerator")))
 			{
-			Debug.Log ("MM: Yes, it's the level..");
+			//Debug.Log ("MM: Yes, it's the level..");
 			switch (GetGodColor())
 				{
 					case 0:
@@ -56,7 +56,7 @@ public class MusicManager : MonoBehaviour {
 					break;
 				}
 
-			Debug.Log ("|||||||||||||||||||||||||||||MM: ..Playing "+m.ToString());
+			Debug.Log ("MusicManager: ..Playing "+m.ToString());
 			}
 
 			else
@@ -72,11 +72,11 @@ public class MusicManager : MonoBehaviour {
 
 	private int GetGodColor ()
 	{
-		Debug.Log ("|||||||||||||||||||||||||||||MM: Checking god color... " );
+		//Debug.Log ("|||||||||||||||||||||||||||||MM: Checking god color... " );
 		//Get renderer material
 		Material m = GameObject.Find("StoneHandModel 1").transform.FindChild("ball").GetComponent<Renderer>().material;
 
-		Debug.Log ("|||||||||||||||||||||||||||||MM: Extracting color from "+ GameObject.Find("StoneHandModel 1").transform.FindChild("ball").ToString());
+		//Debug.Log ("|||||||||||||||||||||||||||||MM: Extracting color from "+ GameObject.Find("StoneHandModel 1").transform.FindChild("ball").ToString());
 		//Check color
 		Color myColor = m.GetColor ("_Color");
 

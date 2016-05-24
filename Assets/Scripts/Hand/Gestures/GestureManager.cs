@@ -27,7 +27,7 @@ public class GestureManager : MonoBehaviour {
         calibrationManagerNew = g.GetComponent<CalibrationManagerNew>();
 		calibrationManager = g.GetComponent<CalibrationManager>();
         glowController = GameObject.Find("StoneHandModel 1").GetComponentInChildren<GlowControl>();
-        Debug.Log("Found hand + glow");
+        //Debug.Log("Found hand + glow");
 		activeSpell = "none";
 
 		calibratedDownFrame = new List<Vector3> ();
@@ -114,7 +114,7 @@ public class GestureManager : MonoBehaviour {
 
 				//If this was the last frame, close calibration
 				if (calibrationFrames <= 0) {
-					Debug.Log ("Calibration done! Down-vector is " + calibratedDown.ToString ());
+					//Debug.Log ("Calibration done! Down-vector is " + calibratedDown.ToString ());
                     // tell tutorial manager that calibration is done, and only than move forward to menu
                     calibrationManagerNew.calibrationDone = true;
 					calibrationManager.calibrationDone = true;

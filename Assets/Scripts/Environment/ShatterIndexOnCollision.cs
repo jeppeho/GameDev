@@ -24,8 +24,6 @@ public class ShatterIndexOnCollision : MonoBehaviour {
 		intactObject = new GameObject[instances];
 		shatteredObject = new GameObject[instances];
 
-		Debug.Log ("Got this far...");
-
 		//Go through all child objects
 		foreach (Transform t in transform) {
 
@@ -42,7 +40,7 @@ public class ShatterIndexOnCollision : MonoBehaviour {
 				}
 
 				intactObject [index-startingIndex] = t.gameObject;
-				Debug.Log ("Found intact obj. no. " + index.ToString());
+				//Debug.Log ("Found intact obj. no. " + index.ToString());
 			}
 
 			else if (t.name.StartsWith("shatteredObject"))
@@ -56,7 +54,7 @@ public class ShatterIndexOnCollision : MonoBehaviour {
 				}
 
 				shatteredObject [index-startingIndex] = t.gameObject;
-				Debug.Log ("Found shattered obj. no. " + index.ToString());
+				//Debug.Log ("Found shattered obj. no. " + index.ToString());
 			}
 
 
@@ -139,7 +137,7 @@ public class ShatterIndexOnCollision : MonoBehaviour {
 
 			t.gameObject.layer = 17; //Set to CollisionfreeObject
 			cooldown = 5;
-			Debug.Log ("Shattering pillar!");
+			//Debug.Log ("Shattering pillar!");
 		}
 
 		audioManager.Play ("rockShatter", Random.Range(0.75f, 1f), this.gameObject);

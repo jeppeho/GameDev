@@ -16,7 +16,7 @@ public class Gesture : MonoBehaviour {
 		gestureManager = this.gameObject.GetComponent<GestureManager> ();
 		handManager =  this.gameObject.GetComponent<StoneHandManager> ();
 		audioManager = GameObject.Find ("AudioManager").GetComponent<AudioManager> ();
-		Debug.Log ("Base.init was called by " + this.ToString());
-		Debug.Log ("Two managers were found: " + leapManager.ToString() + " , " + gestureManager.ToString());
+		//Debug.Log ("Base.init was called by " + this.ToString());
+		//Debug.Log ("Two managers were found: " + leapManager.ToString() + " , " + gestureManager.ToString());
 	}
 }
