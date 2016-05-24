@@ -73,7 +73,7 @@ public class GestureGust : Gesture {
 		{
 			//Debug.Log ("Gust is active!");
 			if (
-				leapManager.PalmNormalNearIgnore (gestureManager.calibratedDown, 0.85f, false, true, false))
+				leapManager.PalmNormalNearIgnore (gestureManager.calibratedDown, 0.85f, false, true, false)
 			&& leapManager.GetFingerIsExtendedPattern (false, false, false, false, false)
 			&& leapManager.GetHandGrabStrength () >= 0.6f
 			//&& leapManager.PalmNearIgnore (tempPalmWorldPosition, 7f, false, true, true)

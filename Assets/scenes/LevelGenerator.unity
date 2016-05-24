@@ -175,14 +175,14 @@ Prefab:
       propertyPath: calibrationText
       value: 
       objectReference: {fileID: 2049080070}
-    - target: {fileID: 11405306, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
-      propertyPath: handObject
-      value: 
-      objectReference: {fileID: 372002851}
     - target: {fileID: 11428866, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
       propertyPath: calibrationText
       value: 
       objectReference: {fileID: 2049080070}
+    - target: {fileID: 11405306, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
+      propertyPath: handObject
+      value: 
+      objectReference: {fileID: 372002851}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
   m_IsPrefabParent: 0
