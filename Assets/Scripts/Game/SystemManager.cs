@@ -44,6 +44,13 @@ public class SystemManager : MonoBehaviour {
 
 		SceneManager.LoadScene("MainMenu");
 	}
+
+
+	public int GetCurrentGodMaterialIndex(){
+		return currentGodMaterialIndex; 
+	}
+
+
 		
 	/**
 	 * Updates the colors on the minions and update the minionColorIndexes as well
