@@ -9,6 +9,7 @@ TagManager:
   - Relic
   - Water
   - Shatterables
+  - GoalLight
   layers:
   - Default
   - TransparentFX

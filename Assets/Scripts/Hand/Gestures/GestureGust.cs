@@ -26,7 +26,7 @@ public class GestureGust : Gesture {
 		levelLightBaseIntensity = levelLight.intensity;
 
 		thisSpell = "gust";
-		Debug.Log ("Set thisSpell: " + thisSpell.ToString());
+		//Debug.Log ("Set thisSpell: " + thisSpell.ToString());
 	}
 
     public float GetCharge()
@@ -43,7 +43,7 @@ public class GestureGust : Gesture {
 
 		if (
 			gestureManager.noSpellActive()
-			&& leapManager.PalmNormalNear (gestureManager.calibratedDown, 0.75f)
+            && leapManager.PalmNormalNearIgnore(gestureManager.calibratedDown, 0.65f, false, true, false)
 			&& leapManager.PalmBetweenY (yThreshold, Mathf.Infinity)
 			&& leapManager.GetFingerIsExtendedPattern (false, false, false, false, false)
 			&& leapManager.GetHandGrabStrength() >= 0.8f
@@ -73,7 +73,7 @@ public class GestureGust : Gesture {
 		{
 			//Debug.Log ("Gust is active!");
 			if (
-				leapManager.PalmNormalNear (gestureManager.calibratedDown, 0.95f)
+				leapManager.PalmNormalNearIgnore (gestureManager.calibratedDown, 0.85f, false, true, false)
 			&& leapManager.GetFingerIsExtendedPattern (false, false, false, false, false)
 			&& leapManager.GetHandGrabStrength () >= 0.6f
 			//&& leapManager.PalmNearIgnore (tempPalmWorldPosition, 7f, false, true, true)

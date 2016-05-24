@@ -14,7 +14,6 @@ public class MusicManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Init ();
 
 		string path = "Audio/Music/";
 		music_red = Resources.Load(path+"Runtheme_red") as AudioClip;
@@ -22,6 +21,8 @@ public class MusicManager : MonoBehaviour {
 		music_blue = Resources.Load(path+"Runtheme_blue") as AudioClip;
 		music_purple = Resources.Load(path+"Runtheme_purple") as AudioClip;
 		music_menu = Resources.Load(path+"Runtheme_menu") as AudioClip;
+
+        Init();
 	}
 	
 	// Update is called once per frame
@@ -33,10 +34,10 @@ public class MusicManager : MonoBehaviour {
 	{
 		AudioClip m;
 
-		Debug.Log ("MM: Checking scene..");
+		//Debug.Log ("MM: Checking scene..");
 			if (SceneManager.GetActiveScene().Equals(SceneManager.GetSceneByName("LevelGenerator")))
 			{
-			Debug.Log ("MM: Yes, it's the level..");
+			//Debug.Log ("MM: Yes, it's the level..");
 			switch (GetGodColor())
 				{
 					case 0:
@@ -56,7 +57,7 @@ public class MusicManager : MonoBehaviour {
 					break;
 				}
 
-			Debug.Log ("|||||||||||||||||||||||||||||MM: ..Playing "+m.ToString());
+			Debug.Log ("MusicManager: ..Playing "+m.ToString());
 			}
 
 			else
@@ -66,17 +67,22 @@ public class MusicManager : MonoBehaviour {
 
 		this.GetComponent<AudioSource> ().Stop ();
 		this.GetComponent<AudioSource> ().clip = m;
-		this.GetComponent<AudioSource> ().Play ();
+
+        if (!SceneManager.GetActiveScene().Equals(SceneManager.GetSceneByName("LevelGenerator")))
+        {
+            this.GetComponent<AudioSource>().Play();
+        }
 	}
 
 
 	private int GetGodColor ()
 	{
-		Debug.Log ("|||||||||||||||||||||||||||||MM: Checking god color... " );
+        /*
+		//Debug.Log ("|||||||||||||||||||||||||||||MM: Checking god color... " );
 		//Get renderer material
 		Material m = GameObject.Find("StoneHandModel 1").transform.FindChild("ball").GetComponent<Renderer>().material;
 
-		Debug.Log ("|||||||||||||||||||||||||||||MM: Extracting color from "+ GameObject.Find("StoneHandModel 1").transform.FindChild("ball").ToString());
+		//Debug.Log ("|||||||||||||||||||||||||||||MM: Extracting color from "+ GameObject.Find("StoneHandModel 1").transform.FindChild("ball").ToString());
 		//Check color
 		Color myColor = m.GetColor ("_Color");
 
@@ -90,7 +96,7 @@ public class MusicManager : MonoBehaviour {
 		{	c = 2; } //blue
 		else if (myColor.g < 10f/255f)
 		{	c = 3; } //purple
-
+        */
 		/*
 		if (myColor.Equals (new Color (114f / 255f, 23f / 255f, 23f / 255f, 80f / 255f)))
 		{	c = 0;} //red
@@ -100,10 +106,10 @@ public class MusicManager : MonoBehaviour {
 		{	c = 2; } //green
 		else if (myColor.Equals (new Color (101f/255f, 2f/255f, 113f/255f, 80f/255f)))
 		{	c = 3; } //purple
-*/
-
+        */
+        int c = GameObject.Find("SystemRunner").GetComponent<SystemManager>().GetCurrentGodMaterialIndex();
 		return c;
 
-		Debug.Log ("|||||||||||||||||||||||||||||MM: Determined that god was color " + myColor.ToString ());
+        Debug.Log("|||||||||||||||||||||||||||||MM: Determined that god was color no. " + c.ToString());
 	}
 }

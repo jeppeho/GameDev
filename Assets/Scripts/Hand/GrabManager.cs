@@ -123,7 +123,7 @@ public class GrabManager : MonoBehaviour {
 	*/
 	void OnPinch(Vector3 pinchPosition)
 	{
-		Debug.Log ("Pinching!");
+		//Debug.Log ("Pinching!");
 
 		//Get all objects within PINCH_DISTANCE
 		List<Collider> inProximity = new List<Collider> ();
@@ -161,7 +161,7 @@ public class GrabManager : MonoBehaviour {
 	*/
 	void OnRelease()
 	{
-		Debug.Log ("Releasing!");
+		//Debug.Log ("Releasing!");
 		if (grabbedObject != null)
 		{
 			Vector3 throwDir = getVectorAverage (releaseVectors);

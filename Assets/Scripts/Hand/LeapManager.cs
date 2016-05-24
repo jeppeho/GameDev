@@ -265,6 +265,29 @@ public class LeapManager : MonoBehaviour {
 		return GetVectorsClose (GetPalmNormal (), normal, t);
 	}
 
+    //Whether palm's normal is appropriating a certain direction, by (magnitude) threshold 't', when ignoring X, Y and/or Z (true/false)
+    public bool PalmNormalNearIgnore(Vector3 normal, float t, bool ignoreX, bool ignoreY, bool ignoreZ)
+    {
+        Vector3 newPos;
+
+        if (ignoreX)
+        { newPos.x = GetPalmNormal().x; }
+        else
+        { newPos.x = normal.x; }
+
+        if (ignoreY)
+        { newPos.y = GetPalmNormal().y; }
+        else
+        { newPos.y = normal.y; }
+
+        if (ignoreZ)
+        { newPos.z = GetPalmNormal().z; }
+        else
+        { newPos.z = normal.z; }
+
+        return GetVectorsClose(GetPalmNormal(), newPos, t);
+    }
+
 	//Whether palm's normal is appropriating a certain direction, by (magnitude) threshold 't', when ignoring X, Y and/or Z (true/false)
 	public bool PalmNearIgnore(Vector3 pos, float t, bool ignoreX,  bool ignoreY,  bool ignoreZ)
 	{

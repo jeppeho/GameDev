@@ -86,10 +86,6 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &26720880 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 498214, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-  m_PrefabInternal: {fileID: 2008321886}
 --- !u!1001 &226106276
 Prefab:
   m_ObjectHideFlags: 0
@@ -175,14 +171,14 @@ Prefab:
       propertyPath: calibrationText
       value: 
       objectReference: {fileID: 2049080070}
-    - target: {fileID: 11405306, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
-      propertyPath: handObject
-      value: 
-      objectReference: {fileID: 372002851}
     - target: {fileID: 11428866, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
       propertyPath: calibrationText
       value: 
       objectReference: {fileID: 2049080070}
+    - target: {fileID: 11405306, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
+      propertyPath: handObject
+      value: 
+      objectReference: {fileID: 372002851}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
   m_IsPrefabParent: 0
@@ -1923,60 +1919,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cfdeac7e73e8f4c2187a8e009fd807d3, type: 3}
   m_IsPrefabParent: 0
---- !u!1001 &883522549
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 26720880}
-    m_Modifications:
-    - target: {fileID: 415878, guid: ce25ae6d38a458e4db57a3451b727f97, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 415878, guid: ce25ae6d38a458e4db57a3451b727f97, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 415878, guid: ce25ae6d38a458e4db57a3451b727f97, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 415878, guid: ce25ae6d38a458e4db57a3451b727f97, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 415878, guid: ce25ae6d38a458e4db57a3451b727f97, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 415878, guid: ce25ae6d38a458e4db57a3451b727f97, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 415878, guid: ce25ae6d38a458e4db57a3451b727f97, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 415878, guid: ce25ae6d38a458e4db57a3451b727f97, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 19827486, guid: ce25ae6d38a458e4db57a3451b727f97, type: 2}
-      propertyPath: SizeModule.enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 19827486, guid: ce25ae6d38a458e4db57a3451b727f97, type: 2}
-      propertyPath: ForceModule.enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 19827486, guid: ce25ae6d38a458e4db57a3451b727f97, type: 2}
-      propertyPath: VelocityModule.enabled
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: ce25ae6d38a458e4db57a3451b727f97, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1001 &1208567182
 Prefab:
   m_ObjectHideFlags: 0
@@ -2419,14 +2361,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 19818514, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.rate.maxCurve.m_Curve.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 19818514, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.rate.minCurve.m_Curve.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 479642, guid: 09b54316904da4311ad77ab122610f45, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2458,98 +2392,6 @@ Prefab:
     - target: {fileID: 479642, guid: 09b54316904da4311ad77ab122610f45, type: 2}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 168476, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 152758, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 19818514, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.rate.maxCurve.m_RotationOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19818514, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.rate.minCurve.m_RotationOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19818514, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.rate.minMaxState
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19818514, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.rate.maxCurve.m_Curve.Array.data[1].time
-      value: 0.4878049
-      objectReference: {fileID: 0}
-    - target: {fileID: 19818514, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.rate.maxCurve.m_Curve.Array.data[1].value
-      value: 0.02051279
-      objectReference: {fileID: 0}
-    - target: {fileID: 19818514, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.rate.minCurve.m_Curve.Array.data[1].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 19818514, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.rate.maxCurve.m_Curve.Array.data[0].time
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19818514, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.rate.maxCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 19818514, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.rate.maxCurve.m_Curve.Array.data[2].time
-      value: 0.94634145
-      objectReference: {fileID: 0}
-    - target: {fileID: 19818514, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.rate.maxCurve.m_Curve.Array.data[2].value
-      value: 0.9230769
-      objectReference: {fileID: 0}
-    - target: {fileID: 19818514, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.rate.scalar
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 19869926, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 19869926, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.cnt0
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 19869926, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.cnt1
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 19869926, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.cntmax0
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 19869926, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.cntmax1
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 19869926, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.time0
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19869926, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.time1
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19869926, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: EmissionModule.m_BurstCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11481994, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: startHealth
-      value: 3000
-      objectReference: {fileID: 0}
-    - target: {fileID: 5483462, guid: 09b54316904da4311ad77ab122610f45, type: 2}
-      propertyPath: m_Constraints
-      value: 112
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09b54316904da4311ad77ab122610f45, type: 2}

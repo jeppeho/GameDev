@@ -79,8 +79,6 @@ public class StoneHandManager : MonoBehaviour {
 		audioplayerCasting = core.transform.FindChild ("audioplayerCasting").gameObject;
 		audioplayerCastingSupporting = core.transform.FindChild ("audioplayerCasting2").gameObject;
 		audioplayerCastingGust = core.transform.FindChild ("audioplayerCasting3").gameObject;
-		Debug.Log (core.ToString());
-		Debug.Log (core.GetComponent<AudioSource>().ToString());
 
 		//Play move-loop
 		audioManager.PlayLoop("handMoveLoop", audioplayerMovement);

@@ -23,7 +23,7 @@ public class InputControllerHandler : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		Debug.Log ("Starting up the InputControllerHANDLER()");
+		//Debug.Log ("Starting up the InputControllerHANDLER()");
 
 		supportedControllers = new string[] { "Sony Computer Entertainment Wireless Controller", "Sony PLAYSTATION(R)3 Controller" };
 
@@ -33,7 +33,7 @@ public class InputControllerHandler : MonoBehaviour {
 		acceptedControllers = new string[ GetNumAcceptedControllers () ];
 		//minions = new GameObject[ GetNumAcceptedControllers () ];
 
-		Debug.Log ("Controllers.Length = " + acceptedControllers.Length);
+		//Debug.Log ("Controllers.Length = " + acceptedControllers.Length);
 		minions = new GameObject[3];
 
 		RegisterAcceptedControllers ();
@@ -152,7 +152,7 @@ public class InputControllerHandler : MonoBehaviour {
 
 			string prefix = "P" + controllerNameIndex.ToString ();
 
-			Debug.Log ("Creating player: " + prefix);
+			//Debug.Log ("Creating player: " + prefix);
 
 			CreateMinion( position, prefix, playerIndex, false);
 		}
@@ -197,7 +197,7 @@ public class InputControllerHandler : MonoBehaviour {
 
 	public void CreateMinion(Vector3 position, string prefix, int index, bool active){
 
-		Debug.Log ("Create a minion for controller." + prefix + ", with index = " + index);
+		//Debug.Log ("Create a minion for controller." + prefix + ", with index = " + index);
 
 		GameObject min = Instantiate (minion, position, Quaternion.identity) as GameObject;
 
@@ -206,7 +206,7 @@ public class InputControllerHandler : MonoBehaviour {
 
 		//Set inactive as a start
 		min.GetComponent<PlayerManager> ().SetPlayerActive(active);
-		Debug.Log(prefix + " state = " + min.GetComponent<PlayerManager> ().GetState());
+		//Debug.Log(prefix + " state = " + min.GetComponent<PlayerManager> ().GetState());
 
 		minions [index] = min;
 

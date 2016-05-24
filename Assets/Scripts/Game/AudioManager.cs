@@ -83,7 +83,7 @@ public class AudioManager : MonoBehaviour {
 			player.Play();
 		}
 		catch (Exception e)
-		{	Debug.Log("A sound was triggered, but the caller doesn't have an audiosource component.");	}
+		{	/*Debug.Log("A sound was triggered, but the caller doesn't have an audiosource component.");*/	}
 	}
 
 	public void Play(string s, GameObject caller, int n, int targetSource)
@@ -98,7 +98,7 @@ public class AudioManager : MonoBehaviour {
 			player.Play();
 		}
 		catch (Exception e)
-		{	Debug.Log("A sound was triggered, but the caller doesn't have an audiosource component.");	}
+		{	/*Debug.Log("A sound was triggered, but the caller doesn't have an audiosource component.");*/	}
 	}
 
 	public void Play(string s, float volume, GameObject caller)
@@ -113,7 +113,7 @@ public class AudioManager : MonoBehaviour {
 			player.Play();
 		}
 		catch (Exception e)
-		{	Debug.Log("A sound was triggered, but the caller doesn't have an audiosource component.");	}
+		{	/*Debug.Log("A sound was triggered, but the caller doesn't have an audiosource component.");*/	}
 	}
 
 	public void Stop(GameObject caller)
@@ -124,7 +124,7 @@ public class AudioManager : MonoBehaviour {
 			player.Stop();
 		}
 		catch (Exception e)
-		{	Debug.Log("A stop was triggered, but the caller doesn't have an audiosource component.");	}
+		{	/*Debug.Log("A stop was triggered, but the caller doesn't have an audiosource component.");*/	}
 	}
 
 	public void PlayLoop(string s, GameObject caller)
@@ -216,8 +216,7 @@ public class AudioManager : MonoBehaviour {
 			break;
 
 		default:
-			return null;
-			break;
+            return null;
 		}
 	}
 
@@ -230,7 +229,6 @@ public class AudioManager : MonoBehaviour {
 			break;
 		default:
 			return null;
-			break;
 		}
 	}
 

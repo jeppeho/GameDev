@@ -32,7 +32,7 @@ public class ColorHandler : MonoBehaviour {
 	}
 		
 	public void SetSkybox(int index){
-		Debug.Log ("********Setting skybox with color index = " + index);
+		//Debug.Log ("********Setting skybox with color index = " + index);
 		RenderSettings.skybox = skyboxes [index];
 
 		RenderSettings.customReflection = cubemaps [index];
@@ -44,7 +44,7 @@ public class ColorHandler : MonoBehaviour {
 		Debug.Log ("********Setting water with color index = " + index);
 
 		waterMaterial.SetColor("_horizonColor", GetWaterColor (index));
-		waterMaterial.mainTexture = waterTextures [index];
+		waterMaterial.SetTexture("_ColorControl", waterTextures [index]);
 
 	}
 
@@ -52,11 +52,11 @@ public class ColorHandler : MonoBehaviour {
 	{
 		yield return new WaitForEndOfFrame ();
 
-		Debug.Log ("********Setting goal with color index = " + index);
+		//Debug.Log ("********Setting goal with color index = " + index);
 
 		Color[] colors = GetColorMaterialArray ( GetColorSchemeByIndex(index) );
 
-		ParticleSystem partsys = GameObject.FindGameObjectWithTag ("GoalLight").GetComponent<ParticleSystem> ();
+        ParticleSystem partsys = GameObject.FindGameObjectWithTag("GoalLight").GetComponent<ParticleSystem>();
 		partsys.startColor = colors [3];
 	}
 
@@ -64,7 +64,7 @@ public class ColorHandler : MonoBehaviour {
 	{
 		yield return new WaitForEndOfFrame ();
 
-		Debug.Log ("********Setting handglow with color index = " + index);
+		//Debug.Log ("********Setting handglow with color index = " + index);
 
 		Color[] colors = GetColorMaterialArray ( GetColorSchemeByIndex(index) );
 
@@ -72,7 +72,7 @@ public class ColorHandler : MonoBehaviour {
 			.transform.FindChild("ball")
 				.transform.FindChild("glowRed").GetComponent<ParticleSystem> ();
 
-		Debug.Log (partsys.ToString ());
+		//Debug.Log (partsys.ToString ());
 		partsys.startColor = colors [3];
 	}
 

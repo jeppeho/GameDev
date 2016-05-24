@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handPositionOffset: {x: 0, y: -3, z: 2}
-  handPositionScale: {x: 5, y: 2, z: 3.8}
+  handPositionScale: {x: 5, y: 2.3, z: 3.8}
   handSizeScale: 2.2
 --- !u!114 &11426190
 MonoBehaviour:
@@ -396,7 +396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 730460e1af01f814990ba57ce64d72bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yThreshold: 4.8
+  yThreshold: 5
   released: 0
 --- !u!114 &11444126
 MonoBehaviour:
