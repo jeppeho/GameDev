@@ -8,6 +8,7 @@ public class RelicHealth : MonoBehaviour {
 	public float startHealth = 1000;
 	public float maxHandDistanceToTakeEnergy = 2f;
 	private float health;
+    private float damageBuffer;
 
 	private Rigidbody rb;
 	private RelicManager manager;
@@ -57,6 +58,9 @@ public class RelicHealth : MonoBehaviour {
 		SetShaderColor (GetBaseColorBasedOnHealth());
 
 		SetTrail ();
+
+        //Refill buffer
+        damageBuffer = Mathf.Clamp(damageBuffer + 1f * Time.deltaTime, 0f, 1f);
 	}
 
 	/**
@@ -103,6 +107,9 @@ public class RelicHealth : MonoBehaviour {
 
 		float relativeVelocity = col.relativeVelocity.magnitude;
 
+        //Apply buffer before dealing damage, so that the feedback won't occur unless actual damage is taken
+        relativeVelocity *= damageBuffer;
+
 		//Only if relic collides with crystals
 		if (col.gameObject.layer == 13) {
 
@@ -114,18 +121,22 @@ public class RelicHealth : MonoBehaviour {
 
 					float drain = Mathf.FloorToInt (relativeVelocity);
 
-					//Limit max energy drain
-					if (drain > 20f)
-						drain = 20f;
-
+                    //Limit max energy drain
+                    drain = Mathf.Clamp(drain, 0f, 20f);
+					
 					DrainEnergy (drain);
+
+                    //Update buffer, reducing by up to 50% on maximum damage
+                    damageBuffer -= drain/40;
+
+                    Debug.Log(">>> Relic damaged by " + drain.ToString() + " pts. reducing buffer to "+damageBuffer.ToString());
 				}
 
 			//If relic is being carried
 			} else {
 
 				//Increase damage score for player
-				ps.IncreaseDamage (Mathf.Clamp(0, 30, relativeVelocity));
+				ps.IncreaseDamage (Mathf.Clamp(relativeVelocity, 0, 30));
 
 				//If collision is big enough
 				if (relativeVelocity > 30f) {
