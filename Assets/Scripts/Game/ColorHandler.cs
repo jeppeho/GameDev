@@ -41,7 +41,7 @@ public class ColorHandler : MonoBehaviour {
 	}
 
 	public void SetWater(int index){
-		Debug.Log ("********Setting water with color index = " + index);
+		//Debug.Log ("********Setting water with color index = " + index);
 
 		waterMaterial.SetColor("_horizonColor", GetWaterColor (index));
 		waterMaterial.SetTexture("_ColorControl", waterTextures [index]);

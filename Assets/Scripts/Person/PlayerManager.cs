@@ -73,10 +73,10 @@ public class PlayerManager : MonoBehaviour {
 
 			StartCoroutine (FlashImpactSparks ());
 
-			//Remove energy from the relic
+			//Remove energy from the relic (cap to 40)
 			GameObject relic = GameObject.Find ("Relic");
 			if (relic) {
-				relic.GetComponent<RelicHealth> ().DrainEnergy (impact.magnitude * 10);
+				relic.GetComponent<RelicHealth> ().DrainEnergy (Mathf.Clamp(impact.magnitude * 2, 0f, 40f));
 			}
 		}
 	}

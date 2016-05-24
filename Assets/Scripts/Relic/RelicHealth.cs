@@ -107,8 +107,7 @@ public class RelicHealth : MonoBehaviour {
 
 		float relativeVelocity = col.relativeVelocity.magnitude;
 
-        //Apply buffer before dealing damage, so that the feedback won't occur unless actual damage is taken
-        relativeVelocity *= damageBuffer;
+        //////////
 
 		//Only if relic collides with crystals
 		if (col.gameObject.layer == 13) {
@@ -119,17 +118,11 @@ public class RelicHealth : MonoBehaviour {
 				//Only drain if above some threshold
 				if (relativeVelocity > 3f) {
 
-					float drain = Mathf.FloorToInt (relativeVelocity);
+                    //Cap to 20
+                    relativeVelocity = Mathf.Clamp(relativeVelocity, 0f, 20f);
 
-                    //Limit max energy drain
-                    drain = Mathf.Clamp(drain, 0f, 20f);
-					
-					DrainEnergy (drain);
-
-                    //Update buffer, reducing by up to 50% on maximum damage
-                    damageBuffer -= drain/40;
-
-                    Debug.Log(">>> Relic damaged by " + drain.ToString() + " pts. reducing buffer to "+damageBuffer.ToString());
+                    //Drain
+                    DrainEnergy(relativeVelocity);
 				}
 
 			//If relic is being carried
@@ -178,13 +171,25 @@ public class RelicHealth : MonoBehaviour {
 	 */
 	public void DrainEnergy(float drain){
 
-		StartCoroutine (RunImpactSparks ());
+        //Apply buffer
+        drain *= damageBuffer;
 
-		//drain health
-		health -= drain;
+        //Round it off
+        drain = Mathf.FloorToInt(drain);
 
-		//If hard hit
+        Debug.Log(">>> RELIC @ " + health.ToString("000") + "| Damaged by " + drain.ToString() + " pts., with a buffer of " + (damageBuffer * 100).ToString() + "%");
+
+        //Update buffer, reducing by up to 50% on maximum damage
+        damageBuffer -= drain / 40;
+
+		//If enough hit, after applying buffer...
 		if (drain > 1){
+            
+		    StartCoroutine (RunImpactSparks ());
+
+		    //drain health
+		    health -= drain;
+
 			SetShaderSpecularColor (new Color (1, 1, 1));
 			SetShaderColor (new Color (1, 1, 1));
 
