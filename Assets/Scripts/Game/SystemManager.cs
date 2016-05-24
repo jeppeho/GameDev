@@ -86,9 +86,9 @@ public class SystemManager : MonoBehaviour {
 
 	void OnLevelWasLoaded(int level){
 		
-		Debug.Log (testIndex + "]*****OnLevelWasLoaded | level = " + level + " | prevLevel = " + prevLevel);
-		Debug.Log ("God: " + currentGodMaterialIndex + ", winMinion: " + minionWinnerPlayerIndex + ", minionMaterial: " + minionWinnerMaterialIndex);
-		testIndex++;
+//		Debug.Log (testIndex + "]*****OnLevelWasLoaded | level = " + level + " | prevLevel = " + prevLevel);
+//		Debug.Log ("God: " + currentGodMaterialIndex + ", winMinion: " + minionWinnerPlayerIndex + ", minionMaterial: " + minionWinnerMaterialIndex);
+//		testIndex++;
 		Time.timeScale = 1f;
 
 		colorHandler.SetColorScheme (currentGodMaterialIndex);
@@ -106,7 +106,7 @@ public class SystemManager : MonoBehaviour {
 
 		//Everytime you go to main menu
 		if (level == 1) {
-			Debug.Log ("level == 1");
+			//Debug.Log ("level == 1");
 
 			SetMenuBoundaries ();
 
@@ -115,21 +115,21 @@ public class SystemManager : MonoBehaviour {
 
 		//Everytime last scene was main menu
 		if (prevLevel == 1) {
-			Debug.Log ("prevLevel == 1");
+			//Debug.Log ("prevLevel == 1");
 
 			DeactivateUnusedPlayers ();
 		}
 
 		//If not the opening load scene or the level
 		if (level != 0 && level != 6) {
-			Debug.Log ("level != 0 && level != 6");
+			//Debug.Log ("level != 0 && level != 6");
 
 			PositionMinionsInRow(1f);
 		}
 
 		//If previous scene was the level
 		if (prevLevel == 6) {
-			Debug.Log ("prevLevel == 6");
+			//Debug.Log ("prevLevel == 6");
 		
 			//UpdateWinnersAndLosers ();
 
@@ -140,7 +140,7 @@ public class SystemManager : MonoBehaviour {
 
 		//Everytime you go to the level
 		if (level == 6) {
-			Debug.Log ("level == 6");
+			//Debug.Log ("level == 6");
 
 			DeactivateUnusedPlayers ();
 
@@ -155,24 +155,20 @@ public class SystemManager : MonoBehaviour {
 
 	public void UpdateWinnersAndLosersForLevelRunner(int playerIndex, int materialIndex){
 
-		//Update values
+		//Store current values
 		int prevGod = currentGodMaterialIndex;
 		int prevWinner = minionColorIndexes [playerIndex];
+
+		//Update with new values
 		minionColorIndexes [playerIndex] = prevGod;
 		currentGodMaterialIndex = prevWinner;
+
+		//Set indeces
+		minionWinnerPlayerIndex = playerIndex;
 		minionWinnerMaterialIndex = materialIndex;
-
+	
 	}
 
-	public void UpdateWinnersAndLosers(){
-		
-		//Update values
-		int prevGod = currentGodMaterialIndex;
-		int prevWinner = minionColorIndexes [minionWinnerPlayerIndex];
-		minionColorIndexes [minionWinnerPlayerIndex] = prevGod;
-		currentGodMaterialIndex = prevWinner;
-
-	}
 
 	public void UpdateAllColors(){
 
@@ -236,7 +232,7 @@ public class SystemManager : MonoBehaviour {
 
 	private void ResetActivatedMinionsToStartOfLevel(float z){
 
-		Debug.Log ("Running: ActivateActivatedMinions()");
+		//Debug.Log ("Running: ActivateActivatedMinions()");
 
 		//Put in a minion for each activated controller
 		for (int i = 0; i < minions.Length; i++) {
@@ -271,17 +267,6 @@ public class SystemManager : MonoBehaviour {
 	}
 
 
-
-	public void SetMinionWinner(int playerIndex, int materialIndex){
-		Debug.Log ("Setting the minion Winner in SystemManager");
-		this.minionWinnerPlayerIndex = playerIndex;
-		this.minionWinnerMaterialIndex = materialIndex;
-
-		Debug.Log ("minionWinnerPlayerIndex: " + minionWinnerPlayerIndex + " | minionWinnerMaterialIndex: " + minionWinnerMaterialIndex);
-
-	}
-
-
 	private void SetMenuBoundaries(){
 
 		LevelManager.MOVE_MAXZ = 40f;
@@ -295,6 +280,26 @@ public class SystemManager : MonoBehaviour {
 	}
 
 
+
+
+	//	public void SetMinionWinner(int playerIndex, int materialIndex){
+	//		Debug.Log ("Setting the minion Winner in SystemManager");
+	//		this.minionWinnerPlayerIndex = playerIndex;
+	//		this.minionWinnerMaterialIndex = materialIndex;
+	//
+	//		Debug.Log ("minionWinnerPlayerIndex: " + minionWinnerPlayerIndex + " | minionWinnerMaterialIndex: " + minionWinnerMaterialIndex);
+	//
+	//	}
+
+	//	public void UpdateWinnersAndLosers(){
+	//		
+	//		//Update values
+	//		int prevGod = currentGodMaterialIndex;
+	//		int prevWinner = minionColorIndexes [minionWinnerPlayerIndex];
+	//		minionColorIndexes [minionWinnerPlayerIndex] = prevGod;
+	//		currentGodMaterialIndex = prevWinner;
+	//
+	//	}
 
 	//	public void KillAllPlayers(){
 	//

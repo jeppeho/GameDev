@@ -164,8 +164,6 @@ public class LevelRunner : MonoBehaviour {
 		//Update local variable
 		winningMinion = winningMinionIndex;
 
-		sm.SetMinionWinner (winningMinionIndex, materialIndex);
-
 		sm.UpdateWinnersAndLosersForLevelRunner (winningMinionIndex, materialIndex);
 	}
 
