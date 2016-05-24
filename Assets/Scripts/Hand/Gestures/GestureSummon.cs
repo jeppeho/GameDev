@@ -38,7 +38,7 @@ public class GestureSummon : Gesture {
 	void FixedUpdate () {
 
 		if (levelGenerator != null) {
-			origoY = levelGenerator.GetLevelAreaHeights () [Mathf.Clamp (Mathf.FloorToInt (leapManager.GetPalmWorldPosition ().z), 0, 299)] * 1.25f;
+			origoY = levelGenerator.GetLevelAreaHeights () [Mathf.Clamp (Mathf.FloorToInt (leapManager.GetPalmWorldPosition ().z), 0, 299)];
 		} else {
 			origoY = 0f;
 		}
