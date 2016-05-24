@@ -41,10 +41,10 @@ public class ColorHandler : MonoBehaviour {
 	}
 
 	public void SetWater(int index){
-		//Debug.Log ("********Setting water with color index = " + index);
+		Debug.Log ("********Setting water with color index = " + index);
 
 		waterMaterial.SetColor("_horizonColor", GetWaterColor (index));
-		waterMaterial.mainTexture = waterTextures [index];
+		waterMaterial.SetTexture("_ColorControl", waterTextures [index]);
 
 	}
 
@@ -56,7 +56,7 @@ public class ColorHandler : MonoBehaviour {
 
 		Color[] colors = GetColorMaterialArray ( GetColorSchemeByIndex(index) );
 
-		ParticleSystem partsys = GameObject.FindGameObjectWithTag ("GoalLight").GetComponent<ParticleSystem> ();
+        ParticleSystem partsys = GameObject.FindGameObjectWithTag("GoalLight").GetComponent<ParticleSystem>();
 		partsys.startColor = colors [3];
 	}
 

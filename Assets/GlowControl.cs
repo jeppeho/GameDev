@@ -5,7 +5,6 @@ public class GlowControl : MonoBehaviour {
 
     ParticleSystem glowSystem;
     ParticleSystem.Particle[] particles;
-    NoiseGenerator NG;
     float intensity;
     float noise;
     float burst;
@@ -16,9 +15,7 @@ public class GlowControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        NG = new NoiseGenerator();
         glowSystem = GetComponent<ParticleSystem>();
-        noiseArray = NG.GetPerlinNoise1D(8, 10, 0.8f, 0, 1);
         col = glowSystem.startColor;
 	}
 	

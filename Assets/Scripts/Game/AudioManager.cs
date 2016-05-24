@@ -216,8 +216,7 @@ public class AudioManager : MonoBehaviour {
 			break;
 
 		default:
-			return null;
-			break;
+            return null;
 		}
 	}
 
@@ -230,7 +229,6 @@ public class AudioManager : MonoBehaviour {
 			break;
 		default:
 			return null;
-			break;
 		}
 	}
 
