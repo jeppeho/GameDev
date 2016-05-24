@@ -103,7 +103,7 @@ public class LevelRunner : MonoBehaviour {
 			gameState = GameState.godWin;
 
 		} 
-		else if( relic.gameObject.GetComponent<Transform>().position.z > /*lg.levelLength +*/ 15f){
+		else if( relic.gameObject.GetComponent<Transform>().position.z > lg.levelLength + 15f){
 
 			gameState = GameState.minionWin;
 		}
@@ -124,8 +124,8 @@ public class LevelRunner : MonoBehaviour {
 
 	private void FindTheWinningMinion(){
 
-		Debug.Log ("//////FINDING THE WINNER");
-		Debug.Log ("We have " + minions.Length +  " minions");
+//		Debug.Log ("//////FINDING THE WINNER");
+//		Debug.Log ("We have " + minions.Length +  " minions");
 
 		int winningMinionIndex = -1;
 		float highestScore = -1000; 
@@ -135,15 +135,15 @@ public class LevelRunner : MonoBehaviour {
 			Debug.Log ("Testing minion #" + i);
 
 			if (minions [i].activeSelf == true) {
-				Debug.Log ("Minion #" + i + " is active");
+				//Debug.Log ("Minion #" + i + " is active");
 				float minionScore = minions [i].GetComponent<PlayerManager> ().GetPlayerScore ().GetFinalScore ();
-				Debug.Log ("minion #" + i + " score = " + minionScore + " and highscore = " + highestScore);
+				//Debug.Log ("minion #" + i + " score = " + minionScore + " and highscore = " + highestScore);
 
 				//If score is so far the highest then update the index of the winning minion
 				if (minionScore > highestScore) {
 					highestScore = minionScore;
 					winningMinionIndex = i;
-					Debug.Log ("Setting the new winner to index " + winningMinionIndex);
+					//Debug.Log ("Setting the new winner to index " + winningMinionIndex);
 				}
 
 				//If score is the same as the highest
@@ -230,12 +230,12 @@ public class LevelRunner : MonoBehaviour {
 		this.gameState = GameState.running;
 		pauseMenu.gameObject.SetActive (false);
 		Time.timeScale = 1f;
-		Debug.Log ("Resuming game");
+		//Debug.Log ("Resuming game");
 
 	}
 
 	public void GoToMainMenu(){
-		Debug.Log ("Going to main menu");
+		//Debug.Log ("Going to main menu");
 		ReleaseRelicForAllPlayers ();
 		SceneManager.LoadScene("MainMenu");
 	}
