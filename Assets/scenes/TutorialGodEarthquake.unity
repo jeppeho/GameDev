@@ -14,10 +14,10 @@ SceneSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 6
-  m_Fog: 0
-  m_FogColor: {r: 0.6838235, g: 0.115646616, b: 0.115646616, a: 1}
-  m_FogMode: 1
-  m_FogDensity: 0.01
+  m_Fog: 1
+  m_FogColor: {r: 0.50735295, g: 0.50735295, b: 0.50735295, a: 1}
+  m_FogMode: 2
+  m_FogDensity: 0.03
   m_LinearFogStart: 6
   m_LinearFogEnd: 30
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}

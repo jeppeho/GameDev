@@ -14,6 +14,8 @@ public class LevelBuilder : MonoBehaviour {
 	private int lastActivatedElement = 0;
 	private int lastDeactivatedElement = 0;
 	private int lastRenderingModeChangeIndex = 0;
+	private int lastUncleanedCrystalIndex = 0;
+	private List<int> CrystalsInUseIndexes = new List<int> ();
 
 	Transform levelElementParent;
 
@@ -78,6 +80,15 @@ public class LevelBuilder : MonoBehaviour {
 				ActivateOncomingLevelElements (cameraZ + farClip);
 			}
 		}
+
+		//Ocasionally check for shards not removed regularly
+		if (Time.frameCount % 400 == 0) {
+		
+			float cameraZ = camera.GetComponent<CameraController> ().GetZPosition ();
+
+			//DOESN*T WORK YET
+			//CleanUpCrystals (cameraZ);
+		}
 	}
 
 
@@ -102,11 +113,11 @@ public class LevelBuilder : MonoBehaviour {
 			float y = levelGenerator.GetLevelAreaHeights()[ Mathf.Clamp(index, 0, levelGenerator.levelLength - 1) ];
 
 			if (t.name.Contains ("WaterPlane"))
-				y -= 0.8f;
+				y -= 0.4f;
 			else
 			//If water
 				if (t.name == "WaterCube(Clone)")
-				y -= 2f;
+				y -= 1.5f;
 			//If stepping stone
 			else if (t.name == "STEPPING_STONE(Clone)")
 				y += 0f;//0.25f;
@@ -367,9 +378,74 @@ public class LevelBuilder : MonoBehaviour {
 //	}
 
 
+	private void CleanUpCrystals(float cameraZ){
+
+		Debug.Log ("***Doing the *NEW* late night cleanup service @" + cameraZ);
+
+		for (int i = 0; i < CrystalsInUseIndexes.Count; i++) {
+
+			//bool pillarInUse = false;
+
+			int levelElementsIndex = CrystalsInUseIndexes [i];
+			Debug.Log ("Index = " + levelElementsIndex);
+
+			foreach(Transform t in levelElements[ levelElementsIndex ].transform){
+
+				if(t.position.z < cameraZ - 4f){
+
+					CrystalsInUseIndexes.RemoveAt (i);
+					Debug.Log ("Not in use, so I'm cleaning up this mess @" + levelElements[ levelElementsIndex ].transform.position.z);
+					StartCoroutine (ReleaseGameObject (levelElements [ levelElementsIndex ]));
+
+				}
+			}
+//		
+//
+//			if (!pillarInUse) {
+//				CrystalsInUseIndexes.Remove (levelElementsIndex);
+//				Debug.Log ("Not in use, so I'm cleaning up this mess @" + levelElements[ levelElementsIndex ].transform.position.z);
+//				StartCoroutine (ReleaseGameObject (levelElements [ levelElementsIndex ]));
+//			}
+		}
+	}
+
+	private void CleanUpCrystalsOLD(float cameraZ){
+
+		Debug.Log ("***Doing the late night cleanup service @" + cameraZ);
+
+		bool indexSet = false;
+
+		for (int i = lastUncleanedCrystalIndex; i < lastDeactivatedElement; i++) {
+
+			bool pillarInUse = false;
+
+			if (levelElements [i].name.Contains ("Pillar")) {
+				
+				foreach(Transform t in levelElements[i].transform){
+
+					if(t.position.z > cameraZ - 2f){
+
+						if (!indexSet) {
+							lastUncleanedCrystalIndex = i;
+							indexSet = true;
+						}
+
+						pillarInUse = true;
+						Debug.Log ("Still in use so not cleaning up @" + levelElements[i].transform.position.z);
+					}
+				}
+			}
+				
+			if (!pillarInUse) {
+				Debug.Log ("Not in use, so I'm cleaning up this mess @" + levelElements[i].transform.position.z);
+				StartCoroutine (ReleaseGameObject (levelElements [i]));
+			}
+		}
+	}
+
 
 	/**
-	 * Deactivate all elements that are behind the camera
+	 * 	Deactivate all elements that are behind the camera
 	 */
 	private void DeactivatePassedLevelElements(float cameraZ){
 
@@ -377,10 +453,27 @@ public class LevelBuilder : MonoBehaviour {
 
 			float z = levelElements [i].GetComponent<Transform> ().position.z;
 
-
 			if (z < cameraZ - 0.5f) {
 
-				StartCoroutine (ReleaseGameObject(levelElements [i]));
+				//Check if gameobject is a pillar and shards are still in front of camera
+				bool pillarInUse = false;
+				int debug_index = 0;
+				if (levelElements [i].name.Contains ("Pillar")) {
+					
+					foreach(Transform t in levelElements[i].transform){
+						
+						if(t.position.z > cameraZ - 4f){
+
+							pillarInUse = true;
+							CrystalsInUseIndexes.Add (i);
+						}
+
+						debug_index++;
+					}
+				}
+
+				if(!pillarInUse)
+					StartCoroutine (ReleaseGameObject(levelElements [i]));
 			}
 //			if (z + 15 < cameraZ) {
 //				levelElements [i].SetActive (false);

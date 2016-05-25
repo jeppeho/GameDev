@@ -1109,7 +1109,7 @@ MonoBehaviour:
   producer: 
   accelerationRate: 10
   maxVelocity: 3
-  jumpPower: 14
+  jumpPower: 16
   jumpXZscalar: 1.3
   numDashFrames: 5
   dashPower: 1200

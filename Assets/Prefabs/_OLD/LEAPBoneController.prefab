@@ -185,6 +185,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FingerBone: {fileID: 144462, guid: a1daabd4db07c47179a065c01ae7e0bc, type: 2}
+  fingerBoneScale: 0
+  handColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!124 &12431802
 Behaviour:
   m_ObjectHideFlags: 1

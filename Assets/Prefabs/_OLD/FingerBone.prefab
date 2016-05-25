@@ -91,6 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778072564ef014596ad5eb610595901f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handColor: {r: 0, g: 0, b: 0, a: 0}
+  traction: 1
 --- !u!135 &13506108
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -103,7 +103,7 @@ public class LevelRunner : MonoBehaviour {
 			gameState = GameState.godWin;
 
 		} 
-		else if( relic.gameObject.GetComponent<Transform>().position.z > lg.levelLength + 15f){
+		else if( relic.gameObject.GetComponent<Transform>().position.z > lg.levelLength + 12f){
 
 			gameState = GameState.minionWin;
 		}

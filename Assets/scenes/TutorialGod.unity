@@ -14,9 +14,9 @@ SceneSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 6
-  m_Fog: 0
-  m_FogColor: {r: 0.6838235, g: 0.115646616, b: 0.115646616, a: 1}
-  m_FogMode: 1
+  m_Fog: 1
+  m_FogColor: {r: 0.53676474, g: 0.53676474, b: 0.53676474, a: 1}
+  m_FogMode: 2
   m_FogDensity: 0.01
   m_LinearFogStart: 6
   m_LinearFogEnd: 30
@@ -1774,24 +1774,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 0.8, z: 0.25}
   m_Center: {x: 0, y: 0.1, z: 0}
---- !u!1 &1383270372 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 156732, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
-  m_PrefabInternal: {fileID: 263094029}
---- !u!114 &1383270373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1383270372}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51294604eecc744aaaeed867abbe4722, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _useRadialDistance: 0
-  _startDistance: 0
-  _fogShader: {fileID: 4800000, guid: 376b37dc54c6f4482a3f4147e23fedb6, type: 3}
 --- !u!1001 &1476435534
 Prefab:
   m_ObjectHideFlags: 0

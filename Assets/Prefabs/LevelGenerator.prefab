@@ -73,10 +73,10 @@ MonoBehaviour:
   goalAreaLength: 50
   numElevationSteps: 8
   elevationHeight: 4
-  minLowGroundPercentage: 0
-  minHighGroundPercentage: 0
+  minLowGroundPercentage: 30
+  minHighGroundPercentage: 30
   minLavaPercentage: 0
-  minCliffPercentage: 25
+  minCliffPercentage: 0
   minBridgePercentage: 0
   useWater: 1
   planePrefab: {fileID: 171214, guid: f8781240a8e3d487d8e4df00e5394e2b, type: 2}

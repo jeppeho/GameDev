@@ -542,6 +542,7 @@ public class NewController : MonoBehaviour {
 
 		float power = jumpPower * 100f;
 
+		//Limit jumpPower in water - NOT NECESSARY AS THERE IS A LONG WAY UP TO THE PLATFORMS
 		if (GetSurfaceTag () == "Water" || GetLastSurfaceTag() == "Water" ) {
 			power /= 1.3f;
 		}

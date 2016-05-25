@@ -14,9 +14,9 @@ SceneSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 6
-  m_Fog: 0
-  m_FogColor: {r: 0.5808823, g: 0.041072484, b: 0, a: 1}
-  m_FogMode: 3
+  m_Fog: 1
+  m_FogColor: {r: 0.4852941, g: 0.4852941, b: 0.4852941, a: 1}
+  m_FogMode: 2
   m_FogDensity: 0.03
   m_LinearFogStart: 6
   m_LinearFogEnd: 30
@@ -167,11 +167,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
-    - target: {fileID: 11484190, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
+    - target: {fileID: 11428866, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
       propertyPath: calibrationText
       value: 
       objectReference: {fileID: 2049080070}
-    - target: {fileID: 11428866, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
+    - target: {fileID: 11484190, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
       propertyPath: calibrationText
       value: 
       objectReference: {fileID: 2049080070}
