@@ -172,8 +172,8 @@ public class BoneManager : MonoBehaviour {
 		UpdateCombinedTraction ();
 
 		//Recolor
-		handColor = GameObject.Find("HandController").GetComponent<StoneHandManager>().handColor;
-		material.color = Color.Lerp (Color.grey, handColor, combinedTraction-0.5f);
+//		handColor = GameObject.Find("HandController").GetComponent<StoneHandManager>().handColor;
+//		material.color = Color.Lerp (Color.grey, handColor, combinedTraction-0.5f);
 	}
 		
 	void OnCollisionEnter(Collision col)
