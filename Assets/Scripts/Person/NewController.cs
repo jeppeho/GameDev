@@ -390,6 +390,9 @@ public class NewController : MonoBehaviour {
 	 */
 	IEnumerator Dash(){
 
+		Transform trail = this.transform.Find ("character/character:rig/character:body/character:collar/character:neck/character:head/trailCharacter");
+		trail.gameObject.SetActive (true);
+
 		float hor = moveHorizontal * accelerationRate;
 		float ver = moveVertical * accelerationRate;
 
@@ -414,11 +417,16 @@ public class NewController : MonoBehaviour {
 			yield return new WaitForSeconds (0.01f);
 		}
 
+
+
 		isDashing = false;
 		coolDownDash = true;
 
 		//Wait for movement speed penalty
 		yield return new WaitForSeconds (0.3f);
+
+		//Set trail light inactive
+		trail.gameObject.SetActive (false);
 
 		dashPenalizesMovementSpeed = false;
 

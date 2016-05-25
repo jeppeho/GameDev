@@ -93,64 +93,6 @@ public class ColorHandler : MonoBehaviour {
 	}
 
 
-	private void SetMinionSparkTexture(GameObject minion, int index){
-
-		GameObject impactSparks = null;// = minion.gameObject.Find ("impactSparks");
-
-		foreach (Transform t in minion.transform) {
-
-			if(t.name.Contains("impactSparks")){
-				impactSparks = t.gameObject;
-				break;
-			}
-		
-		}
-
-		impactSparks.GetComponent<Renderer> ().material.SetTexture("_MainTex", sparkTextures[ index ]);
-	}
-
-	private Color GetFogColor(int index){
-
-		Color color = new Color (0, 0, 0);
-
-		if (index == 0) {
-			color = new Color(148f/255f, 10f/255f, 0f/255f, 1f);
-		} 
-		else if (index == 1) {
-			color = new Color(31f/255f, 216f/255f, 131f/255f, 1f);
-		} 
-		else if (index == 2) {
-			color = new Color(50f/255f, 129f/255f, 211f/255f, 1f);
-		} 
-		else if (index == 3) {
-			color = new Color(186f/255f, 60f/255f, 247f/255f, 1f);
-		}
-
-		return color;
-	}
-
-	private Color GetWaterColor(int index){
-
-		Color color = new Color (0, 0, 0);
-
-		if (index == 0) {
-			color = new Color(148f/255f, 10f/255f, 0f/255f, 1f);
-		} 
-		else if (index == 1) {
-			color = new Color(31f/255f, 216f/255f, 131f/255f, 1f);
-		} 
-		else if (index == 2) {
-			color = new Color(50f/255f, 129f/255f, 211f/255f, 1f);
-		} 
-		else if (index == 3) {
-			color = new Color(186f/255f, 60f/255f, 247f/255f, 1f);
-		}
-
-		return color;
-	}
-
-
-
 	public void SetMinionColor(GameObject minion, int index){
 		
 		Color[] colors = GetColorMaterialArray ( GetColorSchemeByIndex(index) );
@@ -174,10 +116,49 @@ public class ColorHandler : MonoBehaviour {
 					tt.GetComponent<Renderer> ().material = m;
 				}
 			}
+				
 		}
+
+		//Debug.Log("trail is = " + GameObject.Find ("character/character:rig/character:body/character:collar/character:neck/character:head/trailCharacter"));
 
 		//Set the color of the impactSparks
 		SetMinionSparkTexture(minion, index);
+
+		SetMinionTrailColor (minion, index);
+		SetMinionGlowColor (minion, index);
+	}
+
+
+
+	private void SetMinionGlowColor(GameObject minion, int index){
+		Transform glow = minion.transform.Find ("character/character:rig/character:body/character:collar/character:neck/character:head/glowCharacter");
+
+		glow.GetComponent<ParticleSystem> ().startColor = GetMinionGlowColor( index );
+	}
+
+
+
+	private void SetMinionTrailColor(GameObject minion, int index){
+		Transform trail = minion.transform.Find ("character/character:rig/character:body/character:collar/character:neck/character:head/trailCharacter");
+
+		trail.GetComponent<ParticleSystem> ().startColor = GetMinionGlowColor( index );
+	}
+		
+
+	private void SetMinionSparkTexture(GameObject minion, int index){
+
+		GameObject impactSparks = null;// = minion.gameObject.Find ("impactSparks");
+
+		foreach (Transform t in minion.transform) {
+
+			if(t.name.Contains("impactSparks")){
+				impactSparks = t.gameObject;
+				break;
+			}
+
+		}
+
+		impactSparks.GetComponent<Renderer> ().material.SetTexture("_MainTex", sparkTextures[ index ]);
 	}
 
 
@@ -220,7 +201,69 @@ public class ColorHandler : MonoBehaviour {
 		materialColor [3] = colors[3];
 	}
 
+	private Color GetMinionGlowColor(int index){
+	
+		Color color = new Color (0, 0, 0);
 
+		if (index == 0) {
+			color = new Color(0.780f, 0.301f, 0.219f, 0.078f);
+		} 
+		else if (index == 1) {
+			color = new Color(0.298f, 0.780f, 0.498f, 0.078f);
+		} 
+		else if (index == 2) {
+			color = new Color( 0.219f, 0.455f, 0.878f, 0.078f);
+		} 
+		else if (index == 3) {
+			color = new Color( 0.4f, 0.219f, 0.780f, 0.078f);
+		}
+
+		Debug.Log ("returning color " + color);
+
+		return color;
+	
+	}
+
+
+	private Color GetFogColor(int index){
+
+		Color color = new Color (0, 0, 0);
+
+		if (index == 0) {
+			color = new Color(148f/255f, 10f/255f, 0f/255f, 1f);
+		} 
+		else if (index == 1) {
+			color = new Color(31f/255f, 216f/255f, 131f/255f, 1f);
+		} 
+		else if (index == 2) {
+			color = new Color(50f/255f, 129f/255f, 211f/255f, 1f);
+		} 
+		else if (index == 3) {
+			color = new Color(186f/255f, 60f/255f, 247f/255f, 1f);
+		}
+
+		return color;
+	}
+
+	private Color GetWaterColor(int index){
+
+		Color color = new Color (0, 0, 0);
+
+		if (index == 0) {
+			color = new Color(148f/255f, 10f/255f, 0f/255f, 1f);
+		} 
+		else if (index == 1) {
+			color = new Color(31f/255f, 216f/255f, 131f/255f, 1f);
+		} 
+		else if (index == 2) {
+			color = new Color(50f/255f, 129f/255f, 211f/255f, 1f);
+		} 
+		else if (index == 3) {
+			color = new Color(186f/255f, 60f/255f, 247f/255f, 1f);
+		}
+
+		return color;
+	}
 
 
 	private Color[] GetColorMaterialArray(ColorScheme c){
