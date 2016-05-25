@@ -75,8 +75,9 @@ public class PlayerManager : MonoBehaviour {
 
 			//Remove energy from the relic (cap to 40)
 			GameObject relic = GameObject.Find ("Relic");
-			if (relic) {
-				relic.GetComponent<RelicHealth> ().DrainEnergy (Mathf.Clamp(impact.magnitude * 2, 0f, 40f));
+            if (relic && playerRelicHandler.HasRelic())
+            {
+				relic.GetComponent<RelicHealth> ().DrainEnergy (Mathf.Clamp(10f + impact.magnitude * 2, 0f, 30f));
 			}
 		}
 	}
