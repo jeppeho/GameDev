@@ -13,9 +13,7 @@ GameObject:
   - 92: {fileID: 9235610}
   - 81: {fileID: 8137938}
   - 114: {fileID: 11426190}
-  - 114: {fileID: 11428942}
   - 114: {fileID: 11460334}
-  - 114: {fileID: 11478416}
   - 114: {fileID: 11440690}
   - 114: {fileID: 11451830}
   - 114: {fileID: 11406842}
@@ -307,35 +305,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   calibrationText: {fileID: 0}
   calibrationDone: 0
---- !u!114 &11428942
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 156732}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd70d448b18cfbc46af26466f752332c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  visualizeFocus: 0
-  focalLength: 5.27
-  focalSize: 1.68
-  aperture: 0.72
-  focalTransform: {fileID: 0}
-  maxBlurSize: 2
-  highResolution: 0
-  blurType: 0
-  blurSampleCount: 2
-  nearBlur: 0
-  foregroundOverlap: 1
-  dofHdrShader: {fileID: 4800000, guid: acd613035ff3e455e8abf23fdc8c8c24, type: 3}
-  dx11BokehShader: {fileID: 4800000, guid: d8e82664aa8686642a424c88ab10164a, type: 3}
-  dx11BokehThreshold: 0.5
-  dx11SpawnHeuristic: 0.0875
-  dx11BokehTexture: {fileID: 2800000, guid: a4cdca73d61814d33ac1587f6c163bca, type: 3}
-  dx11BokehScale: 1.2
-  dx11BokehIntensity: 2.5
 --- !u!114 &11440558
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -363,18 +332,18 @@ MonoBehaviour:
   hdr: 1
   sepBlurSpread: 2.5
   quality: 1
-  bloomIntensity: 3
-  bloomThreshold: 0.9
+  bloomIntensity: 2
+  bloomThreshold: 1.7
   bloomThresholdColor: {r: 1, g: 1, b: 1, a: 1}
-  bloomBlurIterations: 2
-  hollywoodFlareBlurIterations: 2
+  bloomBlurIterations: 4
+  hollywoodFlareBlurIterations: 4
   flareRotation: 0
   lensflareMode: 1
-  hollyStretchWidth: 2.5
-  lensflareIntensity: 0
+  hollyStretchWidth: 1.5
+  lensflareIntensity: 1
   lensflareThreshold: 0.3
-  lensFlareSaturation: 0.75
-  flareColorA: {r: 0.4, g: 0.4, b: 0.8, a: 0.75}
+  lensFlareSaturation: 1
+  flareColorA: {r: 0.6764706, g: 0.6764706, b: 0.6764706, a: 0.19607843}
   flareColorB: {r: 0.4, g: 0.8, b: 0.8, a: 0.75}
   flareColorC: {r: 0.8, g: 0.4, b: 0.8, a: 0.75}
   flareColorD: {r: 0.8, g: 0.4, b: 0, a: 0.75}
@@ -497,25 +466,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97677197f6cce42f58969ca403b1c985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11478416
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 156732}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76b5ec6153a1d55438228df10fe66844, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  distanceFog: 1
-  excludeFarPixels: 1
-  useRadialDistance: 0
-  heightFog: 1
-  height: 1
-  heightDensity: 2
-  startDistance: 0
-  fogShader: {fileID: 4800000, guid: 70d8568987ac0499f952b54c7c13e265, type: 3}
 --- !u!114 &11484190
 MonoBehaviour:
   m_ObjectHideFlags: 1
