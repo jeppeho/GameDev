@@ -572,20 +572,25 @@ public class LevelGenerator : MonoBehaviour {
 
 		CreateGround (z);
 
-		//If prev and next area is lowGround
-		if (levelAreas [ GetValidLevelIndex(z - 1) ] == AreaType.lowGround && levelAreas [ GetValidLevelIndex(z + 1)] == AreaType.lowGround) {
 
-			//if (levelAreaNoise [z] > -0.5f  && levelAreaNoise[z] < 0.3f) {
+		//If not in the beginning og the level
+		if (z > 7) {
+			
+			//If prev and next area is lowGround
+			if (levelAreas [GetValidLevelIndex (z - 1)] == AreaType.lowGround && levelAreas [GetValidLevelIndex (z + 1)] == AreaType.lowGround) {
 
-			//Vary probability on distance to goal - the closer the more crystals
-			int probablity = Mathf.FloorToInt( 10 - levelLength / (levelLength - z + 30) );
+				//if (levelAreaNoise [z] > -0.5f  && levelAreaNoise[z] < 0.3f) {
 
-			if (z % probablity == 0) {
+				//Vary probability on distance to goal - the closer the more crystals
+				int probablity = Mathf.FloorToInt (10 - levelLength / (levelLength - z + 30));
 
-				//Insert a large crystal
-				CreateCrystalLarge (z, false);
+				if (z % probablity == 0) {
+
+					//Insert a large crystal
+					CreateCrystalLarge (z, false);
+				}
+				//}
 			}
-			//}
 		}
 			
 		//Set respawn point
