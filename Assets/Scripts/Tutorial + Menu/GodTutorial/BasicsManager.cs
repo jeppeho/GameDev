@@ -43,6 +43,9 @@ public class BasicsManager : MonoBehaviour {
 
         if (relicHealth.GetComponent<RelicHealth>().GetHealth() < 0)
         {
+			// ~~ SOUND ~~
+			GameObject.Find("AudioManager").GetComponent<MusicManager>().MinionsWin();
+
             float fadeTime = GameObject.Find("FadingScenes").GetComponent<FadingScenes>().BeginFade(1);
             Invoke("ChangeLevel", 3.0f);
         }

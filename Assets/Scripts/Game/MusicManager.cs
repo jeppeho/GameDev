@@ -14,7 +14,7 @@ public class MusicManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		
 		string path = "Audio/Music/";
 		music_red = Resources.Load(path+"Runtheme_red") as AudioClip;
 		music_green = Resources.Load(path+"Runtheme_green") as AudioClip;
@@ -84,6 +84,32 @@ public class MusicManager : MonoBehaviour {
 
 		src = this.GetComponents<AudioSource> () [0];
 		src.volume = 1f;
+		src.Play(); //Make the music-source play
+	}
+
+	public void MinionsWin()
+	{
+		Debug.Log ("JINGLE PLAYED!!");
+		StartCoroutine(FadeMusic());
+		StartCoroutine(DelayMinionsWin());
+	}
+		
+	IEnumerator FadeMusic()
+	{
+		AudioSource src = this.GetComponents<AudioSource> () [0];
+
+		while (src.volume > 0)
+		{
+			src.volume -= 0.75f*Time.unscaledDeltaTime;
+			yield return StartCoroutine(CoroutineUtil.WaitForRealSeconds(Time.unscaledDeltaTime));
+		}
+	}
+
+	IEnumerator DelayMinionsWin()
+	{
+		yield return StartCoroutine(CoroutineUtil.WaitForRealSeconds(0.5f));
+
+		AudioSource src = this.GetComponents<AudioSource> () [1];
 		src.Play(); //Make the music-source play
 	}
 

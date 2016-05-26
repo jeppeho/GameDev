@@ -12,6 +12,8 @@ public class LevelRunner : MonoBehaviour {
 	private float pauseGameButton;
 	private float prevPauseGame;
 
+	private bool playedWinMusic;
+
 	public Canvas pauseMenu;
 	public Canvas godWinMenu;
 	public Canvas minionWinMenu;
@@ -38,6 +40,7 @@ public class LevelRunner : MonoBehaviour {
 		minions = sm.GetInputHandler ().GetMinionsArray ();
 
 		relic = GameObject.Find ("Relic");
+		playedWinMusic = false;
 
 		//Set initial gameState
 		gameState = GameState.running;
@@ -59,6 +62,13 @@ public class LevelRunner : MonoBehaviour {
 		if (gameState == GameState.godWin) {
 			Time.timeScale = 0f;
 			godWinMenu.gameObject.SetActive (true);
+
+			if (!playedWinMusic)
+			{
+				// ~~ SOUND ~~
+				GameObject.Find("AudioManager").GetComponent<MusicManager>().MinionsWin();
+				playedWinMusic = true;
+			}
 		}
 
 		if (gameState == GameState.minionWin) {
