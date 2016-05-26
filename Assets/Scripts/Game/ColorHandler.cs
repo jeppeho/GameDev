@@ -52,12 +52,12 @@ public class ColorHandler : MonoBehaviour {
 	{
 		yield return new WaitForEndOfFrame ();
 
-		//Debug.Log ("********Setting goal with color index = " + index);
-
 		Color[] colors = GetColorMaterialArray ( GetColorSchemeByIndex(index) );
 
         ParticleSystem partsys = GameObject.FindGameObjectWithTag("GoalLight").GetComponent<ParticleSystem>();
-		partsys.startColor = colors [3];
+	
+		if(partsys != null)
+			partsys.startColor = colors [3];
 	}
 
 	IEnumerator SetHandglowAsync(int index)

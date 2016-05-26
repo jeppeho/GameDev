@@ -27,6 +27,7 @@ public class RelicController : MonoBehaviour {
 	float prevX = 0;
 	float maxSpeed = 4f;
 
+	float relicMinHeight = 1.5f;
 	float wall;
 
 
@@ -54,18 +55,20 @@ public class RelicController : MonoBehaviour {
 			//If relic is about to go behind camera
 			wall = camera.GetComponent<LeapObjectController/*CameraController*/> ().GetPosition ().z + cameraZOffsetBound;
 			int z = Mathf.FloorToInt (this.transform.position.z);
-			float RelicZ = 1.2f;
+
+			relicMinHeight = 1.5f;
 
 			if (z >= 0 && z < lg.levelLength) {
-				RelicZ += lg.GetLevelAreaHeights () [ z ];
+				relicMinHeight += lg.GetLevelAreaHeights () [ z ];
 			} else {
-				RelicZ += lg.GetLevelAreaHeights () [ 0 ];
+				relicMinHeight += lg.GetLevelAreaHeights () [ 0 ];
 			
 			}
+
 			//Check if below ground
-			if (manager.GetPosition ().y < RelicZ) {
+			if (manager.GetPosition ().y < relicMinHeight) {
 			
-				rb.AddForce (new Vector3 (0, Random.Range (20, 40), 0));
+				rb.AddForce (new Vector3 (0, 35, 0));
 			
 			}
 

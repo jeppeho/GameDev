@@ -1244,7 +1244,36 @@ Prefab:
       propertyPath: m_Name
       value: StoneHandModel-Ghost
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 104982, guid: 1f35b50f45a734de08a36b867ab41ebb, type: 2}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 5483354, guid: 1f35b50f45a734de08a36b867ab41ebb, type: 2}
+      propertyPath: m_Constraints
+      value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 104982, guid: 1f35b50f45a734de08a36b867ab41ebb, type: 2}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 6529214, guid: 1f35b50f45a734de08a36b867ab41ebb, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6562040, guid: 1f35b50f45a734de08a36b867ab41ebb, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6562040, guid: 1f35b50f45a734de08a36b867ab41ebb, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 104982, guid: 1f35b50f45a734de08a36b867ab41ebb, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5483354, guid: 1f35b50f45a734de08a36b867ab41ebb, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 1f35b50f45a734de08a36b867ab41ebb, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1702732093 stripped

@@ -16,15 +16,25 @@ public class TutorialCalibrationCheck : MonoBehaviour {
 
     }
 
-    void OnCollisionEnter(Collision col)
-    {
-        if (col.gameObject.layer == 8) // check if colides with hand
-        {
-            //// -> if hand is within the box collider, then start calibration ! 
-            gestureManager.calibrationTriggered = true;
-               
-        }
-    }
+//    void OnCollisionEnter(Collision col)
+//    {
+//        if (col.gameObject.layer == 8) // check if colides with hand
+//        {
+//            //// -> if hand is within the box collider, then start calibration ! 
+//            gestureManager.calibrationTriggered = true;
+//               
+//        }
+//    }
+
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.gameObject.layer == 8) // check if colides with hand
+		{
+			//// -> if hand is within the box collider, then start calibration ! 
+			gestureManager.calibrationTriggered = true;
+
+		}
+	}
 
 
     

@@ -105,6 +105,15 @@ public class NewController : MonoBehaviour {
 		walkZoneWidth = LevelManager.MOVE_ZONEWIDTH;
 	}
 
+	void OnLevelWasLoaded(){
+
+		//Update the walkzones
+		nearWalkZone = LevelManager.MOVE_MINZ + LevelManager.MOVE_ZONEWIDTH;
+		farWalkZone = LevelManager.MOVE_MAXZ - LevelManager.MOVE_ZONEWIDTH;
+		walkZoneWidth = LevelManager.MOVE_ZONEWIDTH;
+
+	}
+
 	
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -144,7 +153,7 @@ public class NewController : MonoBehaviour {
 
 			//Move on X and Z axis
 			if ((moveHorizontal != 0 || moveVertical != 0) /* && IsGrounded () */) {
-				Move ();
+					Move ();
 			}
 			
 
@@ -161,10 +170,10 @@ public class NewController : MonoBehaviour {
 
 			if (!IsGrounded ()) {
 				//IF ELEVATION IS USED CHANGE ONE TO LEVELAREA NOISE
-				if (IsAboveHeight (1) == false) {
+				if (IsAboveHeight (0.2f) == false) {
 					FallDown ();
 					//~~SOUND~~
-					landBuffer = Mathf.Max (landBuffer-1, 0);
+					landBuffer = Mathf.Max (landBuffer - 1, 0);
 				}
 			}
 
