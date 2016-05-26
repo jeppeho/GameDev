@@ -65,15 +65,27 @@ public class MusicManager : MonoBehaviour {
 				m = music_menu; //Menu-theme
 			}
 
-		this.GetComponent<AudioSource> ().Stop ();
-		this.GetComponent<AudioSource> ().clip = m;
-
+		this.GetComponents<AudioSource> () [0].Stop ();
+		this.GetComponents<AudioSource> () [1].Stop ();
+		this.GetComponents<AudioSource> () [0].clip = m;
+		/*
+		//Only autoplay if somewhere in menu!
         if (!SceneManager.GetActiveScene().Equals(SceneManager.GetSceneByName("LevelGenerator")))
         {
-            this.GetComponent<AudioSource>().Play();
+			PlayMusic ();
         }
+		*/
 	}
 
+	public void PlayMusic()
+	{
+		AudioSource src = this.GetComponents<AudioSource> () [1];
+		src.Stop(); //Make the winjingle-source stop
+
+		src = this.GetComponents<AudioSource> () [0];
+		src.volume = 1f;
+		src.Play(); //Make the music-source play
+	}
 
 	private int GetGodColor ()
 	{

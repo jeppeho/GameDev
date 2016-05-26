@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class GestureManager : MonoBehaviour {
 
 	private LeapManager leapManager;
+	private MusicManager musicManager;
 	public CalibrationManager calibrationManager;
     public CalibrationManagerNew calibrationManagerNew;
     private int calibrationFrames = 60;
@@ -23,6 +24,7 @@ public class GestureManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		leapManager = this.gameObject.GetComponent<LeapManager> ();
+		musicManager = GameObject.Find ("AudioManager").GetComponent<MusicManager> ();
         GameObject g = GameObject.Find("LeapControllerBlockHand");
         calibrationManagerNew = g.GetComponent<CalibrationManagerNew>();
 		calibrationManager = g.GetComponent<CalibrationManager>();
@@ -118,6 +120,7 @@ public class GestureManager : MonoBehaviour {
                     // tell tutorial manager that calibration is done, and only than move forward to menu
                     calibrationManagerNew.calibrationDone = true;
 					calibrationManager.calibrationDone = true;
+					musicManager.PlayMusic ();
                     setHandColor(Color.grey);
 				}
 			}
