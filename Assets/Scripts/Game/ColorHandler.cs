@@ -218,8 +218,6 @@ public class ColorHandler : MonoBehaviour {
 			color = new Color( 0.4f, 0.219f, 0.780f, 0.078f);
 		}
 
-		Debug.Log ("returning color " + color);
-
 		return color;
 	
 	}

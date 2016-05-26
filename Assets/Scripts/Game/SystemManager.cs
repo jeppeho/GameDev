@@ -93,6 +93,8 @@ public class SystemManager : MonoBehaviour {
 
 		colorHandler.SetColorScheme (currentGodMaterialIndex);
 
+		//ResetActivatedMinionsToStartOfLevel ();
+
 		//First time in the main menu after game start
 		if (level == 1 && prevLevel == 0) {
 
@@ -198,12 +200,46 @@ public class SystemManager : MonoBehaviour {
 	public InputControllerHandler GetInputHandler(){
 		return this.inputHandler;
 	}
-		
+
 
 	/**
 	 * Repositions minions in a row and sets them to active if they are dead or invulnerable
 	 */
 	private void PositionMinionsInRow(float z){
+
+		float space = 3f;
+		int numPlayers = 3;
+		float width = space * (numPlayers - 1f);
+
+		for (int i = 0; i < minions.Length; i++) {
+
+			PlayerManager pm = minions [i].GetComponent<PlayerManager> ();
+
+			//Set position
+			float x = -space + i * space;
+			Vector3 position = new Vector3 (x, 2f, z);
+
+			minions [i].transform.position = position;
+
+			//If not inactive, set to active
+			string currentState = pm.GetState ();
+
+			if (currentState != "inactive") {
+
+				pm.SetState (PlayerManager.state.active);
+
+			}
+
+			pm.ResetLights ();
+		}
+
+	}
+
+
+	/**
+	 * Repositions minions in a row and sets them to active if they are dead or invulnerable
+	 */
+	private void PositionMinionsInRowOLD(float z){
 
 		float space = 3f;
 		int numPlayers = 3;
@@ -230,19 +266,29 @@ public class SystemManager : MonoBehaviour {
 	}
 
 
-	private void ResetActivatedMinionsToStartOfLevel(float z){
-
-		//Debug.Log ("Running: ActivateActivatedMinions()");
-
-		//Put in a minion for each activated controller
-		for (int i = 0; i < minions.Length; i++) {
-
-			//Move to start position
-			minions [i].transform.position = new Vector3 (inputHandler.GetXPositionForMinion(i), 3, z);
-			minions [i].GetComponent<PlayerManager> ().SetState (PlayerManager.state.active);
-
-		}
-	}
+//	private void ResetActivatedMinionsToStartOfLevel(float z){
+//
+//		//Debug.Log ("Running: ActivateActivatedMinions()");
+//
+//		//Put in a minion for each activated controller
+//		for (int i = 0; i < minions.Length; i++) {
+//
+//			PlayerManager pm = minions [i].GetComponent<PlayerManager> ();
+//
+//			//Move to start position
+//			minions [i].transform.position = new Vector3 (inputHandler.GetXPositionForMinion(i), 3, z);
+//			//minions [i].GetComponent<PlayerManager> ().SetState (PlayerManager.state.active);
+//
+//			//If not inactive, set to active
+//			string currentState = minions [i].GetComponent<PlayerManager> ().GetState ();
+//			if (currentState != "inactive") {
+//
+//				pm.SetState (PlayerManager.state.active);
+//			}
+//			pm.ResetLightDetails ();
+//
+//		}
+//	}
 
 
 	private void DeactivateUnusedPlayers(){

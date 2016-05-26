@@ -19,6 +19,8 @@ public class PlayerManager : MonoBehaviour {
 	private PlayerScore ps;
 	private PlayerRelicHandler playerRelicHandler;
 	private GameObject impactSparks;
+	private GameObject trail;
+	private GameObject glow;
 
 
 
@@ -42,7 +44,10 @@ public class PlayerManager : MonoBehaviour {
 		//Find the impactSparks and set to inactive
 		impactSparks = GameObject.Find ("impactSparks");
 		impactSparks.SetActive (false);
-	
+		trail = GameObject.Find ("character/character:rig/character:body/character:collar/character:neck/character:head/trailCharacter");
+		trail.SetActive (false);
+		glow = GameObject.Find ("character/character:rig/character:body/character:collar/character:neck/character:head/glowCharacter");
+		glow.SetActive (true);
 	}
 
 	// Update is called once per frame
@@ -81,6 +86,24 @@ public class PlayerManager : MonoBehaviour {
 			}
 		}
 	}
+
+
+	public void ResetLights(){
+
+		impactSparks.SetActive (false);
+		trail.SetActive (false);
+		SetGlowStrength (0.1f);
+	}
+
+	public void SetGlowStrength(float alphaStrength){
+		glow.GetComponent<ParticleSystem> ();
+
+		Color c = glow.GetComponent<ParticleSystem> ().startColor;
+		c.a = alphaStrength;
+
+		glow.GetComponent<ParticleSystem> ().startColor = c;
+	}
+
 
 
 	IEnumerator FlashImpactSparks(){

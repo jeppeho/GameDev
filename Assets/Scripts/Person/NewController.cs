@@ -393,6 +393,9 @@ public class NewController : MonoBehaviour {
 		Transform trail = this.transform.Find ("character/character:rig/character:body/character:collar/character:neck/character:head/trailCharacter");
 		trail.gameObject.SetActive (true);
 
+		//Turn of glow light in head
+		GetComponent<PlayerManager> ().SetGlowStrength (0f);
+
 		float hor = moveHorizontal * accelerationRate;
 		float ver = moveVertical * accelerationRate;
 
@@ -408,6 +411,7 @@ public class NewController : MonoBehaviour {
 
 		int frame = 0;
 
+
 		//Add force
 		while (frame < numDashFrames) {
 
@@ -416,7 +420,6 @@ public class NewController : MonoBehaviour {
 
 			yield return new WaitForSeconds (0.01f);
 		}
-
 
 
 		isDashing = false;
@@ -430,8 +433,13 @@ public class NewController : MonoBehaviour {
 
 		dashPenalizesMovementSpeed = false;
 
-		//Wait for cool down
-		yield return new WaitForSeconds (dashCoolDownForSeconds);
+		yield return new WaitForSeconds (dashCoolDownForSeconds / 2);
+
+		//Wait for cool down, slowly turn glow light on
+		for(int i = 0; i < 20; i++){
+			GetComponent<PlayerManager> ().SetGlowStrength (0.1f / 20f * (float)i);
+			yield return new WaitForSeconds ( (dashCoolDownForSeconds / 2) / 20);
+		}
 
 		//Reset dashing
 		coolDownDash = false;
