@@ -22,7 +22,7 @@ public class PlayerManager : MonoBehaviour {
 	private GameObject trail;
 	private GameObject glow;
 
-	private bool isMale;
+	public bool male;
 
 	void Awake() {
 		//Keep the system manager from destroying when changing scenes
@@ -35,7 +35,7 @@ public class PlayerManager : MonoBehaviour {
 		audioManager = GameObject.Find ("AudioManager").GetComponent<AudioManager> ();
 		audioplayerEffects = this.transform.transform.FindChild ("audioplayerEffects").gameObject;
 
-		isMale = getMale ();
+		male = getMale ();
 
 		rb = GetComponent<Rigidbody>();
 		collider = GetComponentInChildren<MeshCollider>();
@@ -171,8 +171,15 @@ public class PlayerManager : MonoBehaviour {
 	private void Death()
 	{
 		//~~SOUND~~
-
-		audioManager.Play ("deathM", audioplayerEffects);
+		if (Random.Range (0f, 1f) <= 0.6f) {
+			if (male) {
+				audioManager.Play ("deathM", 1f, audioplayerEffects);
+			} else {
+				audioManager.Play ("deathF", 1f, audioplayerEffects);
+			}
+		} else {
+			audioManager.Play ("deathN", 1f, audioplayerEffects);
+		}
 
 		if (playerState == state.active)
 		{
@@ -320,25 +327,19 @@ public class PlayerManager : MonoBehaviour {
 
 	private bool getMale()
 	{
-		return true;
-		/*
 		//Get renderer material
-		Material m = this.transform.FindChild("character").transform.FindChild("character:minion") .Find("StoneHandModel 1").transform.FindChild("ball").GetComponent<Renderer>().material;
+		Material m = this.transform.FindChild("character").transform.FindChild("character:minion").gameObject.GetComponent<Renderer>().material;
 
-		//Debug.Log ("|||||||||||||||||||||||||||||MM: Extracting color from "+ GameObject.Find("StoneHandModel 1").transform.FindChild("ball").ToString());
-		//Check color
 		Color myColor = m.GetColor ("_Color");
 
-		int c = -1;
+		if (myColor.b <= 100f/255f)
+		{	return true; } //red/green
+		else
+		{	return false; } //blue/purple
+	}
 
-		if (myColor.g < 40f/255f && myColor.g >= 10f/255f)
-		{	c = 0;} //red
-		else if (myColor.g >= 85f/255f)
-		{	c = 1; } //green
-		else if (myColor.g < 85f/255f && myColor.g >= 40f/255f)
-		{	c = 2; } //blue
-		else if (myColor.g < 10f/255f)
-		{	c = 3; } //purple
-		*/
+	public bool isMale()
+	{
+		return male;
 	}
 }

@@ -147,7 +147,10 @@ public class NewController : MonoBehaviour {
 
 				//~~SOUND~~
 				//audioManager.Stop(this.gameObject);
-				audioManager.Play ("jumpM", 1f, audioplayerEffects);
+				if (this.GetComponent<PlayerManager>().isMale())
+				{	audioManager.Play ("jumpM", 1f, audioplayerEffects);	}
+				else
+				{	audioManager.Play ("jumpF", 1f, audioplayerEffects);	}
 				landBuffer = 10;
 			}
 
@@ -486,7 +489,10 @@ public class NewController : MonoBehaviour {
 		}
 
 		isJumping = false;
-		audioManager.Play ("landM", 1f, audioplayerEffects);
+		if (this.GetComponent<PlayerManager>().isMale())
+		{	audioManager.Play ("landM", 1f, audioplayerEffects);	}
+		else
+		{	audioManager.Play ("landF", 1f, audioplayerEffects);	}
 	}
 
 

@@ -8,6 +8,7 @@ public class LooseRockManager : MonoBehaviour {
 	void Start()
 	{
 		audioManager = GameObject.Find ("AudioManager").GetComponent<AudioManager> ();
+		gameObject.GetComponent<AudioSource> ().priority = 255;
 	}
 	void OnCollisionEnter(Collision col)
 	{
