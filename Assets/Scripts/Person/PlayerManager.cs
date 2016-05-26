@@ -44,9 +44,9 @@ public class PlayerManager : MonoBehaviour {
 		//Find the impactSparks and set to inactive
 		impactSparks = GameObject.Find ("impactSparks");
 		impactSparks.SetActive (false);
-		trail = GameObject.Find ("character/character:rig/character:body/character:collar/character:neck/character:head/trailCharacter");
+		trail = transform.Find ("character/character:rig/character:body/character:collar/character:neck/character:head/trailCharacter").gameObject;
 		trail.SetActive (false);
-		glow = GameObject.Find ("character/character:rig/character:body/character:collar/character:neck/character:head/glowCharacter");
+		glow = transform.Find ("character/character:rig/character:body/character:collar/character:neck/character:head/glowCharacter").gameObject;
 		glow.SetActive (true);
 	}
 
@@ -88,7 +88,7 @@ public class PlayerManager : MonoBehaviour {
 	}
 
 	void OnLevelWasLoaded(){
-
+		Debug.Log ("On level was loaded");
 		//Turn of impacts and trail 
 		ResetLights ();
 	}
@@ -98,14 +98,18 @@ public class PlayerManager : MonoBehaviour {
 
 		impactSparks.SetActive (false);
 		trail.SetActive (false);
-		SetGlowStrength (0.1f);
+		SetGlowAlpha (0.1f);
 	}
 
-	public void SetGlowStrength(float alphaStrength){
-		glow.GetComponent<ParticleSystem> ();
+	public void SetGlowAlpha(float alphaStrength){
+		//glow.GetComponent<ParticleSystem> ();
+
+		Debug.Log("AlphaStrng = " + alphaStrength);
 
 		Color c = glow.GetComponent<ParticleSystem> ().startColor;
 		c.a = alphaStrength;
+
+		Debug.Log("Minion glow color = " + glow.GetComponent<ParticleSystem> ().startColor);
 
 		glow.GetComponent<ParticleSystem> ().startColor = c;
 	}

@@ -35,6 +35,9 @@ public class SystemManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+		//Hide the cursor
+		Cursor.visible = false;
+
 		//Set a random start color
 		currentGodMaterialIndex = Random.Range(0, 4);
 

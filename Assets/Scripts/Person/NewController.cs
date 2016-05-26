@@ -394,7 +394,7 @@ public class NewController : MonoBehaviour {
 		trail.gameObject.SetActive (true);
 
 		//Turn of glow light in head
-		GetComponent<PlayerManager> ().SetGlowStrength (0f);
+		this.gameObject.GetComponent<PlayerManager> ().SetGlowAlpha (0f);
 
 		float hor = moveHorizontal * accelerationRate;
 		float ver = moveVertical * accelerationRate;
@@ -437,7 +437,8 @@ public class NewController : MonoBehaviour {
 
 		//Wait for cool down, slowly turn glow light on
 		for(int i = 0; i < 20; i++){
-			GetComponent<PlayerManager> ().SetGlowStrength (0.1f / 20f * (float)i);
+			Debug.Log ("in glow loop");
+			this.gameObject.GetComponent<PlayerManager> ().SetGlowAlpha (0.1f / 20f * (float)i);
 			yield return new WaitForSeconds ( (dashCoolDownForSeconds / 2) / 20);
 		}
 
