@@ -28,11 +28,15 @@ public class SystemManager : MonoBehaviour {
 	void Awake() {
 		//Keep the system manager from destroying when changing scenes
 		DontDestroyOnLoad(transform.gameObject);
+
 	}
 
 
 	// Use this for initialization
 	void Start () {
+
+		//Set a random start color
+		currentGodMaterialIndex = Random.Range(0, 4);
 
 		//Get the input handler
 		inputHandler = GetComponent<InputControllerHandler> ();
@@ -55,7 +59,7 @@ public class SystemManager : MonoBehaviour {
 	/**
 	 * Updates the colors on the minions and update the minionColorIndexes as well
 	 */
-	private void UpdateMinionColors(){
+	private void UpdateMinionColorsOLD(){
 
 		for (int i = 0; i < 3; i++) {
 
@@ -66,6 +70,31 @@ public class SystemManager : MonoBehaviour {
 
 			colorHandler.SetMinionColor (minions [i], colorIndex);
 			minionColorIndexes[i] = colorIndex;
+		}
+
+	}
+
+	private void InitMinionColors(){
+
+		for (int i = 0; i < 3; i++) {
+
+			int colorIndex = i;
+
+			if (i >= currentGodMaterialIndex)
+				colorIndex++;
+
+			colorHandler.SetMinionColor (minions [i], colorIndex);
+			minionColorIndexes[i] = colorIndex;
+		}
+
+	}
+
+
+	private void UpdateMinionColors(){
+
+		for (int i = 0; i < 3; i++) {
+
+			colorHandler.SetMinionColor (minions [i], minionColorIndexes[i]);
 		}
 
 	}
@@ -103,7 +132,9 @@ public class SystemManager : MonoBehaviour {
 			minions = inputHandler.GetMinionsArray ();
 
 			colorHandler.SetColorScheme (currentGodMaterialIndex);
-			UpdateMinionColors ();
+			//UpdateMinionColors ();
+
+			InitMinionColors ();
 		}
 
 		//Everytime you go to main menu
@@ -229,8 +260,6 @@ public class SystemManager : MonoBehaviour {
 				pm.SetState (PlayerManager.state.active);
 
 			}
-
-			pm.ResetLights ();
 		}
 
 	}
@@ -239,31 +268,31 @@ public class SystemManager : MonoBehaviour {
 	/**
 	 * Repositions minions in a row and sets them to active if they are dead or invulnerable
 	 */
-	private void PositionMinionsInRowOLD(float z){
-
-		float space = 3f;
-		int numPlayers = 3;
-		float width = space * (numPlayers - 1f);
-
-		for (int i = 0; i < minions.Length; i++) {
-		
-			//Set position
-			float x = -space + i * space;
-			Vector3 position = new Vector3 (x, 2f, z);
-
-			minions [i].transform.position = position;
-
-			//If not inactive, set to active
-			string currentState = minions [i].GetComponent<PlayerManager> ().GetState ();
-
-			if (currentState != "inactive") {
-
-				minions [i].GetComponent<PlayerManager> ().SetState (PlayerManager.state.active);
-			
-			}
-		}
-
-	}
+//	private void PositionMinionsInRowOLD(float z){
+//
+//		float space = 3f;
+//		int numPlayers = 3;
+//		float width = space * (numPlayers - 1f);
+//
+//		for (int i = 0; i < minions.Length; i++) {
+//		
+//			//Set position
+//			float x = -space + i * space;
+//			Vector3 position = new Vector3 (x, 2f, z);
+//
+//			minions [i].transform.position = position;
+//
+//			//If not inactive, set to active
+//			string currentState = minions [i].GetComponent<PlayerManager> ().GetState ();
+//
+//			if (currentState != "inactive") {
+//
+//				minions [i].GetComponent<PlayerManager> ().SetState (PlayerManager.state.active);
+//			
+//			}
+//		}
+//
+//	}
 
 
 //	private void ResetActivatedMinionsToStartOfLevel(float z){

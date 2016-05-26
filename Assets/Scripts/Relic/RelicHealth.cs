@@ -25,7 +25,7 @@ public class RelicHealth : MonoBehaviour {
 	private GameObject impactSparks;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 
 		audioManager = GameObject.Find ("AudioManager").GetComponent<AudioManager> ();
 
@@ -41,15 +41,25 @@ public class RelicHealth : MonoBehaviour {
 
 		//Get the core ball of the hand 
 		handCore = GameObject.Find ("ball");
-		trail = GameObject.Find ("trailRelic").GetComponent<ParticleSystem>();
-		glow = GameObject.Find ("glowRelic").GetComponent<ParticleSystem>();
-		impactSparks = GameObject.Find ("impactSparks");
+		trail = GameObject.Find ("RelicSphere/trailRelic").GetComponent<ParticleSystem>();
+		glow = GameObject.Find ("RelicSphere/glowRelic").GetComponent<ParticleSystem>();
+
+		impactSparks = GameObject.Find ("RelicSphere/impactSparks");
 		impactSparks.SetActive (false);
 	}
 
-	void Awake(){
+
+	void OnLevelWasLoaded(){
+
+		//Reset health
 		health = startHealth; 
+
+		//Turn of impact sparks
+		if (impactSparks != null) {
+			impactSparks.SetActive (false);
+		}
 	}
+
 
 	// Update is called once per frame
 	void FixedUpdate () {

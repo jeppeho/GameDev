@@ -87,6 +87,12 @@ public class PlayerManager : MonoBehaviour {
 		}
 	}
 
+	void OnLevelWasLoaded(){
+
+		//Turn of impacts and trail 
+		ResetLights ();
+	}
+
 
 	public void ResetLights(){
 
