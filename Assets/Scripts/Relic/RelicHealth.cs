@@ -5,7 +5,7 @@ public class RelicHealth : MonoBehaviour {
 
 	private AudioManager audioManager;
 
-	public float startHealth = 1000;
+	public float startHealth = 500;
 	public float maxHandDistanceToTakeEnergy = 2f;
 	private float health;
     private float damageBuffer;

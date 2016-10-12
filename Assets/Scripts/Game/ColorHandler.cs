@@ -51,7 +51,7 @@ public class ColorHandler : MonoBehaviour {
 	IEnumerator SetGoalAsync(int index)
 	{
 		yield return new WaitForEndOfFrame ();
-
+		yield return new WaitForSeconds (1f);
 		Color[] colors = GetColorMaterialArray ( GetColorSchemeByIndex(index) );
 
         ParticleSystem partsys = GameObject.FindGameObjectWithTag("GoalLight").GetComponent<ParticleSystem>();
@@ -84,7 +84,8 @@ public class ColorHandler : MonoBehaviour {
 
 		SetWater (index);
 
-		StartCoroutine (SetGoalAsync(index));
+		if(Application.loadedLevelName == "LevelGenerator")
+			StartCoroutine (SetGoalAsync(index));
 
 		StartCoroutine (SetHandglowAsync(index));
 

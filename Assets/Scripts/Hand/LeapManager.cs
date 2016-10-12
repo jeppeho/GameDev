@@ -155,7 +155,10 @@ public class LeapManager : MonoBehaviour {
 
 	//Get palm's position
 	public Vector3 GetPalmPosition (){
-		return AddScaleShift(  ToCustomScale(hand.PalmPosition)  );
+		if(hand != null)
+			return AddScaleShift(  ToCustomScale(hand.PalmPosition)  );
+		else
+			return new Vector3(0,0,0);
 	}
 
 	//Get palm's world position
@@ -165,7 +168,10 @@ public class LeapManager : MonoBehaviour {
 
 	//Get palm's normal
 	public Vector3 GetPalmNormal (){
-		return GetHand().PalmNormal.ToUnity();
+		if (GetHand () != null)
+			return GetHand ().PalmNormal.ToUnity ();
+		else
+			return new Vector3(0,0,0);
 	}
 
 	//Get palm's rotation (quaternion)

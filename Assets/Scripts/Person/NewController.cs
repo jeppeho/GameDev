@@ -117,7 +117,7 @@ public class NewController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-
+		Vector2 rightStickDirection = new Vector2 (throwHorizontal, throwVertical);
 		//Get state of player, eg. dead, active etc.
 		playerState = this.gameObject.GetComponent<PlayerManager> ().GetState ();
 		GetInputButtonValuesOLD ();
@@ -318,9 +318,11 @@ public class NewController : MonoBehaviour {
 
 		Vector3 force = new Vector3 (hor, 0, ver);
 
+		float orgForce = force.magnitude;
 		//Check if player is moving through water
 		if (GetSurfaceTag () == "Water" || GetLastSurfaceTag() == "Water" ) {
-			force /= 4;
+			force /= 1.2f;
+			Debug.Log ("Changing " + orgForce + " --> " + force.magnitude);
 		}
 
 		if (isJumping) {
@@ -576,7 +578,7 @@ public class NewController : MonoBehaviour {
 
 		//Limit jumpPower in water - NOT NECESSARY AS THERE IS A LONG WAY UP TO THE PLATFORMS
 		if (GetSurfaceTag () == "Water" || GetLastSurfaceTag() == "Water" ) {
-			power /= 1.3f;
+			power *= 1.1f;
 		}
 
 		return power;
@@ -681,7 +683,7 @@ public class NewController : MonoBehaviour {
 
 		//Update throw direction if right stick is in use OR throwCounter is still counting down
 		if ( rightStickDirection.magnitude > 0.01f ) {
-
+			
 			throwDirection = new Vector3 (rightStickDirection.x, 0f, rightStickDirection.y).normalized;
 
 		} else if (leftStickDirection.magnitude > 0.01f && throwResetCounter < 0) {

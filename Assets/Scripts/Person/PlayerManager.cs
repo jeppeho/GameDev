@@ -235,15 +235,33 @@ public class PlayerManager : MonoBehaviour {
 		Renderer[] childRends = GetComponentsInChildren<Renderer> ();
 		float subTime = 0;
 
+		int ignoreIndex = 0;
+		for (int i = 0; i < childRends.Length; i++){
+			if (childRends [i].GetComponent<Transform> ().name == "glowCharacter") {
+				childRends [i] = null;
+				ignoreIndex = i;
+//				for(int g = i + 1; g < childRends.Length; g++){
+//					childRends[g - 1] = childRends[g];
+//				}
+				break;
+			}
+		}
+				
+
 		while (subTime < time) {
 			transparent = !transparent;
 			for (int i=0; i < childRends.Length; i++)
 			{
-				Color c = childRends [i].material.color;
-				if (transparent)
-				{	childRends [i].material.color = new Color(c.r, c.g, c.b, 0.2f);	}
-				else
-				{	childRends [i].material.color = new Color(c.r, c.g, c.b, 0.6f);	}
+
+				if (i != ignoreIndex) {
+					Debug.Log ("Render name for problem is = " + childRends [i].GetComponent<Transform> ().name);
+					Color c = childRends [i].material.GetColor ("_Color");
+					if (transparent) {
+						childRends [i].material.color = new Color (c.r, c.g, c.b, 0.2f);
+					} else {
+						childRends [i].material.color = new Color (c.r, c.g, c.b, 0.6f);
+					}
+				}
 			}
 			yield return new WaitForSeconds (0.1f);
 			subTime += 0.1f;
@@ -252,8 +270,10 @@ public class PlayerManager : MonoBehaviour {
 		//Reset colors
 		for (int i=0; i < childRends.Length; i++)
 		{
-			Color c = childRends [i].material.color;
-			childRends [i].material.color = new Color(c.r, c.g, c.b, 1f);
+			if (i != ignoreIndex) {
+				Color c = childRends [i].material.color;
+				childRends [i].material.color = new Color (c.r, c.g, c.b, 1f);
+			}
 		}
 
 		//And change state back

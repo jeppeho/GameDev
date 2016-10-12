@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 public class LevelRunner : MonoBehaviour {
 
 	private enum GameState { running, paused, godWin, minionWin }; 
-	private GameState gameState; 
+	private GameState gameState;
+	private GameState prevGameState;
 
 	private GameObject relic;
 
@@ -44,14 +45,55 @@ public class LevelRunner : MonoBehaviour {
 
 		//Set initial gameState
 		gameState = GameState.running;
+		prevGameState = GameState.running;
 	}
+
+
+	/* This should deactivate button presses when menu is set on 
+	 * BUT it doesn't work as timeScale is set to zero, and the event systems
+	 * are therefore not turned on again after the WaitForSeconds
+	 */
+	IEnumerator DeactivateInput(){
+
+		Transform godMenu = godWinMenu.GetComponent<Transform> ();
+		Transform godEs = godMenu.Find ("EventSystem");
+
+		//Transform pauseMenu = pauseMenu.GetComponent<Transform> ();
+		Transform pauseEs = pauseMenu.GetComponent<Transform> ().Find ("EventSystem");
+
+		//Transform minionMenu = minionWinMenu.GetComponent<Transform> ();
+		Transform minionEs = minionWinMenu.GetComponent<Transform> ().Find ("EventSystem");
+
+		godEs.gameObject.SetActive (false);
+		minionEs.gameObject.SetActive (false);
+		pauseEs.gameObject.SetActive (false);
+
+		yield return new WaitForSeconds(0.5f);
+
+		Debug.Log ("Turning input on");
+
+		godEs.gameObject.SetActive (true);
+		minionEs.gameObject.SetActive (true);
+		pauseEs.gameObject.SetActive (true);
+
+		//godWinMenu.transform.Find ("EventSystem").SetActive (true);
+
+		yield return new WaitForEndOfFrame();
+	}
+
 
 	// Update is called once per frame
 	void Update () {
 
 		UpdateState ();
 
+//		if (gameState != prevGameState) {
+//			StartCoroutine(DeactivateInput ());
+//		}
+//		prevGameState = gameState;
+
 		if (gameState == GameState.paused) {
+			
 			PauseGame ();
 			//StartCoroutine( PauseGameKeepRegisteringInput () );
 		} 
