@@ -15,7 +15,7 @@ public class GestureGust : Gesture {
 	private Vector3 gustCenter;
 	private Vector3 palmWorldPosition;
 	private float gustProgression;
-	public float yThreshold = 5.0f;
+	public float yThreshold = 15.0f;
 	public bool released = false;
 
 	// Use this for initialization
