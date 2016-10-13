@@ -302,6 +302,18 @@ Prefab:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11440558, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442052, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11487098, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: efb2645483ac04cdf89af1b5791a2a9b, type: 2}
   m_IsPrefabParent: 0
@@ -725,7 +737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 033171a5f97f740419d755ee714c25f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mat2: {fileID: 0}
+  mat2: {fileID: 2100000, guid: 1b657f7260af36c4e9f2704f17f4ff47, type: 2}
 --- !u!1001 &708356511
 Prefab:
   m_ObjectHideFlags: 0
